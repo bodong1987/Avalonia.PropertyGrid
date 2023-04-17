@@ -13,6 +13,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{2709
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.PropertyGrid.Samples", "Avalonia.PropertyGrid.Samples\Avalonia.PropertyGrid.Samples.csproj", "{2D9682A0-5305-4D79-93EC-B596C6FA765C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{37180D91-5EA1-457A-9907-D4304889EB39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.PropertyGrid.Tests", "Avalonia.PropertyGrid.Tests\Avalonia.PropertyGrid.Tests.csproj", "{4EE1842A-F3F7-4E8A-9278-B1F1A96D627C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +35,10 @@ Global
 		{2D9682A0-5305-4D79-93EC-B596C6FA765C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D9682A0-5305-4D79-93EC-B596C6FA765C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D9682A0-5305-4D79-93EC-B596C6FA765C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EE1842A-F3F7-4E8A-9278-B1F1A96D627C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EE1842A-F3F7-4E8A-9278-B1F1A96D627C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EE1842A-F3F7-4E8A-9278-B1F1A96D627C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EE1842A-F3F7-4E8A-9278-B1F1A96D627C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -39,6 +47,7 @@ Global
 		{26EA879C-1190-4C16-9FDF-7A63B2FA3A15} = {2F4556E9-4CFD-43C3-908B-5D411EE41619}
 		{75A4BDAD-C971-484B-9C73-F8E65CE7B812} = {2F4556E9-4CFD-43C3-908B-5D411EE41619}
 		{2D9682A0-5305-4D79-93EC-B596C6FA765C} = {27094F4D-5BF1-4940-9726-D583AC395C69}
+		{4EE1842A-F3F7-4E8A-9278-B1F1A96D627C} = {37180D91-5EA1-457A-9907-D4304889EB39}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {17C0E5EE-D41B-4A3A-A626-4CF865CC6D71}
