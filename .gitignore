@@ -1,0 +1,6 @@
+﻿.vscode
+*.pyc
+.DS_Store
+.vs
+obj/
+bin/
