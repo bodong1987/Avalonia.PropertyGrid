@@ -1,8 +1,9 @@
-<Window xmlns="https://github.com/avaloniaui"
+﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:Avalonia.PropertyGrid.Samples.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+		xmlns:pgc="clr-namespace:Avalonia.PropertyGrid.Controls;assembly=Avalonia.PropertyGrid"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="Avalonia.PropertyGrid.Samples.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
@@ -14,6 +15,11 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-
+	<TabControl TabStripPlacement="Left">
+		<TabItem Header="Simple">
+			<pgc:PropertyGrid Content="{Binding simpleObject}"></pgc:PropertyGrid>
+		</TabItem>
+		
+		<TabItem Header="MultiObjects"></TabItem>
+	</TabControl>
 </Window>

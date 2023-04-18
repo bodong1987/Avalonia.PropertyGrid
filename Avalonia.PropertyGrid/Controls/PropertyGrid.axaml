@@ -1,8 +1,20 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+﻿<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="900"
              x:Class="Avalonia.PropertyGrid.Controls.PropertyGrid">
-  Welcome to Avalonia!
+  <Grid x:Name="mainGrid"
+		ColumnDefinitions="Auto,2,*"
+		RowDefinitions="Auto"
+		>	  
+    <Grid x:Name="headerGrid"
+		  ColumnDefinitions="*,Auto"
+		  Grid.ColumnSpan="3"
+		  Margin="2"
+		  >
+		<TextBox x:Name="searchTextBox" Grid.Column="0" ></TextBox>
+		<ToggleButton Margin="2" Content="Category" Grid.Column="1"></ToggleButton>
+	</Grid>  
+  </Grid>
 </UserControl>

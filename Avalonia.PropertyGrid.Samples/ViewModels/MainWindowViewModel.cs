@@ -1,7 +1,24 @@
-﻿namespace Avalonia.PropertyGrid.Samples.ViewModels
+﻿using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
+using System.ComponentModel;
+
+namespace Avalonia.PropertyGrid.Samples.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
         public string Greeting => "Welcome to Avalonia!";
+
+        readonly SimpleObject _SimpleObject = new SimpleObject();
+
+        public SimpleObject simpleObject => _SimpleObject;
+    }
+
+    public class SimpleObject
+    {
+        [DisplayName("Target Name")]
+        public string Name { get; set; }
+
+        [DisplayName("Target Path")]
+        [PathBrowsable(Filters = "Image Files(*.jpg;*.png;*.bmp;*.tag)|*.jpg;*.png;*.bmp;*.tag")]
+        public string Path { get; set; }
     }
 }
