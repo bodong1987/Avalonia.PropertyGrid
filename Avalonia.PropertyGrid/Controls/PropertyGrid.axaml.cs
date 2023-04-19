@@ -88,6 +88,7 @@ namespace Avalonia.PropertyGrid.Controls
         {
             // register builtin factories
             Factories.AddFactory(new Factories.Builtins.PropertyGridStringFactory());
+            Factories.AddFactory(new Factories.Builtins.PropertyGridBooleanFactory());
 
             AllowSearchProperty.Changed.Subscribe(OnAllowSearchChanged);
             ShowStyleProperty.Changed.Subscribe(OnShowStyleChanged);

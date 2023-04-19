@@ -24,5 +24,14 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
 
         [Category("Id")]
         public string UUID { get; set; } = Guid.NewGuid().ToString();
+
+        [Category("Id")]
+        public bool EncryptData { get; set; } = true;
+
+        [Category("Id")]
+        public bool SafeMode { get; set; } = false;
+
+        [Category("Id")]
+        public bool? ThreeStates { get; set; } = null;
     }
 }
