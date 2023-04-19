@@ -24,12 +24,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             control.IsThreeState = propertyDescriptor.PropertyType == typeof(bool?);
 
-            control.Checked += (s, e) => { propertyDescriptor.SetAndRaiseEvent(target, true); };
-            control.Unchecked += (s, e) => { propertyDescriptor.SetAndRaiseEvent(target, false); };
+            control.Checked += (s, e) => { SetAndRaise(control, propertyDescriptor, target, true); };
+            control.Unchecked += (s, e) => { SetAndRaise(control, propertyDescriptor, target, false); };
 
             if (control.IsThreeState)
             {
-                control.Indeterminate += (s, e) => { propertyDescriptor.SetAndRaiseEvent(target, null); };
+                control.Indeterminate += (s, e) => { SetAndRaise(control, propertyDescriptor, target, null); };
             }
 
             return control;

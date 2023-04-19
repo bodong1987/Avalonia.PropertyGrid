@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Avalonia.PropertyGrid.Model.Extensions;
 
 namespace Avalonia.PropertyGrid.Controls.Factories
 {
@@ -53,5 +54,26 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         /// <param name="control">The control.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public abstract bool HandlePropertyChanged(object target, PropertyDescriptor propertyDescriptor, Control control);
+
+        /// <summary>
+        /// Sets the and raise.
+        /// </summary>
+        /// <param name="sourceControl">The source control.</param>
+        /// <param name="propertyDescriptor">The property descriptor.</param>
+        /// <param name="component">The component.</param>
+        /// <param name="value">The value.</param>
+        protected virtual void SetAndRaise(Control sourceControl, PropertyDescriptor propertyDescriptor, object component, object value) 
+        {
+            DataValidationErrors.ClearErrors(sourceControl);
+
+            try
+            {                
+                propertyDescriptor.SetAndRaiseEvent(component, value);
+            }
+            catch(Exception e)
+            {
+                DataValidationErrors.SetErrors(sourceControl, new object[] {e.Message});
+            }
+        }
     }
 }

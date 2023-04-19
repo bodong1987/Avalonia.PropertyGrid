@@ -52,7 +52,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                     if ((propertyDescriptor.GetValue(target) as Enum)?.ToString() != selectedValue?.ToString())
                     {
-                        propertyDescriptor.SetAndRaiseEvent(target, selectedValue);
+                        SetAndRaise(control, propertyDescriptor, target, selectedValue);
                     }
                 };
 
@@ -74,7 +74,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                         if (v != propertyDescriptor.GetValue(target) as Enum)
                         {
-                            propertyDescriptor.SetAndRaiseEvent(target, v);
+                            SetAndRaise(control, propertyDescriptor, target, v);
                         }
                     }
                 };

@@ -1,4 +1,5 @@
 ﻿using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
+using Avalonia.PropertyGrid.Model.Extensions;
 using System;
 using System.ComponentModel;
 
@@ -38,7 +39,29 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
         public PhoneService Service { get; set; } = PhoneService.None;
 
         [Category("System")]
-        public PlatformID Platform { get; set; } = PlatformID.Win32NT;
+        public PlatformID Platform { get; set; } = Environment.OSVersion.Platform;
+
+        string _SourceImagePath;
+        [Category("DataValidation")]
+      //  [PathBrowsable(Filters = "Image Files(*.jpg;*.png;*.bmp;*.tag)|*.jpg;*.png;*.bmp;*.tag")]
+        public string SourceImagePath
+        {
+            get => _SourceImagePath;
+            set
+            {
+                if(value.IsNullOrEmpty())
+                {
+                    throw new ArgumentNullException(nameof(SourceImagePath));
+                }
+
+                if(!System.IO.Path.GetExtension(value).iEquals(".png"))
+                {
+                    throw new ArgumentException($"{nameof(SourceImagePath)} must be png file.");
+                }
+
+                _SourceImagePath = value;
+            }
+        }
     }
 
     [Flags]
