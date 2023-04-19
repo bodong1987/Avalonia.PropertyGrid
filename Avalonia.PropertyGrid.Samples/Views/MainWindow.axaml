@@ -4,7 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:pgc="clr-namespace:Avalonia.PropertyGrid.Controls;assembly=Avalonia.PropertyGrid"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="950"
+		Width="600"
+		Height="900"
         x:Class="Avalonia.PropertyGrid.Samples.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="Avalonia.PropertyGrid.Samples">
@@ -17,7 +19,7 @@
 
 	<TabControl TabStripPlacement="Left">
 		<TabItem Header="Simple">
-			<pgc:PropertyGrid Content="{Binding simpleObject}"></pgc:PropertyGrid>
+			<pgc:PropertyGrid SelectedObject="{Binding simpleObject}"></pgc:PropertyGrid>
 		</TabItem>
 		
 		<TabItem Header="MultiObjects"></TabItem>

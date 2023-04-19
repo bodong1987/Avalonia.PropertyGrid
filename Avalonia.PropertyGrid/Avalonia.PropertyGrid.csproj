@@ -5,8 +5,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Localizations\en-US.json" />
+    <None Remove="Assets\Localizations\zh-CN.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\Localizations\en-US.json" />
+    <AvaloniaResource Include="Assets\Localizations\zh-CN.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.10.19" />
     <PackageReference Include="Avalonia.Diagnostics" Version="0.10.19" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="XamlNameReferenceGenerator" Version="1.6.1" />
   </ItemGroup>
 

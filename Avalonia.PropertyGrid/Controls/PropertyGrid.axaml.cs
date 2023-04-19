@@ -2,6 +2,9 @@
 using Avalonia.Data;
 using Avalonia.PropertyGrid.Controls.Implements;
 using Avalonia.PropertyGrid.Controls.ViewInfos;
+using Avalonia.PropertyGrid.Localization;
+using Avalonia.PropertyGrid.Model.Services;
+using Avalonia.PropertyGrid.ViewModels;
 using System;
 
 namespace Avalonia.PropertyGrid.Controls
@@ -19,6 +22,12 @@ namespace Avalonia.PropertyGrid.Controls
         /// You can use this fields to extend ability of PropertyGrid
         /// </summary>
         public readonly static IPropertyGridControlFactoryCollection Factories = new PropertyGridControlFactoryCollection();
+
+        /// <summary>
+        /// Gets or sets the localization service.
+        /// </summary>
+        /// <value>The localization service.</value>
+        public static ILocalizationService LocalizationService { get; set; } = new InternalLocalizationService();
         #endregion
 
         #region Properties
@@ -34,6 +43,21 @@ namespace Avalonia.PropertyGrid.Controls
         {
             get => GetValue(ShowStyleProperty); set => SetValue(ShowStyleProperty, value);
         }
+
+        private object _SelectedObject;
+        public static readonly DirectProperty<PropertyGrid, object> SelectedObjectProperty = AvaloniaProperty.RegisterDirect<PropertyGrid, object>(
+            nameof(SelectedObject),
+            o => o._SelectedObject,
+            (o,v)=> o._SelectedObject = v
+            );
+        public object SelectedObject
+        {
+            get => GetValue(SelectedObjectProperty);
+            set => SetValue(SelectedObjectProperty, value);
+        }
+
+        PropertyGridViewModel ViewModel = new PropertyGridViewModel();
+
         #endregion
 
         #region Views
@@ -44,6 +68,7 @@ namespace Avalonia.PropertyGrid.Controls
         {
             AllowSearchProperty.Changed.Subscribe(OnAllowSearchChanged);
             ShowStyleProperty.Changed.Subscribe(OnShowStyleChanged);
+            SelectedObjectProperty.Changed.Subscribe(OnSelectedObjectChanged);
         }
 
         /// <summary>
@@ -52,16 +77,8 @@ namespace Avalonia.PropertyGrid.Controls
         public PropertyGrid()
         {
             InitializeComponent();
-        }
 
-        protected override void OnDataContextChanged(EventArgs e)
-        {
-            base.OnDataContextChanged(e);
-        }
-
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
-        {
-            base.OnPropertyChanged(change);
+            this.DataContext = ViewModel;
         }
 
         protected virtual IPropertyGridViewInfo CreateViewInfo()
@@ -74,6 +91,19 @@ namespace Avalonia.PropertyGrid.Controls
             {
                 return new PropertyGridAlphabeticViewInfo(this, Content);   
             }
+        }
+
+        private static void OnSelectedObjectChanged(AvaloniaPropertyChangedEventArgs<object> e)
+        {
+            if(e.Sender is PropertyGrid pg)
+            {
+                pg.OnSelectedObjectChanged(e.NewValue.Value);
+            }
+        }
+
+        private void OnSelectedObjectChanged(object newValue)
+        {
+
         }
 
         #region Styled Properties Handler
