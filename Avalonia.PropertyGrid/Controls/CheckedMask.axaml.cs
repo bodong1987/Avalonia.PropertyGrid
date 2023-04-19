@@ -21,6 +21,16 @@ namespace Avalonia.PropertyGrid.Controls
             set => SetAndRaise(ModelProperty, ref _Model, value);
         }
 
+        public static readonly StyledProperty<int> ButtonMinWidthProperty =
+            AvaloniaProperty.Register<CheckedMask, int>(nameof(ButtonMinWidth), 80);
+
+        public int ButtonMinWidth
+        {
+            get => GetValue(ButtonMinWidthProperty);
+            set => SetValue(ButtonMinWidthProperty, value);
+        }
+
+
         static CheckedMask()
         {
             ModelProperty.Changed.Subscribe(OnModelChanged);
@@ -51,7 +61,9 @@ namespace Avalonia.PropertyGrid.Controls
             ToggleButton allButton = new ToggleButton();
             allButton.Content = value.All;
             allButton.IsChecked = value.IsAllChecked;
-            allButton.Margin = new Thickness(10);
+            allButton.Margin = new Thickness(6);
+            allButton.MinWidth = ButtonMinWidth;
+            allButton.HorizontalContentAlignment = Layout.HorizontalAlignment.Center;
 
             allButton.Checked += (s, e) => 
             { 
@@ -75,9 +87,16 @@ namespace Avalonia.PropertyGrid.Controls
                 ToggleButton button = new ToggleButton();
                 button.Content = mask.ToString();
                 button.IsChecked = value.IsChecked(mask) && !value.IsChecked(value.All);
-                button.Margin = new Thickness(10);
+                button.Margin = new Thickness(6);
+                button.MinWidth = ButtonMinWidth;
+                button.HorizontalContentAlignment = Layout.HorizontalAlignment.Center;
 
-                button.Checked += (s, e) => { value.Check(mask); };
+                button.Checked += (s, e) => {
+                    value.UnCheck(value.All);
+                    value.Check(mask);
+
+                    allButton.IsChecked = false;
+                };
                 button.Unchecked += (s, e) => { value.UnCheck(mask); };
 
                 mainPanel.Children.Add(button);

@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Avalonia.PropertyGrid.Controls
 {
@@ -68,7 +69,9 @@ namespace Avalonia.PropertyGrid.Controls
         {
             public PropertyDescriptor Property;
             public Control BindingControl;
+            public TextBlock BindingNameControl;
             public IPropertyGridControlFactory Factory;
+            public Expander BindingExpander;
         }
 
         Dictionary<string, PropertyBinding> PropertyBindingDict = new Dictionary<string, PropertyBinding>();
@@ -94,6 +97,7 @@ namespace Avalonia.PropertyGrid.Controls
 
             this.DataContext = ViewModel;
             ViewModel.PropertyDescriptorChanged += OnPropertyDescriptorChanged;
+            ViewModel.FilterChanged += OnFilterChanged;
 
 
             InitializeComponent();
@@ -123,7 +127,8 @@ namespace Avalonia.PropertyGrid.Controls
 
         private void OnAllowSearchChanged(object oldValue, object newValue)
         {
-            
+            fastFilterBox.IsVisible = (bool)newValue;
+            headerGrid.IsVisible = (bool)newValue;
         }
 
         private static void OnShowStyleChanged(AvaloniaPropertyChangedEventArgs<PropertyGridShowStyle> e)
@@ -136,7 +141,7 @@ namespace Avalonia.PropertyGrid.Controls
 
         private void OnShowStyleChanged(Optional<PropertyGridShowStyle> oldValue, BindingValue<PropertyGridShowStyle> newValue)
         {
-            
+            BuildPropertiesView(ViewModel.ShowCategory ? PropertyGridShowStyle.Category : PropertyGridShowStyle.Alphabetic);
         }
 
         #endregion
@@ -144,6 +149,49 @@ namespace Avalonia.PropertyGrid.Controls
         private void OnPropertyDescriptorChanged(object sender, EventArgs e)
         {
             BuildPropertiesView(ViewModel.ShowCategory ? PropertyGridShowStyle.Category : PropertyGridShowStyle.Alphabetic);
+        }
+
+        private void OnFilterChanged(object sender, EventArgs e)
+        {
+            if(ViewModel.ShowCategory)
+            {
+                Dictionary<string, List<PropertyBinding>> caches = new Dictionary<string, List<PropertyBinding>>();
+
+                foreach (var info in PropertyBindingDict)
+                {
+                    var category = PropertyGridViewModel.GetCategory(info.Value.Property);
+
+                    if(caches.TryGetValue(category, out var list))
+                    {
+                        list.Add(info.Value);
+                    }
+                    else
+                    {
+                        list = new List<PropertyBinding>() { info.Value };
+                        caches.Add(category, list);
+                    }
+                }
+
+                foreach(var cache in caches)
+                {
+                    bool AtLeastOneVisible = false;
+                    foreach (var info in cache.Value)
+                    {
+                        bool IsVisible = ViewModel.CheckVisible(info.Property);
+
+                        info.BindingNameControl.IsVisible = IsVisible;
+                        info.BindingControl.IsVisible = IsVisible;
+
+                        AtLeastOneVisible |= IsVisible;
+                    }
+
+                    var anyBinding = cache.Value.FirstOrDefault();
+                    if (anyBinding.BindingExpander != null)
+                    {
+                        anyBinding.BindingExpander.IsVisible = AtLeastOneVisible;
+                    }
+                }
+            }            
         }
 
         private void BuildPropertiesView(PropertyGridShowStyle propertyGridShowStyle)
@@ -175,7 +223,7 @@ namespace Avalonia.PropertyGrid.Controls
                 grid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
                 grid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
 
-                BuildPropertiesGrid(categoryInfo.Value, grid);
+                BuildPropertiesGrid(categoryInfo.Value, expander, grid);
 
                 expander.Content = grid;
 
@@ -185,8 +233,10 @@ namespace Avalonia.PropertyGrid.Controls
             propertiesGrid.RowDefinitions.Add(new RowDefinition(GridLength.Star));
         }
 
-        private void BuildPropertiesGrid(IEnumerable<PropertyDescriptor> properties, Grid grid)
+        private void BuildPropertiesGrid(IEnumerable<PropertyDescriptor> properties, Expander expander, Grid grid)
         {
+            bool AtLeastOneVisible = false;
+
             foreach(var property in properties)
             {
                 IPropertyGridControlFactory factory;
@@ -198,12 +248,8 @@ namespace Avalonia.PropertyGrid.Controls
                     continue;
                 }
 
-                PropertyBindingDict.Add(property.Name, new PropertyBinding()
-                {
-                    Property = property,
-                    BindingControl = control,
-                    Factory = factory
-                });
+                bool IsVisible = ViewModel.CheckVisible(property);
+                AtLeastOneVisible |= IsVisible;
 
                 grid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
 
@@ -212,7 +258,7 @@ namespace Avalonia.PropertyGrid.Controls
                 nameBlock.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
                 nameBlock.SetValue(Grid.ColumnProperty, 0);
                 nameBlock.VerticalAlignment = Layout.VerticalAlignment.Center;
-                nameBlock.Margin = new Thickness(4);
+                nameBlock.Margin = new Thickness(4);                
 
                 grid.Children.Add(nameBlock);
 
@@ -225,7 +271,21 @@ namespace Avalonia.PropertyGrid.Controls
                 grid.Children.Add(control);
 
                 factory.HandlePropertyChanged(ViewModel.SelectedObject, property, control);
+
+                PropertyBindingDict.Add(property.Name, new PropertyBinding()
+                {
+                    Property = property,
+                    BindingControl = control,
+                    BindingNameControl = nameBlock,
+                    Factory = factory,
+                    BindingExpander = expander
+                });
+
+                nameBlock.IsVisible = IsVisible;
+                control.IsVisible = IsVisible;
             }
+
+            expander.IsVisible = AtLeastOneVisible;
         }
 
         private Control BuildPropertyControl(PropertyDescriptor propertyDescriptor, out IPropertyGridControlFactory factory)

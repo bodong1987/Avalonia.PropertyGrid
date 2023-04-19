@@ -18,7 +18,7 @@
 			<ToggleButton Margin="2" Content="R" Grid.Column="2" IsChecked="{Binding FilterPattern.UseRegex}" ToolTip.Tip="{ll:Localize UseRegex}"></ToggleButton>
 			<ToggleButton Margin="2" Content="K" Grid.Column="3" IsChecked="{Binding FilterPattern.IgnoreCase}" ToolTip.Tip="{ll:Localize IgnoreCase}"></ToggleButton>
 		</Grid>
-		<lc:CheckedMask Grid.Row="1" Model="{Binding CategoryFilter}"></lc:CheckedMask>
+		<lc:CheckedMask x:Name="fastFilterBox" Grid.Row="1" Model="{Binding CategoryFilter}"></lc:CheckedMask>
 		<Grid x:Name="splitterGrid" Grid.Row="2" ColumnDefinitions="Auto,2,*">
 			<GridSplitter Grid.Column="1"></GridSplitter>
 			<TextBlock x:Name="column_name" Text="{ll:Localize Name}"></TextBlock>

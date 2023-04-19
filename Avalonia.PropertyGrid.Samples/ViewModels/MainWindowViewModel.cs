@@ -1,4 +1,5 @@
 ﻿using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
+using System;
 using System.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Samples.ViewModels
@@ -20,5 +21,8 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
         [DisplayName("Target Path")]
         [PathBrowsable(Filters = "Image Files(*.jpg;*.png;*.bmp;*.tag)|*.jpg;*.png;*.bmp;*.tag")]
         public string Path { get; set; }
+
+        [Category("Id")]
+        public string UUID { get; set; } = Guid.NewGuid().ToString();
     }
 }
