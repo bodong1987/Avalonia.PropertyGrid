@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Avalonia.PropertyGrid.Model.ComponentModel;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace Avalonia.PropertyGrid.Controls
     /// <summary>
     /// Interface IPropertyGridFilterPattern
     /// </summary>
-    public interface IPropertyGridFilterPattern
+    public interface IPropertyGridFilterPattern : IReactiveObject
     {
         /// <summary>
         /// Gets or sets the filter text.

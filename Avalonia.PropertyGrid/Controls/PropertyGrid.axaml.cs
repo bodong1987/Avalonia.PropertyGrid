@@ -1,7 +1,6 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.PropertyGrid.Controls.Implements;
-using Avalonia.PropertyGrid.Controls.ViewInfos;
 using Avalonia.PropertyGrid.Localization;
 using Avalonia.PropertyGrid.Model.Services;
 using Avalonia.PropertyGrid.ViewModels;
@@ -60,10 +59,6 @@ namespace Avalonia.PropertyGrid.Controls
 
         #endregion
 
-        #region Views
-        public IPropertyGridViewInfo ViewInfo { get; private set; }
-        #endregion
-
         static PropertyGrid()
         {
             AllowSearchProperty.Changed.Subscribe(OnAllowSearchChanged);
@@ -81,18 +76,6 @@ namespace Avalonia.PropertyGrid.Controls
             this.DataContext = ViewModel;
         }
 
-        protected virtual IPropertyGridViewInfo CreateViewInfo()
-        {
-            if(ShowStyle == PropertyGridShowStyle.Category)
-            {
-                return new PropertyGridCategoryViewInfo(this, Content);
-            }
-            else
-            {
-                return new PropertyGridAlphabeticViewInfo(this, Content);   
-            }
-        }
-
         private static void OnSelectedObjectChanged(AvaloniaPropertyChangedEventArgs<object> e)
         {
             if(e.Sender is PropertyGrid pg)
@@ -103,7 +86,7 @@ namespace Avalonia.PropertyGrid.Controls
 
         private void OnSelectedObjectChanged(object newValue)
         {
-
+            ViewModel.SelectedObject = newValue;
         }
 
         #region Styled Properties Handler
