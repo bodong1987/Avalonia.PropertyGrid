@@ -1,4 +1,5 @@
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
+using Avalonia.PropertyGrid.Samples.ViewModels;
 
 namespace Avalonia.PropertyGrid.Samples.Views
 {
@@ -6,6 +7,8 @@ namespace Avalonia.PropertyGrid.Samples.Views
     {
         public MainWindow()
         {
+            DataContext = new MainWindowViewModel();
+
             InitializeComponent();
         }
     }

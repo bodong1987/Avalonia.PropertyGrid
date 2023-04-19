@@ -3,21 +3,26 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:ll="clr-namespace:Avalonia.PropertyGrid.Localization;assembly=Avalonia.PropertyGrid"
+			 xmlns:lc="clr-namespace:Avalonia.PropertyGrid.Controls;assembly=Avalonia.PropertyGrid"
              mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="900"
              x:Class="Avalonia.PropertyGrid.Controls.PropertyGrid">
-  <Grid x:Name="mainGrid"
-		ColumnDefinitions="Auto,2,*"
-		RowDefinitions="Auto"
-		>	  
-    <Grid x:Name="headerGrid"
-		  ColumnDefinitions="*,Auto, Auto, Auto"
-		  Grid.ColumnSpan="3"
-		  Margin="2"
+	<Grid x:Name="mainGrid"
+		  RowDefinitions="Auto,Auto,Auto,*"
+		>
+		<Grid x:Name="headerGrid"
+			  ColumnDefinitions="*,Auto, Auto, Auto"
+			  Margin="2"
 		  >
-		<TextBox x:Name="searchTextBox" Watermark="{ll:Localize Search}" Grid.Column="0" Text="{Binding FilterPattern.FilterText}" ></TextBox>
-		<ToggleButton Margin="2" Content="C" Grid.Column="1" IsChecked="{Binding ShowCategory}" ToolTip.Tip="{ll:Localize ShowGroup}"></ToggleButton>
-		<ToggleButton Margin="2" Content="R" Grid.Column="2" IsChecked="{Binding FilterPattern.UseRegex}" ToolTip.Tip="{ll:Localize UseRegex}"></ToggleButton>
-		<ToggleButton Margin="2" Content="K" Grid.Column="3" IsChecked="{Binding FilterPattern.IgnoreCase}" ToolTip.Tip="{ll:Localize IgnoreCase}"></ToggleButton>
+			<TextBox x:Name="searchTextBox" Watermark="{ll:Localize Search}" Grid.Column="0" Text="{Binding FilterPattern.FilterText}" ></TextBox>
+			<ToggleButton Margin="2" Content="C" Grid.Column="1" IsChecked="{Binding ShowCategory}" ToolTip.Tip="{ll:Localize ShowGroup}"></ToggleButton>
+			<ToggleButton Margin="2" Content="R" Grid.Column="2" IsChecked="{Binding FilterPattern.UseRegex}" ToolTip.Tip="{ll:Localize UseRegex}"></ToggleButton>
+			<ToggleButton Margin="2" Content="K" Grid.Column="3" IsChecked="{Binding FilterPattern.IgnoreCase}" ToolTip.Tip="{ll:Localize IgnoreCase}"></ToggleButton>
+		</Grid>
+		<lc:CheckedMask Grid.Row="1" Model="{Binding CategoryFilter}"></lc:CheckedMask>
+		<Grid x:Name="splitterGrid" Grid.Row="2" ColumnDefinitions="Auto,2,*">
+			<GridSplitter Grid.Column="1"></GridSplitter>
+			<TextBlock x:Name="column_name" Text="{ll:Localize Name}"></TextBlock>
+			<TextBlock x:Name="column_properties" Text="{ll:Localize Properties}" Grid.Column="2"></TextBlock>
+		</Grid>
 	</Grid>
-  </Grid>
 </UserControl>

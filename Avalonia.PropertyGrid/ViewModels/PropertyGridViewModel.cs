@@ -30,12 +30,23 @@ namespace Avalonia.PropertyGrid.ViewModels
             set => this.RaiseAndSetIfChanged(ref _ShowCategory, value);
         }
 
+        CheckedMaskModel _CategoryFilter;
+        public CheckedMaskModel CategoryFilter
+        {
+            get => _CategoryFilter;
+            set => this.RaiseAndSetIfChanged(ref _CategoryFilter, value);
+        }
+
         public List<PropertyDescriptor> AllProperties { get; private set; } = new List<PropertyDescriptor>();
 
         public List<PropertyDescriptor> FilteredProperties { get; private set; } = new List<PropertyDescriptor>();
 
         public SortedList<string, List<PropertyDescriptor>> Categories { get; private set; } = new SortedList<string, List<PropertyDescriptor>>();
 
+        /// <summary>
+        /// Occurs when [filter changed].
+        /// </summary>
+        public event EventHandler PropertyDescriptorChanged;
 
         public PropertyGridViewModel()
         {
@@ -51,7 +62,15 @@ namespace Avalonia.PropertyGrid.ViewModels
         }
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {            
+        {
+            if(e.PropertyName == nameof(SelectedObject))
+            {
+                RefreshProperties();
+            }
+            else if(sender == FilterPattern)
+            {
+                FilterProperties();
+            }
         }
 
         public void RefreshProperties()
@@ -66,7 +85,26 @@ namespace Avalonia.PropertyGrid.ViewModels
             PropertyDescriptorBuilder builder = new PropertyDescriptorBuilder(_SelectedObject);
             AllProperties.AddRange(builder.GetProperties().Cast<PropertyDescriptor>());
 
+            HashSet<string> categories = new HashSet<string>();
+            foreach(var property in AllProperties)
+            {
+                string category = string.IsNullOrEmpty(property.Category) ? _SelectedObject.GetType().Name : property.Category;
+
+                if(!categories.Contains(category))
+                {
+                    categories.Add(category);
+                }
+            }
+
+            CategoryFilter = new CheckedMaskModel(categories.OrderBy(x=>x), Controls.PropertyGrid.LocalizationService["All"]);
+            CategoryFilter.CheckChanged += OnCategoryFilterChanged;
+
             FilterProperties();
+        }
+
+        private void OnCategoryFilterChanged(object sender, EventArgs e)
+        {
+            FilterProperties();   
         }
 
         public void FilterProperties()
@@ -85,16 +123,21 @@ namespace Avalonia.PropertyGrid.ViewModels
 
                 string category = string.IsNullOrEmpty(property.Category) ? _SelectedObject.GetType().Name : property.Category;
 
-                if (!Categories.TryGetValue(category, out var list))
+                if(CategoryFilter == null || CategoryFilter.IsChecked(category))
                 {
-                    list = new List<PropertyDescriptor> { property };
-                    Categories.Add(category, list);
-                }
-                else
-                {
-                    list.Add(property);
+                    if (!Categories.TryGetValue(category, out var list))
+                    {
+                        list = new List<PropertyDescriptor> { property };
+                        Categories.Add(category, list);
+                    }
+                    else
+                    {
+                        list.Add(property);
+                    }
                 }
             }
+
+            PropertyDescriptorChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

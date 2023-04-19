@@ -2,6 +2,7 @@
 using Avalonia.Data;
 using Avalonia.PropertyGrid.Controls.Implements;
 using Avalonia.PropertyGrid.Localization;
+using Avalonia.PropertyGrid.Model.ComponentModel;
 using Avalonia.PropertyGrid.Model.Services;
 using Avalonia.PropertyGrid.ViewModels;
 using System;
@@ -47,12 +48,12 @@ namespace Avalonia.PropertyGrid.Controls
         public static readonly DirectProperty<PropertyGrid, object> SelectedObjectProperty = AvaloniaProperty.RegisterDirect<PropertyGrid, object>(
             nameof(SelectedObject),
             o => o._SelectedObject,
-            (o,v)=> o._SelectedObject = v
+            (o,v)=> o.SetAndRaise(SelectedObjectProperty, ref o._SelectedObject, v)
             );
         public object SelectedObject
         {
-            get => GetValue(SelectedObjectProperty);
-            set => SetValue(SelectedObjectProperty, value);
+            get => _SelectedObject;
+            set => SetAndRaise(SelectedObjectProperty, ref _SelectedObject, value);
         }
 
         PropertyGridViewModel ViewModel = new PropertyGridViewModel();
@@ -71,9 +72,9 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         public PropertyGrid()
         {
-            InitializeComponent();
-
             this.DataContext = ViewModel;
+
+            InitializeComponent();
         }
 
         private static void OnSelectedObjectChanged(AvaloniaPropertyChangedEventArgs<object> e)
@@ -115,6 +116,7 @@ namespace Avalonia.PropertyGrid.Controls
         {
             
         }
+
         #endregion
     }
 

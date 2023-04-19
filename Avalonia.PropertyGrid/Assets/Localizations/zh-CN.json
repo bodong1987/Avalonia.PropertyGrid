@@ -2,5 +2,8 @@
   "ShowGroup": "显示分类",
   "IgnoreCase": "忽略大小写",
   "UseRegex": "使用正则表达式",
-  "Search": "搜索"
+  "Search": "搜索",
+  "All": "所有",
+  "Name": "名称",
+  "Properties": "属性"
 }
