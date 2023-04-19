@@ -1,4 +1,5 @@
-﻿using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
+﻿using Avalonia.PropertyGrid.Model.Collections;
+using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
 using Avalonia.PropertyGrid.Model.Extensions;
 using System;
 using System.ComponentModel;
@@ -39,7 +40,17 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
         public PhoneService Service { get; set; } = PhoneService.None;
 
         [Category("System")]
+        public PlatformID CurrentPlatform => Environment.OSVersion.Platform;
+
+        [Category("System")]
         public PlatformID Platform { get; set; } = Environment.OSVersion.Platform;
+
+        [Category("System")]
+        public SelectableList<string> LoginName { get; set; } = new SelectableList<string>(new string[] { "John", "David", "bodong" }, "bodong");
+
+        [Category("System")]
+        [PasswordPropertyText(true)]
+        public string Password { get; set; }
 
         string _SourceImagePath;
         [Category("DataValidation")]

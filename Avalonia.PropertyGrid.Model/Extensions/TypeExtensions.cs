@@ -58,7 +58,7 @@ namespace Avalonia.PropertyGrid.Model.Extensions
         }
 
         /// <summary>
-        /// 查看是否定义了某个属性(Attribute)
+        /// check if has defined an Attribute
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="memberInfo">The member information.</param>
@@ -198,7 +198,7 @@ namespace Avalonia.PropertyGrid.Model.Extensions
         }
 
         /// <summary>
-        /// 检查type是不是从某个interface实现的
+        /// check if this type implement form target interface
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="type">The type.</param>
@@ -211,7 +211,7 @@ namespace Avalonia.PropertyGrid.Model.Extensions
         }
 
         /// <summary>
-        /// 检查type是不是从某个interface实现的
+        /// check if this type implement form target interface
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="interfaceType">Type of the interface.</param>

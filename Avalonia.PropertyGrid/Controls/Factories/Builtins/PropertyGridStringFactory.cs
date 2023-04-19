@@ -67,6 +67,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 control.VerticalContentAlignment = Avalonia.Layout.VerticalAlignment.Center;
                 control.FontFamily = FontUtils.DefaultFontFamily;
 
+                if(propertyDescriptor.GetCustomAttribute<PasswordPropertyTextAttribute>() is PasswordPropertyTextAttribute ppt && ppt.Password)
+                {
+                    control.PasswordChar = '*';
+                }                
+
                 control.PropertyChanged += (s, e) =>
                 {
                     if (e.Property == TextBox.TextProperty)

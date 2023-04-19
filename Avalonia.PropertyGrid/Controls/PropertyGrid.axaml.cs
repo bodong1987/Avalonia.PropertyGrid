@@ -3,6 +3,7 @@ using Avalonia.Data;
 using Avalonia.PropertyGrid.Controls.Implements;
 using Avalonia.PropertyGrid.Localization;
 using Avalonia.PropertyGrid.Model.ComponentModel;
+using Avalonia.PropertyGrid.Model.Extensions;
 using Avalonia.PropertyGrid.Model.Services;
 using Avalonia.PropertyGrid.ViewModels;
 using Avalonia.Threading;
@@ -87,9 +88,13 @@ namespace Avalonia.PropertyGrid.Controls
         static PropertyGrid()
         {
             // register builtin factories
-            Factories.AddFactory(new Factories.Builtins.PropertyGridStringFactory());
-            Factories.AddFactory(new Factories.Builtins.PropertyGridBooleanFactory());
-            Factories.AddFactory(new Factories.Builtins.PropertyGridEnumFactory());
+            foreach(var type in typeof(PropertyGrid).Assembly.GetTypes())
+            {
+                if(type.IsClass && !type.IsAbstract && type.IsImplementFrom<IPropertyGridControlFactory>())
+                {
+                    Factories.AddFactory(Activator.CreateInstance(type) as IPropertyGridControlFactory);
+                }
+            }
 
             AllowSearchProperty.Changed.Subscribe(OnAllowSearchChanged);
             ShowStyleProperty.Changed.Subscribe(OnShowStyleChanged);

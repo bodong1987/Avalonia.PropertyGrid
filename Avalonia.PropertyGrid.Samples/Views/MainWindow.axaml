@@ -19,7 +19,9 @@
 
 	<TabControl TabStripPlacement="Left">
 		<TabItem Header="Simple">
-			<pgc:PropertyGrid SelectedObject="{Binding $parent[Window].DataContext.simpleObject}"></pgc:PropertyGrid>
+			<ScrollViewer>
+				<pgc:PropertyGrid SelectedObject="{Binding $parent[Window].DataContext.simpleObject}"></pgc:PropertyGrid>	
+			</ScrollViewer>			
 		</TabItem>
 		
 		<TabItem Header="MultiObjects"></TabItem>
