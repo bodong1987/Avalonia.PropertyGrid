@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -166,6 +167,21 @@ namespace Avalonia.PropertyGrid.Model.Extensions
         public static BindingList<T> ToBindingList<T>(this IEnumerable<T> source)
         {
             return new BindingList<T>(source.ToList());
+        }
+
+        /// <summary>
+        /// Selects the specified selector.
+        /// </summary>
+        /// <typeparam name="TRet">The type of the t ret.</typeparam>
+        /// <param name="enumerable">The enumerable.</param>
+        /// <param name="selector">The selector.</param>
+        /// <returns>IEnumerable&lt;TRet&gt;.</returns>
+        public static IEnumerable<TRet> Select<TRet>(this IEnumerable enumerable, Func<object, TRet> selector)
+        {
+            foreach (object item in enumerable)
+            {
+                yield return selector(item);
+            }
         }
     }
 

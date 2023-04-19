@@ -33,5 +33,22 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
 
         [Category("Id")]
         public bool? ThreeStates { get; set; } = null;
+
+        [Category("Id")]
+        public PhoneService Service { get; set; } = PhoneService.None;
+
+        [Category("System")]
+        public PlatformID Platform { get; set; } = PlatformID.Win32NT;
+    }
+
+    [Flags]
+    public enum PhoneService
+    {
+        None = 0,
+        LandLine = 1,
+        Cell = 2,
+        Fax = 4,
+        Internet = 8,
+        Other = 16
     }
 }
