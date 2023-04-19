@@ -24,5 +24,8 @@
 			<TextBlock x:Name="column_name" Text="{ll:Localize Name}"></TextBlock>
 			<TextBlock x:Name="column_properties" Text="{ll:Localize Properties}" Grid.Column="2"></TextBlock>
 		</Grid>
+		<Grid x:Name="propertiesGrid" Grid.Row="3">
+			
+		</Grid>
 	</Grid>
 </UserControl>

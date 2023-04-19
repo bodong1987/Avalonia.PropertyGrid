@@ -6,6 +6,10 @@ using Avalonia.PropertyGrid.Model.ComponentModel;
 using Avalonia.PropertyGrid.Model.Services;
 using Avalonia.PropertyGrid.ViewModels;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 
 namespace Avalonia.PropertyGrid.Controls
 {
@@ -58,10 +62,24 @@ namespace Avalonia.PropertyGrid.Controls
 
         PropertyGridViewModel ViewModel = new PropertyGridViewModel();
 
+        public readonly IPropertyGridControlFactoryCollection FactoryCollection;
+
+        private struct PropertyBinding
+        {
+            public PropertyDescriptor Property;
+            public Control BindingControl;
+            public IPropertyGridControlFactory Factory;
+        }
+
+        Dictionary<string, PropertyBinding> PropertyBindingDict = new Dictionary<string, PropertyBinding>();
+
         #endregion
 
         static PropertyGrid()
         {
+            // register builtin factories
+            Factories.AddFactory(new Factories.Builtins.PropertyGridStringFactory());
+
             AllowSearchProperty.Changed.Subscribe(OnAllowSearchChanged);
             ShowStyleProperty.Changed.Subscribe(OnShowStyleChanged);
             SelectedObjectProperty.Changed.Subscribe(OnSelectedObjectChanged);
@@ -72,7 +90,11 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         public PropertyGrid()
         {
+            FactoryCollection = new PropertyGridControlFactoryCollection(Factories.GetFactories(this));
+
             this.DataContext = ViewModel;
+            ViewModel.PropertyDescriptorChanged += OnPropertyDescriptorChanged;
+
 
             InitializeComponent();
         }
@@ -118,6 +140,111 @@ namespace Avalonia.PropertyGrid.Controls
         }
 
         #endregion
+
+        private void OnPropertyDescriptorChanged(object sender, EventArgs e)
+        {
+            BuildPropertiesView(ViewModel.ShowCategory ? PropertyGridShowStyle.Category : PropertyGridShowStyle.Alphabetic);
+        }
+
+        private void BuildPropertiesView(PropertyGridShowStyle propertyGridShowStyle)
+        {
+            propertiesGrid.RowDefinitions.Clear();
+            propertiesGrid.Children.Clear();
+            PropertyBindingDict.Clear();
+
+            if (propertyGridShowStyle == PropertyGridShowStyle.Category)
+            {
+                BuildCategoryPropertiesView();
+            }
+        }
+
+        private void BuildCategoryPropertiesView()
+        {
+            foreach(var categoryInfo in ViewModel.Categories)
+            {
+                propertiesGrid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
+
+                Expander expander = new Expander();
+                expander.ExpandDirection = ExpandDirection.Down;
+                expander.Header = categoryInfo.Key;
+                expander.SetValue(Grid.RowProperty, propertiesGrid.RowDefinitions.Count - 1);
+                expander.IsExpanded = true;
+                expander.HorizontalContentAlignment = Layout.HorizontalAlignment.Stretch;
+
+                Grid grid = new Grid();
+                grid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
+                grid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
+
+                BuildPropertiesGrid(categoryInfo.Value, grid);
+
+                expander.Content = grid;
+
+                propertiesGrid.Children.Add(expander);
+            }
+
+            propertiesGrid.RowDefinitions.Add(new RowDefinition(GridLength.Star));
+        }
+
+        private void BuildPropertiesGrid(IEnumerable<PropertyDescriptor> properties, Grid grid)
+        {
+            foreach(var property in properties)
+            {
+                IPropertyGridControlFactory factory;
+                var control = BuildPropertyControl(property, out factory);
+
+                if(control == null)
+                {
+                    Debug.WriteLine($"Failed build property control for property:{property.Name}({property.PropertyType}");
+                    continue;
+                }
+
+                PropertyBindingDict.Add(property.Name, new PropertyBinding()
+                {
+                    Property = property,
+                    BindingControl = control,
+                    Factory = factory
+                });
+
+                grid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
+
+                TextBlock nameBlock = new TextBlock();
+                nameBlock.Text = LocalizationService[property.DisplayName];
+                nameBlock.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
+                nameBlock.SetValue(Grid.ColumnProperty, 0);
+                nameBlock.VerticalAlignment = Layout.VerticalAlignment.Center;
+                nameBlock.Margin = new Thickness(4);
+
+                grid.Children.Add(nameBlock);
+
+                control.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
+                control.SetValue(Grid.ColumnProperty, 1);
+                control.IsEnabled = !property.IsReadOnly;
+                control.HorizontalAlignment = Layout.HorizontalAlignment.Stretch;
+                control.Margin = new Thickness(4);
+
+                grid.Children.Add(control);
+
+                factory.HandlePropertyChanged(ViewModel.SelectedObject, property, control);
+            }
+        }
+
+        private Control BuildPropertyControl(PropertyDescriptor propertyDescriptor, out IPropertyGridControlFactory factory)
+        {
+            foreach (var Factory in FactoryCollection.Factories)
+            {
+                var control = Factory.HandleNewProperty(this, ViewModel.SelectedObject, propertyDescriptor);
+
+                if(control != null)
+                {
+                    factory = Factory;
+                    return control;
+                }
+            }
+
+            factory = null;
+
+            return null;
+        }
     }
 
     public enum PropertyGridShowStyle

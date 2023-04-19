@@ -12,9 +12,10 @@ namespace Avalonia.PropertyGrid.Controls.Factories
     {
         /// <summary>
         /// Gets the import priority.
+        /// The larger the value, the earlier the object will be processed
         /// </summary>
         /// <value>The import priority.</value>
-        public int ImportPriority => 100;
+        public virtual int ImportPriority => 100;
 
         /// <summary>
         /// Check available for target

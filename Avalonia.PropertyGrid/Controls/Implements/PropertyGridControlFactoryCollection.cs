@@ -25,6 +25,26 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         public IEnumerable<IPropertyGridControlFactory> Factories => _Factories.ToArray();
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="PropertyGridControlFactoryCollection"/> class.
+        /// </summary>
+        public PropertyGridControlFactoryCollection()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PropertyGridControlFactoryCollection"/> class.
+        /// </summary>
+        /// <param name="factories">The factories.</param>
+        public PropertyGridControlFactoryCollection(IEnumerable<IPropertyGridControlFactory> factories)
+        {
+            _Factories.AddRange(factories);
+            _Factories.Sort((x, y) =>
+            {
+                return Comparer<int>.Default.Compare(y.ImportPriority, x.ImportPriority);
+            });
+        }
+
+        /// <summary>
         /// Gets the factories.
         /// </summary>
         /// <param name="accessToken">The access token.</param>
