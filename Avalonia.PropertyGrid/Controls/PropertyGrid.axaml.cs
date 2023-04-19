@@ -5,6 +5,7 @@ using Avalonia.PropertyGrid.Localization;
 using Avalonia.PropertyGrid.Model.ComponentModel;
 using Avalonia.PropertyGrid.Model.Services;
 using Avalonia.PropertyGrid.ViewModels;
+using Avalonia.Threading;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -46,7 +47,12 @@ namespace Avalonia.PropertyGrid.Controls
         public static readonly StyledProperty<PropertyGridShowStyle> ShowStyleProperty = AvaloniaProperty.Register<PropertyGrid, PropertyGridShowStyle>(nameof(ShowStyle), PropertyGridShowStyle.Category);
         public PropertyGridShowStyle ShowStyle
         {
-            get => GetValue(ShowStyleProperty); set => SetValue(ShowStyleProperty, value);
+            get => GetValue(ShowStyleProperty); 
+            set 
+            {
+                SetValue(ShowStyleProperty, value);
+                ViewModel.ShowCategory = value == PropertyGridShowStyle.Category;
+            }
         }
 
         private object _SelectedObject;
@@ -98,9 +104,19 @@ namespace Avalonia.PropertyGrid.Controls
             this.DataContext = ViewModel;
             ViewModel.PropertyDescriptorChanged += OnPropertyDescriptorChanged;
             ViewModel.FilterChanged += OnFilterChanged;
-
+            ViewModel.PropertyChanged += OnViewModelPropertyChanged;
 
             InitializeComponent();
+
+            column_name.PropertyChanged += OnColumnNamePropertyChanged;
+        }
+
+        private void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName == nameof(ViewModel.ShowCategory))
+            {
+                ShowStyle = ViewModel.ShowCategory ? PropertyGridShowStyle.Category : PropertyGridShowStyle.Alphabetic;
+            }
         }
 
         private static void OnSelectedObjectChanged(AvaloniaPropertyChangedEventArgs<object> e)
@@ -191,7 +207,17 @@ namespace Avalonia.PropertyGrid.Controls
                         anyBinding.BindingExpander.IsVisible = AtLeastOneVisible;
                     }
                 }
-            }            
+            }         
+            else
+            {
+                foreach(var info in PropertyBindingDict)
+                {
+                    bool IsVisible = ViewModel.CheckVisible(info.Value.Property);
+
+                    info.Value.BindingNameControl.IsVisible = IsVisible;
+                    info.Value.BindingControl.IsVisible = IsVisible;
+                }
+            }
         }
 
         private void BuildPropertiesView(PropertyGridShowStyle propertyGridShowStyle)
@@ -204,11 +230,22 @@ namespace Avalonia.PropertyGrid.Controls
             {
                 BuildCategoryPropertiesView();
             }
+            else if(propertyGridShowStyle == PropertyGridShowStyle.Alphabetic)
+            {
+                BuildAlphabeticPropertiesView();
+            }
+
+            double width = column_name.Bounds.Width;
+
+            SyncNameWidth(width, false);
         }
 
+        #region Categories
         private void BuildCategoryPropertiesView()
         {
-            foreach(var categoryInfo in ViewModel.Categories)
+            propertiesGrid.ColumnDefinitions.Clear();
+
+            foreach (var categoryInfo in ViewModel.Categories)
             {
                 propertiesGrid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
 
@@ -223,7 +260,7 @@ namespace Avalonia.PropertyGrid.Controls
                 grid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
                 grid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
 
-                BuildPropertiesGrid(categoryInfo.Value, expander, grid);
+                expander.IsVisible = BuildPropertiesGrid(categoryInfo.Value, expander, grid);
 
                 expander.Content = grid;
 
@@ -233,7 +270,14 @@ namespace Avalonia.PropertyGrid.Controls
             propertiesGrid.RowDefinitions.Add(new RowDefinition(GridLength.Star));
         }
 
-        private void BuildPropertiesGrid(IEnumerable<PropertyDescriptor> properties, Expander expander, Grid grid)
+        /// <summary>
+        /// Builds the properties grid.
+        /// </summary>
+        /// <param name="properties">The properties.</param>
+        /// <param name="expander">The expander.</param>
+        /// <param name="grid">The grid.</param>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        private bool BuildPropertiesGrid(IEnumerable<PropertyDescriptor> properties, Expander expander, Grid grid)
         {
             bool AtLeastOneVisible = false;
 
@@ -278,14 +322,14 @@ namespace Avalonia.PropertyGrid.Controls
                     BindingControl = control,
                     BindingNameControl = nameBlock,
                     Factory = factory,
-                    BindingExpander = expander
+                    BindingExpander = expander // expander can be null
                 });
 
                 nameBlock.IsVisible = IsVisible;
                 control.IsVisible = IsVisible;
             }
 
-            expander.IsVisible = AtLeastOneVisible;
+            return AtLeastOneVisible;
         }
 
         private Control BuildPropertyControl(PropertyDescriptor propertyDescriptor, out IPropertyGridControlFactory factory)
@@ -305,6 +349,71 @@ namespace Avalonia.PropertyGrid.Controls
 
             return null;
         }
+        #endregion
+
+        #region Alpha
+        private void BuildAlphabeticPropertiesView()
+        {
+            propertiesGrid.ColumnDefinitions.Clear();
+            propertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
+            propertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
+
+            BuildPropertiesGrid(ViewModel.AllProperties, null, propertiesGrid);
+        }
+        #endregion
+
+        #region Process Widths
+        private void SyncWithMaxPropertyNameWidth()
+        {
+            double maxLength = 0;
+            foreach (var info in PropertyBindingDict)
+            {
+                if (info.Value.BindingNameControl != null)
+                {
+                    if(info.Value.BindingNameControl.Width >= maxLength)
+                    {
+                        maxLength = info.Value.BindingNameControl.Width;
+                    }
+                    else if(info.Value.BindingNameControl.DesiredSize.Width >= maxLength)
+                    {
+                        maxLength = info.Value.BindingNameControl.DesiredSize.Width;
+                    }
+                }
+            }
+
+            if(maxLength > 0)
+            {
+                SyncNameWidth(maxLength, true);
+            }            
+        }
+
+        private void SyncNameWidth(double width, bool syncToTitle)
+        {
+            foreach (var info in PropertyBindingDict)
+            {
+                if (info.Value.BindingNameControl != null)
+                {
+                    info.Value.BindingNameControl.Width = width;
+                }
+            }
+
+            if (syncToTitle)
+            {
+                //splitterGrid.ColumnDefinitions[0].Width = new GridLength(width);
+                column_name.Width = width;
+            }
+        }
+
+        private void OnColumnNamePropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+        {
+            if(e.Property == TextBlock.BoundsProperty)
+            {
+                double width = (sender as TextBlock).Bounds.Width;
+
+                SyncNameWidth(width, false);
+            }
+        }
+        #endregion
     }
 
     public enum PropertyGridShowStyle

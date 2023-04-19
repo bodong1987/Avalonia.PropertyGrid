@@ -1,4 +1,5 @@
 ﻿using Avalonia.PropertyGrid.Model.ComponentModel;
+using Avalonia.PropertyGrid.Model.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -64,7 +65,12 @@ namespace Avalonia.PropertyGrid.Controls.Implements
                 return _CachedRegex.IsMatch(displayName);
             }
 
-            return displayName.Contains(displayName, IgnoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture);
+            if(FilterText.IsNullOrEmpty())
+            {
+                return true;
+            }
+
+            return displayName.Contains(FilterText, IgnoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture);
         }
     }
 }

@@ -122,8 +122,6 @@ namespace Avalonia.PropertyGrid.ViewModels
             }
             else if(sender == FilterPattern)
             {
-                FilterProperties();
-
                 FilterChanged?.Invoke(this, EventArgs.Empty);
             }
         }
