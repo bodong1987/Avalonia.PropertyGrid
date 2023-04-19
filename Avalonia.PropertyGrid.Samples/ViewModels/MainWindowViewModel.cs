@@ -3,6 +3,7 @@ using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
 using Avalonia.PropertyGrid.Model.Extensions;
 using System;
 using System.ComponentModel;
+using System.Linq;
 
 namespace Avalonia.PropertyGrid.Samples.ViewModels
 {
@@ -44,6 +45,10 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
 
         [Category("System")]
         public PlatformID Platform { get; set; } = Environment.OSVersion.Platform;
+
+        [Category("System")]
+        [Description("Select platforms")]
+        public CheckedList<PlatformID> Platforms { get; set; } = new CheckedList<PlatformID>(Enum.GetValues(typeof(PlatformID)).Cast<PlatformID>());
 
         [Category("System")]
         public SelectableList<string> LoginName { get; set; } = new SelectableList<string>(new string[] { "John", "David", "bodong" }, "bodong");

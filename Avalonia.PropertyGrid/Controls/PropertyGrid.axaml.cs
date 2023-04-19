@@ -309,7 +309,12 @@ namespace Avalonia.PropertyGrid.Controls
                 nameBlock.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
                 nameBlock.SetValue(Grid.ColumnProperty, 0);
                 nameBlock.VerticalAlignment = Layout.VerticalAlignment.Center;
-                nameBlock.Margin = new Thickness(4);                
+                nameBlock.Margin = new Thickness(4);             
+                
+                if(property.GetCustomAttribute<DescriptionAttribute>() is DescriptionAttribute descriptionAttribute && descriptionAttribute.Description.IsNotNullOrEmpty())
+                {
+                    nameBlock.SetValue(ToolTip.TipProperty, LocalizationService[descriptionAttribute.Description]);
+                }
 
                 grid.Children.Add(nameBlock);
 
