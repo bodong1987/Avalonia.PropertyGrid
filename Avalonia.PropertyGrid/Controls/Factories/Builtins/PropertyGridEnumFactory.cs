@@ -43,7 +43,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (IsFlags)
             {
-                var control = new CheckListEdit();
+                var control = new CheckedListEdit();
                 control.Items = Enum.GetValues(propertyDescriptor.PropertyType).Select(x => x.ToString()).ToArray();
 
                 control.SelectedItemsChanged += (s, e) =>
@@ -97,7 +97,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return false;
             }
 
-            if (control is CheckListEdit c)
+            if (control is CheckedListEdit c)
             {
                 Enum value = propertyDescriptor.GetValue(target) as Enum;
                 Enum selectedValue = ConvertSelectedItemToEnum(propertyDescriptor.PropertyType, c.SelectedItems);

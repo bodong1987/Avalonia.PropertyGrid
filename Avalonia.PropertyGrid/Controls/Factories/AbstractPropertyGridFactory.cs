@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Avalonia.PropertyGrid.Model.Extensions;
+using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
 
 namespace Avalonia.PropertyGrid.Controls.Factories
 {
@@ -69,6 +70,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories
             try
             {                
                 propertyDescriptor.SetAndRaiseEvent(component, value);
+
+                if(!ValidatorUtils.TryValidateProperty(component, propertyDescriptor, out var message))
+                {
+                    DataValidationErrors.SetErrors(sourceControl, new object[] { message });
+                }
             }
             catch(Exception e)
             {

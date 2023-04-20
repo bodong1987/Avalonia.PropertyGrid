@@ -3,6 +3,7 @@ using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
 using Avalonia.PropertyGrid.Model.Extensions;
 using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace Avalonia.PropertyGrid.Samples.ViewModels
@@ -47,10 +48,6 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
         public PlatformID Platform { get; set; } = Environment.OSVersion.Platform;
 
         [Category("System")]
-        [Description("Select platforms")]
-        public CheckedList<PlatformID> Platforms { get; set; } = new CheckedList<PlatformID>(Enum.GetValues(typeof(PlatformID)).Cast<PlatformID>());
-
-        [Category("System")]
         public SelectableList<string> LoginName { get; set; } = new SelectableList<string>(new string[] { "John", "David", "bodong" }, "bodong");
 
         [Category("System")]
@@ -78,6 +75,11 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
                 _SourceImagePath = value;
             }
         }
+
+        [Category("DataValidation")]
+        [Description("Select platforms")]
+        [ValidatePlatform]
+        public CheckedList<PlatformID> Platforms { get; set; } = new CheckedList<PlatformID>(Enum.GetValues(typeof(PlatformID)).Cast<PlatformID>());
     }
 
     [Flags]
@@ -90,4 +92,21 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
         Internet = 8,
         Other = 16
     }
+
+    public class ValidatePlatformAttribute : ValidationAttribute
+    {
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            if(value is CheckedList<PlatformID> id)
+            {
+                if(id.Contains(PlatformID.Unix) || id.Contains(PlatformID.Other))
+                {
+                    return new ValidationResult("Can't select Unix or Other");
+                }
+            }
+
+            return ValidationResult.Success;
+        }
+    }
+
 }

@@ -28,7 +28,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return null;
             }
 
-            var control = new CheckListEdit();
+            var control = new CheckedListEdit();
             control.Items = list.SourceItems;
 
             control.SelectedItemsChanged += (s, e) =>
@@ -39,9 +39,9 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 foreach (var item in items)
                 {
                     list.SetChecked(item, true);
-
-                    SetAndRaise(control, propertyDescriptor, target, list);
                 }
+
+                SetAndRaise(control, propertyDescriptor, target, list);
             };
 
             return control;
@@ -54,15 +54,25 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return false;
             }
 
-            if (control is CheckListEdit c)
+            if (control is CheckedListEdit c)
             {
                 ICheckedList list = propertyDescriptor.GetValue(target) as ICheckedList;
 
                 if (list != null)
                 {
-                    c.SelectedItems = new object[] { };
-                    c.Items = list.SourceItems;
-                    c.SelectedItems = list.Items;
+                    var old = c.EnableRaiseSelectedItemsChangedEvent;
+                    c.EnableRaiseSelectedItemsChangedEvent = false;
+
+                    try
+                    {
+                        c.SelectedItems = new object[] { };
+                        c.Items = list.SourceItems;
+                        c.SelectedItems = list.Items;
+                    }
+                    finally
+                    {
+                        c.EnableRaiseSelectedItemsChangedEvent = old;
+                    }
                 }
 
                 return true;
