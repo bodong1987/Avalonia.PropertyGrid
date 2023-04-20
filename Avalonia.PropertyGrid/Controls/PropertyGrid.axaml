@@ -9,6 +9,10 @@
 	<UserControl.Resources>
 		<Thickness x:Key="ExpanderContentPadding">2</Thickness>
 	</UserControl.Resources>
+
+	<UserControl.Styles>
+		<StyleInclude Source="/Controls/ButtonEdit.axaml"></StyleInclude>
+	</UserControl.Styles>
 	
 	<Grid x:Name="mainGrid"
 		  RowDefinitions="Auto,Auto,Auto,*"

@@ -59,7 +59,7 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
 
         string _SourceImagePath;
         [Category("DataValidation")]
-      //  [PathBrowsable(Filters = "Image Files(*.jpg;*.png;*.bmp;*.tag)|*.jpg;*.png;*.bmp;*.tag")]
+        [PathBrowsable(Filters = "Image Files(*.jpg;*.png;*.bmp;*.tag)|*.jpg;*.png;*.bmp;*.tag")]
         public string SourceImagePath
         {
             get => _SourceImagePath;
@@ -72,7 +72,7 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
 
                 if(!System.IO.Path.GetExtension(value).iEquals(".png"))
                 {
-                    throw new ArgumentException($"{nameof(SourceImagePath)} must be png file.");
+                    throw new ArgumentException($"{nameof(SourceImagePath)} must be .png file.");
                 }
 
                 _SourceImagePath = value;

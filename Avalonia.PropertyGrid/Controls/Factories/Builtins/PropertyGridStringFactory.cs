@@ -32,7 +32,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 ButtonEdit control = new ButtonEdit();
                 control.Text = propertyDescriptor.GetValue(target) as string;
                 //control.HorizontalContentAlignment = Avalonia.Layout.HorizontalAlignment.Center;
-                control.VerticalContentAlignment = Avalonia.Layout.VerticalAlignment.Center;
+                // control.VerticalContentAlignment = Avalonia.Layout.VerticalAlignment.Center;
 
                 control.ButtonClick += async (s, e) =>
                 {

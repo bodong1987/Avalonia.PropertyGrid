@@ -1,11 +1,48 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
+using Avalonia.PropertyGrid.Model.ComponentModel;
 using System;
+using System.Windows.Input;
 
 namespace Avalonia.PropertyGrid.Controls
 {
-    public partial class ButtonEdit : UserControl
+    public class ButtonEdit : TemplatedControl
     {
+        public static readonly DirectProperty<ButtonEdit, ICommand> ButtonClickedCommandProperty =
+            AvaloniaProperty.RegisterDirect<ButtonEdit, ICommand>(
+                nameof(ButtonClickedCommand),
+                o => o.ButtonClickedCommand,
+                (o, v) => o.ButtonClickedCommand = v
+                );
+
+        private ICommand _ButtonClickedCommand;
+
+        public ICommand ButtonClickedCommand
+        {
+            get => _ButtonClickedCommand;
+            set => SetAndRaise(ButtonClickedCommandProperty, ref _ButtonClickedCommand, value);
+        }
+
+        public static readonly DirectProperty<ButtonEdit, string> TextProperty =
+            AvaloniaProperty.RegisterDirect<ButtonEdit, string>(
+                nameof(Text),
+                o => o.Text,
+                (o, v) => o.Text = v
+                );
+
+        string _Text;
+        /// <summary>
+        /// Gets or sets the text.
+        /// </summary>
+        /// <value>The text.</value>
+        public string Text
+        {
+            get => _Text;
+            set => SetAndRaise(TextProperty, ref _Text, value);
+        }
+
         #region Events
         /// <summary>
         /// The button click event
@@ -38,76 +75,34 @@ namespace Avalonia.PropertyGrid.Controls
         }
         #endregion
 
-        #region Properties
-        /// <summary>
-        /// Gets or sets the text.
-        /// </summary>
-        /// <value>The text.</value>
-        public string Text
+        static ButtonEdit()
         {
-            get
-            {
-                return TextEdit.Text;
-            }
-            set
-            {
-                TextEdit.Text = value;
-            }
+            TextProperty.Changed.Subscribe(OnTextProperyChanged);
         }
 
-        /// <summary>
-        /// Gets or sets the button text.
-        /// </summary>
-        /// <value>The button text.</value>
-        public string ButtonText
-        {
-            get
-            {
-                return BrowserButton.Content as string;
-            }
-            set
-            {
-                BrowserButton.Content = value;
-            }
-        }
-        #endregion
-
-        #region Constructors
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ButtonEdit"/> class.
-        /// </summary>
         public ButtonEdit()
         {
-            InitializeComponent();
-
+            ButtonClickedCommand = ReactiveCommand.Create(OnButtonClicked);
         }
-        #endregion
 
-        #region Event Handlers
-        /// <summary>
-        /// Handles the <see cref="E:ButtonClicked" /> event.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
-        protected virtual void OnButtonClicked(object sender, RoutedEventArgs e)
+        private void OnButtonClicked(object sender)
         {
             var evt = new RoutedEventArgs(ButtonClickEvent);
             RaiseEvent(evt);
         }
 
-        /// <summary>
-        /// Handles the <see cref="E:TextEditPropertyChanged" /> event.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="AvaloniaPropertyChangedEventArgs"/> instance containing the event data.</param>
-        protected virtual void OnTextEditPropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+        private static void OnTextProperyChanged(AvaloniaPropertyChangedEventArgs<string> e)
         {
-            if (e.Property == TextBox.TextProperty)
+            if(e.Sender is ButtonEdit be)
             {
-                var evt = new RoutedEventArgs(TextChangedEvent);
-                RaiseEvent(evt);
+                be.OntextPropertyChanged(e.NewValue.Value);
             }
         }
-        #endregion
+
+        private void OntextPropertyChanged(string value)
+        {
+            var evt = new RoutedEventArgs(TextChangedEvent);
+            RaiseEvent(evt);
+        }
     }
 }
