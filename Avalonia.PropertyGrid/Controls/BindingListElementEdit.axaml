@@ -11,7 +11,9 @@
       <ControlTemplate>
 		  <DataValidationErrors>
 			  <Grid ColumnDefinitions="*,Auto,Auto">
-				  <controls:BindingListElementPlaceholderEdit>					  
+				  <controls:BindingListElementPlaceholderEdit
+					  DataDesc="{Binding Desc}"
+					  >					  
 				  </controls:BindingListElementPlaceholderEdit>
 				  <Button x:Name="InsertButton"
 						  Grid.Column="1"

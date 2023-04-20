@@ -93,6 +93,12 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
 
         [Category("Numeric")]
         public Int64 i64Value { get; set; } = 1000000000;
+
+        [Category("Binding List")]
+        public BindingList<string> stringList { get; set; } = new BindingList<string>() { "bodong", "china" };
+
+        [Category("Binding List")]
+        public BindingList<Boolean> boolList { get; set; } = new BindingList<bool> { true, false };
     }
 
     [Flags]

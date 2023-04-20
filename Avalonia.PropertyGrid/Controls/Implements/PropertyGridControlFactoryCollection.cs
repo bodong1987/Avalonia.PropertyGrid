@@ -38,12 +38,18 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         /// </summary>
         /// <param name="factories">The factories.</param>
         public PropertyGridControlFactoryCollection(IEnumerable<IPropertyGridControlFactory> factories)
-        {
+        {            
             _Factories.AddRange(factories);
             _Factories.Sort((x, y) =>
             {
                 return Comparer<int>.Default.Compare(y.ImportPriority, x.ImportPriority);
             });
+
+            foreach (var factory in _Factories)
+            {
+                factory.Collection = this;
+            }
+
         }
 
         /// <summary>
@@ -62,6 +68,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         /// <param name="factory">The factory.</param>
         public void AddFactory(IPropertyGridControlFactory factory)
         {
+            factory.Collection = this;
             _Factories.Add(factory);
             _Factories.Sort((x, y) =>
             {
@@ -74,7 +81,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         /// </summary>
         /// <param name="factory">The factory.</param>
         public void RemoveFactory(IPropertyGridControlFactory factory)
-        {
+        {            
             _Factories.Remove(factory);
         }
 

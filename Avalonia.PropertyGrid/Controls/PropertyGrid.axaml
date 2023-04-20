@@ -13,6 +13,8 @@
 	<UserControl.Styles>
 		<StyleInclude Source="/Controls/ButtonEdit.axaml"></StyleInclude>
 		<StyleInclude Source="/Controls/CheckedListEdit.axaml"></StyleInclude>
+		<StyleInclude Source="/Controls/BindingListElementEdit.axaml"></StyleInclude>
+		<StyleInclude Source="/Controls/BindingListEdit.axaml"></StyleInclude>
 	</UserControl.Styles>
 	
 	<Grid x:Name="mainGrid"

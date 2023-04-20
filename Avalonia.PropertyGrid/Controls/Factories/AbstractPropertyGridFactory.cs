@@ -17,7 +17,14 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         /// The larger the value, the earlier the object will be processed
         /// </summary>
         /// <value>The import priority.</value>
+        [Browsable(false)]
         public virtual int ImportPriority => 100;
+
+        /// <summary>
+        /// Gets or sets the collection.
+        /// </summary>
+        /// <value>The collection.</value>
+        IPropertyGridControlFactoryCollection IPropertyGridControlFactory.Collection { get; set; }
 
         /// <summary>
         /// Check available for target

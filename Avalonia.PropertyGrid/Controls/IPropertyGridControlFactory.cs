@@ -21,6 +21,9 @@ namespace Avalonia.PropertyGrid.Controls
         [Browsable(false)]
         int ImportPriority { get; }
 
+        [Browsable(false)]
+        IPropertyGridControlFactoryCollection Collection { get; internal set; }
+
         /// <summary>
         /// Check available for target
         /// </summary>
