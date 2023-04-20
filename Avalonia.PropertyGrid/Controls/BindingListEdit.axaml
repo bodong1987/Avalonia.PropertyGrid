@@ -1,0 +1,40 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:Avalonia.PropertyGrid.Controls">
+  <Design.PreviewWith>
+    <controls:BindingListEdit />
+  </Design.PreviewWith>
+
+  <Style Selector="controls|BindingListEdit">
+    <!-- Set Defaults -->
+    <Setter Property="Template">
+      <ControlTemplate>
+		  <DataValidationErrors>
+			  <Border BorderBrush="Gray" BorderThickness="0.5" CornerRadius="0,0,5,5" Margin="0">
+				  <Grid RowDefinitions="Auto,*" ColumnDefinitions="*,Auto,Auto">
+					  <Button Grid.Column="1">A</Button>
+					  <Button Grid.Column="2">D</Button>
+					  <ItemsControl x:Name="PART_ItemsPresenter"
+									Items="{Binding Model.Items, RelativeSource={RelativeSource TemplatedParent}}"
+									Grid.Row="1"
+									Grid.ColumnSpan="3"
+									>
+						  <ItemsControl.ItemsPanel>
+							  <ItemsPanelTemplate>
+								  <StackPanel Orientation="Vertical" Spacing="4">
+								  </StackPanel>
+							  </ItemsPanelTemplate>
+						  </ItemsControl.ItemsPanel>
+						  <ItemsControl.ItemTemplate>
+							  <DataTemplate>
+								  <controls:BindingListElementEdit></controls:BindingListElementEdit>
+							  </DataTemplate>
+						  </ItemsControl.ItemTemplate>
+					  </ItemsControl>  
+				  </Grid>
+			  </Border>
+		  </DataValidationErrors>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+</Styles>
