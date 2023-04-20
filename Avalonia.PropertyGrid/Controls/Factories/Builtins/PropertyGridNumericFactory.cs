@@ -15,7 +15,13 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
     {
         public override int ImportPriority => base.ImportPriority - 1000000;
 
-        public override Control HandleNewProperty(PropertyGrid parent, object target, PropertyDescriptor propertyDescriptor)
+        /// <summary>
+        /// Handles the new property.
+        /// </summary>
+        /// <param name="target">The target.</param>
+        /// <param name="propertyDescriptor">The property descriptor.</param>
+        /// <returns>Control.</returns>
+        public override Control HandleNewProperty(object target, PropertyDescriptor propertyDescriptor)
         {
             if (!propertyDescriptor.PropertyType.IsNumericType())
             {

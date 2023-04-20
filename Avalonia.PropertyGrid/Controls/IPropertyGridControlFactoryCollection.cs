@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Avalonia.Controls;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,11 +20,11 @@ namespace Avalonia.PropertyGrid.Controls
         IEnumerable<IPropertyGridControlFactory> Factories { get; }
 
         /// <summary>
-        /// Gets the factories.
+        /// Clones the factories.
         /// </summary>
         /// <param name="accessToken">The access token.</param>
         /// <returns>IEnumerable&lt;IPropertyGridControlFactory&gt;.</returns>
-        IEnumerable<IPropertyGridControlFactory> GetFactories(object accessToken);
+        IEnumerable<IPropertyGridControlFactory> CloneFactories(object accessToken);
 
         /// <summary>
         /// Adds the factory.
@@ -35,5 +37,14 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <param name="factory">The factory.</param>
         void RemoveFactory(IPropertyGridControlFactory factory);
+
+        /// <summary>
+        /// Builds the property control.
+        /// </summary>
+        /// <param name="component">The component.</param>
+        /// <param name="propertyDescriptor">The property descriptor.</param>
+        /// <param name="factory">The factory.</param>
+        /// <returns>Control.</returns>
+        Control BuildPropertyControl(object component, PropertyDescriptor propertyDescriptor, out IPropertyGridControlFactory factory);
     }
 }

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Avalonia.Controls;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -45,13 +47,13 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         }
 
         /// <summary>
-        /// Gets the factories.
+        /// Clones the factories.
         /// </summary>
         /// <param name="accessToken">The access token.</param>
         /// <returns>IEnumerable&lt;IPropertyGridControlFactory&gt;.</returns>
-        public IEnumerable<IPropertyGridControlFactory> GetFactories(object accessToken)
+        public IEnumerable<IPropertyGridControlFactory> CloneFactories(object accessToken)
         {
-            return _Factories.FindAll(x=>x.Accept(accessToken));
+            return _Factories.FindAll(x=>x.Accept(accessToken)).Select(x=>x.Clone());
         }
 
         /// <summary>
@@ -74,6 +76,31 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         public void RemoveFactory(IPropertyGridControlFactory factory)
         {
             _Factories.Remove(factory);
+        }
+
+        /// <summary>
+        /// Builds the property control.
+        /// </summary>
+        /// <param name="component">The component.</param>
+        /// <param name="propertyDescriptor">The property descriptor.</param>
+        /// <param name="factory">The factory.</param>
+        /// <returns>Control.</returns>
+        public Control BuildPropertyControl(object component, PropertyDescriptor propertyDescriptor, out IPropertyGridControlFactory factory)
+        {
+            foreach (var Factory in _Factories)
+            {
+                var control = Factory.HandleNewProperty(component, propertyDescriptor);
+
+                if (control != null)
+                {
+                    factory = Factory;
+                    return control;
+                }
+            }
+
+            factory = null;
+
+            return null;
         }
     }
 }

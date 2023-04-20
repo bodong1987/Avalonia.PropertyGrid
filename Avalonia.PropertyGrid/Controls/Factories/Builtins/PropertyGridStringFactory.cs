@@ -16,7 +16,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
     {
         public override int ImportPriority => base.ImportPriority - 1000000;
 
-        public override Control HandleNewProperty(PropertyGrid parent, object target, PropertyDescriptor propertyDescriptor)
+        public override Control HandleNewProperty(object target, PropertyDescriptor propertyDescriptor)
         {
             if (propertyDescriptor.PropertyType != typeof(string))
             {
@@ -36,7 +36,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                 control.ButtonClick += async (s, e) =>
                 {
-                    var files = await PathBrowserUtils.ShowPathBrowserAsync(parent.GetVisualRoot() as Window, attribute);
+                    var files = await PathBrowserUtils.ShowPathBrowserAsync(control.GetVisualRoot() as Window, attribute);
 
                     if (files != null && files.Length > 0)
                     {

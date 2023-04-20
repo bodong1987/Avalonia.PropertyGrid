@@ -49,14 +49,14 @@ namespace Avalonia.PropertyGrid.Controls
                 return;
             }
 
-            IPropertyGridControlFactory factory;
-            var control = value.Parent.BuildPropertyControl(value.Property, out factory);
-            if (control != null)
-            {
-                mainGrid.Children.Add(control);
-
-                factory.HandlePropertyChanged(value.List, value.Property, control);
-            }
+   //         IPropertyGridControlFactory factory;
+//             var control = value.Parent.BuildPropertyControl(value.Property, out factory);
+//             if (control != null)
+//             {
+//                 mainGrid.Children.Add(control);
+// 
+//                 factory.HandlePropertyChanged(value.List, value.Property, control);
+//             }
         }
     }
 
@@ -64,11 +64,9 @@ namespace Avalonia.PropertyGrid.Controls
     {
         public readonly IBindingList List;
         public readonly PropertyDescriptor Property;
-        public readonly PropertyGrid Parent;
 
-        public BindingListElementDataDesc(PropertyGrid parent,  IBindingList list, PropertyDescriptor property)
+        public BindingListElementDataDesc(IBindingList list, PropertyDescriptor property)
         {
-            this.Parent = parent;
             this.List = list;
             this.Property = property;
         }

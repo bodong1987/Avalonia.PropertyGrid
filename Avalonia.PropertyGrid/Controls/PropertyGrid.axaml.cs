@@ -28,7 +28,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// The factories
         /// You can use this fields to extend ability of PropertyGrid
         /// </summary>
-        public readonly static IPropertyGridControlFactoryCollection Factories = new PropertyGridControlFactoryCollection();
+        public readonly static IPropertyGridControlFactoryCollection FactoryTemplates = new PropertyGridControlFactoryCollection();
 
         /// <summary>
         /// Gets or sets the localization service.
@@ -70,7 +70,7 @@ namespace Avalonia.PropertyGrid.Controls
 
         PropertyGridViewModel ViewModel = new PropertyGridViewModel();
 
-        public readonly IPropertyGridControlFactoryCollection FactoryCollection;
+        public readonly IPropertyGridControlFactoryCollection Factories;
 
         private struct PropertyBinding
         {
@@ -92,7 +92,7 @@ namespace Avalonia.PropertyGrid.Controls
             {
                 if(type.IsClass && !type.IsAbstract && type.IsImplementFrom<IPropertyGridControlFactory>())
                 {
-                    Factories.AddFactory(Activator.CreateInstance(type) as IPropertyGridControlFactory);
+                    FactoryTemplates.AddFactory(Activator.CreateInstance(type) as IPropertyGridControlFactory);
                 }
             }
 
@@ -106,7 +106,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         public PropertyGrid()
         {
-            FactoryCollection = new PropertyGridControlFactoryCollection(Factories.GetFactories(this));
+            Factories = new PropertyGridControlFactoryCollection(FactoryTemplates.CloneFactories(this));
 
             this.DataContext = ViewModel;
             ViewModel.PropertyDescriptorChanged += OnPropertyDescriptorChanged;
@@ -291,7 +291,7 @@ namespace Avalonia.PropertyGrid.Controls
             foreach(var property in properties)
             {
                 IPropertyGridControlFactory factory;
-                var control = BuildPropertyControl(property, out factory);
+                var control = Factories.BuildPropertyControl(SelectedObject, property, out factory);
 
                 if(control == null)
                 {
@@ -342,30 +342,6 @@ namespace Avalonia.PropertyGrid.Controls
             }
 
             return AtLeastOneVisible;
-        }
-
-        /// <summary>
-        /// Builds the property control.
-        /// </summary>
-        /// <param name="propertyDescriptor">The property descriptor.</param>
-        /// <param name="factory">The factory.</param>
-        /// <returns>Control.</returns>
-        public Control BuildPropertyControl(PropertyDescriptor propertyDescriptor, out IPropertyGridControlFactory factory)
-        {
-            foreach (var Factory in FactoryCollection.Factories)
-            {
-                var control = Factory.HandleNewProperty(this, ViewModel.SelectedObject, propertyDescriptor);
-
-                if(control != null)
-                {
-                    factory = Factory;
-                    return control;
-                }
-            }
-
-            factory = null;
-
-            return null;
         }
         #endregion
 

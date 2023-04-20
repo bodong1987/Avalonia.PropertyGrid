@@ -41,11 +41,10 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         /// <summary>
         /// Handles the new property.
         /// </summary>
-        /// <param name="parent">The parent.</param>
         /// <param name="target">The target.</param>
         /// <param name="propertyDescriptor">The property descriptor.</param>
         /// <returns>Control.</returns>
-        public abstract Control HandleNewProperty(PropertyGrid parent, object target, PropertyDescriptor propertyDescriptor);
+        public abstract Control HandleNewProperty(object target, PropertyDescriptor propertyDescriptor);
 
         /// <summary>
         /// Handles the property changed.

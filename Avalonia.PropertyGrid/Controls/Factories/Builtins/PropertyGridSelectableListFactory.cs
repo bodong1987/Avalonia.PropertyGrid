@@ -14,7 +14,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
     {
         public override int ImportPriority => base.ImportPriority - 100000;
 
-        public override Control HandleNewProperty(PropertyGrid parent, object target, PropertyDescriptor propertyDescriptor)
+        public override Control HandleNewProperty(object target, PropertyDescriptor propertyDescriptor)
         {
             if (!propertyDescriptor.PropertyType.IsImplementFrom<ISelectableList>())
             {

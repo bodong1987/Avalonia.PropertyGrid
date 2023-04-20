@@ -12,8 +12,8 @@
 		  <DataValidationErrors>
 			  <Border BorderBrush="Gray" BorderThickness="0.5" CornerRadius="0,0,5,5" Margin="0">
 				  <Grid RowDefinitions="Auto,*" ColumnDefinitions="*,Auto,Auto">
-					  <Button Grid.Column="1">A</Button>
-					  <Button Grid.Column="2">D</Button>
+					  <Button x:Name="NewElement" Grid.Column="1" Margin="2">N</Button>
+					  <Button x:Name="ClearElements" Grid.Column="2" Margin="2">U</Button>
 					  <ItemsControl x:Name="PART_ItemsPresenter"
 									Items="{Binding Model.Items, RelativeSource={RelativeSource TemplatedParent}}"
 									Grid.Row="1"
