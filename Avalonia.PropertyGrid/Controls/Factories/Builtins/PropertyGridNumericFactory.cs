@@ -1,0 +1,84 @@
+﻿using Avalonia.Controls;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Avalonia.PropertyGrid.Model.Extensions;
+using Avalonia.Controls.Embedding;
+
+namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
+{
+    internal class PropertyGridNumericFactory : AbstractPropertyGridFactory
+    {
+        public override int ImportPriority => base.ImportPriority - 1000000;
+
+        public override Control HandleNewProperty(PropertyGrid parent, object target, PropertyDescriptor propertyDescriptor)
+        {
+            if (!propertyDescriptor.PropertyType.IsNumericType())
+            {
+                return null;
+            }
+
+            var control = new NumericUpDown();
+
+            var attr = propertyDescriptor.GetCustomAttribute<RangeAttribute>();
+
+            if (attr != null)
+            {
+                control.Minimum = (double)Convert.ChangeType(attr.Minimum, typeof(double));
+                control.MaxHeight = (double)Convert.ChangeType(attr.Maximum, typeof(double));
+            }
+
+            if (propertyDescriptor.PropertyType == typeof(byte) ||
+                propertyDescriptor.PropertyType == typeof(short) ||
+                propertyDescriptor.PropertyType == typeof(ushort) ||
+                propertyDescriptor.PropertyType == typeof(int) ||
+                propertyDescriptor.PropertyType == typeof(uint) ||
+                propertyDescriptor.PropertyType == typeof(Int64) ||
+                propertyDescriptor.PropertyType == typeof(UInt64)
+                )
+            {
+                control.Increment = 1;
+            }
+            else
+            {
+                control.Increment = 0.01;
+            }
+
+            control.ValueChanged += (s, e) =>
+            {
+                try
+                {
+                    object value = Convert.ChangeType(control.Value, propertyDescriptor.PropertyType);
+                    SetAndRaise(control, propertyDescriptor, target, value);
+                }
+                catch(Exception ex)
+                {
+                    DataValidationErrors.SetErrors(control, new string[] { ex.Message });
+                }
+            };
+
+            return control;
+        }
+
+        public override bool HandlePropertyChanged(object target, PropertyDescriptor propertyDescriptor, Control control)
+        {
+            if (!propertyDescriptor.PropertyType.IsNumericType())
+            {
+                return false;
+            }
+
+            if (control is NumericUpDown nup)
+            {
+                nup.Value = (double)Convert.ChangeType(propertyDescriptor.GetValue(target), typeof(double));
+
+                return true;
+            }
+
+            return false;
+        }
+    }
+}

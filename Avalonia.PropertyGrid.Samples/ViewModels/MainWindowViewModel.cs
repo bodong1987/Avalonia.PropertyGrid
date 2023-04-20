@@ -19,40 +19,42 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
 
     public class SimpleObject
     {
+        [Category("String")]
         [DisplayName("Target Name")]
         public string Name { get; set; }
 
+        [Category("String")]
         [DisplayName("Target Path")]
         [PathBrowsable(Filters = "Image Files(*.jpg;*.png;*.bmp;*.tag)|*.jpg;*.png;*.bmp;*.tag")]
         public string Path { get; set; }
 
-        [Category("Id")]
+        [Category("String")]
         public string UUID { get; set; } = Guid.NewGuid().ToString();
 
-        [Category("Id")]
-        public bool EncryptData { get; set; } = true;
-
-        [Category("Id")]
-        public bool SafeMode { get; set; } = false;
-
-        [Category("Id")]
-        public bool? ThreeStates { get; set; } = null;
-
-        [Category("Id")]
-        public PhoneService Service { get; set; } = PhoneService.None;
-
-        [Category("System")]
-        public PlatformID CurrentPlatform => Environment.OSVersion.Platform;
-
-        [Category("System")]
-        public PlatformID Platform { get; set; } = Environment.OSVersion.Platform;
-
-        [Category("System")]
-        public SelectableList<string> LoginName { get; set; } = new SelectableList<string>(new string[] { "John", "David", "bodong" }, "bodong");
-
-        [Category("System")]
+        [Category("String")]
         [PasswordPropertyText(true)]
         public string Password { get; set; }
+
+        [Category("Boolean")]
+        public bool EncryptData { get; set; } = true;
+
+        [Category("Boolean")]
+        public bool SafeMode { get; set; } = false;
+
+        [Category("Boolean")]
+        public bool? ThreeStates { get; set; } = null;
+
+        [Category("Enum")]
+        public PhoneService Service { get; set; } = PhoneService.None;
+
+        [Category("Enum")]
+        public PlatformID CurrentPlatform => Environment.OSVersion.Platform;
+
+        [Category("Enum")]
+        public PlatformID Platform { get; set; } = Environment.OSVersion.Platform;
+
+        [Category("Selectable List")]
+        public SelectableList<string> LoginName { get; set; } = new SelectableList<string>(new string[] { "John", "David", "bodong" }, "bodong");
 
         string _SourceImagePath;
         [Category("DataValidation")]
@@ -80,6 +82,17 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
         [Description("Select platforms")]
         [ValidatePlatform]
         public CheckedList<PlatformID> Platforms { get; set; } = new CheckedList<PlatformID>(Enum.GetValues(typeof(PlatformID)).Cast<PlatformID>());
+
+        [Category("Numeric")]
+        [Range(10, 200)]
+        public int iValue { get; set; } = 100;
+
+        [Category("Numeric")]
+        [Range(0.1f, 10.0f)]
+        public float fValue { get; set; } = 0.5f;
+
+        [Category("Numeric")]
+        public Int64 i64Value { get; set; } = 1000000000;
     }
 
     [Flags]
