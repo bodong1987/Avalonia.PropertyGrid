@@ -1,6 +1,8 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:controls="using:Avalonia.PropertyGrid.Controls">
+        xmlns:controls="using:Avalonia.PropertyGrid.Controls"
+		xmlns:ll="using:Avalonia.PropertyGrid.Localization"
+		>
   <Design.PreviewWith>
     <controls:BindingListElementEdit />
   </Design.PreviewWith>
@@ -11,9 +13,7 @@
       <ControlTemplate>
 		  <DataValidationErrors>
 			  <Grid ColumnDefinitions="*,Auto,Auto">
-				  <controls:BindingListElementPlaceholderEdit
-					  DataDesc="{Binding Desc}"
-					  >					  
+				  <controls:BindingListElementPlaceholderEdit>					  
 				  </controls:BindingListElementPlaceholderEdit>
 				  <Button x:Name="InsertButton"
 						  Grid.Column="1"
@@ -22,6 +22,8 @@
 						  Height="32"
 						  HorizontalContentAlignment="Center"
 						  VerticalContentAlignment="Center"
+						  Command="{TemplateBinding InsertCommand}"
+						  ToolTip.Tip="{ll:Localize InsertNewElement}"
 						  >+</Button>
 				  <Button x:Name="RemoveButton"
 						  Grid.Column="2"
@@ -30,6 +32,8 @@
 						  Height="32"
 						  HorizontalContentAlignment="Center"
 						  VerticalContentAlignment="Center"
+						  Command="{TemplateBinding RemoveCommand}"
+						  ToolTip.Tip="{ll:Localize RemoveElement}"
 						  >-</Button>
 			  </Grid>
 		  </DataValidationErrors>

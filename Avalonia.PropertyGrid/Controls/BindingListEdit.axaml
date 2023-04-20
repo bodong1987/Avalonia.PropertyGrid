@@ -12,7 +12,11 @@
 		  <DataValidationErrors>
 			  <Border BorderBrush="Gray" BorderThickness="0.5" CornerRadius="0,0,5,5" Margin="0">
 				  <Grid RowDefinitions="Auto,*" ColumnDefinitions="Auto,*,Auto,Auto">
-					  <TextBlock Text="{Binding Model.Title}" FontWeight="Bold"></TextBlock>
+					  <TextBlock FontWeight="Bold"
+								Text="{Binding Model.Title, RelativeSource={RelativeSource TemplatedParent}}"
+								 VerticalAlignment="Center"
+								 Margin="10,0,10,0"
+								 ></TextBlock>
 					  <Button x:Name="NewElement"
 							  Grid.Column="2"
 							  Margin="2"
@@ -30,7 +34,7 @@
 							  VerticalContentAlignment="Center"
 							  >U</Button>
 					  <ItemsControl x:Name="PART_ItemsPresenter"
-									Items="{Binding Model.Desc.Descs, RelativeSource={RelativeSource TemplatedParent}}"
+									Items="{Binding Model.Elements, RelativeSource={RelativeSource TemplatedParent}}"
 									Grid.Row="1"
 									Grid.ColumnSpan="4"
 									>
@@ -42,7 +46,7 @@
 						  </ItemsControl.ItemsPanel>
 						  <ItemsControl.ItemTemplate>
 							  <DataTemplate>
-								  <controls:BindingListElementEdit Desc="{Binding Desc}">									  
+								  <controls:BindingListElementEdit>
 								  </controls:BindingListElementEdit>
 							  </DataTemplate>
 						  </ItemsControl.ItemTemplate>

@@ -7,39 +7,18 @@ namespace Avalonia.PropertyGrid.Controls
 {
     public partial class BindingListElementPlaceholderEdit : UserControl
     {
-        public static readonly DirectProperty<BindingListElementPlaceholderEdit, BindingListElementDataDesc> DataDescProperty =
-            AvaloniaProperty.RegisterDirect<BindingListElementPlaceholderEdit, BindingListElementDataDesc>(
-                nameof(DataDesc),
-                o => o.DataDesc,
-                (o, v) => o.DataDesc = v
-                );
-
-        BindingListElementDataDesc _DataDesc;
-
-        public BindingListElementDataDesc DataDesc
-        {
-            get => _DataDesc;
-            set => SetAndRaise(DataDescProperty, ref _DataDesc, value);
-        }
-
-        static BindingListElementPlaceholderEdit()
-        {
-            DataDescProperty.Changed?.Subscribe(OnDataDescPropertyChanged);
-        }
-
         public BindingListElementPlaceholderEdit()
         {
             InitializeComponent();
         }
 
-        private static void OnDataDescPropertyChanged(AvaloniaPropertyChangedEventArgs<BindingListElementDataDesc> e)
+        protected override void OnDataContextChanged(EventArgs e)
         {
-            if(e.Sender is BindingListElementPlaceholderEdit sender)
-            {
-                sender.OnDataDescPropertyChanged(e.NewValue.Value);
-            }
-        }
+            base.OnDataContextChanged(e);
 
+            OnDataDescPropertyChanged(DataContext as BindingListElementDataDesc);
+        }
+     
         private void OnDataDescPropertyChanged(BindingListElementDataDesc value)
         {
             mainGrid.Children.Clear();
@@ -53,24 +32,11 @@ namespace Avalonia.PropertyGrid.Controls
             var control = value.Collection.BuildPropertyControl(value.List, value.Property, out factory);
             if (control != null)
             {
+                control.Margin = new Thickness(10,2);
                 mainGrid.Children.Add(control);
 
                 factory.HandlePropertyChanged(value.List, value.Property, control);
             }
-        }
-    }
-
-    public class BindingListElementDataDesc : ReactiveObject
-    {
-        public readonly IBindingList List;
-        public readonly PropertyDescriptor Property;
-        public readonly IPropertyGridControlFactoryCollection Collection;
-
-        public BindingListElementDataDesc(IBindingList list, PropertyDescriptor property, IPropertyGridControlFactoryCollection collection)
-        {
-            this.List = list;
-            this.Property = property;
-            Collection = collection;
         }
     }
 }

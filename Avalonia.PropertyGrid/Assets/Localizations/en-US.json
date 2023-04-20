@@ -1,5 +1,7 @@
 ﻿{
   "ShowGroup": "Show Category",
   "IgnoreCase": "Ignore Case",
-  "UseRegex": "Use Regex"
+  "UseRegex": "Use Regex",
+  "InsertNewElement": "Insert a new element before this element",
+  "RemoveElement": "Remove this element"
 }

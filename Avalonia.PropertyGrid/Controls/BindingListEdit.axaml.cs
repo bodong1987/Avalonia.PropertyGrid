@@ -7,6 +7,9 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics;
+using System.Xml.Linq;
+using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
+using System.Windows.Input;
 
 namespace Avalonia.PropertyGrid.Controls
 {
@@ -63,14 +66,14 @@ namespace Avalonia.PropertyGrid.Controls
             set => this.RaiseAndSetIfChanged(ref _List, value);
         }
 
-        BindingListDescription _Desc;
-        public BindingListDescription Desc
-        {
-            get => _Desc;
-            set => this.RaiseAndSetIfChanged(ref _Desc, value);
-        }
+        readonly List<BindingListElementDataDesc> _Elements = new List<BindingListElementDataDesc>();
 
+        public BindingListElementDataDesc[] Elements => _Elements.ToArray();
+
+        [DependsOnProperty(nameof(List))]
         public string Title => string.Format(PropertyGrid.LocalizationService["{0} Elements"], _List != null ? _List.Count : 0);
+
+        public ICommand InsertCommand { get; set; }
 
         public BindingListViewModel() :
             this(null)
@@ -90,34 +93,40 @@ namespace Avalonia.PropertyGrid.Controls
             {
                 Debug.Assert(Collection != null);
 
-                // create binding view
-                Desc = new BindingListDescription(List, Collection);
+                _Elements.Clear();
+
+                if(List != null)
+                {
+                    var list = List;
+                    foreach (var index in Enumerable.Range(0, list.Count))
+                    {
+                        var pd = new BindingListElementPropertyDescriptor(index.ToString(), index, list[index]?.GetType() ?? list.GetType().GetGenericArguments()[0]);
+                        BindingListElementDataDesc desc = new BindingListElementDataDesc(this, list, pd, Collection);
+
+                        _Elements.Add(desc);
+                    }
+                }
+
+                RaisePropertyChanged(nameof(Elements));                
             }
         }
     }
-
-    internal class BindingListDescription : ReactiveObject
+    internal class BindingListElementDataDesc : ReactiveObject
     {
-        readonly List<BindingListElementDataDesc> _Desc = new List<BindingListElementDataDesc>();
-        public BindingListElementDataDesc[] Descs => _Desc.ToArray();
-        readonly IBindingList List;
+        public readonly IBindingList List;
+        public readonly PropertyDescriptor Property;
+        public readonly IPropertyGridControlFactoryCollection Collection;
 
-        public BindingListDescription(IBindingList list, IPropertyGridControlFactoryCollection collection)
+        public ICommand InsertCommand { get; set; }
+
+        public BindingListViewModel Model { get; set; }
+
+        public BindingListElementDataDesc(BindingListViewModel model, IBindingList list, PropertyDescriptor property, IPropertyGridControlFactoryCollection collection)
         {
-            List = list;
-
-            if(list == null)
-            {
-                return;
-            }
-
-            foreach(var index in Enumerable.Range(0, list.Count))
-            {
-                var pd = new BindingListElementPropertyDescriptor(index.ToString(), index, list[index]?.GetType() ?? list.GetType().GetGenericArguments()[0]);
-                BindingListElementDataDesc desc = new BindingListElementDataDesc(list, pd, collection);
-
-                _Desc.Add(desc);
-            }
+            Model = model;
+            this.List = list;
+            this.Property = property;
+            Collection = collection;
         }
     }
     #endregion

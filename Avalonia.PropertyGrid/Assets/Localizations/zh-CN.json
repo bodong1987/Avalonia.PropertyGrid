@@ -7,5 +7,7 @@
   "Name": "名称",
   "Properties": "属性",
   "Misc": "杂项",
-  "{0} Elements": "{0}个数据"
+  "{0} Elements": "{0}个数据",
+  "InsertNewElement": "在当前元素前新增一个元素",
+  "RemoveElement": "删除当前元素"
 }
