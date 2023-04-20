@@ -1,0 +1,37 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:Avalonia.PropertyGrid.Controls">
+  <Design.PreviewWith>
+    <controls:BindingListElementEdit />
+  </Design.PreviewWith>
+
+  <Style Selector="controls|BindingListElementEdit">
+    <!-- Set Defaults -->
+    <Setter Property="Template">
+      <ControlTemplate>
+		  <DataValidationErrors>
+			  <Grid ColumnDefinitions="*,Auto,Auto">
+				  <controls:BindingListElementPlaceholderEdit>					  
+				  </controls:BindingListElementPlaceholderEdit>
+				  <Button x:Name="InsertButton"
+						  Grid.Column="1"
+						  Margin="2"
+						  Width="32"
+						  Height="32"
+						  HorizontalContentAlignment="Center"
+						  VerticalContentAlignment="Center"
+						  >+</Button>
+				  <Button x:Name="RemoveButton"
+						  Grid.Column="2"
+						  Margin="2"
+						  Width="32"
+						  Height="32"
+						  HorizontalContentAlignment="Center"
+						  VerticalContentAlignment="Center"
+						  >-</Button>
+			  </Grid>
+		  </DataValidationErrors>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+</Styles>

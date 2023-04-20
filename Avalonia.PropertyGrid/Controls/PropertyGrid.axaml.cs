@@ -344,7 +344,13 @@ namespace Avalonia.PropertyGrid.Controls
             return AtLeastOneVisible;
         }
 
-        private Control BuildPropertyControl(PropertyDescriptor propertyDescriptor, out IPropertyGridControlFactory factory)
+        /// <summary>
+        /// Builds the property control.
+        /// </summary>
+        /// <param name="propertyDescriptor">The property descriptor.</param>
+        /// <param name="factory">The factory.</param>
+        /// <returns>Control.</returns>
+        public Control BuildPropertyControl(PropertyDescriptor propertyDescriptor, out IPropertyGridControlFactory factory)
         {
             foreach (var Factory in FactoryCollection.Factories)
             {
