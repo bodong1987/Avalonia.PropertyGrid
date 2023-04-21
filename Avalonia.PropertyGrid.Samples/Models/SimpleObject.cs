@@ -145,6 +145,8 @@ namespace Avalonia.PropertyGrid.Samples.Models
         [Category("Date Time")]
         [ReadOnly(true)]
         public TimeSpan timeReadonly { get; set; } = DateTime.Now.TimeOfDay;
+
+        public Vector3 vec3 { get; set; } = new Vector3(1, 2, 3);
     }
 
     [Flags]

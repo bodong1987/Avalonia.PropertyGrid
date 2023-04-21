@@ -1,6 +1,7 @@
 ﻿using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -100,6 +101,7 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel
         /// <summary>
         /// Occurs when a property value changes.
         /// </summary>
+        [Browsable(false)]
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
