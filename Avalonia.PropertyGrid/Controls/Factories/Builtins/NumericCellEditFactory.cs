@@ -53,21 +53,15 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             else
             {
                 control.Increment = 0.01;
+                control.FormatString = "{0:0.00}";
             }
 
             control.ValueChanged += (s, e) =>
             {
                 try
                 {
-                    if(propertyDescriptor.PropertyType == typeof(float))
-                    {
-                        SetAndRaise(control, propertyDescriptor, target, (float)control.Value);
-                    }
-                    else
-                    {
-                        object value = Convert.ChangeType(control.Value, propertyDescriptor.PropertyType);
-                        SetAndRaise(control, propertyDescriptor, target, value);
-                    }                    
+                    object value = Convert.ChangeType(control.Value, propertyDescriptor.PropertyType);
+                    SetAndRaise(control, propertyDescriptor, target, value);
                 }
                 catch(Exception ex)
                 {
@@ -89,14 +83,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (control is NumericUpDown nup)
             {
-                if(propertyDescriptor.PropertyType == typeof(float))
-                {
-                    nup.Value = (float)propertyDescriptor.GetValue(target);
-                }
-                else
-                {
-                    nup.Value = (double)Convert.ChangeType(propertyDescriptor.GetValue(target), typeof(double));
-                }
+                nup.Value = (double)Convert.ChangeType(propertyDescriptor.GetValue(target), typeof(double));
 
                 return true;
             }
