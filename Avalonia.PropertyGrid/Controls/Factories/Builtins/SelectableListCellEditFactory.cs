@@ -28,6 +28,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             var list = (propertyDescriptor.GetValue(target) as ISelectableList);
 
             control.Items = list?.Values;
+            control.HorizontalAlignment = Layout.HorizontalAlignment.Stretch;
 
             control.SelectionChanged += (s, e) =>
             {

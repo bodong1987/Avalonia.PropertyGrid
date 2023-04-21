@@ -57,6 +57,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 var control = new ComboBox();
 
                 control.Items = Enum.GetValues(propertyDescriptor.PropertyType);
+                control.HorizontalAlignment = Layout.HorizontalAlignment.Stretch;
 
                 control.SelectionChanged += (s, e) =>
                 {

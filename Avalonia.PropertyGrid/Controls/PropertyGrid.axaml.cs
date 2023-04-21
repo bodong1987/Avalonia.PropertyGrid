@@ -355,8 +355,7 @@ namespace Avalonia.PropertyGrid.Controls
 
                 control.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
                 control.SetValue(Grid.ColumnProperty, 1);
-                control.IsEnabled = !property.IsReadOnly;
-                control.HorizontalAlignment = Layout.HorizontalAlignment.Stretch;
+                control.IsEnabled = !property.IsReadOnly;                
                 control.Margin = new Thickness(4);
 
                 grid.Children.Add(control);

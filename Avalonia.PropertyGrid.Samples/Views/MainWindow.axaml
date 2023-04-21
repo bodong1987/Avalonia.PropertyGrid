@@ -23,7 +23,7 @@
 				<pgc:PropertyGrid Margin="4" SelectedObject="{Binding $parent[Window].DataContext.simpleObject}"></pgc:PropertyGrid>	
 			</ScrollViewer>			
 		</TabItem>
-
+		
 		<TabItem Header="DataSync">
 			<ScrollViewer>
 				<Grid ColumnDefinitions="Auto,2,Auto">

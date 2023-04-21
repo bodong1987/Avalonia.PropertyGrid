@@ -119,6 +119,22 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
         [Category("Binding List")]
         public BindingList<PlatformID> enumList { get; set; } = new BindingList<PlatformID>() { PlatformID.Win32NT, PlatformID.Unix };
+
+        [Category("Date Time")]
+        public DateTime dateTime { get; set; } = DateTime.Now;
+
+        [Category("Date Time")]
+        public DateTime? dateTimeNullable { get; set; }
+
+        [Category("Date Time")]
+        public DateTimeOffset dateTimeOffset { get; set; } = DateTimeOffset.Now;
+
+        [Category("Date Time")]
+        public DateTimeOffset? dateTimeOffsetNullable { get; set; }
+
+        [Category("Date Time")]
+        [ReadOnly(true)]
+        public DateTime startDate { get; set; } = DateTime.Now;
     }
 
     [Flags]
