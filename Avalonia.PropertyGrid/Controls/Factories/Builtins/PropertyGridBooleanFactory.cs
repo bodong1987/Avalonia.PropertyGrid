@@ -48,6 +48,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return false;
             }
 
+            ValidateProperty(control, propertyDescriptor, target);
+
             if (control is CheckBox ts)
             {
                 if(ts.IsThreeState)

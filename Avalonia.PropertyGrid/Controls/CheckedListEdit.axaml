@@ -22,8 +22,8 @@
 					  <ItemsControl.ItemTemplate>
 						  <DataTemplate>
 							  <StackPanel Orientation="Horizontal">
-								  <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay}"></CheckBox>
-								  <TextBlock Text="{Binding Name}" VerticalAlignment="Center"></TextBlock>
+								  <CheckBox Margin="2,0,2,0" IsChecked="{Binding IsChecked, Mode=TwoWay}"></CheckBox>
+								  <TextBlock Margin="2,0,2,0" Text="{Binding Name}" VerticalAlignment="Center"></TextBlock>
 							  </StackPanel>
 						  </DataTemplate>
 					  </ItemsControl.ItemTemplate>

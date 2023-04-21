@@ -53,12 +53,22 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             return control;
         }
 
+        protected override void SetAndRaise(Control sourceControl, PropertyDescriptor propertyDescriptor, object component, object value)
+        {
+            base.SetAndRaise(sourceControl, propertyDescriptor, component, value);
+
+            // check list is special case, so we force raise events
+            propertyDescriptor.RaiseEvent(component);
+        }
+
         public override bool HandlePropertyChanged(object target, PropertyDescriptor propertyDescriptor, Control control)
         {
             if (!propertyDescriptor.PropertyType.IsImplementFrom<ICheckedList>())
             {
                 return false;
             }
+
+            ValidateProperty(control, propertyDescriptor, target);
 
             if (control is CheckedListEdit c)
             {

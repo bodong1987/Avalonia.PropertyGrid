@@ -77,6 +77,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return false;
             }
 
+            ValidateProperty(control, propertyDescriptor, target);
+
             if (control is NumericUpDown nup)
             {
                 nup.Value = (double)Convert.ChangeType(propertyDescriptor.GetValue(target), typeof(double));

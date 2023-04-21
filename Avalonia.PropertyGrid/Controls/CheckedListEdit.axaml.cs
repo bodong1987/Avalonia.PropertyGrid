@@ -53,7 +53,7 @@ namespace Avalonia.PropertyGrid.Controls
             get => _Model.SelectedItems.Select(x => x.Value).ToArray();
             set
             {
-                _Model.ResetSelectedItems(value);
+                _Model.ResetSelectedItems(value);                
             }
         }
 
@@ -107,7 +107,7 @@ namespace Avalonia.PropertyGrid.Controls
 
             foreach(var i in _Items)
             {
-                if(selectedItems.Contains(x=> x == i.Value))
+                if(selectedItems.Contains(x=> i.IsValue(x)))
                 {
                     _SelectedItems.Add(i);
                 }
@@ -122,6 +122,8 @@ namespace Avalonia.PropertyGrid.Controls
             RaiseSelectedItemsChangedEvent();
 
             AddRange(items);
+
+            RefreshItemsCheckStates();
         }
 
         public void ResetSelectedItems(IEnumerable<object> items)
@@ -130,7 +132,7 @@ namespace Avalonia.PropertyGrid.Controls
 
             foreach(var i in items)
             {
-                var obj = _Items.Find(x => x.Value == i);
+                var obj = _Items.Find(x => x.IsValue(i));
 
                 if(obj != null)
                 {
@@ -139,6 +141,8 @@ namespace Avalonia.PropertyGrid.Controls
             }
 
             RaiseSelectedItemsChangedEvent();
+
+            RefreshItemsCheckStates();
         }
 
         public void AddRange(IEnumerable<object> items)
@@ -146,6 +150,8 @@ namespace Avalonia.PropertyGrid.Controls
             _Items.AddRange(items.Select(x => new CheckedListItemViewModel(this, x)));
 
             RaisePropertyChanged(nameof(Items));
+
+            RefreshItemsCheckStates();
         }
 
         public bool IsChecked(CheckedListItemViewModel item)
@@ -162,6 +168,7 @@ namespace Avalonia.PropertyGrid.Controls
                     _SelectedItems.Add(item);
 
                     RaiseSelectedItemsChangedEvent();
+                    RefreshItemsCheckStates();
                 }
             }
             else
@@ -171,6 +178,7 @@ namespace Avalonia.PropertyGrid.Controls
                     _SelectedItems.Remove(item);
 
                     RaiseSelectedItemsChangedEvent();
+                    RefreshItemsCheckStates();
                 }                
             }
         }
@@ -181,6 +189,14 @@ namespace Avalonia.PropertyGrid.Controls
             {
                 SelectedItemsChanged?.Invoke(this, EventArgs.Empty);
             }            
+        }
+
+        public void RefreshItemsCheckStates()
+        {
+            foreach(var item in _Items)
+            {
+                item.RaisePropertyChanged(nameof(item.IsChecked));
+            }
         }
     }
 
@@ -193,6 +209,11 @@ namespace Avalonia.PropertyGrid.Controls
         {
             Parent = model;
             Value = value;
+        }
+
+        public bool IsValue(object value)
+        {
+            return Value.Equals(value);
         }
 
         public bool IsChecked

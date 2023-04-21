@@ -94,9 +94,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return false;
             }
 
+            ValidateProperty(control, propertyDescriptor, target);
+
             if (control is ButtonEdit be)
             {
                 be.Text = propertyDescriptor.GetValue(target) as string;
+
                 return true;
             }
             else if (control is TextBox textBox)

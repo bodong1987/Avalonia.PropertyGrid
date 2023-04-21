@@ -77,14 +77,29 @@ namespace Avalonia.PropertyGrid.Controls.Factories
             {                
                 propertyDescriptor.SetAndRaiseEvent(component, value);
 
-                if(!ValidatorUtils.TryValidateProperty(component, propertyDescriptor, out var message))
-                {
-                    DataValidationErrors.SetErrors(sourceControl, new object[] { message });
-                }
+                ValidateProperty(sourceControl, propertyDescriptor, component);
             }
             catch(Exception e)
             {
                 DataValidationErrors.SetErrors(sourceControl, new object[] {e.Message});
+            }
+        }
+
+        /// <summary>
+        /// Validates the property.
+        /// </summary>
+        /// <param name="sourceControl">The source control.</param>
+        /// <param name="propertyDescriptor">The property descriptor.</param>
+        /// <param name="component">The component.</param>
+        protected virtual void ValidateProperty(Control sourceControl, PropertyDescriptor propertyDescriptor, object component)
+        {
+            if (!ValidatorUtils.TryValidateProperty(component, propertyDescriptor, out var message))
+            {
+                DataValidationErrors.SetErrors(sourceControl, new object[] { message });
+            }
+            else
+            {
+                DataValidationErrors.ClearErrors(sourceControl);
             }
         }
     }

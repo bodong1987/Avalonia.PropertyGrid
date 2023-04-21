@@ -47,6 +47,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return false;
             }
 
+            ValidateProperty(control, propertyDescriptor, target);
+
             if (control is ComboBox cb)
             {
                 var list = propertyDescriptor.GetValue(target) as ISelectableList;
