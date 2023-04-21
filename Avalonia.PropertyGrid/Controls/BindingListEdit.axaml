@@ -15,7 +15,7 @@
 					  <TextBlock FontWeight="Bold"
 								Text="{Binding Model.Title, RelativeSource={RelativeSource TemplatedParent}}"
 								 VerticalAlignment="Center"
-								 Margin="10,4,10,4"
+								 Margin="10,8,10,8"
 								 ></TextBlock>
 					  <Button x:Name="NewElement"
 							  Grid.Column="2"

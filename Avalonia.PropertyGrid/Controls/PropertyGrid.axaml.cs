@@ -281,7 +281,10 @@ namespace Avalonia.PropertyGrid.Controls
         }
 
         #region Categories
-        private void BuildCategoryPropertiesView()
+        /// <summary>
+        /// Builds the category properties view.
+        /// </summary>
+        protected virtual void BuildCategoryPropertiesView()
         {
             propertiesGrid.ColumnDefinitions.Clear();
 
@@ -300,7 +303,7 @@ namespace Avalonia.PropertyGrid.Controls
                 grid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
                 grid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
 
-                expander.IsVisible = BuildPropertiesGrid(categoryInfo.Value, expander, grid);
+                expander.IsVisible = BuildPropertiesCellEdit(categoryInfo.Value, expander, grid);
 
                 expander.Content = grid;
 
@@ -311,82 +314,100 @@ namespace Avalonia.PropertyGrid.Controls
         }
 
         /// <summary>
-        /// Builds the properties grid.
+        /// Builds the properties cell edit.
         /// </summary>
         /// <param name="properties">The properties.</param>
         /// <param name="expander">The expander.</param>
         /// <param name="grid">The grid.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
-        private bool BuildPropertiesGrid(IEnumerable<PropertyDescriptor> properties, Expander expander, Grid grid)
+        protected virtual bool BuildPropertiesCellEdit(IEnumerable<PropertyDescriptor> properties, Expander expander, Grid grid)
         {
             bool AtLeastOneVisible = false;
 
             foreach(var property in properties)
             {
-                ICellEditFactory factory;
-                var control = Factories.BuildPropertyControl(SelectedObject, property, out factory);
-
-                if(control == null)
-                {
-#if DEBUG
-                    Debug.WriteLine($"Failed build property control for property:{property.Name}({property.PropertyType}");
-#endif
-                    continue;
-                }
-
-                bool IsVisible = ViewModel.CheckVisible(property);
-                AtLeastOneVisible |= IsVisible;
-
-                grid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
-
-                TextBlock nameBlock = new TextBlock();
-                nameBlock.Text = LocalizationService[property.DisplayName];
-                nameBlock.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
-                nameBlock.SetValue(Grid.ColumnProperty, 0);
-                nameBlock.VerticalAlignment = Layout.VerticalAlignment.Center;
-                nameBlock.Margin = new Thickness(4);             
-                
-                if(property.GetCustomAttribute<DescriptionAttribute>() is DescriptionAttribute descriptionAttribute && descriptionAttribute.Description.IsNotNullOrEmpty())
-                {
-                    nameBlock.SetValue(ToolTip.TipProperty, LocalizationService[descriptionAttribute.Description]);
-                }
-
-                grid.Children.Add(nameBlock);
-
-                control.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
-                control.SetValue(Grid.ColumnProperty, 1);
-                control.IsEnabled = !property.IsReadOnly;                
-                control.Margin = new Thickness(4);
-
-                grid.Children.Add(control);
-
-                factory.HandlePropertyChanged(ViewModel.SelectedObject, property, control);
-
-                PropertyBindingDict.Add(property.Name, new PropertyBinding()
-                {
-                    Property = property,
-                    BindingControl = control,
-                    BindingNameControl = nameBlock,
-                    Factory = factory,
-                    BindingExpander = expander // expander can be null
-                });
-
-                nameBlock.IsVisible = IsVisible;
-                control.IsVisible = IsVisible;
+                AtLeastOneVisible |= BuildPropertyCellEdit(property, expander, grid);
             }
 
             return AtLeastOneVisible;
         }
+
+        /// <summary>
+        /// Builds the property cell edit.
+        /// </summary>
+        /// <param name="propertyDescriptor">The property descriptor.</param>
+        /// <param name="expander">The expander.</param>
+        /// <param name="grid">The grid.</param>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        protected virtual bool BuildPropertyCellEdit(PropertyDescriptor propertyDescriptor, Expander expander, Grid grid)
+        {
+            var property = propertyDescriptor;
+
+            ICellEditFactory factory;
+            var control = Factories.BuildPropertyControl(SelectedObject, property, out factory);
+
+            if (control == null)
+            {
+#if DEBUG
+                Debug.WriteLine($"Failed build property control for property:{property.Name}({property.PropertyType}");
+#endif
+                return false;
+            }
+
+            bool IsVisible = ViewModel.CheckVisible(property);            
+
+            grid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
+
+            TextBlock nameBlock = new TextBlock();
+            nameBlock.Text = LocalizationService[property.DisplayName];
+            nameBlock.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
+            nameBlock.SetValue(Grid.ColumnProperty, 0);
+            nameBlock.VerticalAlignment = Layout.VerticalAlignment.Center;
+            nameBlock.Margin = new Thickness(4);
+
+            if (property.GetCustomAttribute<DescriptionAttribute>() is DescriptionAttribute descriptionAttribute && descriptionAttribute.Description.IsNotNullOrEmpty())
+            {
+                nameBlock.SetValue(ToolTip.TipProperty, LocalizationService[descriptionAttribute.Description]);
+            }
+
+            grid.Children.Add(nameBlock);
+
+            control.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
+            control.SetValue(Grid.ColumnProperty, 1);
+            control.IsEnabled = !property.IsReadOnly;
+            control.Margin = new Thickness(4);
+
+            grid.Children.Add(control);
+
+            factory.HandlePropertyChanged(ViewModel.SelectedObject, property, control);
+
+            PropertyBindingDict.Add(property.Name, new PropertyBinding()
+            {
+                Property = property,
+                BindingControl = control,
+                BindingNameControl = nameBlock,
+                Factory = factory,
+                BindingExpander = expander // expander can be null
+            });
+
+            nameBlock.IsVisible = IsVisible;
+            control.IsVisible = IsVisible;
+
+            return IsVisible;
+        }
         #endregion
 
         #region Alpha
-        private void BuildAlphabeticPropertiesView()
+        /// <summary>
+        /// Builds the alphabetic properties view.
+        /// </summary>
+        protected virtual void BuildAlphabeticPropertiesView()
         {
             propertiesGrid.ColumnDefinitions.Clear();
             propertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
             propertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
 
-            BuildPropertiesGrid(ViewModel.AllProperties, null, propertiesGrid);
+            BuildPropertiesCellEdit(ViewModel.AllProperties, null, propertiesGrid);
         }
         #endregion
 
