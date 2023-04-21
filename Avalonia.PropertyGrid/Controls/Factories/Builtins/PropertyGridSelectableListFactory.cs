@@ -23,18 +23,23 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             var control = new ComboBox();
 
-            control.Items = (propertyDescriptor.GetValue(target) as ISelectableList)?.Values;
+            var list = (propertyDescriptor.GetValue(target) as ISelectableList);
+
+            control.Items = list?.Values;
 
             control.SelectionChanged += (s, e) =>
             {
                 var item = control.SelectedItem;
 
-                var list = (propertyDescriptor.GetValue(target) as ISelectableList);
-
                 if (list != null)
                 {
                     list.SelectedValue = item;
                 }
+            };
+
+            list.SelectionChanged += (s, e) =>
+            {
+                control.SelectedItem = list.SelectedValue;
             };
 
             return control;
@@ -54,6 +59,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 var list = propertyDescriptor.GetValue(target) as ISelectableList;
                 cb.Items = list?.Values;
                 cb.SelectedItem = list?.SelectedValue;
+
                 return true;
             }
 
