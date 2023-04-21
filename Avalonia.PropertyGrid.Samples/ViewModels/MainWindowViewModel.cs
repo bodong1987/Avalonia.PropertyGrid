@@ -28,6 +28,10 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
         readonly ScriptableOptions _Options = new ScriptableOptions();
         public ScriptableOptions customOptions => _Options;
 
+        readonly BooleanExtensionObject _BooleanExtension = new BooleanExtensionObject();
+
+        public BooleanExtensionObject booleanExtension => _BooleanExtension;
+
         public MainWindowViewModel()
         {
             GenOptions();

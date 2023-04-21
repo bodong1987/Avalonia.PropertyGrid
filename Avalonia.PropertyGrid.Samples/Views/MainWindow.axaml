@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:pgc="clr-namespace:Avalonia.PropertyGrid.Controls;assembly=Avalonia.PropertyGrid"
+		xmlns:lv="using:Avalonia.PropertyGrid.Samples.Views"
         mc:Ignorable="d" d:DesignWidth="1400" d:DesignHeight="900"
 		Width="1400"
 		Height="900"
@@ -18,7 +19,7 @@
     </Design.DataContext>
 
 	<TabControl TabStripPlacement="Left">
-		<TabItem Header="Simple">
+		<TabItem Header="Basic">
 			<ScrollViewer>
 				<pgc:PropertyGrid Margin="4" SelectedObject="{Binding $parent[Window].DataContext.simpleObject}"></pgc:PropertyGrid>	
 			</ScrollViewer>			
@@ -56,6 +57,12 @@
 		<TabItem Header="CustomObject">
 			<ScrollViewer>
 				<pgc:PropertyGrid Margin="4" SelectedObject="{Binding $parent[Window].DataContext.customOptions}"></pgc:PropertyGrid>
+			</ScrollViewer>
+		</TabItem>
+
+		<TabItem Header="CustomCellEdit">
+			<ScrollViewer>
+				<lv:ToggleSwitchExtensionPropertyGrid Margin="4" SelectedObject="{Binding $parent[Window].DataContext.booleanExtension}"></lv:ToggleSwitchExtensionPropertyGrid>
 			</ScrollViewer>
 		</TabItem>
 	</TabControl>

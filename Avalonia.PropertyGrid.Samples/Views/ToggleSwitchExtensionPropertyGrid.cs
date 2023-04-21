@@ -1,0 +1,61 @@
+﻿using Avalonia.Controls;
+using Avalonia.PropertyGrid.Controls;
+using Avalonia.PropertyGrid.Controls.Factories;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Avalonia.PropertyGrid.Samples.Views
+{
+    public class ToggleSwitchExtensionPropertyGrid : Controls.PropertyGrid
+    {
+        static ToggleSwitchExtensionPropertyGrid()
+        {
+            FactoryTemplates.AddFactory(new ToggleSwitchCellEditFactory());
+        }
+    }
+
+    class ToggleSwitchCellEditFactory : AbstractCellEditFactory
+    {
+        public override bool Accept(object accessToken)
+        {
+            return accessToken is ToggleSwitchExtensionPropertyGrid;
+        }
+
+        public override Control HandleNewProperty(object target, PropertyDescriptor propertyDescriptor)
+        {
+            if (propertyDescriptor.PropertyType != typeof(bool))
+            {
+                return null;
+            }
+
+            ToggleSwitch control = new ToggleSwitch();
+            control.Checked += (s, e) => { SetAndRaise(control, propertyDescriptor, target, true); };
+            control.Unchecked += (s, e) => { SetAndRaise(control, propertyDescriptor, target, false); };
+
+            return control;
+        }
+
+        public override bool HandlePropertyChanged(object target, PropertyDescriptor propertyDescriptor, Control control)
+        {
+            if (propertyDescriptor.PropertyType != typeof(bool))
+            {
+                return false;
+            }
+
+            ValidateProperty(control, propertyDescriptor, target);
+
+            if (control is ToggleSwitch ts)
+            {
+                ts.IsChecked = (bool)propertyDescriptor.GetValue(target);
+
+                return true;
+            }
+
+            return false;
+        }
+    }
+}
