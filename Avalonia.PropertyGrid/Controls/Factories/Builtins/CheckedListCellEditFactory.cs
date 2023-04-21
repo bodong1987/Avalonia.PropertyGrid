@@ -22,7 +22,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <returns>Control.</returns>
         public override Control HandleNewProperty(object target, PropertyDescriptor propertyDescriptor)
         {
-            if (!propertyDescriptor.PropertyType.IsImplementFrom<ICheckedList>())
+            if (!propertyDescriptor.PropertyType.IsImplementFrom<ICheckedList>() || propertyDescriptor.GetValue(target) == null)
             {
                 return null;
             }

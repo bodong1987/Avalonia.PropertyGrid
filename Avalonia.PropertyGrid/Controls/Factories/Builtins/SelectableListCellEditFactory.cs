@@ -16,7 +16,9 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
         public override Control HandleNewProperty(object target, PropertyDescriptor propertyDescriptor)
         {
-            if (!propertyDescriptor.PropertyType.IsImplementFrom<ISelectableList>())
+            if (!propertyDescriptor.PropertyType.IsImplementFrom<ISelectableList>() ||
+                propertyDescriptor.GetValue(target) == null
+                )
             {
                 return null;
             }

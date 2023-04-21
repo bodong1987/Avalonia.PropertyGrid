@@ -45,7 +45,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
         public override Control HandleNewProperty(object target, PropertyDescriptor propertyDescriptor)
         {
-            if (!IsAcceptType(propertyDescriptor))
+            if (!IsAcceptType(propertyDescriptor) || propertyDescriptor.GetValue(target) == null)
             {
                 return null;
             }
