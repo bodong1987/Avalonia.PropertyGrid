@@ -5,6 +5,7 @@ using Avalonia.PropertyGrid.Model.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -52,6 +53,13 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             BindingListEdit control = new BindingListEdit();
             control.Model.Collection = (this as ICellEditFactory).Collection;
+
+            var attr = propertyDescriptor.GetCustomAttribute<EditableAttribute>();
+            
+            if((attr != null && !attr.AllowEdit) || propertyDescriptor.IsReadOnly)
+            {
+                control.Model.IsEditable = false;
+            }
 
             Debug.Assert(control.Model.Collection != null);
 

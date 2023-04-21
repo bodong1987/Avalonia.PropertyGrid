@@ -15,7 +15,7 @@
 					  <TextBlock FontWeight="Bold"
 								Text="{Binding Model.Title, RelativeSource={RelativeSource TemplatedParent}}"
 								 VerticalAlignment="Center"
-								 Margin="10,0,10,0"
+								 Margin="10,4,10,4"
 								 ></TextBlock>
 					  <Button x:Name="NewElement"
 							  Grid.Column="2"
@@ -25,6 +25,7 @@
 							  HorizontalContentAlignment="Center"
 							  VerticalContentAlignment="Center"
 							  Command="{TemplateBinding NewElementCommand}"
+							  IsVisible="{Binding Model.IsEditable, RelativeSource={RelativeSource TemplatedParent}}"
 							  >N</Button>
 					  <Button x:Name="ClearElements" 
 							  Grid.Column="3" 
@@ -34,6 +35,7 @@
 							  HorizontalContentAlignment="Center"
 							  VerticalContentAlignment="Center"
 							  Command="{TemplateBinding ClearElementsCommand}"
+							  IsVisible="{Binding Model.IsEditable, RelativeSource={RelativeSource TemplatedParent}}"
 							  >U</Button>
 					  <ItemsControl x:Name="PART_ItemsPresenter"
 									Items="{Binding Model.Elements, RelativeSource={RelativeSource TemplatedParent}}"

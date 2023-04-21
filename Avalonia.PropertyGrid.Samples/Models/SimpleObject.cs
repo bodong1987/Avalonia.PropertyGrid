@@ -105,6 +105,16 @@ namespace Avalonia.PropertyGrid.Samples.Models
         public BindingList<string> stringList { get; set; } = new BindingList<string>() { "bodong", "china" };
 
         [Category("Binding List")]
+        [DisplayName("Not Editable")]
+        [Editable(false)]
+        public BindingList<string> stringListNotEditable { get; set; } = new BindingList<string>() { "bodong", "china" };
+
+        [Category("Binding List")]
+        [DisplayName("Readonly List")]
+        [ReadOnly(true)]
+        public BindingList<string> stringListReadonly { get; set; } = new BindingList<string>() { "bodong", "china" };
+
+        [Category("Binding List")]
         public BindingList<Boolean> boolList { get; set; } = new BindingList<bool> { true, false };
 
         [Category("Binding List")]

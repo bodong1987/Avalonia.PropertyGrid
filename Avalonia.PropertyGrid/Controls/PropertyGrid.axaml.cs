@@ -328,7 +328,9 @@ namespace Avalonia.PropertyGrid.Controls
 
                 if(control == null)
                 {
+#if DEBUG
                     Debug.WriteLine($"Failed build property control for property:{property.Name}({property.PropertyType}");
+#endif
                     continue;
                 }
 

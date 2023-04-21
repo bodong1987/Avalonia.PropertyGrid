@@ -281,6 +281,13 @@ namespace Avalonia.PropertyGrid.Controls
         public ICommand InsertCommand { get; private set; }
         public ICommand RemoveCommand { get; private set; }
 
+        bool _IsEditable = true;
+        public bool IsEditable
+        {
+            get => _IsEditable;
+            set => this.RaiseAndSetIfChanged(ref _IsEditable, value);
+        }
+
         public BindingListViewModel(ICommand insertCommand, ICommand removeCommand) :
             this(null, insertCommand, removeCommand)
         {
@@ -341,6 +348,8 @@ namespace Avalonia.PropertyGrid.Controls
 
         public event EventHandler ValueChanged;
 
+        public bool IsEditable => Model.IsEditable;
+
         public BindingListElementDataDesc(
             BindingListViewModel model, 
             IBindingList list,
@@ -358,6 +367,16 @@ namespace Avalonia.PropertyGrid.Controls
             RemoveCommand = ReactiveCommand.Create(() => removeCommand.Execute(this));
 
             list.ListChanged += OnListChanged;
+
+            model.PropertyChanged += OnPropertyChanged;
+        }
+
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName == nameof(Model.IsEditable))
+            {
+                RaisePropertyChanged(nameof(IsEditable));
+            }
         }
 
         private void OnListChanged(object sender, ListChangedEventArgs e)

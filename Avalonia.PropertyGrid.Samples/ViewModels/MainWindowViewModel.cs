@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Avalonia.PropertyGrid.Samples.ViewModels
 {
@@ -28,6 +29,12 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
         public ScriptableOptions customOptions => _Options;
 
         public MainWindowViewModel()
+        {
+            GenOptions();
+        }
+
+        #region Gen Custom Object Properties
+        private void GenOptions()
         {
             _Options.AddProperty(new ScriptableObject()
             {
@@ -77,7 +84,7 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
                 DisplayName = "Enum Value(Readonly)",
                 Description = "Custom type = Enum",
                 Value = Environment.OSVersion.Platform,
-                ExtraAttributes = new Attribute[] { new ReadOnlyAttribute(true) } 
+                ExtraAttributes = new Attribute[] { new ReadOnlyAttribute(true) }
             });
 
             _Options.AddProperty(new ScriptableObject()
@@ -85,9 +92,28 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
                 Name = "BindingList",
                 DisplayName = "BindingList Value",
                 Description = "Custom type = BindingList",
-                Value = new BindingList<int>() { 1024, 2048, 4096},
-                ExtraAttributes = new Attribute[] {new CategoryAttribute("BindingList")}
+                Value = new BindingList<int>() { 1024, 2048, 4096 },
+                ExtraAttributes = new Attribute[] { new CategoryAttribute("BindingList") }
+            });
+
+            _Options.AddProperty(new ScriptableObject()
+            {
+                Name = "BindingListNotEditable",
+                DisplayName = "Not Editable List",
+                Description = "Custom type = BindingList(Not Editable)",
+                Value = new BindingList<int>() { 1024, 2048, 4096 },
+                ExtraAttributes = new Attribute[] { new CategoryAttribute("BindingList"), new EditableAttribute(false) }
+            });
+
+            _Options.AddProperty(new ScriptableObject()
+            {
+                Name = "BindingListReadOnly",
+                DisplayName = "ReadOnly List",
+                Description = "Custom type = BindingList(Readonly)",
+                Value = new BindingList<int>() { 1024, 2048, 4096 },
+                ExtraAttributes = new Attribute[] { new CategoryAttribute("BindingList"), new ReadOnlyAttribute(true) }
             });
         }
+        #endregion
     }
 }
