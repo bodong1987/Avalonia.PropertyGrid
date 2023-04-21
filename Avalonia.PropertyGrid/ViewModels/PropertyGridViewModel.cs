@@ -148,9 +148,9 @@ namespace Avalonia.PropertyGrid.ViewModels
             return category;
         }
 
-        public bool CheckVisible(PropertyDescriptor property)
+        public bool CheckVisible(PropertyDescriptor property, object context)
         {
-            return FilterPattern.Match(property, SelectedObject) &&
+            return FilterPattern.Match(property, context) &&
                 (CategoryFilter == null || CategoryFilter.IsChecked(GetCategory(property)));
         }
 

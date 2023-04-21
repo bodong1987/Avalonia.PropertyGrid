@@ -24,7 +24,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             // set first ...
             // HandlePropertyChanged(target, propertyDescriptor, control);
 
-            if (!control.IsEnabled)
+            if (control.IsEnabled)
             {
                 control.PropertyChanged += (s, e) =>
                 {
