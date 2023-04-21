@@ -1,5 +1,4 @@
 ﻿using Avalonia.PropertyGrid.Model.Utils;
-using System.Reflection.Emit;
 
 namespace Avalonia.PropertyGrid.Tests.Model
 {

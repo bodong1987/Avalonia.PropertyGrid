@@ -191,7 +191,7 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel
         public static void RaisePropertyChanged<TSender>(this TSender reactiveObject, [CallerMemberName] string propertyName = null)
             where TSender : IReactiveObject
         {
-            if (propertyName is not null)
+            if (propertyName != null)
             {
                 reactiveObject.RaisePropertyChanged(propertyName);
             }

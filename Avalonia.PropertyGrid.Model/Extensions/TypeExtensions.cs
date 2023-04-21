@@ -306,7 +306,7 @@ namespace Avalonia.PropertyGrid.Model.Extensions
                         Type genericType;
                         if (TryGetTypeByName(typeArgs[genTypeIndex], out genericType, customAssemblies))
                         {
-                            genericArgumentTypes[genTypeIndex] = genericType!;
+                            genericArgumentTypes[genTypeIndex] = genericType;
                         }
                         else
                         {
@@ -548,8 +548,15 @@ namespace Avalonia.PropertyGrid.Model.Extensions
             {
                 npcp.RaisePropertyChanging(property.Name);
             }
+            else if (component is IEnumerable<ComponentModel.INotifyPropertyChanging> enpcps)
+            {
+                foreach(ComponentModel.INotifyPropertyChanging e in enpcps)
+                {
+                    e.RaisePropertyChanging(property.Name);
+                }
+            }
 
-            property.SetValue(component, value);
+            property.SetValue(component, value);            
 
             RaiseEvent(property, component);
         }
@@ -564,6 +571,13 @@ namespace Avalonia.PropertyGrid.Model.Extensions
             if (component is ComponentModel.INotifyPropertyChanged npc)
             {
                 npc.RaisePropertyChanged(property.Name);
+            }
+            else if (component is IEnumerable<ComponentModel.INotifyPropertyChanged> enpcps)
+            {
+                foreach (ComponentModel.INotifyPropertyChanged e in enpcps)
+                {
+                    e.RaisePropertyChanged(property.Name);
+                }
             }
         }
         #endregion

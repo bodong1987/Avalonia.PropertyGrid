@@ -41,15 +41,15 @@
 					<GridSplitter Grid.Column="3"></GridSplitter>
 					<StackPanel Orientation="Vertical">
 						<TextBlock>MultiObjects's Properties</TextBlock>
-						<pgc:PropertyGrid Margin="2" SelectedObject="{Binding $parent[Window].DataContext.multiObjects}"></pgc:PropertyGrid>
+						<pgc:PropertyGrid x:Name="propertyGrid_MultipleObjects" Margin="2" SelectedObject="{Binding $parent[Window].DataContext.multiObjects}"></pgc:PropertyGrid>
 					</StackPanel>
 					<StackPanel Orientation="Vertical" Grid.Column="2">
 						<TextBlock>First Object's Properties</TextBlock>
-						<pgc:PropertyGrid Margin="2" SelectedObject="{Binding $parent[Window].DataContext.multiObject0}"></pgc:PropertyGrid>
+						<pgc:PropertyGrid x:Name="propertyGrid_MultipleObjects0" Margin="2" SelectedObject="{Binding $parent[Window].DataContext.multiObject0}"></pgc:PropertyGrid>
 					</StackPanel>
 					<StackPanel Orientation="Vertical" Grid.Column="4">
 						<TextBlock>Second Object's Properties</TextBlock>
-						<pgc:PropertyGrid Margin="2" SelectedObject="{Binding $parent[Window].DataContext.multiObject1}"></pgc:PropertyGrid>
+						<pgc:PropertyGrid x:Name="propertyGrid_MultipleObjects1" Margin="2" SelectedObject="{Binding $parent[Window].DataContext.multiObject1}"></pgc:PropertyGrid>
 					</StackPanel>
 				</Grid>
 			</ScrollViewer>			

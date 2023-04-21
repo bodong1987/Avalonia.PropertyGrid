@@ -14,15 +14,15 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
     {
         public string Greeting => "Welcome to Avalonia!";
 
-        readonly SimpleObject _SimpleObject = new SimpleObject();
+        readonly SimpleObject _SimpleObject = new SimpleObject("SimpleTests");
 
         public SimpleObject simpleObject => _SimpleObject;
 
-        readonly SimpleObject _SyncObject = new SimpleObject();
+        readonly SimpleObject _SyncObject = new SimpleObject("SyncTests");
         public SimpleObject syncObject => _SyncObject;
 
-        public SimpleObject _MultiObj0 => new SimpleObject();
-        public SimpleObject _MultiObj1 => new SimpleObject();
+        readonly SimpleObject _MultiObj0 = new SimpleObject("MultiObject0");
+        readonly SimpleObject _MultiObj1 = new SimpleObject("MultiObject1");
 
         public SimpleObject multiObject0 => _MultiObj0;
         public SimpleObject multiObject1 => _MultiObj1;
@@ -32,6 +32,18 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
 
     public class SimpleObject : ReactiveObject
     {
+        public readonly string Description;
+
+        public SimpleObject(string description)
+        {
+            Description = description;
+        }
+
+        public override string ToString()
+        {
+            return $"({GetHashCode()}){Description}";
+        }
+
         [Category("String")]
         [DisplayName("Target Name")]
         public string Name { get; set; }

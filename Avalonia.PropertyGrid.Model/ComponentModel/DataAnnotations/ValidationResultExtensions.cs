@@ -47,7 +47,7 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations
 
             if (validationResult.MemberNames.Count() > 0)
             {
-                return $"{validationResult.ErrorMessage}:{string.Join(',', validationResult.MemberNames)}";
+                return $"{validationResult.ErrorMessage}:{string.Join(",", validationResult.MemberNames)}";
             }
 
             return validationResult.ErrorMessage;

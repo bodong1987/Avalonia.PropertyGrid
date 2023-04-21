@@ -22,7 +22,7 @@ namespace Avalonia.PropertyGrid.Controls
         int ImportPriority { get; }
 
         [Browsable(false)]
-        ICellEditFactoryCollection Collection { get; internal set; }
+        ICellEditFactoryCollection Collection { get; set; }
 
         /// <summary>
         /// Check available for target

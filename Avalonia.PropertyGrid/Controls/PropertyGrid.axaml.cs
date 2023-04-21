@@ -141,12 +141,26 @@ namespace Avalonia.PropertyGrid.Controls
             {
                 npc.PropertyChanged -= OnSelectedObjectPropertyChanged;
             }
+            else if(oldValue is IEnumerable<System.ComponentModel.INotifyPropertyChanged> npcs)
+            {
+                foreach(var n in npcs)
+                {
+                    n.PropertyChanged -= OnSelectedObjectPropertyChanged;
+                }
+            }
 
             ViewModel.SelectedObject = newValue;
 
             if(newValue is System.ComponentModel.INotifyPropertyChanged nnpc)
             {
                 nnpc.PropertyChanged += OnSelectedObjectPropertyChanged;
+            }
+            else if(newValue is IEnumerable<System.ComponentModel.INotifyPropertyChanged> nnpcs)
+            {
+                foreach(var n in nnpcs)
+                {
+                    n.PropertyChanged += OnSelectedObjectPropertyChanged;
+                }
             }
         }
 
