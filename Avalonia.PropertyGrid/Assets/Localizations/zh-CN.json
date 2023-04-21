@@ -9,5 +9,7 @@
   "Misc": "杂项",
   "{0} Elements": "{0}个数据",
   "InsertNewElement": "在当前元素前新增一个元素",
-  "RemoveElement": "删除当前元素"
+  "RemoveElement": "删除当前元素",
+  "AppendNewElement": "在尾部增加一个新元素",
+  "ClearAllElements": "清空整个列表"
 }

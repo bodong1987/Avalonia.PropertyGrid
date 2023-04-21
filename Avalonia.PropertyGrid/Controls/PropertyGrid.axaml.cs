@@ -217,6 +217,11 @@ namespace Avalonia.PropertyGrid.Controls
 
                     info.BindingNameControl.IsVisible = IsVisible;
                     info.BindingControl.IsVisible = IsVisible;
+
+                    if(info.BindingExpander != null)
+                    {
+                        info.BindingExpander.IsVisible = IsVisible;
+                    }
                 }
             }
         }

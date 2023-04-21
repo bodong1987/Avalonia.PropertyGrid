@@ -1,6 +1,8 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:controls="using:Avalonia.PropertyGrid.Controls">
+        xmlns:controls="using:Avalonia.PropertyGrid.Controls"
+		xmlns:ll="using:Avalonia.PropertyGrid.Localization"
+		>
   <Design.PreviewWith>
     <controls:BindingListEdit />
   </Design.PreviewWith>
@@ -26,6 +28,7 @@
 							  VerticalContentAlignment="Center"
 							  Command="{TemplateBinding NewElementCommand}"
 							  IsVisible="{Binding Model.IsEditable, RelativeSource={RelativeSource TemplatedParent}}"
+							  ToolTip.Tip="{ll:Localize AppendNewElement}"
 							  >N</Button>
 					  <Button x:Name="ClearElements" 
 							  Grid.Column="3" 
@@ -36,6 +39,7 @@
 							  VerticalContentAlignment="Center"
 							  Command="{TemplateBinding ClearElementsCommand}"
 							  IsVisible="{Binding Model.IsEditable, RelativeSource={RelativeSource TemplatedParent}}"
+							  ToolTip.Tip="{ll:Localize ClearAllElements}"
 							  >U</Button>
 					  <ItemsControl x:Name="PART_ItemsPresenter"
 									Items="{Binding Model.Elements, RelativeSource={RelativeSource TemplatedParent}}"
