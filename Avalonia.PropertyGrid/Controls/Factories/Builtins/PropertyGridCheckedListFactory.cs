@@ -41,24 +41,49 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             {
                 var items = control.SelectedItems;
 
-                list.Clear();
-                foreach (var item in items)
-                {
-                    list.SetChecked(item, true);
-                }
+                list.SelectRange(items);
 
                 SetAndRaise(control, propertyDescriptor, target, list);
             };
 
+            list.SelectionChanged += (s, e) =>
+            {
+                var cItems = control.Items;
+                var lItems = list.Items;
+                if(cItems.Length == lItems.Length)
+                {
+                    bool Same = true;
+                    for(int i=0; i<lItems.Length; i++)
+                    {
+                        if (!lItems[i].Equals(cItems[i]))
+                        {
+                            Same = false;
+                            break;
+                        }
+                    }
+
+                    if(Same)
+                    {
+                        return;
+                    }
+                }
+
+                
+                var old = control.EnableRaiseSelectedItemsChangedEvent;
+                try
+                {
+                    control.EnableRaiseSelectedItemsChangedEvent = false;
+                    control.SelectedItems = lItems;
+
+                    ValidateProperty(control, propertyDescriptor, target);
+                }
+                finally
+                {
+                    control.EnableRaiseSelectedItemsChangedEvent = old;
+                }
+            };
+
             return control;
-        }
-
-        protected override void SetAndRaise(Control sourceControl, PropertyDescriptor propertyDescriptor, object component, object value)
-        {
-            base.SetAndRaise(sourceControl, propertyDescriptor, component, value);
-
-            // check list is special case, so we force raise events
-            propertyDescriptor.RaiseEvent(component);
         }
 
         public override bool HandlePropertyChanged(object target, PropertyDescriptor propertyDescriptor, Control control)

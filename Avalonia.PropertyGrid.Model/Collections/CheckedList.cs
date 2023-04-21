@@ -46,9 +46,28 @@ namespace Avalonia.PropertyGrid.Model.Collections
         void SetChecked(object item, bool @checked);
 
         /// <summary>
+        /// Sets the range checked.
+        /// </summary>
+        /// <param name="items">The items.</param>
+        /// <param name="checked">if set to <c>true</c> [checked].</param>
+        void SetRangeChecked(IEnumerable<object> items, bool @checked);
+
+        /// <summary>
         /// Clears this instance.
         /// </summary>
         void Clear();
+
+        /// <summary>
+        /// Selects the specified item.
+        /// </summary>
+        /// <param name="item">The item.</param>
+        void Select(object item);
+
+        /// <summary>
+        /// Selects the range.
+        /// </summary>
+        /// <param name="items">The items.</param>
+        void SelectRange(IEnumerable<object> items);
     }
 
     /// <summary>
@@ -111,6 +130,8 @@ namespace Avalonia.PropertyGrid.Model.Collections
         /// </summary>
         /// <value>The synchronize root.</value>
         public object SyncRoot => ((ICollection)ItemsCore).SyncRoot;
+
+        private bool IsUpdating = false;
 
         /// <summary>
         /// Gets the selected items.
@@ -181,6 +202,18 @@ namespace Avalonia.PropertyGrid.Model.Collections
             return base.GetHashCode();
         }
 
+        private void BeginUpdate()
+        {
+            IsUpdating = true;
+        }
+
+        private void EndUpdate()
+        {
+            IsUpdating = false;
+
+            SelectionChanged?.Invoke(this, EventArgs.Empty);
+        }
+
         /// <summary>
         /// Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1" />.
         /// </summary>
@@ -191,7 +224,10 @@ namespace Avalonia.PropertyGrid.Model.Collections
             {
                 ItemsCore.Add(item);
 
-                SelectionChanged?.Invoke(this, EventArgs.Empty);
+                if(!IsUpdating)
+                {
+                    SelectionChanged?.Invoke(this, EventArgs.Empty);
+                }                
             }
         }
 
@@ -203,7 +239,11 @@ namespace Avalonia.PropertyGrid.Model.Collections
             if (ItemsCore.Count > 0)
             {
                 ItemsCore.Clear();
-                SelectionChanged?.Invoke(this, EventArgs.Empty);
+
+                if(!IsUpdating)
+                {
+                    SelectionChanged?.Invoke(this, EventArgs.Empty);
+                }                
             }
         }
 
@@ -256,7 +296,11 @@ namespace Avalonia.PropertyGrid.Model.Collections
         {
             if (ItemsCore.Remove(item))
             {
-                SelectionChanged?.Invoke(this, EventArgs.Empty);
+                if(!IsUpdating)
+                {
+                    SelectionChanged?.Invoke(this, EventArgs.Empty);
+                }
+                
                 return true;
             }
 
@@ -291,6 +335,16 @@ namespace Avalonia.PropertyGrid.Model.Collections
         }
 
         /// <summary>
+        /// Sets the range checked.
+        /// </summary>
+        /// <param name="items">The items.</param>
+        /// <param name="checked">if set to <c>true</c> [checked].</param>
+        void ICheckedList.SetRangeChecked(IEnumerable<object> items, bool @checked)
+        {
+            SetRangeChecked(items.Cast<T>(), @checked);
+        }
+
+        /// <summary>
         /// Determines whether the specified item is checked.
         /// </summary>
         /// <param name="item">The item.</param>
@@ -315,6 +369,75 @@ namespace Avalonia.PropertyGrid.Model.Collections
             {
                 Remove(item);
             }
+        }
+
+        /// <summary>
+        /// Sets the range checked.
+        /// </summary>
+        /// <param name="items">The items.</param>
+        /// <param name="checked">if set to <c>true</c> [checked].</param>
+        public void SetRangeChecked(IEnumerable<T> items, bool @checked)
+        {
+            BeginUpdate();
+
+            try
+            {
+                foreach (var item in items)
+                {
+                    SetChecked(item, @checked);
+                }
+            }
+            finally
+            {
+                EndUpdate();
+            }            
+        }
+
+        public void Select(T item)
+        {
+            BeginUpdate();
+
+            try
+            {
+                Clear();
+                SetChecked(item, true);
+            }
+            finally
+            {
+                EndUpdate();
+            }
+        }
+
+        public void SelectRange(IEnumerable<T> items)
+        {
+            BeginUpdate();
+
+            try
+            {
+                Clear();
+
+                foreach (var item in items)
+                {
+                    SetChecked(item, true);
+                }
+            }
+            finally
+            {
+                EndUpdate();
+            }
+        }
+
+        void ICheckedList.Select(object item)
+        {
+            if(item is T t)
+            {
+                Select(t);
+            }            
+        }
+
+        void ICheckedList.SelectRange(IEnumerable<object> items)
+        {
+            SelectRange(items.Cast<T>());
         }
     }
 
