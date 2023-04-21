@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Avalonia.PropertyGrid.Model.ComponentModel;
 using Avalonia.PropertyGrid.Model.Extensions;
+using Avalonia.Media;
 
 namespace Avalonia.PropertyGrid.Samples.Models
 {
@@ -147,6 +148,12 @@ namespace Avalonia.PropertyGrid.Samples.Models
         public TimeSpan timeReadonly { get; set; } = DateTime.Now.TimeOfDay;
 
         public Vector3 vec3 { get; set; } = new Vector3(1, 2, 3);
+
+        [Category("Auto Converter")]
+        public System.Drawing.Color RedColor { get; set; } = System.Drawing.Color.Red;
+
+        [Category("Auto Converter")]
+        public System.Drawing.Color Color2 { get; set; } = System.Drawing.Color.FromArgb(255, 122, 50, 177);
     }
 
     [Flags]
