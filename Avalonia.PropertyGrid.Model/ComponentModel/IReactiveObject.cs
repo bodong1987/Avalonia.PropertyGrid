@@ -22,11 +22,39 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel
     }
 
     /// <summary>
+    /// Class MiniReactiveObject.
+    /// can't support property dependency
+    /// Implements the <see cref="Avalonia.PropertyGrid.Model.ComponentModel.IReactiveObject" />
+    /// </summary>
+    /// <seealso cref="Avalonia.PropertyGrid.Model.ComponentModel.IReactiveObject" />
+    public class MiniReactiveObject : IReactiveObject
+    {
+        #region Interfaces
+        /// <summary>
+        /// Occurs when a property value changes.
+        /// </summary>
+        [Browsable(false)]
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+
+        /// <summary>
+        /// Raises the property changed.
+        /// </summary>
+        /// <param name="propertyName">Name of the property.</param>
+        public void RaisePropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+        }
+
+        #endregion
+    }
+
+
+    /// <summary>
     /// Class ReactiveObject.
     /// Implements the <see cref="BluePrint.Common.ComponentModel.INotifyPropertyChanged" />
     /// </summary>
     /// <seealso cref="BluePrint.Common.ComponentModel.INotifyPropertyChanged" />
-    public class ReactiveObject : IReactiveObject
+    public class ReactiveObject : MiniReactiveObject
     {
         #region Properties        
         private Stack<string> ProcessStack = new Stack<string>();
@@ -95,24 +123,6 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel
             MetaCaches.TryGetValue(type, out var cache);
             return cache;
         }
-        #endregion
-
-        #region Interfaces
-        /// <summary>
-        /// Occurs when a property value changes.
-        /// </summary>
-        [Browsable(false)]
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-
-        /// <summary>
-        /// Raises the property changed.
-        /// </summary>
-        /// <param name="propertyName">Name of the property.</param>
-        public void RaisePropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-        }
-
         #endregion
 
         #region Methods                        

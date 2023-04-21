@@ -6,6 +6,7 @@ using Avalonia.PropertyGrid.Model.ComponentModel;
 using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
 using Avalonia.PropertyGrid.Model.Extensions;
 using Avalonia.PropertyGrid.Model.Services;
+using Avalonia.PropertyGrid.Model.Utils;
 using Avalonia.PropertyGrid.ViewModels;
 using Avalonia.Threading;
 using System;
@@ -14,6 +15,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 
 namespace Avalonia.PropertyGrid.Controls
 {
@@ -73,16 +75,7 @@ namespace Avalonia.PropertyGrid.Controls
 
         public readonly ICellEditFactoryCollection Factories;
 
-        private struct PropertyBinding
-        {
-            public PropertyDescriptor Property;
-            public Control BindingControl;
-            public TextBlock BindingNameControl;
-            public ICellEditFactory Factory;
-            public Expander BindingExpander;
-        }
-
-        Dictionary<string, PropertyBinding> PropertyBindingDict = new Dictionary<string, PropertyBinding>();
+        readonly PropertyGridBindingCache Bindings = new PropertyGridBindingCache();
 
         #endregion
 
@@ -137,39 +130,7 @@ namespace Avalonia.PropertyGrid.Controls
 
         private void OnSelectedObjectChanged(object oldValue, object newValue)
         {
-            if(oldValue is System.ComponentModel.INotifyPropertyChanged npc)
-            {
-                npc.PropertyChanged -= OnSelectedObjectPropertyChanged;
-            }
-            else if(oldValue is IEnumerable<System.ComponentModel.INotifyPropertyChanged> npcs)
-            {
-                foreach(var n in npcs)
-                {
-                    n.PropertyChanged -= OnSelectedObjectPropertyChanged;
-                }
-            }
-
             ViewModel.SelectedObject = newValue;
-
-            if(newValue is System.ComponentModel.INotifyPropertyChanged nnpc)
-            {
-                nnpc.PropertyChanged += OnSelectedObjectPropertyChanged;
-            }
-            else if(newValue is IEnumerable<System.ComponentModel.INotifyPropertyChanged> nnpcs)
-            {
-                foreach(var n in nnpcs)
-                {
-                    n.PropertyChanged += OnSelectedObjectPropertyChanged;
-                }
-            }
-        }
-
-        private void OnSelectedObjectPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (PropertyBindingDict.TryGetValue(e.PropertyName, out PropertyBinding propertyBinding))
-            {
-                propertyBinding.Factory.HandlePropertyChanged(SelectedObject, propertyBinding.Property, propertyBinding.BindingControl);
-            }
         }
 
         #region Styled Properties Handler
@@ -197,14 +158,14 @@ namespace Avalonia.PropertyGrid.Controls
 
         private void OnShowStyleChanged(Optional<PropertyGridShowStyle> oldValue, BindingValue<PropertyGridShowStyle> newValue)
         {
-            BuildPropertiesView(ViewModel.ShowCategory ? PropertyGridShowStyle.Category : PropertyGridShowStyle.Alphabetic);
+            BuildPropertiesView(ViewModel.SelectedObject, ViewModel.ShowCategory ? PropertyGridShowStyle.Category : PropertyGridShowStyle.Alphabetic);
         }
 
         #endregion
 
         private void OnPropertyDescriptorChanged(object sender, EventArgs e)
         {
-            BuildPropertiesView(ViewModel.ShowCategory ? PropertyGridShowStyle.Category : PropertyGridShowStyle.Alphabetic);
+            BuildPropertiesView(ViewModel.SelectedObject, ViewModel.ShowCategory ? PropertyGridShowStyle.Category : PropertyGridShowStyle.Alphabetic);
         }
 
         private void OnFilterChanged(object sender, EventArgs e)
@@ -213,7 +174,7 @@ namespace Avalonia.PropertyGrid.Controls
             {
                 Dictionary<string, List<PropertyBinding>> caches = new Dictionary<string, List<PropertyBinding>>();
 
-                foreach (var info in PropertyBindingDict)
+                foreach (var info in Bindings.PropertyBindingDict)
                 {
                     var category = PropertyGridViewModel.GetCategory(info.Value.Property);
 
@@ -250,7 +211,7 @@ namespace Avalonia.PropertyGrid.Controls
             }         
             else
             {
-                foreach(var info in PropertyBindingDict)
+                foreach(var info in Bindings.PropertyBindingDict)
                 {
                     bool IsVisible = ViewModel.CheckVisible(info.Value.Property);
 
@@ -260,19 +221,20 @@ namespace Avalonia.PropertyGrid.Controls
             }
         }
 
-        private void BuildPropertiesView(PropertyGridShowStyle propertyGridShowStyle)
+        private void BuildPropertiesView(object target, PropertyGridShowStyle propertyGridShowStyle)
         {
             propertiesGrid.RowDefinitions.Clear();
             propertiesGrid.Children.Clear();
-            PropertyBindingDict.Clear();
+            Bindings.Clear();
+            Bindings.SelectedObject = target;
 
             if (propertyGridShowStyle == PropertyGridShowStyle.Category)
             {
-                BuildCategoryPropertiesView();
+                BuildCategoryPropertiesView(target);
             }
             else if(propertyGridShowStyle == PropertyGridShowStyle.Alphabetic)
             {
-                BuildAlphabeticPropertiesView();
+                BuildAlphabeticPropertiesView(target);
             }
 
             double width = column_name.Bounds.Width;
@@ -284,7 +246,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Builds the category properties view.
         /// </summary>
-        protected virtual void BuildCategoryPropertiesView()
+        protected virtual void BuildCategoryPropertiesView(object target)
         {
             propertiesGrid.ColumnDefinitions.Clear();
 
@@ -303,7 +265,7 @@ namespace Avalonia.PropertyGrid.Controls
                 grid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
                 grid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
 
-                expander.IsVisible = BuildPropertiesCellEdit(categoryInfo.Value, expander, grid);
+                expander.IsVisible = BuildPropertiesCellEdit(target, categoryInfo.Value, expander, grid);
 
                 expander.Content = grid;
 
@@ -316,35 +278,95 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Builds the properties cell edit.
         /// </summary>
+        /// <param name="target">The target.</param>
         /// <param name="properties">The properties.</param>
         /// <param name="expander">The expander.</param>
         /// <param name="grid">The grid.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
-        protected virtual bool BuildPropertiesCellEdit(IEnumerable<PropertyDescriptor> properties, Expander expander, Grid grid)
+        protected virtual bool BuildPropertiesCellEdit(object target, IEnumerable<PropertyDescriptor> properties, Expander expander, Grid grid)
         {
             bool AtLeastOneVisible = false;
 
             foreach(var property in properties)
             {
-                AtLeastOneVisible |= BuildPropertyCellEdit(property, expander, grid);
+                var value = property.GetValue(target);
+
+                if(value != null)
+                {
+                    var attr = property.GetCustomAttribute<TypeConverterAttribute>();
+
+                    if (attr == null)
+                    {
+                        attr = property.PropertyType.GetCustomAttribute<TypeConverterAttribute>();
+                    }
+
+                    if (attr != null && attr.GetConverterType().IsChildOf<ExpandableObjectConverter>())
+                    {
+                        AtLeastOneVisible |= BuildExpandableObjectPropertyCellEdit(value, property, expander, grid);
+
+                        continue;
+                    }
+                }
+
+                AtLeastOneVisible |= BuildPropertyCellEdit(target, property, expander, grid);
             }
 
             return AtLeastOneVisible;
         }
 
+        protected virtual bool BuildExpandableObjectPropertyCellEdit(object target, PropertyDescriptor propertyDescriptor, Expander expander, Grid grid)
+        {
+            if(target == null)
+            {
+                return false;
+            }
+
+            PropertyDescriptorBuilder builder = new PropertyDescriptorBuilder(target);
+
+            var properties = builder.GetProperties();
+
+            if(properties.Count == 0)
+            {
+                return false;
+            }
+
+            grid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
+
+            Expander childExpander = new Expander();
+            childExpander.ExpandDirection = ExpandDirection.Down;
+            childExpander.Header = propertyDescriptor.DisplayName;
+            childExpander.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
+            childExpander.SetValue(Grid.ColumnSpanProperty, 2);
+            childExpander.IsExpanded = true;
+            childExpander.HorizontalAlignment = Layout.HorizontalAlignment.Stretch;
+            childExpander.HorizontalContentAlignment = Layout.HorizontalAlignment.Stretch;
+
+            Grid childGrid = new Grid();
+            childGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
+            childGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
+
+            childExpander.IsVisible = BuildPropertiesCellEdit(target, properties.Cast<PropertyDescriptor>(), childExpander, childGrid);
+
+            childExpander.Content = childGrid;
+            grid.Children.Add(childExpander);
+
+            return true;
+        }
+
         /// <summary>
         /// Builds the property cell edit.
         /// </summary>
+        /// <param name="target">The target.</param>
         /// <param name="propertyDescriptor">The property descriptor.</param>
         /// <param name="expander">The expander.</param>
         /// <param name="grid">The grid.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
-        protected virtual bool BuildPropertyCellEdit(PropertyDescriptor propertyDescriptor, Expander expander, Grid grid)
+        protected virtual bool BuildPropertyCellEdit(object target, PropertyDescriptor propertyDescriptor, Expander expander, Grid grid)
         {
             var property = propertyDescriptor;
 
             ICellEditFactory factory;
-            var control = Factories.BuildPropertyControl(SelectedObject, property, out factory);
+            var control = Factories.BuildPropertyControl(target, property, out factory);
 
             if (control == null)
             {
@@ -379,16 +401,18 @@ namespace Avalonia.PropertyGrid.Controls
 
             grid.Children.Add(control);
 
-            factory.HandlePropertyChanged(ViewModel.SelectedObject, property, control);
+            factory.HandlePropertyChanged(target, property, control);
 
-            PropertyBindingDict.Add(property.Name, new PropertyBinding()
+            Bindings.AddBinding(new PropertyBinding()
             {
+                BindingKey = PropertyGridBindingCache.CalcPropertyKey(target, property.Name),
                 Property = property,
                 BindingControl = control,
                 BindingNameControl = nameBlock,
                 Factory = factory,
+                Target = target,
                 BindingExpander = expander // expander can be null
-            });
+            });            
 
             nameBlock.IsVisible = IsVisible;
             control.IsVisible = IsVisible;
@@ -401,34 +425,20 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Builds the alphabetic properties view.
         /// </summary>
-        protected virtual void BuildAlphabeticPropertiesView()
+        protected virtual void BuildAlphabeticPropertiesView(object target)
         {
             propertiesGrid.ColumnDefinitions.Clear();
             propertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
             propertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
 
-            BuildPropertiesCellEdit(ViewModel.AllProperties, null, propertiesGrid);
+            BuildPropertiesCellEdit(target, ViewModel.AllProperties, null, propertiesGrid);
         }
         #endregion
 
         #region Process Widths
         private void SyncWithMaxPropertyNameWidth()
         {
-            double maxLength = 0;
-            foreach (var info in PropertyBindingDict)
-            {
-                if (info.Value.BindingNameControl != null)
-                {
-                    if(info.Value.BindingNameControl.Width >= maxLength)
-                    {
-                        maxLength = info.Value.BindingNameControl.Width;
-                    }
-                    else if(info.Value.BindingNameControl.DesiredSize.Width >= maxLength)
-                    {
-                        maxLength = info.Value.BindingNameControl.DesiredSize.Width;
-                    }
-                }
-            }
+            double maxLength = Bindings.CalcBindingNameMaxLength();
 
             if(maxLength > 0)
             {
@@ -438,13 +448,7 @@ namespace Avalonia.PropertyGrid.Controls
 
         private void SyncNameWidth(double width, bool syncToTitle)
         {
-            foreach (var info in PropertyBindingDict)
-            {
-                if (info.Value.BindingNameControl != null)
-                {
-                    info.Value.BindingNameControl.Width = width;
-                }
-            }
+            Bindings.SyncWidth(width);
 
             if (syncToTitle)
             {
