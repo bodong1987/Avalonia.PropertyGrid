@@ -337,6 +337,8 @@ namespace Avalonia.PropertyGrid.Controls
 
         public BindingListViewModel Model { get; set; }
 
+        public event EventHandler ValueChanged;
+
         public BindingListElementDataDesc(
             BindingListViewModel model, 
             IBindingList list,
@@ -352,6 +354,18 @@ namespace Avalonia.PropertyGrid.Controls
             Collection = collection;
             InsertCommand = ReactiveCommand.Create(() => insertCommand.Execute(this));
             RemoveCommand = ReactiveCommand.Create(() => removeCommand.Execute(this));
+
+            list.ListChanged += OnListChanged;
+        }
+
+        private void OnListChanged(object sender, ListChangedEventArgs e)
+        {
+            if(e.ListChangedType != ListChangedType.ItemChanged || e.NewIndex != Property.Index)
+            {
+                return;
+            }
+
+            ValueChanged?.Invoke(this, EventArgs.Empty);
         }
     }
     #endregion

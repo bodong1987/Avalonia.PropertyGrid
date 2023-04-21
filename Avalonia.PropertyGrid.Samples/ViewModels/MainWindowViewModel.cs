@@ -103,6 +103,9 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
 
         [Category("Binding List")]
         public BindingList<Boolean> boolList { get; set; } = new BindingList<bool> { true, false };
+
+        [Category("Binding List")]
+        public BindingList<PlatformID> enumList { get; set; } = new BindingList<PlatformID>() { PlatformID.Win32NT, PlatformID.Unix };
     }
 
     [Flags]
