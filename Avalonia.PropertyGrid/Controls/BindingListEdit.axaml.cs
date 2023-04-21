@@ -337,6 +337,8 @@ namespace Avalonia.PropertyGrid.Controls
 
         public BindingListViewModel Model { get; set; }
 
+        public string DisplayName => Property.Index.ToString();
+
         public event EventHandler ValueChanged;
 
         public BindingListElementDataDesc(

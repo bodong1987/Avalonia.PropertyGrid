@@ -12,11 +12,17 @@
     <Setter Property="Template">
       <ControlTemplate>
 		  <DataValidationErrors>
-			  <Grid ColumnDefinitions="*,Auto,Auto">
-				  <controls:BindingListElementPlaceholderEdit>					  
+			  <Grid ColumnDefinitions="36, *,Auto,Auto">
+				  <TextBlock Text="{Binding DisplayName}" 
+							 Margin="10,0,2,0"
+							 VerticalAlignment="Center"
+							 ></TextBlock>
+				  <controls:BindingListElementPlaceholderEdit 
+					  Grid.Column="1"
+					  >					  
 				  </controls:BindingListElementPlaceholderEdit>
 				  <Button x:Name="InsertButton"
-						  Grid.Column="1"
+						  Grid.Column="2"
 						  Margin="2"
 						  Width="32"
 						  Height="32"
@@ -26,7 +32,7 @@
 						  ToolTip.Tip="{ll:Localize InsertNewElement}"
 						  >+</Button>
 				  <Button x:Name="RemoveButton"
-						  Grid.Column="2"
+						  Grid.Column="3"
 						  Margin="2"
 						  Width="32"
 						  Height="32"

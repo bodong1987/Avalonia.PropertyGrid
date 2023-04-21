@@ -4,10 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Avalonia.PropertyGrid.Controls.BindingListElementPlaceholderEdit">
-	<Grid x:Name="mainGrid"
-		  ColumnDefinitions="*" 
-		  RowDefinitions="*"
-		  Margin="0"
-		  >		
-	</Grid>
+	<Border x:Name="mainBorder"
+		    HorizontalAlignment="Stretch"
+			>		
+	</Border>
 </UserControl>

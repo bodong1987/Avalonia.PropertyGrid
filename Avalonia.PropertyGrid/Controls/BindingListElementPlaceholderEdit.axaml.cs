@@ -2,6 +2,7 @@
 using Avalonia.PropertyGrid.Model.ComponentModel;
 using System.ComponentModel;
 using System;
+using System.Diagnostics;
 
 namespace Avalonia.PropertyGrid.Controls
 {
@@ -37,9 +38,9 @@ namespace Avalonia.PropertyGrid.Controls
                 oldValue.ValueChanged -= OnElementValueChanged;
             }
 
-            mainGrid.Children.Clear();
+            mainBorder.Child = null;
 
-            if(value == null)
+            if (value == null)
             {
                 return;
             }
@@ -50,8 +51,10 @@ namespace Avalonia.PropertyGrid.Controls
             if (control != null)
             {
                 BindingControl = control;
-                control.Margin = new Thickness(10,2);
-                mainGrid.Children.Add(control);
+                control.Margin = new Thickness(2,2);
+                control.HorizontalAlignment = Layout.HorizontalAlignment.Stretch;
+
+                mainBorder.Child = control;
 
                 Factory.HandlePropertyChanged(value.List, value.Property, control);
             }
