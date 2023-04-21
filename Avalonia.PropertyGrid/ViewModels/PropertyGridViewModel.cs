@@ -12,6 +12,21 @@ using System.Threading.Tasks;
 namespace Avalonia.PropertyGrid.ViewModels
 {
     /// <summary>
+    /// Enum PropertyGridShowStyle
+    /// </summary>
+    public enum PropertyGridShowStyle
+    {
+        /// <summary>
+        /// The category
+        /// </summary>
+        Category,
+        /// <summary>
+        /// The alphabetic
+        /// </summary>
+        Alphabetic
+    }
+
+    /// <summary>
     /// Class PropertyGridViewModel.
     /// Implements the <see cref="ReactiveObject" />
     /// </summary>

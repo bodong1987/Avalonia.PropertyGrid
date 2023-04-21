@@ -174,17 +174,17 @@ namespace Avalonia.PropertyGrid.Controls
             {
                 Dictionary<string, List<PropertyBinding>> caches = new Dictionary<string, List<PropertyBinding>>();
 
-                foreach (var info in Bindings.PropertyBindingDict)
+                foreach (var info in Bindings)
                 {
-                    var category = PropertyGridViewModel.GetCategory(info.Value.Property);
+                    var category = PropertyGridViewModel.GetCategory(info.Property);
 
                     if(caches.TryGetValue(category, out var list))
                     {
-                        list.Add(info.Value);
+                        list.Add(info);
                     }
                     else
                     {
-                        list = new List<PropertyBinding>() { info.Value };
+                        list = new List<PropertyBinding>() { info };
                         caches.Add(category, list);
                     }
                 }
@@ -211,12 +211,12 @@ namespace Avalonia.PropertyGrid.Controls
             }         
             else
             {
-                foreach(var info in Bindings.PropertyBindingDict)
+                foreach(var info in Bindings)
                 {
-                    bool IsVisible = ViewModel.CheckVisible(info.Value.Property);
+                    bool IsVisible = ViewModel.CheckVisible(info.Property);
 
-                    info.Value.BindingNameControl.IsVisible = IsVisible;
-                    info.Value.BindingControl.IsVisible = IsVisible;
+                    info.BindingNameControl.IsVisible = IsVisible;
+                    info.BindingControl.IsVisible = IsVisible;
                 }
             }
         }
@@ -226,15 +226,25 @@ namespace Avalonia.PropertyGrid.Controls
             propertiesGrid.RowDefinitions.Clear();
             propertiesGrid.Children.Clear();
             Bindings.Clear();
-            Bindings.SelectedObject = target;
 
-            if (propertyGridShowStyle == PropertyGridShowStyle.Category)
+            ReferencePath referencePath = new ReferencePath();
+            
+            try
             {
-                BuildCategoryPropertiesView(target);
+                referencePath.BeginScope(target.GetType().Name);
+
+                if (propertyGridShowStyle == PropertyGridShowStyle.Category)
+                {
+                    BuildCategoryPropertiesView(target, referencePath);
+                }
+                else if (propertyGridShowStyle == PropertyGridShowStyle.Alphabetic)
+                {
+                    BuildAlphabeticPropertiesView(target, referencePath);
+                }
             }
-            else if(propertyGridShowStyle == PropertyGridShowStyle.Alphabetic)
+            finally
             {
-                BuildAlphabeticPropertiesView(target);
+                referencePath.EndScope();
             }
 
             double width = column_name.Bounds.Width;
@@ -246,7 +256,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Builds the category properties view.
         /// </summary>
-        protected virtual void BuildCategoryPropertiesView(object target)
+        protected virtual void BuildCategoryPropertiesView(object target, ReferencePath referencePath)
         {
             propertiesGrid.ColumnDefinitions.Clear();
 
@@ -260,12 +270,13 @@ namespace Avalonia.PropertyGrid.Controls
                 expander.SetValue(Grid.RowProperty, propertiesGrid.RowDefinitions.Count - 1);
                 expander.IsExpanded = true;
                 expander.HorizontalContentAlignment = Layout.HorizontalAlignment.Stretch;
+                expander.Margin = new Thickness(2);
 
                 Grid grid = new Grid();
                 grid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
                 grid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
 
-                expander.IsVisible = BuildPropertiesCellEdit(target, categoryInfo.Value, expander, grid);
+                expander.IsVisible = BuildPropertiesCellEdit(target, referencePath, categoryInfo.Value, expander, grid);
 
                 expander.Content = grid;
 
@@ -283,38 +294,47 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="expander">The expander.</param>
         /// <param name="grid">The grid.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
-        protected virtual bool BuildPropertiesCellEdit(object target, IEnumerable<PropertyDescriptor> properties, Expander expander, Grid grid)
+        protected virtual bool BuildPropertiesCellEdit(object target, ReferencePath referencePath, IEnumerable<PropertyDescriptor> properties, Expander expander, Grid grid)
         {
             bool AtLeastOneVisible = false;
 
             foreach(var property in properties)
             {
-                var value = property.GetValue(target);
-
-                if(value != null)
+                referencePath.BeginScope(property.Name);
+                try
                 {
-                    var attr = property.GetCustomAttribute<TypeConverterAttribute>();
+                    var value = property.GetValue(target);
 
-                    if (attr == null)
+                    // if is expand object, expand again will cause overflow exception.
+                    if (value != null && !Bindings.IsBinding(value))
                     {
-                        attr = property.PropertyType.GetCustomAttribute<TypeConverterAttribute>();
+                        var attr = property.GetCustomAttribute<TypeConverterAttribute>();
+
+                        if (attr == null)
+                        {
+                            attr = property.PropertyType.GetCustomAttribute<TypeConverterAttribute>();
+                        }
+
+                        if (attr != null && attr.GetConverterType().IsChildOf<ExpandableObjectConverter>())
+                        {
+                            AtLeastOneVisible |= BuildExpandableObjectPropertyCellEdit(value, referencePath, property, expander, grid);
+
+                            continue;
+                        }
                     }
 
-                    if (attr != null && attr.GetConverterType().IsChildOf<ExpandableObjectConverter>())
-                    {
-                        AtLeastOneVisible |= BuildExpandableObjectPropertyCellEdit(value, property, expander, grid);
-
-                        continue;
-                    }
+                    AtLeastOneVisible |= BuildPropertyCellEdit(target, referencePath, property, expander, grid);
                 }
-
-                AtLeastOneVisible |= BuildPropertyCellEdit(target, property, expander, grid);
+                finally
+                {
+                    referencePath.EndScope();
+                }
             }
 
             return AtLeastOneVisible;
         }
 
-        protected virtual bool BuildExpandableObjectPropertyCellEdit(object target, PropertyDescriptor propertyDescriptor, Expander expander, Grid grid)
+        protected virtual bool BuildExpandableObjectPropertyCellEdit(object target, ReferencePath referencePath, PropertyDescriptor propertyDescriptor, Expander expander, Grid grid)
         {
             if(target == null)
             {
@@ -330,25 +350,36 @@ namespace Avalonia.PropertyGrid.Controls
                 return false;
             }
 
-            grid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
+            try
+            {
+                referencePath.BeginScope(target.GetType().Name);
 
-            Expander childExpander = new Expander();
-            childExpander.ExpandDirection = ExpandDirection.Down;
-            childExpander.Header = propertyDescriptor.DisplayName;
-            childExpander.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
-            childExpander.SetValue(Grid.ColumnSpanProperty, 2);
-            childExpander.IsExpanded = true;
-            childExpander.HorizontalAlignment = Layout.HorizontalAlignment.Stretch;
-            childExpander.HorizontalContentAlignment = Layout.HorizontalAlignment.Stretch;
+                grid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
 
-            Grid childGrid = new Grid();
-            childGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
-            childGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
+                Expander childExpander = new Expander();
+                childExpander.ExpandDirection = ExpandDirection.Down;
+                childExpander.Header = propertyDescriptor.DisplayName;
+                childExpander.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
+                childExpander.SetValue(Grid.ColumnSpanProperty, 2);
+                childExpander.IsExpanded = true;
+                childExpander.HorizontalAlignment = Layout.HorizontalAlignment.Stretch;
+                childExpander.HorizontalContentAlignment = Layout.HorizontalAlignment.Stretch;
+                childExpander.Margin = new Thickness(6,2,6,2);
 
-            childExpander.IsVisible = BuildPropertiesCellEdit(target, properties.Cast<PropertyDescriptor>(), childExpander, childGrid);
+                Grid childGrid = new Grid();
+                childGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
+                childGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
 
-            childExpander.Content = childGrid;
-            grid.Children.Add(childExpander);
+                childExpander.IsVisible = BuildPropertiesCellEdit(target, referencePath, properties.Cast<PropertyDescriptor>(), childExpander, childGrid);
+
+                childExpander.Content = childGrid;
+                grid.Children.Add(childExpander);
+            }
+            finally
+            {
+                referencePath.EndScope();
+            }
+            
 
             return true;
         }
@@ -357,11 +388,12 @@ namespace Avalonia.PropertyGrid.Controls
         /// Builds the property cell edit.
         /// </summary>
         /// <param name="target">The target.</param>
+        /// <param name="referencePath">The reference path.</param>
         /// <param name="propertyDescriptor">The property descriptor.</param>
         /// <param name="expander">The expander.</param>
         /// <param name="grid">The grid.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
-        protected virtual bool BuildPropertyCellEdit(object target, PropertyDescriptor propertyDescriptor, Expander expander, Grid grid)
+        protected virtual bool BuildPropertyCellEdit(object target, ReferencePath referencePath, PropertyDescriptor propertyDescriptor, Expander expander, Grid grid)
         {
             var property = propertyDescriptor;
 
@@ -405,12 +437,13 @@ namespace Avalonia.PropertyGrid.Controls
 
             Bindings.AddBinding(new PropertyBinding()
             {
-                BindingKey = PropertyGridBindingCache.CalcPropertyKey(target, property.Name),
+                BindingKey = referencePath.ToString(),
                 Property = property,
                 BindingControl = control,
                 BindingNameControl = nameBlock,
                 Factory = factory,
                 Target = target,
+                Depth = referencePath.Count,
                 BindingExpander = expander // expander can be null
             });            
 
@@ -425,13 +458,13 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Builds the alphabetic properties view.
         /// </summary>
-        protected virtual void BuildAlphabeticPropertiesView(object target)
+        protected virtual void BuildAlphabeticPropertiesView(object target, ReferencePath referencePath)
         {
             propertiesGrid.ColumnDefinitions.Clear();
             propertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
             propertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
 
-            BuildPropertiesCellEdit(target, ViewModel.AllProperties, null, propertiesGrid);
+            BuildPropertiesCellEdit(target, referencePath, ViewModel.AllProperties, null, propertiesGrid);
         }
         #endregion
 
@@ -469,9 +502,5 @@ namespace Avalonia.PropertyGrid.Controls
         #endregion
     }
 
-    public enum PropertyGridShowStyle
-    {
-        Category,
-        Alphabetic
-    }
+    
 }

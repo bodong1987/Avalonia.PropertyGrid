@@ -63,12 +63,14 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         {
             var propertyType = propertyDescriptor.PropertyType;
             if (propertyType != typeof(DateTime) &&
-                propertyType != typeof(DateTimeOffset))
+                propertyType != typeof(DateTimeOffset) &&
+                propertyType != typeof(DateTime?) &&
+                propertyType != typeof(DateTimeOffset?))
             {
                 return false;
             }
 
-            if(control is DatePicker dp)
+            if (control is DatePicker dp)
             {
                 if (propertyType == typeof(DateTime))
                 {

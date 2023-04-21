@@ -1,13 +1,16 @@
 ﻿using Avalonia.Controls;
 using Avalonia.PropertyGrid.Model.ComponentModel;
+using Avalonia.PropertyGrid.Model.Extensions;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Text;
 
 namespace Avalonia.PropertyGrid.Controls.Implements
 {
-    internal struct PropertyBinding
+    internal class PropertyBinding
     {
         public string BindingKey;
         public PropertyDescriptor Property;
@@ -16,45 +19,38 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         public ICellEditFactory Factory;
         public Expander BindingExpander;
         public object Target;
+        public int Depth;
+
+        public string PropertyName => Property?.Name;
+
+        public override string ToString()
+        {
+            return BindingKey;
+        }
     }
 
-    internal class PropertyGridBindingCache : MiniReactiveObject
+    internal class PropertyGridBindingCache : MiniReactiveObject, IEnumerable<PropertyBinding>
     {
-        public readonly Dictionary<string, PropertyBinding> PropertyBindingDict = new Dictionary<string, PropertyBinding>();
-        public readonly HashSet<object> ExtraBindingObjects = new HashSet<object>();
+        public readonly Dictionary<object, List<PropertyBinding>> BindingObjects = new Dictionary<object, List<PropertyBinding>>();
 
         public event EventHandler<BindingPropertyChangedEventArgs> PropertyChangedEvent;
-
-        object _SelectObject;
-        public object SelectedObject
-        {
-            get => _SelectObject;
-            set
-            {
-                if(_SelectObject != value)
-                {
-                    RemovePropertyChangedObserver(_SelectObject);
-
-                    _SelectObject = value;
-
-                    AddPropertyChangedObserver(_SelectObject);
-
-                    RaisePropertyChanged(nameof(SelectedObject));
-                }
-            }
-        }
 
         public PropertyGridBindingCache()
         {
         }
 
+        public bool IsBinding(object target)
+        {
+            return target != null && BindingObjects.ContainsKey(target);
+        }
+
         void AddPropertyChangedObserver(object target)
         {
-            if (_SelectObject is System.ComponentModel.INotifyPropertyChanged npc2)
+            if (target is System.ComponentModel.INotifyPropertyChanged npc2)
             {
                 npc2.PropertyChanged += OnSelectedObjectPropertyChanged;
             }
-            else if (_SelectObject is IEnumerable<System.ComponentModel.INotifyPropertyChanged> npcs2)
+            else if (target is IEnumerable<System.ComponentModel.INotifyPropertyChanged> npcs2)
             {
                 foreach (var n in npcs2)
                 {
@@ -80,95 +76,80 @@ namespace Avalonia.PropertyGrid.Controls.Implements
 
         public void AddBinding(PropertyBinding binding)
         {
-            if(!PropertyBindingDict.ContainsKey(binding.BindingKey))
+            Debug.Assert(binding != null);
+            Debug.Assert(binding.BindingKey.IsNotNullOrEmpty());
+
+            if(!BindingObjects.TryGetValue(binding.Target, out var list))
             {
-                PropertyBindingDict.Add(binding.BindingKey, binding);
+                list = new List<PropertyBinding>() { binding };
+                BindingObjects.Add(binding.Target, list);
 
-                if(binding.Target != SelectedObject && !ExtraBindingObjects.Contains(binding.Target))
-                {
-                    ExtraBindingObjects.Add(binding.Target);
-
-                    AddPropertyChangedObserver(binding.Target);
-                }
+                AddPropertyChangedObserver(binding.Target);
+            }
+            else
+            {
+                list.Add(binding);
             }            
         }
-
-        public static string CalcPropertyKey(object target, string name)
-        {
-            return (target != null ? target.ToString() : "") + "|" + name;
-        }
-
-        public void RemoveBinding(string key)
-        {
-            PropertyBindingDict.Remove(key);
-        }
+               
 
         public void ClearBindings()
         {
-            PropertyBindingDict.Clear();
-
-            foreach(var obj in ExtraBindingObjects)
+            foreach(var obj in BindingObjects.Keys)
             {
                 RemovePropertyChangedObserver(obj);
             }
 
-            ExtraBindingObjects.Clear();
+            BindingObjects.Clear();
         }
 
         public void Clear()
         {
-            ClearBindings();
-            SelectedObject = null;
-        }
-
-        public PropertyBinding? this[string key]
-        {
-            get
-            {
-                if(PropertyBindingDict.TryGetValue(key, out var binding))
-                {
-                    return binding;
-                }
-
-                return null;
-            }
+            ClearBindings();         
         }
 
         private void OnSelectedObjectPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            var key = CalcPropertyKey(sender, e.PropertyName);
-            if(PropertyBindingDict.TryGetValue((string)key, out var binding))
+        {            
+            if(BindingObjects.TryGetValue(sender, out var list))
             {
-                if(PropertyChangedEvent!=null)
+                var binding = list.Find(x=>x.PropertyName == e.PropertyName);
+
+                if(binding != null)
                 {
-                    BindingPropertyChangedEventArgs evt = new BindingPropertyChangedEventArgs(binding);
-
-                    PropertyChangedEvent(this, evt);
-
-                    if(evt.Handled)
+                    if (PropertyChangedEvent != null)
                     {
-                        return;
-                    }
-                }
+                        BindingPropertyChangedEventArgs evt = new BindingPropertyChangedEventArgs(binding);
 
-                binding.Factory.HandlePropertyChanged(binding.Target, binding.Property, binding.BindingControl);
+                        PropertyChangedEvent(this, evt);
+
+                        if (evt.Handled)
+                        {
+                            return;
+                        }
+                    }
+
+                    binding.Factory.HandlePropertyChanged(binding.Target, binding.Property, binding.BindingControl);
+                }
             }
         }
 
         internal double CalcBindingNameMaxLength()
         {
             double maxLength = 0;
-            foreach (var info in PropertyBindingDict)
+            foreach (var list in BindingObjects.Values)
             {
-                if (info.Value.BindingNameControl != null)
+                foreach(var info in list)
                 {
-                    if (info.Value.BindingNameControl.Width >= maxLength)
+                    if (info.BindingNameControl != null)
                     {
-                        maxLength = info.Value.BindingNameControl.Width;
-                    }
-                    else if (info.Value.BindingNameControl.DesiredSize.Width >= maxLength)
-                    {
-                        maxLength = info.Value.BindingNameControl.DesiredSize.Width;
+                        if (info.BindingNameControl.Width >= maxLength)
+                        {
+                            maxLength = info.BindingNameControl.Width;
+                        }
+                        else if (info.BindingNameControl.DesiredSize.Width >= maxLength)
+                        {
+                            maxLength = info.BindingNameControl.DesiredSize.Width;
+                        }
                     }
                 }
             }
@@ -178,13 +159,32 @@ namespace Avalonia.PropertyGrid.Controls.Implements
 
         internal void SyncWidth(double width)
         {
-            foreach (var info in PropertyBindingDict)
+            foreach (var list in BindingObjects.Values)
             {
-                if (info.Value.BindingNameControl != null)
+                foreach (var info in list)
                 {
-                    info.Value.BindingNameControl.Width = width;
+                    if (info.BindingNameControl != null)
+                    {
+                        info.BindingNameControl.Width = Math.Max(width - info.Depth*6/2, 0);
+                    }
                 }
             }
+        }
+
+        public IEnumerator<PropertyBinding> GetEnumerator()
+        {
+            foreach(var list in BindingObjects.Values)
+            {
+                foreach(var info in list)
+                {
+                    yield return info;
+                }
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 

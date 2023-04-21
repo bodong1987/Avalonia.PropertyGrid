@@ -100,6 +100,10 @@ namespace Avalonia.PropertyGrid.Samples.Models
         public float fValue { get; set; } = 0.5f;
 
         [Category("Numeric")]
+        [Range(0.1f, 10.0f)]
+        public double dValue { get; set; } = 5.5f;
+
+        [Category("Numeric")]
         public Int64 i64Value { get; set; } = 1000000000;
 
         [Category("Binding List")]
@@ -154,6 +158,10 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
         [Category("Auto Converter")]
         public System.Drawing.Color Color2 { get; set; } = System.Drawing.Color.FromArgb(255, 122, 50, 177);
+
+        [DisplayName("Login User Data")]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        public LoginInfo loginInfo { get; set; } = new LoginInfo();
     }
 
     [Flags]

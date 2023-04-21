@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Avalonia.PropertyGrid.Samples.Models
 {
     [TypeConverter(typeof(ExpandableObjectConverter))]
-    public class Vector3 : ReactiveObject
+    public class Vector3 : MiniReactiveObject
     {
         public double _X,_Y, _Z;
 
