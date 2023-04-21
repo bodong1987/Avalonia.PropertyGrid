@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
-    internal class PropertyGridBindingListFactory : AbstractPropertyGridFactory
+    internal class BindingListCellEditFactory : AbstractCellEditFactory
     {
         public override int ImportPriority => base.ImportPriority - 1000000;
 
@@ -51,7 +51,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             }
 
             BindingListEdit control = new BindingListEdit();
-            control.Model.Collection = (this as IPropertyGridControlFactory).Collection;
+            control.Model.Collection = (this as ICellEditFactory).Collection;
 
             Debug.Assert(control.Model.Collection != null);
 

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
-    internal class PropertyGridStringFactory : AbstractPropertyGridFactory
+    internal class StringCellEditFactory : AbstractCellEditFactory
     {
         public override int ImportPriority => base.ImportPriority - 1000000;
 

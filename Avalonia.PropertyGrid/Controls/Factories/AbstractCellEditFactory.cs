@@ -10,7 +10,7 @@ using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
 
 namespace Avalonia.PropertyGrid.Controls.Factories
 {
-    public abstract class AbstractPropertyGridFactory : IPropertyGridControlFactory
+    public abstract class AbstractCellEditFactory : ICellEditFactory
     {
         /// <summary>
         /// Gets the import priority.
@@ -24,7 +24,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         /// Gets or sets the collection.
         /// </summary>
         /// <value>The collection.</value>
-        IPropertyGridControlFactoryCollection IPropertyGridControlFactory.Collection { get; set; }
+        ICellEditFactoryCollection ICellEditFactory.Collection { get; set; }
 
         /// <summary>
         /// Check available for target
@@ -39,10 +39,10 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         /// <summary>
         /// Clones this instance.
         /// </summary>
-        /// <returns>IPropertyGridControlFactory.</returns>
-        public virtual IPropertyGridControlFactory Clone()
+        /// <returns>ICellEditFactory.</returns>
+        public virtual ICellEditFactory Clone()
         {
-            return Activator.CreateInstance(GetType()) as IPropertyGridControlFactory;
+            return Activator.CreateInstance(GetType()) as ICellEditFactory;
         }
 
         /// <summary>

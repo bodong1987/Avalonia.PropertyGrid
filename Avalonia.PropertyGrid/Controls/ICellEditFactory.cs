@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 namespace Avalonia.PropertyGrid.Controls
 {
     /// <summary>
-    /// Interface IPropertyGridControlFactory
+    /// Interface ICellEditFactory
     /// </summary>
-    public interface IPropertyGridControlFactory
+    public interface ICellEditFactory
     {
         /// <summary>
         /// Gets the import priority.
@@ -22,7 +22,7 @@ namespace Avalonia.PropertyGrid.Controls
         int ImportPriority { get; }
 
         [Browsable(false)]
-        IPropertyGridControlFactoryCollection Collection { get; internal set; }
+        ICellEditFactoryCollection Collection { get; internal set; }
 
         /// <summary>
         /// Check available for target
@@ -34,8 +34,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Clones this instance.
         /// </summary>
-        /// <returns>IPropertyGridControlFactory.</returns>
-        IPropertyGridControlFactory Clone();
+        /// <returns>ICellEditFactory.</returns>
+        ICellEditFactory Clone();
 
         /// <summary>
         /// Handles the new property.

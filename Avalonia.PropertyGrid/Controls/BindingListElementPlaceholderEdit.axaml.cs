@@ -8,7 +8,7 @@ namespace Avalonia.PropertyGrid.Controls
 {
     public partial class BindingListElementPlaceholderEdit : UserControl
     {
-        IPropertyGridControlFactory Factory;
+        ICellEditFactory Factory;
         Control BindingControl;
 
         public BindingListElementPlaceholderEdit()

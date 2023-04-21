@@ -10,26 +10,26 @@ namespace Avalonia.PropertyGrid.Controls.Implements
 {
     /// <summary>
     /// Class PropertyGridControlFactoryCollection.
-    /// Implements the <see cref="Avalonia.PropertyGrid.Controls.IPropertyGridControlFactoryCollection" />
+    /// Implements the <see cref="Avalonia.PropertyGrid.Controls.ICellEditFactoryCollection" />
     /// </summary>
-    /// <seealso cref="Avalonia.PropertyGrid.Controls.IPropertyGridControlFactoryCollection" />
-    internal class PropertyGridControlFactoryCollection : IPropertyGridControlFactoryCollection
+    /// <seealso cref="Avalonia.PropertyGrid.Controls.ICellEditFactoryCollection" />
+    internal class CellEditFactoryCollection : ICellEditFactoryCollection
     {
         /// <summary>
         /// The factories
         /// </summary>
-        readonly List<IPropertyGridControlFactory> _Factories = new List<IPropertyGridControlFactory>();
+        readonly List<ICellEditFactory> _Factories = new List<ICellEditFactory>();
 
         /// <summary>
         /// Gets the factories.
         /// </summary>
         /// <value>The factories.</value>
-        public IEnumerable<IPropertyGridControlFactory> Factories => _Factories.ToArray();
+        public IEnumerable<ICellEditFactory> Factories => _Factories.ToArray();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyGridControlFactoryCollection"/> class.
         /// </summary>
-        public PropertyGridControlFactoryCollection()
+        public CellEditFactoryCollection()
         {
         }
 
@@ -37,7 +37,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         /// Initializes a new instance of the <see cref="PropertyGridControlFactoryCollection"/> class.
         /// </summary>
         /// <param name="factories">The factories.</param>
-        public PropertyGridControlFactoryCollection(IEnumerable<IPropertyGridControlFactory> factories)
+        public CellEditFactoryCollection(IEnumerable<ICellEditFactory> factories)
         {            
             _Factories.AddRange(factories);
             _Factories.Sort((x, y) =>
@@ -56,8 +56,8 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         /// Clones the factories.
         /// </summary>
         /// <param name="accessToken">The access token.</param>
-        /// <returns>IEnumerable&lt;IPropertyGridControlFactory&gt;.</returns>
-        public IEnumerable<IPropertyGridControlFactory> CloneFactories(object accessToken)
+        /// <returns>IEnumerable&lt;ICellEditFactory&gt;.</returns>
+        public IEnumerable<ICellEditFactory> CloneFactories(object accessToken)
         {
             return _Factories.FindAll(x=>x.Accept(accessToken)).Select(x=>x.Clone());
         }
@@ -66,7 +66,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         /// Adds the factory.
         /// </summary>
         /// <param name="factory">The factory.</param>
-        public void AddFactory(IPropertyGridControlFactory factory)
+        public void AddFactory(ICellEditFactory factory)
         {
             factory.Collection = this;
             _Factories.Add(factory);
@@ -80,7 +80,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         /// Removes the factory.
         /// </summary>
         /// <param name="factory">The factory.</param>
-        public void RemoveFactory(IPropertyGridControlFactory factory)
+        public void RemoveFactory(ICellEditFactory factory)
         {            
             _Factories.Remove(factory);
         }
@@ -92,7 +92,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         /// <param name="propertyDescriptor">The property descriptor.</param>
         /// <param name="factory">The factory.</param>
         /// <returns>Control.</returns>
-        public Control BuildPropertyControl(object component, PropertyDescriptor propertyDescriptor, out IPropertyGridControlFactory factory)
+        public Control BuildPropertyControl(object component, PropertyDescriptor propertyDescriptor, out ICellEditFactory factory)
         {
             foreach (var Factory in _Factories)
             {

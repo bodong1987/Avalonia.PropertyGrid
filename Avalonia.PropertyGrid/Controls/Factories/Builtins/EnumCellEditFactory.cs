@@ -10,12 +10,7 @@ using System.Threading.Tasks;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
-    /// <summary>
-    /// Class PropertyGridEnumFactory.
-    /// Implements the <see cref="Avalonia.PropertyGrid.Controls.Factories.AbstractPropertyGridFactory" />
-    /// </summary>
-    /// <seealso cref="Avalonia.PropertyGrid.Controls.Factories.AbstractPropertyGridFactory" />
-    internal class PropertyGridEnumFactory : AbstractPropertyGridFactory
+    internal class EnumCellEditFactory : AbstractCellEditFactory
     {
         /// <summary>
         /// Gets the import priority.

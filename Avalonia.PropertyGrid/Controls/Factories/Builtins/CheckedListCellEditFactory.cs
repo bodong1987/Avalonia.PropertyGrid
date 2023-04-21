@@ -10,7 +10,7 @@ using Avalonia.PropertyGrid.Model.Extensions;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
-    internal class PropertyGridCheckedListFactory : AbstractPropertyGridFactory
+    internal class CheckedListCellEditFactory : AbstractCellEditFactory
     {
         public override int ImportPriority => base.ImportPriority - 100000;
 

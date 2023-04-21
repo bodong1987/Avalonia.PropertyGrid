@@ -29,7 +29,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// The factories
         /// You can use this fields to extend ability of PropertyGrid
         /// </summary>
-        public readonly static IPropertyGridControlFactoryCollection FactoryTemplates = new PropertyGridControlFactoryCollection();
+        public readonly static ICellEditFactoryCollection FactoryTemplates = new CellEditFactoryCollection();
 
         /// <summary>
         /// Gets or sets the localization service.
@@ -71,14 +71,14 @@ namespace Avalonia.PropertyGrid.Controls
 
         PropertyGridViewModel ViewModel = new PropertyGridViewModel();
 
-        public readonly IPropertyGridControlFactoryCollection Factories;
+        public readonly ICellEditFactoryCollection Factories;
 
         private struct PropertyBinding
         {
             public PropertyDescriptor Property;
             public Control BindingControl;
             public TextBlock BindingNameControl;
-            public IPropertyGridControlFactory Factory;
+            public ICellEditFactory Factory;
             public Expander BindingExpander;
         }
 
@@ -91,9 +91,9 @@ namespace Avalonia.PropertyGrid.Controls
             // register builtin factories
             foreach(var type in typeof(PropertyGrid).Assembly.GetTypes())
             {
-                if(type.IsClass && !type.IsAbstract && type.IsImplementFrom<IPropertyGridControlFactory>())
+                if(type.IsClass && !type.IsAbstract && type.IsImplementFrom<ICellEditFactory>())
                 {
-                    FactoryTemplates.AddFactory(Activator.CreateInstance(type) as IPropertyGridControlFactory);
+                    FactoryTemplates.AddFactory(Activator.CreateInstance(type) as ICellEditFactory);
                 }
             }
 
@@ -107,7 +107,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         public PropertyGrid()
         {
-            Factories = new PropertyGridControlFactoryCollection(FactoryTemplates.CloneFactories(this));
+            Factories = new CellEditFactoryCollection(FactoryTemplates.CloneFactories(this));
 
             this.DataContext = ViewModel;
             ViewModel.PropertyDescriptorChanged += OnPropertyDescriptorChanged;
@@ -309,7 +309,7 @@ namespace Avalonia.PropertyGrid.Controls
 
             foreach(var property in properties)
             {
-                IPropertyGridControlFactory factory;
+                ICellEditFactory factory;
                 var control = Factories.BuildPropertyControl(SelectedObject, property, out factory);
 
                 if(control == null)

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
-    internal class PropertyGridBooleanFactory : AbstractPropertyGridFactory
+    internal class BooleanCellEditFactory : AbstractCellEditFactory
     {
         public override int ImportPriority => base.ImportPriority - 100000;
 

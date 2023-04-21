@@ -262,7 +262,7 @@ namespace Avalonia.PropertyGrid.Controls
     #region Models
     internal class BindingListViewModel : ReactiveObject
     {
-        public IPropertyGridControlFactoryCollection Collection { get; set; }
+        public ICellEditFactoryCollection Collection { get; set; }
 
         IBindingList _List;
         public IBindingList List
@@ -330,7 +330,7 @@ namespace Avalonia.PropertyGrid.Controls
     {
         public readonly IBindingList List;
         public readonly BindingListElementPropertyDescriptor Property;
-        public readonly IPropertyGridControlFactoryCollection Collection;
+        public readonly ICellEditFactoryCollection Collection;
 
         public ICommand InsertCommand { get; set; }
         public ICommand RemoveCommand { get; set; }
@@ -345,7 +345,7 @@ namespace Avalonia.PropertyGrid.Controls
             BindingListViewModel model, 
             IBindingList list,
             BindingListElementPropertyDescriptor property, 
-            IPropertyGridControlFactoryCollection collection,
+            ICellEditFactoryCollection collection,
             ICommand insertCommand,
             ICommand removeCommand
             )

@@ -11,7 +11,7 @@ using Avalonia.Controls.Embedding;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
-    internal class PropertyGridNumericFactory : AbstractPropertyGridFactory
+    internal class NumericCellEditFactory : AbstractCellEditFactory
     {
         public override int ImportPriority => base.ImportPriority - 1000000;
 

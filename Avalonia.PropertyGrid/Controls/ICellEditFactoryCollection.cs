@@ -9,34 +9,34 @@ using System.Threading.Tasks;
 namespace Avalonia.PropertyGrid.Controls
 {
     /// <summary>
-    /// Interface IPropertyGridControlFactoryCollection
+    /// Interface ICellEditFactoryCollection
     /// </summary>
-    public interface IPropertyGridControlFactoryCollection
+    public interface ICellEditFactoryCollection
     {
         /// <summary>
         /// Gets the factories.
         /// </summary>
         /// <value>The factories.</value>
-        IEnumerable<IPropertyGridControlFactory> Factories { get; }
+        IEnumerable<ICellEditFactory> Factories { get; }
 
         /// <summary>
         /// Clones the factories.
         /// </summary>
         /// <param name="accessToken">The access token.</param>
-        /// <returns>IEnumerable&lt;IPropertyGridControlFactory&gt;.</returns>
-        IEnumerable<IPropertyGridControlFactory> CloneFactories(object accessToken);
+        /// <returns>IEnumerable&lt;ICellEditFactory&gt;.</returns>
+        IEnumerable<ICellEditFactory> CloneFactories(object accessToken);
 
         /// <summary>
         /// Adds the factory.
         /// </summary>
         /// <param name="factory">The factory.</param>
-        void AddFactory(IPropertyGridControlFactory factory);
+        void AddFactory(ICellEditFactory factory);
 
         /// <summary>
         /// Removes the factory.
         /// </summary>
         /// <param name="factory">The factory.</param>
-        void RemoveFactory(IPropertyGridControlFactory factory);
+        void RemoveFactory(ICellEditFactory factory);
 
         /// <summary>
         /// Builds the property control.
@@ -45,6 +45,6 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="propertyDescriptor">The property descriptor.</param>
         /// <param name="factory">The factory.</param>
         /// <returns>Control.</returns>
-        Control BuildPropertyControl(object component, PropertyDescriptor propertyDescriptor, out IPropertyGridControlFactory factory);
+        Control BuildPropertyControl(object component, PropertyDescriptor propertyDescriptor, out ICellEditFactory factory);
     }
 }
