@@ -20,6 +20,7 @@ namespace Avalonia.PropertyGrid.Samples.Views
 
     class ToggleSwitchCellEditFactory : AbstractCellEditFactory
     {
+        // make this extend factor only effect on ToggleSwitchExtensionPropertyGrid
         public override bool Accept(object accessToken)
         {
             return accessToken is ToggleSwitchExtensionPropertyGrid;

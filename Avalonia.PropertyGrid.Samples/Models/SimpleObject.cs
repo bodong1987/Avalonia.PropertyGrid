@@ -135,6 +135,16 @@ namespace Avalonia.PropertyGrid.Samples.Models
         [Category("Date Time")]
         [ReadOnly(true)]
         public DateTime startDate { get; set; } = DateTime.Now;
+
+        [Category("Date Time")]
+        public TimeSpan time { get; set; } = DateTime.Now.TimeOfDay;
+
+        [Category("Date Time")]
+        public TimeSpan? timeNullable { get; set; }
+
+        [Category("Date Time")]
+        [ReadOnly(true)]
+        public TimeSpan timeReadonly { get; set; } = DateTime.Now.TimeOfDay;
     }
 
     [Flags]
