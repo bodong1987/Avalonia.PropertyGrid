@@ -18,7 +18,6 @@
     </Design.DataContext>
 
 	<TabControl TabStripPlacement="Left">
-		<!--
 		<TabItem Header="Simple">
 			<ScrollViewer>
 				<pgc:PropertyGrid Margin="4" SelectedObject="{Binding $parent[Window].DataContext.simpleObject}"></pgc:PropertyGrid>	
@@ -34,7 +33,6 @@
 				</Grid>
 			</ScrollViewer>
 		</TabItem>
-		-->
 		<TabItem Header="MultiObjects">
 			<ScrollViewer>
 				<Grid ColumnDefinitions="Auto,2,Auto,2,Auto">
@@ -54,6 +52,11 @@
 					</StackPanel>
 				</Grid>
 			</ScrollViewer>			
+		</TabItem>
+		<TabItem Header="CustomObject">
+			<ScrollViewer>
+				<pgc:PropertyGrid Margin="4" SelectedObject="{Binding $parent[Window].DataContext.customOptions}"></pgc:PropertyGrid>
+			</ScrollViewer>
 		</TabItem>
 	</TabControl>
 </Window>
