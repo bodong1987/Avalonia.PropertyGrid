@@ -3,6 +3,7 @@ using Avalonia.Data;
 using Avalonia.PropertyGrid.Controls.Implements;
 using Avalonia.PropertyGrid.Localization;
 using Avalonia.PropertyGrid.Model.ComponentModel;
+using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
 using Avalonia.PropertyGrid.Model.Extensions;
 using Avalonia.PropertyGrid.Model.Services;
 using Avalonia.PropertyGrid.ViewModels;
@@ -130,13 +131,31 @@ namespace Avalonia.PropertyGrid.Controls
         {
             if(e.Sender is PropertyGrid pg)
             {
-                pg.OnSelectedObjectChanged(e.NewValue.Value);
+                pg.OnSelectedObjectChanged(e.OldValue.Value, e.NewValue.Value);
             }
         }
 
-        private void OnSelectedObjectChanged(object newValue)
+        private void OnSelectedObjectChanged(object oldValue, object newValue)
         {
+            if(oldValue is System.ComponentModel.INotifyPropertyChanged npc)
+            {
+                npc.PropertyChanged -= OnSelectedObjectPropertyChanged;
+            }
+
             ViewModel.SelectedObject = newValue;
+
+            if(newValue is System.ComponentModel.INotifyPropertyChanged nnpc)
+            {
+                nnpc.PropertyChanged += OnSelectedObjectPropertyChanged;
+            }
+        }
+
+        private void OnSelectedObjectPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (PropertyBindingDict.TryGetValue(e.PropertyName, out PropertyBinding propertyBinding))
+            {
+                propertyBinding.Factory.HandlePropertyChanged(SelectedObject, propertyBinding.Property, propertyBinding.BindingControl);
+            }
         }
 
         #region Styled Properties Handler

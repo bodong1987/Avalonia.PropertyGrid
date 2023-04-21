@@ -37,17 +37,6 @@ namespace Avalonia.PropertyGrid.Controls
 
         public BindingListElementEdit()
         {
-            InsertCommand = ReactiveCommand.Create(OnInsert);
-            RemoveCommand = ReactiveCommand.Create(OnRemove);
-        }
-
-        private void OnInsert()
-        {
-        }
-
-        private void OnRemove()
-        {
-
         }
     }
 }

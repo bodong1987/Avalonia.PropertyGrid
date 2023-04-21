@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:pgc="clr-namespace:Avalonia.PropertyGrid.Controls;assembly=Avalonia.PropertyGrid"
-        mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="900"
-		Width="1000"
+        mc:Ignorable="d" d:DesignWidth="1400" d:DesignHeight="900"
+		Width="1400"
 		Height="900"
         x:Class="Avalonia.PropertyGrid.Samples.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
@@ -20,8 +20,18 @@
 	<TabControl TabStripPlacement="Left">
 		<TabItem Header="Simple">
 			<ScrollViewer>
-				<pgc:PropertyGrid SelectedObject="{Binding $parent[Window].DataContext.simpleObject}"></pgc:PropertyGrid>	
+				<pgc:PropertyGrid Margin="4" SelectedObject="{Binding $parent[Window].DataContext.simpleObject}"></pgc:PropertyGrid>	
 			</ScrollViewer>			
+		</TabItem>
+
+		<TabItem Header="DataSync">
+			<ScrollViewer>
+				<Grid ColumnDefinitions="Auto,2,Auto">
+					<GridSplitter Grid.Column="1"></GridSplitter>
+					<pgc:PropertyGrid Margin="2" SelectedObject="{Binding $parent[Window].DataContext.syncObject}"></pgc:PropertyGrid>
+					<pgc:PropertyGrid Margin="2" Grid.Column="2" SelectedObject="{Binding $parent[Window].DataContext.syncObject}"></pgc:PropertyGrid>
+				</Grid>
+			</ScrollViewer>
 		</TabItem>
 		
 		<TabItem Header="MultiObjects"></TabItem>

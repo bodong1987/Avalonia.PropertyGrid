@@ -1,4 +1,5 @@
 ﻿using Avalonia.PropertyGrid.Model.Collections;
+using Avalonia.PropertyGrid.Model.ComponentModel;
 using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
 using Avalonia.PropertyGrid.Model.Extensions;
 using System;
@@ -15,9 +16,12 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
         readonly SimpleObject _SimpleObject = new SimpleObject();
 
         public SimpleObject simpleObject => _SimpleObject;
+
+        readonly SimpleObject _SyncObject = new SimpleObject();
+        public SimpleObject syncObject => _SyncObject;
     }
 
-    public class SimpleObject
+    public class SimpleObject : ReactiveObject
     {
         [Category("String")]
         [DisplayName("Target Name")]

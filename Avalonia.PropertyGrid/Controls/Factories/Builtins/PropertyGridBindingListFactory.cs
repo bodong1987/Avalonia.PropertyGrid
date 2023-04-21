@@ -1,4 +1,7 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Logging;
+using Avalonia.PropertyGrid.Model.ComponentModel;
+using Avalonia.PropertyGrid.Model.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -52,6 +55,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             Debug.Assert(control.Model.Collection != null);
 
+            control.NewElement += (s, e) => HandleNewElement(s, e, target, propertyDescriptor, control);
+            control.InsertElement += (s, e) => HandleInsertElement(s, e, target, propertyDescriptor, control);
+            control.RemoveElement += (s, e) => HandleRemoveElement(s, e, target, propertyDescriptor, control);
+            control.ClearElements += (s, e) => HandleClearElements(s, e, target, propertyDescriptor, control);
+            control.ElementValueChanged += (s, e) => HandleElementValueChanged(s, e, target, propertyDescriptor, control);
+
             return control;
         }
 
@@ -72,6 +81,63 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             }
 
             return false;
+        }
+
+        private void HandleRemoveElement(object s, BindingListRoutedEventArgs e, object target, PropertyDescriptor propertyDescriptor, BindingListEdit control)
+        {
+            Debug.Assert(e.Index != -1);
+
+            var value = propertyDescriptor.GetValue(target) as IBindingList;
+
+            Debug.Assert(value != null);
+
+            if (value != null && e.Index >= 0 && e.Index < value.Count)
+            {
+                value.RemoveAt(e.Index);
+            }
+        }
+
+        private void HandleClearElements(object s, BindingListRoutedEventArgs e, object target, PropertyDescriptor propertyDescriptor, BindingListEdit control)
+        {
+            var value = propertyDescriptor.GetValue(target) as IBindingList;
+
+            Debug.Assert(value != null);
+
+            if (value != null)
+            {
+                value.Clear();
+            }
+        }
+
+        private void HandleInsertElement(object s, BindingListRoutedEventArgs e, object target, PropertyDescriptor propertyDescriptor, BindingListEdit control)
+        {
+            Debug.Assert(e.Index != -1);
+
+            var value = propertyDescriptor.GetValue(target) as IBindingList;
+
+            Debug.Assert(value != null);
+
+            if (value != null)
+            {
+                value.Insert(e.Index, ObjectCreator.Create(GetElementType(propertyDescriptor)));
+            }
+        }
+
+        private void HandleNewElement(object s, BindingListRoutedEventArgs e, object target, PropertyDescriptor propertyDescriptor, BindingListEdit control)
+        {
+            var value = propertyDescriptor.GetValue(target) as IBindingList;
+
+            Debug.Assert(value != null);
+
+            if (value != null)
+            {
+                value.Add(ObjectCreator.Create(GetElementType(propertyDescriptor)));
+            }
+        }
+
+        private void HandleElementValueChanged(object s, BindingListRoutedEventArgs e, object target, PropertyDescriptor propertyDescriptor, BindingListEdit control)
+        {
+            propertyDescriptor.RaiseEvent(target);
         }
     }
 }

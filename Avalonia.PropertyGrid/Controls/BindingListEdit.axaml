@@ -24,6 +24,7 @@
 							  Height="32"
 							  HorizontalContentAlignment="Center"
 							  VerticalContentAlignment="Center"
+							  Command="{TemplateBinding NewElementCommand}"
 							  >N</Button>
 					  <Button x:Name="ClearElements" 
 							  Grid.Column="3" 
@@ -32,6 +33,7 @@
 							  Height="32"
 							  HorizontalContentAlignment="Center"
 							  VerticalContentAlignment="Center"
+							  Command="{TemplateBinding ClearElementsCommand}"
 							  >U</Button>
 					  <ItemsControl x:Name="PART_ItemsPresenter"
 									Items="{Binding Model.Elements, RelativeSource={RelativeSource TemplatedParent}}"
@@ -46,7 +48,10 @@
 						  </ItemsControl.ItemsPanel>
 						  <ItemsControl.ItemTemplate>
 							  <DataTemplate>
-								  <controls:BindingListElementEdit>
+								  <controls:BindingListElementEdit
+									  InsertCommand="{Binding InsertCommand}"
+									  RemoveCommand="{Binding RemoveCommand}"
+									  >
 								  </controls:BindingListElementEdit>
 							  </DataTemplate>
 						  </ItemsControl.ItemTemplate>
