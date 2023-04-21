@@ -34,6 +34,25 @@
 			</ScrollViewer>
 		</TabItem>
 		
-		<TabItem Header="MultiObjects"></TabItem>
+		<TabItem Header="MultiObjects">
+			<ScrollViewer>
+				<Grid ColumnDefinitions="Auto,2,Auto,2,Auto">
+					<GridSplitter Grid.Column="1"></GridSplitter>
+					<GridSplitter Grid.Column="3"></GridSplitter>
+					<StackPanel Orientation="Vertical">
+						<TextBlock>MultiObjects's Properties</TextBlock>
+						<pgc:PropertyGrid Margin="2" SelectedObject="{Binding $parent[Window].DataContext.multiObjects}"></pgc:PropertyGrid>
+					</StackPanel>
+					<StackPanel Orientation="Vertical" Grid.Column="2">
+						<TextBlock>First Object's Properties</TextBlock>
+						<pgc:PropertyGrid Margin="2" SelectedObject="{Binding $parent[Window].DataContext.multiObject0}"></pgc:PropertyGrid>
+					</StackPanel>
+					<StackPanel Orientation="Vertical" Grid.Column="4">
+						<TextBlock>Second Object's Properties</TextBlock>
+						<pgc:PropertyGrid Margin="2" SelectedObject="{Binding $parent[Window].DataContext.multiObject1}"></pgc:PropertyGrid>
+					</StackPanel>
+				</Grid>
+			</ScrollViewer>			
+		</TabItem>
 	</TabControl>
 </Window>

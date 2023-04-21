@@ -3,6 +3,7 @@ using Avalonia.PropertyGrid.Model.ComponentModel;
 using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
 using Avalonia.PropertyGrid.Model.Extensions;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -19,6 +20,14 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
 
         readonly SimpleObject _SyncObject = new SimpleObject();
         public SimpleObject syncObject => _SyncObject;
+
+        public SimpleObject _MultiObj0 => new SimpleObject();
+        public SimpleObject _MultiObj1 => new SimpleObject();
+
+        public SimpleObject multiObject0 => _MultiObj0;
+        public SimpleObject multiObject1 => _MultiObj1;
+
+        public IEnumerable<SimpleObject> multiObjects => new SimpleObject[] { multiObject0, multiObject1 };
     }
 
     public class SimpleObject : ReactiveObject

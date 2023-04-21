@@ -37,10 +37,13 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 }
             };
 
-            list.SelectionChanged += (s, e) =>
+            if(list != null)
             {
-                control.SelectedItem = list.SelectedValue;
-            };
+                list.SelectionChanged += (s, e) =>
+                {
+                    control.SelectedItem = list.SelectedValue;
+                };
+            }            
 
             return control;
         }
