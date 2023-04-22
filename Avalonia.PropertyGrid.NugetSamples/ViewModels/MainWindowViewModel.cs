@@ -1,10 +1,15 @@
 ﻿using Avalonia.PropertyGrid.Model.Collections;
 using Avalonia.PropertyGrid.Model.ComponentModel;
+using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
+using Avalonia.PropertyGrid.Model.Extensions;
 using Avalonia.PropertyGrid.ViewModels;
 using ReactiveUI;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Net.Security;
+using System.Security.Cryptography;
 
 namespace Avalonia.PropertyGrid.NugetSamples.ViewModels
 {
@@ -79,6 +84,16 @@ namespace Avalonia.PropertyGrid.NugetSamples.ViewModels
         public string StrValue { get; set; } = "bodong";
 
         [Category("BuiltIn")]
+        [PathBrowsable(Filters = "Image Files(*.jpg;*.png;*.bmp;*.tag)|*.jpg;*.png;*.bmp;*.tag")]
+        public string ImagePath { get; set; } = "";
+
+        [Category("BuiltIn")]
+        public PlatformID EnumValue { get; set; } = Environment.OSVersion.Platform;
+
+        [Category("BuiltIn")]
+        public PropertyVisibility FlagsEnumValue { get; set; } = PropertyVisibility.AlwaysVisible;
+
+        [Category("BuiltIn")]
         public DateTime DateTimeValue { get; set; } = DateTime.Now;
 
         [Category("BuiltIn")]
@@ -109,6 +124,81 @@ namespace Avalonia.PropertyGrid.NugetSamples.ViewModels
         [Category("BuiltIn")]
         public SelectableList<PlatformID> SelectableListValue { get; set; } = new SelectableList<PlatformID>(new PlatformID[] { PlatformID.Win32Windows, PlatformID.Unix, PlatformID.Other }, PlatformID.Unix);
         #endregion
+
+        #region Data Validation
+        string _SourceImagePath;
+        [Category("DataValidation")]
+        [PathBrowsable(Filters = "Image Files(*.jpg;*.png;*.bmp;*.tag)|*.jpg;*.png;*.bmp;*.tag")]
+        public string SourceImagePath
+        {
+            get => _SourceImagePath;
+            set
+            {
+                if (value.IsNullOrEmpty())
+                {
+                    throw new ArgumentNullException(nameof(SourceImagePath));
+                }
+
+                if (!System.IO.Path.GetExtension(value).iEquals(".png"))
+                {
+                    throw new ArgumentException($"{nameof(SourceImagePath)} must be .png file.");
+                }
+
+                _SourceImagePath = value;
+            }
+        }
+
+        [Category("DataValidation")]
+        [Description("Select platforms")]
+        [ValidatePlatform]
+        public CheckedList<PlatformID> Platforms { get; set; } = new CheckedList<PlatformID>(Enum.GetValues(typeof(PlatformID)).Cast<PlatformID>());
+
+        [Category("DataValidation")]
+        [Range(10, 200)]
+        public int IntValue10To200 { get; set; } = 100;
+        #endregion
+
+        #region Expandable
+        [DisplayName("Expand Object")]
+        [Category("Expandable")]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        public LoginInfo loginInfo { get; set; } = new LoginInfo();
+        #endregion
     }
 
+    public class LoginInfo : MiniReactiveObject
+    {
+        public string UserName { get; set; }
+
+        [PasswordPropertyText(true)]
+        public string Password { get; set; }
+
+        public PlatformID ServerType { get; set; } = PlatformID.Unix;
+
+        public EncryptData EncryptPolicy { get; set; } = new EncryptData();
+    }
+
+    [TypeConverter(typeof(ExpandableObjectConverter))]
+    public class EncryptData : MiniReactiveObject
+    {
+        public EncryptionPolicy Policy { get; set; } = EncryptionPolicy.RequireEncryption;
+
+        public RSAEncryptionPaddingMode PaddingMode { get; set; } = RSAEncryptionPaddingMode.Pkcs1;
+    }
+
+    public class ValidatePlatformAttribute : ValidationAttribute
+    {
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            if (value is CheckedList<PlatformID> id)
+            {
+                if (id.Contains(PlatformID.Unix) || id.Contains(PlatformID.Other))
+                {
+                    return new ValidationResult("Can't select Unix or Other");
+                }
+            }
+
+            return ValidationResult.Success;
+        }
+    }
 }

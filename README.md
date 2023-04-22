@@ -5,15 +5,18 @@ Its main features are:
 * Support simultaneous editing of multiple objects (some types of properties cannot support simultaneous 
 editing of multiple objects)  
 * Support ICustomTypeDescriptor
+* Support array editing, support dynamic addition and deletion. Arrays of objects of any type are supported. The array mentioned here is just a BindingList<> object
 * Support data verification. You can directly throw an exception in the property setter to report a data error, and of course you can add validation to the property based on System.ComponentModel.DataAnnotations. The system also automatically analyzes and processes these checks.
+* Supports dynamic visibility, that is, whether a property is visible can be dynamically determined by another property's value
 * Supports two display modes: category-based and alphabetical sorting  
 * Supports text filtering, regular expression filtering, and supports ignoring case settings  
 * Support data automatic reloading, when data is modified from the outside or other PropertyGrid, it will automatically refresh the data, but the target object needs to implement the interface INotifyPropertyChanged
 * Support automatic expansion of sub-objects, but need to mark attributes [TypeConverter(typeof(ExpandableObjectConverter))]
 * Support to adjust the width of the property name and property value by dragging and dropping, and the optimal width will be automatically calculated when the SelectObject is set for the first time  
-* Supports dynamic visibility, that is, whether a property is visible can be dynamically determined by another property's value
+* Support localization, you can override built in Localization Service by reset PropertyGrid.LocalizationService interface
 * The extension is very simple, you can use very simple code at any time to make the PropertyGrid support the type of editing that is not originally supported. The system has built-in support for some common property editing, but it is not complete, so when you need to edit a specific object through a special control, you need to expand it yourself, and this step is very simple.
-* Support array editing, support dynamic addition and deletion. Arrays of objects of any type are supported. The array mentioned here is just a BindingList<> object
+
+
 
 ## How To Use
 Use the source code of this warehouse directly or add packages from nuget(https://www.nuget.org/packages/bodong.Avalonia.PropertyGrid).  
