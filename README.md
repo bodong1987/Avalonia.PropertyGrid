@@ -149,6 +149,8 @@ To do this, you only need to mark the property with a custom Attribute. If you n
 One thing to pay special attention to is **that any property that needs to be used as a visibility condition for other properties needs to be marked with [ConditionTarget].**   
 The purpose is to let PropertyGrid know that when this property changes, it needs to notify the upper layer to refresh the visibility information.
 
-My Blog: https://www.cnblogs.com/bodong/p/17342817.html
+**My Blog: https://www.cnblogs.com/bodong**  
+**如果你来自中国或者认识中文，可以在这里获取更多相关信息:**  
+    https://www.cnblogs.com/bodong/p/17342817.html
 
 
