@@ -1,5 +1,6 @@
 # Avalonia.PropertyGrid
-This is an implementation based on Avalonia's PropertyGrid. Its main features are:  
+This is a PropertyGrid implementation for Avalonia, you can use it in Avalonia Applications.  
+Its main features are:  
 * Support automatically analyze object properties and display, like WinForms's PropertyGrid
 * Support simultaneous editing of multiple objects (some types of properties cannot support simultaneous 
 editing of multiple objects)  
