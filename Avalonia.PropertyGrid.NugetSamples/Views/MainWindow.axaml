@@ -1,0 +1,40 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Avalonia.PropertyGrid.NugetSamples.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Avalonia.PropertyGrid.NugetSamples.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="Avalonia.PropertyGrid.NugetSamples"
+		xmlns:apc="clr-namespace:Avalonia.PropertyGrid.Controls;assembly=Avalonia.PropertyGrid"
+		>
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+	<Window.DataContext>
+		<vm:MainWindowViewModel></vm:MainWindowViewModel>
+	</Window.DataContext>
+
+	<Grid RowDefinitions="*,Auto">
+		<ScrollViewer>
+			<apc:PropertyGrid
+				Margin="2"
+				SelectedObject="{Binding simpleObject}"
+				AllowFilter="{Binding AllowFilter}"
+				ShowStyle="{Binding ShowStyle,Mode=TwoWay}">				
+			</apc:PropertyGrid>
+		</ScrollViewer>
+		<StackPanel Orientation="Horizontal" Grid.Row="1">
+			<TextBlock VerticalAlignment="Center" Margin="4">Show Category:</TextBlock>
+			<ToggleSwitch IsChecked="{Binding IsShowCategory}" Margin="4"></ToggleSwitch>
+			<TextBlock VerticalAlignment="Center" Margin="4">Allow Filter:</TextBlock>
+			<ToggleSwitch IsChecked="{Binding AllowFilter}" Margin="4"></ToggleSwitch>
+		</StackPanel>
+	</Grid>
+
+</Window>

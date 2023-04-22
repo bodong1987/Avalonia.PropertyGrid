@@ -29,14 +29,32 @@ namespace Avalonia.PropertyGrid.ViewModels
         Alphabetic
     }
 
+    /// <summary>
+    /// Enum PropertyVisibility
+    /// </summary>
     [Flags]
     public enum PropertyVisibility
     {
-        AlwaysVisible               = 0,
-        HiddenByFilter              = 1<<0,
-        HiddenByCategoryFilter      = 1<<1,        
-        HiddenByNoVisibleChidlren   = 1<<2,
-        HiddenByCondition           = 1<<10,
+        /// <summary>
+        /// The always visible
+        /// </summary>
+        AlwaysVisible = 0,
+        /// <summary>
+        /// The hidden by filter
+        /// </summary>
+        HiddenByFilter = 1<<0,
+        /// <summary>
+        /// The hidden by category filter
+        /// </summary>
+        HiddenByCategoryFilter = 1<<1,
+        /// <summary>
+        /// The hidden by no visible chidlren
+        /// </summary>
+        HiddenByNoVisibleChidlren = 1<<2,
+        /// <summary>
+        /// The hidden by condition
+        /// </summary>
+        HiddenByCondition = 1<<10,
     }
 
     /// <summary>
@@ -120,7 +138,7 @@ namespace Avalonia.PropertyGrid.ViewModels
         public event EventHandler FilterChanged;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyGridViewModel"/> class.
+        /// Initializes a new instance of the <see cref="PropertyGridViewModel" /> class.
         /// </summary>
         public PropertyGridViewModel()
         {
@@ -141,7 +159,7 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// Handles the <see cref="E:PropertyChanged" /> event.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="PropertyChangedEventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="PropertyChangedEventArgs" /> instance containing the event data.</param>
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if(e.PropertyName == nameof(SelectedObject))
@@ -154,6 +172,11 @@ namespace Avalonia.PropertyGrid.ViewModels
             }
         }
 
+        /// <summary>
+        /// Gets the category.
+        /// </summary>
+        /// <param name="property">The property.</param>
+        /// <returns>System.String.</returns>
         public static string GetCategory(PropertyDescriptor property)
         {
             string category = string.IsNullOrEmpty(property.Category) ? Controls.PropertyGrid.LocalizationService["Misc"] : Controls.PropertyGrid.LocalizationService[property.Category];
@@ -161,6 +184,12 @@ namespace Avalonia.PropertyGrid.ViewModels
             return category;
         }
 
+        /// <summary>
+        /// Checks the visibility.
+        /// </summary>
+        /// <param name="property">The property.</param>
+        /// <param name="context">The context.</param>
+        /// <returns>PropertyVisibility.</returns>
         public PropertyVisibility CheckVisibility(PropertyDescriptor property, object context)
         {
             PropertyVisibility visiblity = PropertyVisibility.AlwaysVisible;
@@ -224,7 +253,7 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// Handles the <see cref="E:CategoryFilterChanged" /> event.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void OnCategoryFilterChanged(object sender, EventArgs e)
         {
             FilterProperties();   

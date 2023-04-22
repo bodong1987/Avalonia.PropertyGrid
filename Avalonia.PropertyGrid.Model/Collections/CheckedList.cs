@@ -73,11 +73,9 @@ namespace Avalonia.PropertyGrid.Model.Collections
     /// <summary>
     /// Class CheckedList.
     /// Implements the <see cref="ICollection{T}" />
-    /// Implements the <see cref="BluePrint.Common.Collections.ICheckedList" />
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="ICollection{T}" />
-    /// <seealso cref="BluePrint.Common.Collections.ICheckedList" />
     public class CheckedList<T> : ICollection<T>, ICheckedList
     {
         /// <summary>
@@ -176,6 +174,17 @@ namespace Avalonia.PropertyGrid.Model.Collections
         public CheckedList(IEnumerable<T> items)
         {
             SourceItemsCore.AddRange(items);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CheckedList{T}"/> class.
+        /// </summary>
+        /// <param name="items">The items.</param>
+        /// <param name="checkedItems">The checked items.</param>
+        public CheckedList(IEnumerable<T> items, IEnumerable<T> checkedItems)
+        {
+            SourceItemsCore.AddRange(items);
+            SetRangeChecked(checkedItems, true);
         }
 
         /// <summary>
@@ -393,6 +402,10 @@ namespace Avalonia.PropertyGrid.Model.Collections
             }            
         }
 
+        /// <summary>
+        /// Selects the specified item.
+        /// </summary>
+        /// <param name="item">The item.</param>
         public void Select(T item)
         {
             BeginUpdate();
@@ -408,6 +421,10 @@ namespace Avalonia.PropertyGrid.Model.Collections
             }
         }
 
+        /// <summary>
+        /// Selects the range.
+        /// </summary>
+        /// <param name="items">The items.</param>
         public void SelectRange(IEnumerable<T> items)
         {
             BeginUpdate();
@@ -427,6 +444,10 @@ namespace Avalonia.PropertyGrid.Model.Collections
             }
         }
 
+        /// <summary>
+        /// Selects the specified item.
+        /// </summary>
+        /// <param name="item">The item.</param>
         void ICheckedList.Select(object item)
         {
             if(item is T t)
@@ -435,6 +456,10 @@ namespace Avalonia.PropertyGrid.Model.Collections
             }            
         }
 
+        /// <summary>
+        /// Selects the range.
+        /// </summary>
+        /// <param name="items">The items.</param>
         void ICheckedList.SelectRange(IEnumerable<object> items)
         {
             SelectRange(items.Cast<T>());

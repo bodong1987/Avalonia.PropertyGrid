@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Avalonia.PropertyGrid.Controls.Implements
 {
     /// <summary>
-    /// Class PropertyGridControlFactoryCollection.
+    /// Class CellEditFactoryCollection.
     /// Implements the <see cref="Avalonia.PropertyGrid.Controls.ICellEditFactoryCollection" />
     /// </summary>
     /// <seealso cref="Avalonia.PropertyGrid.Controls.ICellEditFactoryCollection" />
@@ -27,14 +27,14 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         public IEnumerable<ICellEditFactory> Factories => _Factories.ToArray();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyGridControlFactoryCollection"/> class.
+        /// Initializes a new instance of the <see cref="CellEditFactoryCollection"/> class.
         /// </summary>
         public CellEditFactoryCollection()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyGridControlFactoryCollection"/> class.
+        /// Initializes a new instance of the <see cref="CellEditFactoryCollection"/> class.
         /// </summary>
         /// <param name="factories">The factories.</param>
         public CellEditFactoryCollection(IEnumerable<ICellEditFactory> factories)

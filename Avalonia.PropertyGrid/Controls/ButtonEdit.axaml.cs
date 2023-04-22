@@ -8,8 +8,16 @@ using System.Windows.Input;
 
 namespace Avalonia.PropertyGrid.Controls
 {
+    /// <summary>
+    /// Class ButtonEdit.
+    /// Implements the <see cref="TemplatedControl" />
+    /// </summary>
+    /// <seealso cref="TemplatedControl" />
     public class ButtonEdit : TemplatedControl
     {
+        /// <summary>
+        /// The button clicked command property
+        /// </summary>
         public static readonly DirectProperty<ButtonEdit, ICommand> ButtonClickedCommandProperty =
             AvaloniaProperty.RegisterDirect<ButtonEdit, ICommand>(
                 nameof(ButtonClickedCommand),
@@ -17,14 +25,24 @@ namespace Avalonia.PropertyGrid.Controls
                 (o, v) => o.ButtonClickedCommand = v
                 );
 
+        /// <summary>
+        /// The button clicked command
+        /// </summary>
         private ICommand _ButtonClickedCommand;
 
+        /// <summary>
+        /// Gets or sets the button clicked command.
+        /// </summary>
+        /// <value>The button clicked command.</value>
         public ICommand ButtonClickedCommand
         {
             get => _ButtonClickedCommand;
             set => SetAndRaise(ButtonClickedCommandProperty, ref _ButtonClickedCommand, value);
         }
 
+        /// <summary>
+        /// The text property
+        /// </summary>
         public static readonly DirectProperty<ButtonEdit, string> TextProperty =
             AvaloniaProperty.RegisterDirect<ButtonEdit, string>(
                 nameof(Text),
@@ -32,6 +50,9 @@ namespace Avalonia.PropertyGrid.Controls
                 (o, v) => o.Text = v
                 );
 
+        /// <summary>
+        /// The text
+        /// </summary>
         string _Text;
         /// <summary>
         /// Gets or sets the text.
@@ -75,22 +96,36 @@ namespace Avalonia.PropertyGrid.Controls
         }
         #endregion
 
+        /// <summary>
+        /// Initializes static members of the <see cref="ButtonEdit"/> class.
+        /// </summary>
         static ButtonEdit()
         {
             TextProperty.Changed.Subscribe(OnTextProperyChanged);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ButtonEdit"/> class.
+        /// </summary>
         public ButtonEdit()
         {
             ButtonClickedCommand = ReactiveCommand.Create(OnButtonClicked);
         }
 
+        /// <summary>
+        /// Called when [button clicked].
+        /// </summary>
+        /// <param name="sender">The sender.</param>
         private void OnButtonClicked(object sender)
         {
             var evt = new RoutedEventArgs(ButtonClickEvent);
             RaiseEvent(evt);
         }
 
+        /// <summary>
+        /// Called when [text propery changed].
+        /// </summary>
+        /// <param name="e">The e.</param>
         private static void OnTextProperyChanged(AvaloniaPropertyChangedEventArgs<string> e)
         {
             if(e.Sender is ButtonEdit be)
@@ -99,6 +134,10 @@ namespace Avalonia.PropertyGrid.Controls
             }
         }
 
+        /// <summary>
+        /// Called when [property changed].
+        /// </summary>
+        /// <param name="value">The value.</param>
         private void OntextPropertyChanged(string value)
         {
             var evt = new RoutedEventArgs(TextChangedEvent);

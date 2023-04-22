@@ -11,10 +11,8 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel
     /// <summary>
     /// Class MultiObjectPropertyDescriptor.
     /// Implements the <see cref="PropertyDescriptor" />
-    /// Implements the <see cref="System.Collections.Generic.IEnumerable{System.ComponentModel.PropertyDescriptor}" />
     /// </summary>
     /// <seealso cref="PropertyDescriptor" />
-    /// <seealso cref="System.Collections.Generic.IEnumerable{System.ComponentModel.PropertyDescriptor}" />
     public class MultiObjectPropertyDescriptor : PropertyDescriptor, IEnumerable<PropertyDescriptor>
     {
         #region MultiObjectAttributes

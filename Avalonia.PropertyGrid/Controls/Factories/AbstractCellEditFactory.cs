@@ -10,6 +10,11 @@ using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
 
 namespace Avalonia.PropertyGrid.Controls.Factories
 {
+    /// <summary>
+    /// Class AbstractCellEditFactory.
+    /// Implements the <see cref="Avalonia.PropertyGrid.Controls.ICellEditFactory" />
+    /// </summary>
+    /// <seealso cref="Avalonia.PropertyGrid.Controls.ICellEditFactory" />
     public abstract class AbstractCellEditFactory : ICellEditFactory
     {
         /// <summary>

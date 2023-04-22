@@ -32,15 +32,15 @@ You can see the PropertyGrid with filtering and grouping by category turned off.
 ```xml
 <StackPanel Orientation="Vertical">
     <TextBlock>Default View</TextBlock>
-    <pgc:PropertyGrid Margin="4" SelectedObject="{Binding $parent[Window].DataContext.simpleObject}"></pgc:PropertyGrid>
+    <pgc:PropertyGrid Margin="4" SelectedObject="{Binding simpleObject}"></pgc:PropertyGrid>
 </StackPanel>
 <StackPanel Orientation="Vertical" Grid.Column="2">
     <TextBlock>Not Allow Filter</TextBlock>
-    <pgc:PropertyGrid Margin="4" AllowFilter="False" SelectedObject="{Binding $parent[Window].DataContext.simpleObject}"></pgc:PropertyGrid>
+    <pgc:PropertyGrid Margin="4" AllowFilter="False" SelectedObject="{Binding simpleObject}"></pgc:PropertyGrid>
 </StackPanel>
 <StackPanel Orientation="Vertical" Grid.Column="4">
     <TextBlock>Not Allow Filter And No Categories</TextBlock>
-    <pgc:PropertyGrid Margin="4" AllowFilter="False" ShowStyle="Alphabetic" SelectedObject="{Binding $parent[Window].DataContext.simpleObject}"></pgc:PropertyGrid>
+    <pgc:PropertyGrid Margin="4" AllowFilter="False" ShowStyle="Alphabetic" SelectedObject="{Binding simpleObject}"></pgc:PropertyGrid>
 </StackPanel>
 ```
 
@@ -148,6 +148,9 @@ In this example, you can check IsShowPath first, then set the Platform to Unix, 
 To do this, you only need to mark the property with a custom Attribute. If you need to implement your own rules, just implement your own rules from **AbstractVisiblityConditionAttribute**.  
 One thing to pay special attention to is **that any property that needs to be used as a visibility condition for other properties needs to be marked with [ConditionTarget].**   
 The purpose is to let PropertyGrid know that when this property changes, it needs to notify the upper layer to refresh the visibility information.
+
+## Avalonia.PropertyGrid.NugetSamples
+This example shows how to use PropertyGrid through the Nuget package. Its content is similar to the Sample that directly uses the source code, and it can also be used as a case for learning how to use it.  
 
 **My Blog: https://www.cnblogs.com/bodong**  
 **如果你来自中国或者认识中文，可以在这里获取更多相关信息:**  

@@ -6,16 +6,29 @@ using System.Diagnostics;
 
 namespace Avalonia.PropertyGrid.Controls
 {
+    /// <summary>
+    /// Class BindingListElementPlaceholderEdit.
+    /// Implements the <see cref="UserControl" />
+    /// </summary>
+    /// <seealso cref="UserControl" />
     public partial class BindingListElementPlaceholderEdit : UserControl
     {
         ICellEditFactory Factory;
         Control BindingControl;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BindingListElementPlaceholderEdit"/> class.
+        /// </summary>
         public BindingListElementPlaceholderEdit()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Called when [property changed].
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="change">The change.</param>
         protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
         {
             base.OnPropertyChanged(change);
@@ -26,6 +39,10 @@ namespace Avalonia.PropertyGrid.Controls
             }
         }
 
+        /// <summary>
+        /// Called when the <see cref="P:Avalonia.StyledElement.DataContext" /> property changes.
+        /// </summary>
+        /// <param name="e">The event args.</param>
         protected override void OnDataContextChanged(EventArgs e)
         {
             base.OnDataContextChanged(e);

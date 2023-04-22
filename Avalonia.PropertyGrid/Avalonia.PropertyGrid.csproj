@@ -5,7 +5,7 @@
 	  <LangVersion>preview</LangVersion>
 	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	  <Title>bodong.Avalonia.PropertyGrid</Title>
-	  <Version>0.10.19.1</Version>
+	  <Version>0.10.19.3</Version>
 	  <Authors>bodong</Authors>
 	  <Description>A  PropertyGrid control implementation for Avalonia</Description>
 	  <PackageProjectUrl>https://github.com/bodong1987/Avalonia.PropertyGrid</PackageProjectUrl>
@@ -51,6 +51,7 @@
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<IncludeSymbols>False</IncludeSymbols>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 	</PropertyGroup>
 
 	<Target Name="CopyProjectReferencesToPackage" DependsOnTargets="BuildOnlySettings;ResolveReferences">

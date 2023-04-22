@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 
 namespace Avalonia.PropertyGrid.Model.Services
 {
+    /// <summary>
+    /// Interface ILocalizationService
+    /// Implements the <see cref="IReactiveObject" />
+    /// </summary>
+    /// <seealso cref="IReactiveObject" />
     public interface ILocalizationService : IReactiveObject
     {
         /// <summary>

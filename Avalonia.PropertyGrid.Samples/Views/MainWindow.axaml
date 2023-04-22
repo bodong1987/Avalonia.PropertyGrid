@@ -21,37 +21,35 @@
 	<TabControl TabStripPlacement="Left">
 		<TabItem Header="Basic">
 			<ScrollViewer>
-				<pgc:PropertyGrid Margin="4" SelectedObject="{Binding $parent[Window].DataContext.simpleObject}"></pgc:PropertyGrid>	
+				<pgc:PropertyGrid Margin="4" SelectedObject="{Binding simpleObject}"></pgc:PropertyGrid>	
 			</ScrollViewer>			
 		</TabItem>
 
 		<TabItem Header="Views">
-			<ScrollViewer>
-				<Grid ColumnDefinitions="Auto,2,Auto,2,Auto">
-					<GridSplitter Grid.Column="1"></GridSplitter>
-					<GridSplitter Grid.Column="3"></GridSplitter>
-					<StackPanel Orientation="Vertical">
-						<TextBlock>Default View</TextBlock>
-						<pgc:PropertyGrid Margin="4" SelectedObject="{Binding $parent[Window].DataContext.simpleObject}"></pgc:PropertyGrid>
-					</StackPanel>
-					<StackPanel Orientation="Vertical" Grid.Column="2">
-						<TextBlock>Not Allow Filter</TextBlock>
-						<pgc:PropertyGrid Margin="4" AllowFilter="False" SelectedObject="{Binding $parent[Window].DataContext.simpleObject}"></pgc:PropertyGrid>
-					</StackPanel>
-					<StackPanel Orientation="Vertical" Grid.Column="4">
-						<TextBlock>Not Allow Filter And No Categories</TextBlock>
-						<pgc:PropertyGrid Margin="4" AllowFilter="False" ShowStyle="Alphabetic" SelectedObject="{Binding $parent[Window].DataContext.simpleObject}"></pgc:PropertyGrid>
-					</StackPanel>
-				</Grid>
-			</ScrollViewer>
+			<Grid RowDefinitions="*,Auto">
+				<ScrollViewer>
+					<pgc:PropertyGrid
+						Margin="2"
+						SelectedObject="{Binding simpleObject}"
+						AllowFilter="{Binding AllowFilter}"
+						ShowStyle="{Binding ShowStyle, Mode=TwoWay}">
+					</pgc:PropertyGrid>
+				</ScrollViewer>
+				<StackPanel Orientation="Horizontal" Grid.Row="1">
+					<TextBlock VerticalAlignment="Center" Margin="4">Show Category:</TextBlock>
+					<ToggleSwitch IsChecked="{Binding IsShowCategory}" Margin="4"></ToggleSwitch>
+					<TextBlock VerticalAlignment="Center" Margin="4">Allow Filter:</TextBlock>
+					<ToggleSwitch IsChecked="{Binding AllowFilter}" Margin="4"></ToggleSwitch>
+				</StackPanel>
+			</Grid>
 		</TabItem>
 		
 		<TabItem Header="DataSync">
 			<ScrollViewer>
 				<Grid ColumnDefinitions="Auto,2,Auto">
 					<GridSplitter Grid.Column="1"></GridSplitter>
-					<pgc:PropertyGrid Margin="2" SelectedObject="{Binding $parent[Window].DataContext.syncObject}"></pgc:PropertyGrid>
-					<pgc:PropertyGrid Margin="2" Grid.Column="2" SelectedObject="{Binding $parent[Window].DataContext.syncObject}"></pgc:PropertyGrid>
+					<pgc:PropertyGrid Margin="2" SelectedObject="{Binding syncObject}"></pgc:PropertyGrid>
+					<pgc:PropertyGrid Margin="2" Grid.Column="2" SelectedObject="{Binding syncObject}"></pgc:PropertyGrid>
 				</Grid>
 			</ScrollViewer>
 		</TabItem>
@@ -62,34 +60,34 @@
 					<GridSplitter Grid.Column="3"></GridSplitter>
 					<StackPanel Orientation="Vertical">
 						<TextBlock>MultiObjects's Properties</TextBlock>
-						<pgc:PropertyGrid x:Name="propertyGrid_MultipleObjects" Margin="2" SelectedObject="{Binding $parent[Window].DataContext.multiObjects}"></pgc:PropertyGrid>
+						<pgc:PropertyGrid x:Name="propertyGrid_MultipleObjects" Margin="2" SelectedObject="{Binding multiObjects}"></pgc:PropertyGrid>
 					</StackPanel>
 					<StackPanel Orientation="Vertical" Grid.Column="2">
 						<TextBlock>First Object's Properties</TextBlock>
-						<pgc:PropertyGrid x:Name="propertyGrid_MultipleObjects0" Margin="2" SelectedObject="{Binding $parent[Window].DataContext.multiObject0}"></pgc:PropertyGrid>
+						<pgc:PropertyGrid x:Name="propertyGrid_MultipleObjects0" Margin="2" SelectedObject="{Binding multiObject0}"></pgc:PropertyGrid>
 					</StackPanel>
 					<StackPanel Orientation="Vertical" Grid.Column="4">
 						<TextBlock>Second Object's Properties</TextBlock>
-						<pgc:PropertyGrid x:Name="propertyGrid_MultipleObjects1" Margin="2" SelectedObject="{Binding $parent[Window].DataContext.multiObject1}"></pgc:PropertyGrid>
+						<pgc:PropertyGrid x:Name="propertyGrid_MultipleObjects1" Margin="2" SelectedObject="{Binding multiObject1}"></pgc:PropertyGrid>
 					</StackPanel>
 				</Grid>
 			</ScrollViewer>			
 		</TabItem>
 		<TabItem Header="CustomObject">
 			<ScrollViewer>
-				<pgc:PropertyGrid Margin="4" SelectedObject="{Binding $parent[Window].DataContext.customOptions}"></pgc:PropertyGrid>
+				<pgc:PropertyGrid Margin="4" SelectedObject="{Binding customOptions}"></pgc:PropertyGrid>
 			</ScrollViewer>
 		</TabItem>
 
 		<TabItem Header="CustomCellEdit">
 			<ScrollViewer>
-				<lv:ToggleSwitchExtensionPropertyGrid Margin="4" SelectedObject="{Binding $parent[Window].DataContext.booleanExtension}"></lv:ToggleSwitchExtensionPropertyGrid>
+				<lv:ToggleSwitchExtensionPropertyGrid Margin="4" SelectedObject="{Binding booleanExtension}"></lv:ToggleSwitchExtensionPropertyGrid>
 			</ScrollViewer>
 		</TabItem>
 
 		<TabItem Header="Dynamic Visibility">
 			<ScrollViewer>
-				<pgc:PropertyGrid Margin="4" SelectedObject="{Binding $parent[Window].DataContext.dynamicVisiblity}"></pgc:PropertyGrid>
+				<pgc:PropertyGrid Margin="4" SelectedObject="{Binding dynamicVisiblity}"></pgc:PropertyGrid>
 			</ScrollViewer>
 		</TabItem>
 	</TabControl>

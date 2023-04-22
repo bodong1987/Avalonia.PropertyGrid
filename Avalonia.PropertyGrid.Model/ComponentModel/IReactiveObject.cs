@@ -12,11 +12,7 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel
 {
     /// <summary>
     /// Interface IReactiveObject
-    /// Implements the <see cref="BluePrint.Common.ComponentModel.INotifyPropertyChanged" />
-    /// Implements the <see cref="BluePrint.Common.ComponentModel.INotifyPropertyChanging" />
     /// </summary>
-    /// <seealso cref="BluePrint.Common.ComponentModel.INotifyPropertyChanged" />
-    /// <seealso cref="BluePrint.Common.ComponentModel.INotifyPropertyChanging" />
     public interface IReactiveObject : INotifyPropertyChanged
     {
     }
@@ -51,9 +47,7 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel
 
     /// <summary>
     /// Class ReactiveObject.
-    /// Implements the <see cref="BluePrint.Common.ComponentModel.INotifyPropertyChanged" />
     /// </summary>
-    /// <seealso cref="BluePrint.Common.ComponentModel.INotifyPropertyChanged" />
     public class ReactiveObject : MiniReactiveObject
     {
         #region Properties        

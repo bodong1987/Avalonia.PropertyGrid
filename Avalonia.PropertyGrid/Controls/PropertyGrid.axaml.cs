@@ -9,6 +9,7 @@ using Avalonia.PropertyGrid.Model.Services;
 using Avalonia.PropertyGrid.Model.Utils;
 using Avalonia.PropertyGrid.ViewModels;
 using Avalonia.Threading;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -41,44 +42,79 @@ namespace Avalonia.PropertyGrid.Controls
         #endregion
 
         #region Properties
+        /// <summary>
+        /// The allow filter property
+        /// </summary>
         public static readonly StyledProperty<bool> AllowFilterProperty = AvaloniaProperty.Register<PropertyGrid, bool>(nameof(AllowFilter), true);
 
+        /// <summary>
+        /// Gets or sets a value indicating whether [allow filter].
+        /// </summary>
+        /// <value><c>true</c> if [allow filter]; otherwise, <c>false</c>.</value>
         public bool AllowFilter 
         { 
             get => GetValue(AllowFilterProperty); set => SetValue(AllowFilterProperty, value);
         }
 
+        /// <summary>
+        /// The show style property
+        /// </summary>
         public static readonly StyledProperty<PropertyGridShowStyle> ShowStyleProperty = AvaloniaProperty.Register<PropertyGrid, PropertyGridShowStyle>(nameof(ShowStyle), PropertyGridShowStyle.Category);
+        /// <summary>
+        /// Gets or sets the show style.
+        /// </summary>
+        /// <value>The show style.</value>
         public PropertyGridShowStyle ShowStyle
         {
             get => GetValue(ShowStyleProperty); 
             set 
             {
-                SetValue(ShowStyleProperty, value);
-                ViewModel.ShowCategory = value == PropertyGridShowStyle.Category;
+                SetValue(ShowStyleProperty, value);                
             }
         }
 
+        /// <summary>
+        /// The selected object
+        /// </summary>
         private object _SelectedObject;
+        /// <summary>
+        /// The selected object property
+        /// </summary>
         public static readonly DirectProperty<PropertyGrid, object> SelectedObjectProperty = AvaloniaProperty.RegisterDirect<PropertyGrid, object>(
             nameof(SelectedObject),
             o => o._SelectedObject,
             (o,v)=> o.SetAndRaise(SelectedObjectProperty, ref o._SelectedObject, v)
             );
+        /// <summary>
+        /// Gets or sets the selected object.
+        /// </summary>
+        /// <value>The selected object.</value>
         public object SelectedObject
         {
             get => _SelectedObject;
             set => SetAndRaise(SelectedObjectProperty, ref _SelectedObject, value);
         }
 
-        PropertyGridViewModel ViewModel = new PropertyGridViewModel();
+        /// <summary>
+        /// The view model
+        /// </summary>
+        internal PropertyGridViewModel ViewModel { get; private set; } = new PropertyGridViewModel();
 
+        /// <summary>
+        /// The factories
+        /// </summary>
         public readonly ICellEditFactoryCollection Factories;
 
+        /// <summary>
+        /// The bindings
+        /// </summary>
         readonly PropertyGridBindingCache Bindings = new PropertyGridBindingCache();
 
         #endregion
 
+        /// <summary>
+        /// Initializes static members of the <see cref="PropertyGrid"/> class.
+        /// </summary>
         static PropertyGrid()
         {
             // register builtin factories
@@ -96,13 +132,12 @@ namespace Avalonia.PropertyGrid.Controls
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyGrid"/> class.
+        /// Initializes a new instance of the <see cref="PropertyGrid" /> class.
         /// </summary>
         public PropertyGrid()
         {
             Factories = new CellEditFactoryCollection(FactoryTemplates.CloneFactories(this));
 
-            this.DataContext = ViewModel;
             ViewModel.PropertyDescriptorChanged += OnPropertyDescriptorChanged;
             ViewModel.FilterChanged += OnFilterChanged;
             ViewModel.PropertyChanged += OnViewModelPropertyChanged;
@@ -114,6 +149,11 @@ namespace Avalonia.PropertyGrid.Controls
             Bindings.PropertyChangedEvent += OnBindingPropertyChanged;
         }
 
+        /// <summary>
+        /// Handles the <see cref="E:BindingPropertyChanged" /> event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="BindingPropertyChangedEventArgs"/> instance containing the event data.</param>
         private void OnBindingPropertyChanged(object sender, BindingPropertyChangedEventArgs e)
         {
             if(e.Binding != null && e.Binding.Property != null && e.Binding.Property.IsDefined<ConditionTargetAttribute>())
@@ -122,14 +162,24 @@ namespace Avalonia.PropertyGrid.Controls
             }
         }
 
+        /// <summary>
+        /// Handles the <see cref="E:ViewModelPropertyChanged" /> event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="PropertyChangedEventArgs"/> instance containing the event data.</param>
         private void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if(e.PropertyName == nameof(ViewModel.ShowCategory))
             {
                 ShowStyle = ViewModel.ShowCategory ? PropertyGridShowStyle.Category : PropertyGridShowStyle.Alphabetic;
+                BuildPropertiesView(ViewModel.SelectedObject, ViewModel.ShowCategory ? PropertyGridShowStyle.Category : PropertyGridShowStyle.Alphabetic);
             }
         }
 
+        /// <summary>
+        /// Called when [selected object changed].
+        /// </summary>
+        /// <param name="e">The e.</param>
         private static void OnSelectedObjectChanged(AvaloniaPropertyChangedEventArgs<object> e)
         {
             if(e.Sender is PropertyGrid pg)
@@ -138,12 +188,21 @@ namespace Avalonia.PropertyGrid.Controls
             }
         }
 
+        /// <summary>
+        /// Called when [selected object changed].
+        /// </summary>
+        /// <param name="oldValue">The old value.</param>
+        /// <param name="newValue">The new value.</param>
         private void OnSelectedObjectChanged(object oldValue, object newValue)
         {
             ViewModel.SelectedObject = newValue;
         }
 
         #region Styled Properties Handler
+        /// <summary>
+        /// Handles the <see cref="E:AllowFilterChanged" /> event.
+        /// </summary>
+        /// <param name="e">The <see cref="AvaloniaPropertyChangedEventArgs"/> instance containing the event data.</param>
         private static void OnAllowFilterChanged(AvaloniaPropertyChangedEventArgs e)
         {
             if(e.Sender is PropertyGrid sender)
@@ -152,12 +211,21 @@ namespace Avalonia.PropertyGrid.Controls
             }
         }
 
+        /// <summary>
+        /// Called when [allow filter changed].
+        /// </summary>
+        /// <param name="oldValue">The old value.</param>
+        /// <param name="newValue">The new value.</param>
         private void OnAllowFilterChanged(object oldValue, object newValue)
         {
             fastFilterBox.IsVisible = (bool)newValue;
             headerGrid.IsVisible = (bool)newValue;
         }
 
+        /// <summary>
+        /// Called when [show style changed].
+        /// </summary>
+        /// <param name="e">The e.</param>
         private static void OnShowStyleChanged(AvaloniaPropertyChangedEventArgs<PropertyGridShowStyle> e)
         {
             if(e.Sender is PropertyGrid sender)
@@ -166,18 +234,32 @@ namespace Avalonia.PropertyGrid.Controls
             }
         }
 
+        /// <summary>
+        /// Called when [show style changed].
+        /// </summary>
+        /// <param name="oldValue">The old value.</param>
+        /// <param name="newValue">The new value.</param>
         private void OnShowStyleChanged(Optional<PropertyGridShowStyle> oldValue, BindingValue<PropertyGridShowStyle> newValue)
         {
-            BuildPropertiesView(ViewModel.SelectedObject, ViewModel.ShowCategory ? PropertyGridShowStyle.Category : PropertyGridShowStyle.Alphabetic);
+            ViewModel.ShowCategory = newValue.Value == PropertyGridShowStyle.Category;
         }
 
         #endregion
 
+        /// <summary>
+        /// Handles the <see cref="E:PropertyDescriptorChanged" /> event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void OnPropertyDescriptorChanged(object sender, EventArgs e)
         {
             BuildPropertiesView(ViewModel.SelectedObject, ViewModel.ShowCategory ? PropertyGridShowStyle.Category : PropertyGridShowStyle.Alphabetic);
         }
 
+        /// <summary>
+        /// Sets the visiblity.
+        /// </summary>
+        /// <param name="bindings">The bindings.</param>
         private void SetVisiblity(IEnumerable<PropertyBinding> bindings)
         {
             // first pass check all direct property binding visibility
@@ -213,11 +295,21 @@ namespace Avalonia.PropertyGrid.Controls
             }
         }
 
+        /// <summary>
+        /// Handles the <see cref="E:FilterChanged" /> event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void OnFilterChanged(object sender, EventArgs e)
         {
             SetVisiblity(Bindings);
         }
 
+        /// <summary>
+        /// Builds the properties view.
+        /// </summary>
+        /// <param name="target">The target.</param>
+        /// <param name="propertyGridShowStyle">The property grid show style.</param>
         private void BuildPropertiesView(object target, PropertyGridShowStyle propertyGridShowStyle)
         {
             propertiesGrid.RowDefinitions.Clear();
@@ -258,6 +350,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Builds the category properties view.
         /// </summary>
+        /// <param name="target">The target.</param>
+        /// <param name="referencePath">The reference path.</param>
         protected virtual void BuildCategoryPropertiesView(object target, ReferencePath referencePath)
         {
             propertiesGrid.ColumnDefinitions.Clear();
@@ -354,6 +448,17 @@ namespace Avalonia.PropertyGrid.Controls
             return AtLeastOneVisible;
         }
 
+        /// <summary>
+        /// Builds the expandable object property cell edit.
+        /// </summary>
+        /// <param name="target">The target.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="referencePath">The reference path.</param>
+        /// <param name="propertyDescriptor">The property descriptor.</param>
+        /// <param name="expander">The expander.</param>
+        /// <param name="grid">The grid.</param>
+        /// <param name="parentBinding">The parent binding.</param>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         private bool BuildExpandableObjectPropertyCellEdit(object target, object value, ReferencePath referencePath, PropertyDescriptor propertyDescriptor, Expander expander, Grid grid, IndirectPropertyBinding parentBinding)
         {
             Debug.Assert(value != null);
@@ -425,6 +530,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="propertyDescriptor">The property descriptor.</param>
         /// <param name="expander">The expander.</param>
         /// <param name="grid">The grid.</param>
+        /// <param name="parentBinding">The parent binding.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         private bool BuildPropertyCellEdit(object target, ReferencePath referencePath, PropertyDescriptor propertyDescriptor, Expander expander, Grid grid, IndirectPropertyBinding parentBinding)
         {
@@ -481,6 +587,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Builds the alphabetic properties view.
         /// </summary>
+        /// <param name="target">The target.</param>
+        /// <param name="referencePath">The reference path.</param>
         protected virtual void BuildAlphabeticPropertiesView(object target, ReferencePath referencePath)
         {
             propertiesGrid.ColumnDefinitions.Clear();
@@ -492,6 +600,9 @@ namespace Avalonia.PropertyGrid.Controls
         #endregion
 
         #region Process Widths
+        /// <summary>
+        /// Synchronizes the width of the with maximum property name.
+        /// </summary>
         private void SyncWithMaxPropertyNameWidth()
         {
             double maxLength = Bindings.CalcBindingNameMaxLength();
@@ -502,6 +613,11 @@ namespace Avalonia.PropertyGrid.Controls
             }            
         }
 
+        /// <summary>
+        /// Synchronizes the width of the name.
+        /// </summary>
+        /// <param name="width">The width.</param>
+        /// <param name="syncToTitle">if set to <c>true</c> [synchronize to title].</param>
         private void SyncNameWidth(double width, bool syncToTitle)
         {
             Bindings.SyncWidth(width);
@@ -513,6 +629,11 @@ namespace Avalonia.PropertyGrid.Controls
             }
         }
 
+        /// <summary>
+        /// Handles the <see cref="E:ColumnNamePropertyChanged" /> event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="AvaloniaPropertyChangedEventArgs"/> instance containing the event data.</param>
         private void OnColumnNamePropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
         {
             if(e.Property == TextBlock.BoundsProperty)

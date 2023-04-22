@@ -1,4 +1,6 @@
 ﻿using Avalonia.PropertyGrid.Samples.Models;
+using Avalonia.PropertyGrid.ViewModels;
+using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -34,6 +36,46 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
 
         readonly DynamicVisibilityObject _DynamicVisiblityObject = new DynamicVisibilityObject();
         public DynamicVisibilityObject dynamicVisiblity => _DynamicVisiblityObject;
+
+        #region View
+        PropertyGridShowStyle _ShowStyle = PropertyGridShowStyle.Category;
+
+        public PropertyGridShowStyle ShowStyle
+        {
+            get => _ShowStyle;
+            set
+            {
+                if(_ShowStyle != value)                    
+                {
+                    this.RaiseAndSetIfChanged(ref _ShowStyle, value);
+
+                    this.RaisePropertyChanged(nameof(IsShowCategory));
+                }                
+            }
+        }
+
+        bool _AllowFilter = true;
+        public bool AllowFilter
+        {
+            get => _AllowFilter;
+            set => this.RaiseAndSetIfChanged(ref _AllowFilter, value);
+        }
+
+        public bool IsShowCategory
+        {
+            get => ShowStyle == PropertyGridShowStyle.Category;
+            set
+            {
+                PropertyGridShowStyle newStyle = value ? PropertyGridShowStyle.Category : PropertyGridShowStyle.Alphabetic;
+
+                if (ShowStyle != newStyle)
+                {
+                    ShowStyle = newStyle;
+                    this.RaisePropertyChanged(nameof(IsShowCategory));
+                }
+            }
+        }
+        #endregion
 
         public MainWindowViewModel()
         {
