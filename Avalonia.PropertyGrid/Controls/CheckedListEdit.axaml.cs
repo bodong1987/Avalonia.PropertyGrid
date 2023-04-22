@@ -78,7 +78,7 @@ namespace Avalonia.PropertyGrid.Controls
     }
 
     #region Help View Model
-    internal class CheckedListViewModel : ReactiveObject
+    internal class CheckedListViewModel : MiniReactiveObject
     {
         readonly List<CheckedListItemViewModel> _Items = new List<CheckedListItemViewModel>();
 
@@ -200,7 +200,7 @@ namespace Avalonia.PropertyGrid.Controls
         }
     }
 
-    internal class CheckedListItemViewModel : ReactiveObject
+    internal class CheckedListItemViewModel : MiniReactiveObject
     {
         public readonly CheckedListViewModel Parent;
         public readonly object Value;

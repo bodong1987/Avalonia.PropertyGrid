@@ -65,5 +65,11 @@
 				<lv:ToggleSwitchExtensionPropertyGrid Margin="4" SelectedObject="{Binding $parent[Window].DataContext.booleanExtension}"></lv:ToggleSwitchExtensionPropertyGrid>
 			</ScrollViewer>
 		</TabItem>
+
+		<TabItem Header="Dynamic Visbility">
+			<ScrollViewer>
+				<pgc:PropertyGrid Margin="4" SelectedObject="{Binding $parent[Window].DataContext.dynamicVisiblity}"></pgc:PropertyGrid>
+			</ScrollViewer>
+		</TabItem>
 	</TabControl>
 </Window>

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Avalonia.PropertyGrid.Samples.Models
 {
-    public class BooleanExtensionObject : ReactiveObject
+    public class BooleanExtensionObject : MiniReactiveObject
     {
         public bool toggleAble { get; set; } = true;
 

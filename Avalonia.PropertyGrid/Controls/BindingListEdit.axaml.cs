@@ -333,7 +333,7 @@ namespace Avalonia.PropertyGrid.Controls
             }
         }
     }
-    internal class BindingListElementDataDesc : ReactiveObject
+    internal class BindingListElementDataDesc : MiniReactiveObject
     {
         public readonly IBindingList List;
         public readonly BindingListElementPropertyDescriptor Property;

@@ -110,6 +110,16 @@ namespace Avalonia.PropertyGrid.Controls
             InitializeComponent();
 
             column_name.PropertyChanged += OnColumnNamePropertyChanged;
+
+            Bindings.PropertyChangedEvent += OnBindingPropertyChanged;
+        }
+
+        private void OnBindingPropertyChanged(object sender, BindingPropertyChangedEventArgs e)
+        {
+            if(e.Binding != null && e.Binding.Property != null && e.Binding.Property.IsDefined<ConditionTargetAttribute>())
+            {
+                SetVisiblity(Bindings, true);
+            }
         }
 
         private void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -181,13 +191,18 @@ namespace Avalonia.PropertyGrid.Controls
             return false;
         }
 
-        private void SetVisiblity(IEnumerable<PropertyBinding> bindings)
+        private void SetVisiblity(IEnumerable<PropertyBinding> bindings, bool conditinalOnly = false)
         {
             // first pass check all direct property binding visibility
             foreach (var info in bindings)
             {
                 if(info is DirectPropertyBinding binding)
                 {
+                    if(conditinalOnly && binding.Property != null && !binding.Property.IsDefined<AbstractVisiblityConditionAttribute>())
+                    {
+                        continue;
+                    }
+
                     bool IsVisible = ViewModel.CheckVisible(info.Property, binding.Target);
 
                     binding.IsVisible = IsVisible;

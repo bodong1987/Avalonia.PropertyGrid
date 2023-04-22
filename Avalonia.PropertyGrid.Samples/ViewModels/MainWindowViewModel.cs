@@ -32,6 +32,9 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
 
         public BooleanExtensionObject booleanExtension => _BooleanExtension;
 
+        readonly DynamicVisibilityObject _DynamicVisiblityObject = new DynamicVisibilityObject();
+        public DynamicVisibilityObject dynamicVisiblity => _DynamicVisiblityObject;
+
         public MainWindowViewModel()
         {
             GenOptions();

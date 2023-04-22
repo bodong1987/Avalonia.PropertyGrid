@@ -22,7 +22,7 @@ namespace Avalonia.PropertyGrid.Localization
     /// </summary>
     /// <seealso cref="ReactiveObject" />
     /// <seealso cref="ILocalizationService" />
-    internal class InternalLocalizationService : ReactiveObject, ILocalizationService
+    internal class InternalLocalizationService : MiniReactiveObject, ILocalizationService
     {
         /// <summary>
         /// The local texts

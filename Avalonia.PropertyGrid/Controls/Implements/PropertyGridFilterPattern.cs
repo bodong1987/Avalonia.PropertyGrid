@@ -1,4 +1,5 @@
 ﻿using Avalonia.PropertyGrid.Model.ComponentModel;
+using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
 using Avalonia.PropertyGrid.Model.Extensions;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Avalonia.PropertyGrid.Controls.Implements
 {
-    internal class PropertyGridFilterPattern : ReactiveObject, IPropertyGridFilterPattern
+    internal class PropertyGridFilterPattern : MiniReactiveObject, IPropertyGridFilterPattern
     {
         string _FilterText;
         Regex _CachedRegex;
@@ -58,6 +59,14 @@ namespace Avalonia.PropertyGrid.Controls.Implements
 
         public bool Match(PropertyDescriptor propertyDescriptor, object context)
         {
+            if(propertyDescriptor.GetCustomAttribute<AbstractVisiblityConditionAttribute>() is AbstractVisiblityConditionAttribute attr)
+            {
+                if(!attr.CheckVisibility(context))
+                {
+                    return false;
+                }
+            }
+
             var displayName = propertyDescriptor.DisplayName;
 
             if(UseRegex && _CachedRegex != null)
