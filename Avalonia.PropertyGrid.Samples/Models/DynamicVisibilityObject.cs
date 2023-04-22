@@ -2,13 +2,15 @@
 using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Avalonia.PropertyGrid.Model.Extensions;
 
 namespace Avalonia.PropertyGrid.Samples.Models
 {
-    public class DynamicVisibilityObject : MiniReactiveObject
+    public class DynamicVisibilityObject : ReactiveObject
     {
         [ConditionTarget]
         public bool IsShowPath { get; set; } = true;
@@ -21,6 +23,17 @@ namespace Avalonia.PropertyGrid.Samples.Models
         public PlatformID Platform { get; set; } = PlatformID.Win32NT;
 
         [VisibilityPropertyCondition(nameof(Platform), PlatformID.Unix)]
+        [ConditionTarget]
         public string UnixVersion { get; set; } = "";
+
+        // show more complex conditions...
+        [Browsable(false)]
+        [DependsOnProperty(nameof(IsShowPath), nameof(Platform), nameof(UnixVersion))]
+        [ConditionTarget]
+        public bool IsShowUnixLoginInfo => IsShowPath && Platform == PlatformID.Unix && UnixVersion.IsNotNullOrEmpty();
+
+        [VisibilityPropertyCondition(nameof(IsShowUnixLoginInfo), true)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        public LoginInfo unixLogInInfo { get; set; } = new LoginInfo();
     }
 }

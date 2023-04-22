@@ -59,14 +59,6 @@ namespace Avalonia.PropertyGrid.Controls.Implements
 
         public bool Match(PropertyDescriptor propertyDescriptor, object context)
         {
-            if(propertyDescriptor.GetCustomAttribute<AbstractVisiblityConditionAttribute>() is AbstractVisiblityConditionAttribute attr)
-            {
-                if(!attr.CheckVisibility(context))
-                {
-                    return false;
-                }
-            }
-
             var displayName = propertyDescriptor.DisplayName;
 
             if(UseRegex && _CachedRegex != null)

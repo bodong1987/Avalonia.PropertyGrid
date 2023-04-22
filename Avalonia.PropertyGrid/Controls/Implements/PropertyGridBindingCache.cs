@@ -1,6 +1,7 @@
 ﻿using Avalonia.Controls;
 using Avalonia.PropertyGrid.Model.ComponentModel;
 using Avalonia.PropertyGrid.Model.Extensions;
+using Avalonia.PropertyGrid.ViewModels;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,20 +18,20 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         public readonly Expander BindingExpander;
         public readonly object Target;
         public readonly int Depth;
-        private bool _IsVisible = true;
+        private PropertyVisibility _Visibility = PropertyVisibility.AlwaysVisible;
 
         public string PropertyName => Property?.Name;
 
-        public bool IsVisible
+        public PropertyVisibility Visibility
         {
-            get => _IsVisible;
+            get => _Visibility;
             set
             {
-                if(_IsVisible != value)
+                if(_Visibility != value)
                 {
-                    _IsVisible = value;
+                    _Visibility = value;
 
-                    OnVisiblityChanged(_IsVisible);
+                    OnVisiblityChanged(_Visibility);
                 }
             }
         }
@@ -57,8 +58,9 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         public abstract bool HandlePropertyChanged();
         public abstract double CalcBindingNameMaxLength();
         public abstract void ApplyWidth(double width);
-        protected abstract void OnVisiblityChanged(bool visible);
-        public abstract void PopulateVisiblityState();
+        protected abstract void OnVisiblityChanged(PropertyVisibility visibility);
+
+        public abstract void PropagateVisiblityState();
     }
 
     internal class DirectPropertyBinding : PropertyBinding
@@ -115,21 +117,28 @@ namespace Avalonia.PropertyGrid.Controls.Implements
             }
         }
 
-        protected override void OnVisiblityChanged(bool visible)
+        protected override void OnVisiblityChanged(PropertyVisibility visibility)
         {
-            BindingNameControl.IsVisible = visible;
-            BindingControl.IsVisible = visible;
+            BindingNameControl.IsVisible = visibility == PropertyVisibility.AlwaysVisible;
+            BindingControl.IsVisible = visibility == PropertyVisibility.AlwaysVisible;
         }
 
-        public override void PopulateVisiblityState()
+        public override void PropagateVisiblityState()
         {
             
+        }
+
+        public override string ToString()
+        {
+            return $"{PropertyName}[{BindingKey}]({Visibility})";
         }
     }
 
     internal class IndirectPropertyBinding : PropertyBinding
     {
         public readonly List<PropertyBinding> Children = new List<PropertyBinding>();
+
+        public bool IsCategoryBinding => Property == null;
         
         public IndirectPropertyBinding(
             string key,
@@ -181,34 +190,44 @@ namespace Avalonia.PropertyGrid.Controls.Implements
             }
         }
 
-        protected override void OnVisiblityChanged(bool visible)
-        {
-            // don't set visible flag here, wait Populate visiblity state
-//             foreach(var binding in Children)
-//             {
-//                 binding.IsVisible = visible;
-//             }
+        protected override void OnVisiblityChanged(PropertyVisibility visibility)
+        {            
+            
         }
 
-        public override void PopulateVisiblityState()
+        public override void PropagateVisiblityState()
         {
             bool AnyVisible = false;
             foreach(var binding in Children)
             {
-                binding.PopulateVisiblityState();
+                if(Visibility.HasFlag(PropertyVisibility.HiddenByCondition))
+                {
+                    binding.Visibility |= PropertyVisibility.HiddenByCondition;
+                }
 
-                if(binding.IsVisible)
+                binding.PropagateVisiblityState();
+
+                if(binding.Visibility == PropertyVisibility.AlwaysVisible)
                 {
                     AnyVisible = true;
-
-                    // dont't break, refresh all children states
-                    // break;
                 }
             }
 
-            IsVisible = AnyVisible;
+            Visibility = AnyVisible ? PropertyVisibility.AlwaysVisible : PropertyVisibility.HiddenByNoVisibleChidlren;
 
-            BindingExpander.IsVisible = IsVisible;
+            BindingExpander.IsVisible = Visibility == PropertyVisibility.AlwaysVisible;
+        }
+
+        public override string ToString()
+        {
+            if (IsCategoryBinding)
+            {
+                return $"Category {BindingKey}({Visibility})";
+            }
+            else
+            {
+                return $"{PropertyName}[{BindingKey}]({Visibility})";
+            }
         }
     }
 

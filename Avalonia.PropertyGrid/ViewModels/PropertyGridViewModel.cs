@@ -1,7 +1,10 @@
 ﻿using Avalonia.PropertyGrid.Controls;
 using Avalonia.PropertyGrid.Controls.Implements;
 using Avalonia.PropertyGrid.Model.ComponentModel;
+using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
+using Avalonia.PropertyGrid.Model.Extensions;
 using Avalonia.PropertyGrid.Model.Utils;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,6 +27,16 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// The alphabetic
         /// </summary>
         Alphabetic
+    }
+
+    [Flags]
+    public enum PropertyVisibility
+    {
+        AlwaysVisible               = 0,
+        HiddenByFilter              = 1<<0,
+        HiddenByCategoryFilter      = 1<<1,        
+        HiddenByNoVisibleChidlren   = 1<<2,
+        HiddenByCondition           = 1<<10,
     }
 
     /// <summary>
@@ -148,10 +161,29 @@ namespace Avalonia.PropertyGrid.ViewModels
             return category;
         }
 
-        public bool CheckVisible(PropertyDescriptor property, object context)
+        public PropertyVisibility CheckVisibility(PropertyDescriptor property, object context)
         {
-            return FilterPattern.Match(property, context) &&
-                (CategoryFilter == null || CategoryFilter.IsChecked(GetCategory(property)));
+            PropertyVisibility visiblity = PropertyVisibility.AlwaysVisible;
+
+            if (property.GetCustomAttribute<AbstractVisiblityConditionAttribute>() is AbstractVisiblityConditionAttribute attr)
+            {
+                if (!attr.CheckVisibility(context))
+                {
+                    visiblity |= PropertyVisibility.HiddenByCondition;
+                }
+            }
+
+            if(!FilterPattern.Match(property, context))
+            {
+                visiblity |= PropertyVisibility.HiddenByFilter;
+            }
+
+            if(CategoryFilter != null && !CategoryFilter.IsChecked(GetCategory(property)))
+            {
+                visiblity |= PropertyVisibility.HiddenByCategoryFilter;
+            }
+
+            return visiblity;
         }
 
         /// <summary>
@@ -167,7 +199,7 @@ namespace Avalonia.PropertyGrid.ViewModels
             }
 
             PropertyDescriptorBuilder builder = new PropertyDescriptorBuilder(_SelectedObject);
-            AllProperties.AddRange(builder.GetProperties().Cast<PropertyDescriptor>());
+            AllProperties.AddRange(builder.GetProperties().Cast<PropertyDescriptor>().ToList().FindAll(x => x.IsBrowsable));
 
             HashSet<string> categories = new HashSet<string>();
             foreach(var property in AllProperties)

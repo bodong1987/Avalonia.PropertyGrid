@@ -118,7 +118,7 @@ namespace Avalonia.PropertyGrid.Controls
         {
             if(e.Binding != null && e.Binding.Property != null && e.Binding.Property.IsDefined<ConditionTargetAttribute>())
             {
-                SetVisiblity(Bindings, true);
+                SetVisiblity(Bindings);
             }
         }
 
@@ -178,43 +178,37 @@ namespace Avalonia.PropertyGrid.Controls
             BuildPropertiesView(ViewModel.SelectedObject, ViewModel.ShowCategory ? PropertyGridShowStyle.Category : PropertyGridShowStyle.Alphabetic);
         }
 
-        private bool HasAnyVisibleProperty(IEnumerable<PropertyBinding> bindings)
+        private void SetVisiblity(IEnumerable<PropertyBinding> bindings)
         {
+            // first pass check all direct property binding visibility
             foreach (var binding in bindings)
             {
-                if(ViewModel.CheckVisible(binding.Property, binding.Target))
+                if(binding.Property != null && binding.Target != null)
                 {
-                    return true;
+                    binding.Visibility = ViewModel.CheckVisibility(binding.Property, binding.Target);
                 }
             }
 
-            return false;
-        }
+            // second pass, populate indirect property binding visibility
 
-        private void SetVisiblity(IEnumerable<PropertyBinding> bindings, bool conditinalOnly = false)
-        {
-            // first pass check all direct property binding visibility
-            foreach (var info in bindings)
+            if(ViewModel.ShowCategory)
             {
-                if(info is DirectPropertyBinding binding)
+                foreach (var info in bindings)
                 {
-                    if(conditinalOnly && binding.Property != null && !binding.Property.IsDefined<AbstractVisiblityConditionAttribute>())
+                    if (info is IndirectPropertyBinding binding && binding.IsCategoryBinding)
                     {
-                        continue;
+                        binding.PropagateVisiblityState();
                     }
-
-                    bool IsVisible = ViewModel.CheckVisible(info.Property, binding.Target);
-
-                    binding.IsVisible = IsVisible;
-                }                
+                }
             }
-
-            // second pass, populate indirect property binding visibilty
-            foreach(var info in bindings)
+            else
             {
-                if(info is IndirectPropertyBinding binding)
+                foreach (var info in bindings)
                 {
-                    binding.PopulateVisiblityState();
+                    if (info is IndirectPropertyBinding binding)
+                    {
+                        binding.PropagateVisiblityState();
+                    }
                 }
             }
         }
@@ -338,7 +332,7 @@ namespace Avalonia.PropertyGrid.Controls
 
                         if (attr != null && attr.GetConverterType().IsChildOf<ExpandableObjectConverter>())
                         {
-                            AtLeastOneVisible |= BuildExpandableObjectPropertyCellEdit(value, referencePath, property, expander, grid, parentBinding);
+                            AtLeastOneVisible |= BuildExpandableObjectPropertyCellEdit(target, value, referencePath, property, expander, grid, parentBinding);
 
                             continue;
                         }
@@ -355,14 +349,11 @@ namespace Avalonia.PropertyGrid.Controls
             return AtLeastOneVisible;
         }
 
-        private bool BuildExpandableObjectPropertyCellEdit(object target, ReferencePath referencePath, PropertyDescriptor propertyDescriptor, Expander expander, Grid grid, IndirectPropertyBinding parentBinding)
+        private bool BuildExpandableObjectPropertyCellEdit(object target, object value, ReferencePath referencePath, PropertyDescriptor propertyDescriptor, Expander expander, Grid grid, IndirectPropertyBinding parentBinding)
         {
-            if(target == null)
-            {
-                return false;
-            }
+            Debug.Assert(value != null);
 
-            PropertyDescriptorBuilder builder = new PropertyDescriptorBuilder(target);
+            PropertyDescriptorBuilder builder = new PropertyDescriptorBuilder(value);
 
             var properties = builder.GetProperties();
 
@@ -373,7 +364,7 @@ namespace Avalonia.PropertyGrid.Controls
 
             try
             {
-                referencePath.BeginScope(target.GetType().Name);
+                referencePath.BeginScope(value.GetType().Name);
 
                 grid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
 
@@ -406,9 +397,11 @@ namespace Avalonia.PropertyGrid.Controls
 
                 parentBinding?.AddBinding(binding);
 
-                BuildPropertiesCellEdit(target, referencePath, properties.Cast<PropertyDescriptor>(), childExpander, childGrid, binding);
+                binding.Visibility = ViewModel.CheckVisibility(binding.Property, target);
 
-                binding.PopulateVisiblityState();
+                BuildPropertiesCellEdit(value, referencePath, properties.Cast<PropertyDescriptor>(), childExpander, childGrid, binding);
+
+                binding.PropagateVisiblityState();
             }
             finally
             {
@@ -473,9 +466,9 @@ namespace Avalonia.PropertyGrid.Controls
             
             parentBinding?.AddBinding(binding);
 
-            binding.IsVisible = ViewModel.CheckVisible(property, target);
+            binding.Visibility = ViewModel.CheckVisibility(property, target);
 
-            return IsVisible;
+            return binding.Visibility == PropertyVisibility.AlwaysVisible;
         }
         #endregion
 
