@@ -87,7 +87,7 @@
 			</ScrollViewer>
 		</TabItem>
 
-		<TabItem Header="Dynamic Visbility">
+		<TabItem Header="Dynamic Visibility">
 			<ScrollViewer>
 				<pgc:PropertyGrid Margin="4" SelectedObject="{Binding $parent[Window].DataContext.dynamicVisiblity}"></pgc:PropertyGrid>
 			</ScrollViewer>
