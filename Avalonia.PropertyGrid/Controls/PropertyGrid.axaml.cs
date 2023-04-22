@@ -41,11 +41,11 @@ namespace Avalonia.PropertyGrid.Controls
         #endregion
 
         #region Properties
-        public static readonly StyledProperty<bool> AllowSearchProperty = AvaloniaProperty.Register<PropertyGrid, bool>(nameof(AllowSearch), true);
+        public static readonly StyledProperty<bool> AllowFilterProperty = AvaloniaProperty.Register<PropertyGrid, bool>(nameof(AllowFilter), true);
 
-        public bool AllowSearch 
+        public bool AllowFilter 
         { 
-            get => GetValue(AllowSearchProperty); set => SetValue(AllowSearchProperty, value);
+            get => GetValue(AllowFilterProperty); set => SetValue(AllowFilterProperty, value);
         }
 
         public static readonly StyledProperty<PropertyGridShowStyle> ShowStyleProperty = AvaloniaProperty.Register<PropertyGrid, PropertyGridShowStyle>(nameof(ShowStyle), PropertyGridShowStyle.Category);
@@ -90,7 +90,7 @@ namespace Avalonia.PropertyGrid.Controls
                 }
             }
 
-            AllowSearchProperty.Changed.Subscribe(OnAllowSearchChanged);
+            AllowFilterProperty.Changed.Subscribe(OnAllowFilterChanged);
             ShowStyleProperty.Changed.Subscribe(OnShowStyleChanged);
             SelectedObjectProperty.Changed.Subscribe(OnSelectedObjectChanged);
         }
@@ -144,15 +144,15 @@ namespace Avalonia.PropertyGrid.Controls
         }
 
         #region Styled Properties Handler
-        private static void OnAllowSearchChanged(AvaloniaPropertyChangedEventArgs e)
+        private static void OnAllowFilterChanged(AvaloniaPropertyChangedEventArgs e)
         {
             if(e.Sender is PropertyGrid sender)
             {
-                sender.OnAllowSearchChanged(e.OldValue, e.NewValue);
+                sender.OnAllowFilterChanged(e.OldValue, e.NewValue);
             }
         }
 
-        private void OnAllowSearchChanged(object oldValue, object newValue)
+        private void OnAllowFilterChanged(object oldValue, object newValue)
         {
             fastFilterBox.IsVisible = (bool)newValue;
             headerGrid.IsVisible = (bool)newValue;
@@ -223,6 +223,11 @@ namespace Avalonia.PropertyGrid.Controls
             propertiesGrid.RowDefinitions.Clear();
             propertiesGrid.Children.Clear();
             Bindings.Clear();
+
+            if(target == null)
+            {
+                return;
+            }
 
             ReferencePath referencePath = new ReferencePath();
             
