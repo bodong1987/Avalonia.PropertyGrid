@@ -121,7 +121,7 @@ There are two ways to provide data validation capabilities:
         }
     }
 ```
-2. The second method is to use System.ComponentModel.DataAnnotations.ValidationAttribute to mark the target attribute, both system-provided and user-defined. for example:
+2. The second method is to use System.ComponentModel.DataAnnotations.ValidationAttribute to mark the target property, both system-provided and user-defined. for example:
 ```C#
     public class ValidatePlatformAttribute : ValidationAttribute
     {
@@ -138,6 +138,19 @@ There are two ways to provide data validation capabilities:
             return ValidationResult.Success;
         }
     }
+
+    [Category("DataValidation")]
+    [Description("Select platforms")]
+    [ValidatePlatform]
+    public CheckedList<PlatformID> Platforms { get; set; } = new CheckedList<PlatformID>(Enum.GetValues(typeof(PlatformID)).Cast<PlatformID>());
+
+    [Category("Numeric")]
+    [Range(10, 200)]
+    public int iValue { get; set; } = 100;
+
+    [Category("Numeric")]
+    [Range(0.1f, 10.0f)]
+    public float fValue { get; set; } = 0.5f;
 ```
 
 ### Dynamic Visibilty
