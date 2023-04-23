@@ -38,7 +38,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Gets or sets the localization service.
         /// </summary>
         /// <value>The localization service.</value>
-        public static ILocalizationService LocalizationService { get; set; } = new InternalLocalizationService();
+        public static readonly ILocalizationService LocalizationService = new InternalLocalizationService();
         #endregion
 
         #region Properties

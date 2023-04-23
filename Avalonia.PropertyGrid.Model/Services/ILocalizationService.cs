@@ -26,5 +26,17 @@ namespace Avalonia.PropertyGrid.Model.Services
         /// </summary>
         /// <value>The name of the culture.</value>
         string CultureName { get; set; }
+
+        /// <summary>
+        /// Adds the extra service.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        void AddExtraService(ILocalizationService service);
+
+        /// <summary>
+        /// Removes the extra service.
+        /// </summary>
+        /// <param name="service">The service.</param>
+        void RemoveExtraService(ILocalizationService service);
     }
 }

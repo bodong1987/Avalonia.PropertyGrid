@@ -5,7 +5,7 @@
 	  <LangVersion>preview</LangVersion>
 	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	  <Title>bodong.Avalonia.PropertyGrid</Title>
-	  <Version>0.10.19.3</Version>
+	  <Version>0.10.19.4</Version>
 	  <Authors>bodong</Authors>
 	  <Description>A  PropertyGrid control implementation for Avalonia</Description>
 	  <PackageProjectUrl>https://github.com/bodong1987/Avalonia.PropertyGrid</PackageProjectUrl>

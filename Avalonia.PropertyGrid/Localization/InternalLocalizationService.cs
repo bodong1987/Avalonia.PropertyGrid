@@ -1,5 +1,6 @@
 ﻿using Avalonia.Platform;
 using Avalonia.PropertyGrid.Model.ComponentModel;
+using Avalonia.PropertyGrid.Model.Extensions;
 using Avalonia.PropertyGrid.Model.Services;
 using Newtonsoft.Json;
 using System;
@@ -43,6 +44,8 @@ namespace Avalonia.PropertyGrid.Localization
             set => this.RaiseAndSetIfChanged(ref _CultureName, value);
         }
 
+        readonly List<ILocalizationService> ExtraServices = new List<ILocalizationService>();
+
         /// <summary>
         /// Gets the <see cref="System.String"/> with the specified key.
         /// </summary>
@@ -52,6 +55,16 @@ namespace Avalonia.PropertyGrid.Localization
         {
             get
             {
+                foreach(var service in ExtraServices)
+                {
+                    string value = service[key];
+
+                    if(value.IsNotNullOrEmpty() && value != key)
+                    {
+                        return value;
+                    }
+                }
+
                 if (LocalTexts != null && LocalTexts.TryGetValue(key, out var text))
                 {
                     return text;
@@ -128,6 +141,16 @@ namespace Avalonia.PropertyGrid.Localization
                     }
                 }
             }
+        }
+
+        public void AddExtraService(ILocalizationService service)
+        {
+            ExtraServices.Add(service);
+        }
+
+        public void RemoveExtraService(ILocalizationService service)
+        {
+            ExtraServices.Remove(service);
         }
     }
 }
