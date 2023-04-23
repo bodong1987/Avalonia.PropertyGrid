@@ -37,6 +37,9 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
         readonly DynamicVisibilityObject _DynamicVisiblityObject = new DynamicVisibilityObject();
         public DynamicVisibilityObject dynamicVisiblity => _DynamicVisiblityObject;
 
+        readonly TestObject _TestObject = new TestObject();
+        public TestObject testObject => _TestObject;
+
         #region View
         PropertyGridShowStyle _ShowStyle = PropertyGridShowStyle.Category;
 

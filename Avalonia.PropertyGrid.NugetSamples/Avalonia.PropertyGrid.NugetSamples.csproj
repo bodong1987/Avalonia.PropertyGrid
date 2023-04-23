@@ -12,6 +12,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="..\Avalonia.PropertyGrid.Samples\Models\BooleanExtensionObject.cs" Link="Models\BooleanExtensionObject.cs" />
+    <Compile Include="..\Avalonia.PropertyGrid.Samples\Models\DynamicVisibilityObject.cs" Link="Models\DynamicVisibilityObject.cs" />
+    <Compile Include="..\Avalonia.PropertyGrid.Samples\Models\LoginInfo.cs" Link="Models\LoginInfo.cs" />
+    <Compile Include="..\Avalonia.PropertyGrid.Samples\Models\ScriptableObject.cs" Link="Models\ScriptableObject.cs" />
+    <Compile Include="..\Avalonia.PropertyGrid.Samples\Models\ScriptableOptions.cs" Link="Models\ScriptableOptions.cs" />
+    <Compile Include="..\Avalonia.PropertyGrid.Samples\Models\SimpleObject.cs" Link="Models\SimpleObject.cs" />
+    <Compile Include="..\Avalonia.PropertyGrid.Samples\Models\TestObject.cs" Link="Models\TestObject.cs" />
+    <Compile Include="..\Avalonia.PropertyGrid.Samples\Models\Vector3.cs" Link="Models\Vector3.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <TrimmerRootDescriptor Include="Roots.xml" />
   </ItemGroup>
 
@@ -23,5 +34,9 @@
     <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.19" />
     <PackageReference Include="bodong.Avalonia.PropertyGrid" Version="0.10.19.3" />
     <PackageReference Include="XamlNameReferenceGenerator" Version="1.6.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
 </Project>
