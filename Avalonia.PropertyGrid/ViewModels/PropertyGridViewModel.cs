@@ -188,9 +188,10 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// Checks the visibility.
         /// </summary>
         /// <param name="property">The property.</param>
+        /// <param name="category">The category.</param>
         /// <param name="context">The context.</param>
         /// <returns>PropertyVisibility.</returns>
-        public PropertyVisibility CheckVisibility(PropertyDescriptor property, object context)
+        public PropertyVisibility CheckVisibility(PropertyDescriptor property, string category, object context)
         {
             PropertyVisibility visiblity = PropertyVisibility.AlwaysVisible;
 
@@ -207,7 +208,7 @@ namespace Avalonia.PropertyGrid.ViewModels
                 visiblity |= PropertyVisibility.HiddenByFilter;
             }
 
-            if(CategoryFilter != null && !CategoryFilter.IsChecked(GetCategory(property)))
+            if(CategoryFilter != null && category.IsNotNullOrEmpty() && !CategoryFilter.IsChecked(category))
             {
                 visiblity |= PropertyVisibility.HiddenByCategoryFilter;
             }

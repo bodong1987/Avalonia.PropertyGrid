@@ -267,7 +267,11 @@ namespace Avalonia.PropertyGrid.Controls
             {
                 if(binding.Property != null && binding.Target != null)
                 {
-                    binding.Visibility = ViewModel.CheckVisibility(binding.Property, binding.Target);
+                    binding.Visibility = ViewModel.CheckVisibility(
+                        binding.Property, 
+                        binding.RootCategory,
+                        binding.Target
+                        );
                 }
             }
 
@@ -377,7 +381,9 @@ namespace Avalonia.PropertyGrid.Controls
                     null,
                     expander,
                     target,
-                    referencePath.Count);
+                    referencePath.Count,
+                    categoryInfo.Key
+                    );
 
                 Bindings.AddBinding(binding);
 
@@ -500,14 +506,15 @@ namespace Avalonia.PropertyGrid.Controls
                         propertyDescriptor,
                         childExpander,
                         target,
-                        referencePath.Count
+                        referencePath.Count,
+                        parentBinding?.RootCategory
                     );
 
                 Bindings.AddBinding(binding);
 
                 parentBinding?.AddBinding(binding);
 
-                binding.Visibility = ViewModel.CheckVisibility(binding.Property, target);
+                binding.Visibility = ViewModel.CheckVisibility(binding.Property, binding.RootCategory, target);
 
                 BuildPropertiesCellEdit(value, referencePath, properties.Cast<PropertyDescriptor>(), childExpander, childGrid, binding);
 
@@ -572,12 +579,23 @@ namespace Avalonia.PropertyGrid.Controls
 
             factory.HandlePropertyChanged(target, property, control);
 
-            var binding = new DirectPropertyBinding(referencePath.ToString(), property, expander, target, referencePath.Count, control, nameBlock, factory);
+            var binding = new DirectPropertyBinding(
+                referencePath.ToString(),
+                property, 
+                expander, 
+                target, 
+                referencePath.Count, 
+                control, 
+                nameBlock, 
+                factory, 
+                parentBinding?.RootCategory
+                );
+
             Bindings.AddBinding(binding);          
             
             parentBinding?.AddBinding(binding);
 
-            binding.Visibility = ViewModel.CheckVisibility(property, target);
+            binding.Visibility = ViewModel.CheckVisibility(binding.Property, binding.RootCategory, target);
 
             return binding.Visibility == PropertyVisibility.AlwaysVisible;
         }

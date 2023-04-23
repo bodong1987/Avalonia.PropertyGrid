@@ -18,6 +18,8 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         public readonly Expander BindingExpander;
         public readonly object Target;
         public readonly int Depth;
+        public readonly string RootCategory;
+
         private PropertyVisibility _Visibility = PropertyVisibility.AlwaysVisible;
 
         public string PropertyName => Property?.Name;
@@ -41,13 +43,16 @@ namespace Avalonia.PropertyGrid.Controls.Implements
             PropertyDescriptor propertyDescriptor, 
             Expander expander, 
             object target, 
-            int depth)
+            int depth,
+            string rootCategory
+            )
         {
             BindingKey = key;
             Property = propertyDescriptor;
             BindingExpander = expander;
             Target = target;
             Depth = depth;
+            RootCategory = rootCategory;
         }
                 
         public override string ToString()
@@ -77,8 +82,10 @@ namespace Avalonia.PropertyGrid.Controls.Implements
             int depth,
             Control bindingControl, 
             TextBlock bindingNameControl, 
-            ICellEditFactory factory) :
-            base(key, propertyDescriptor, expander,target,depth)
+            ICellEditFactory factory,
+            string rootCategory
+            ) :
+            base(key, propertyDescriptor, expander,target,depth, rootCategory)
         {
             BindingControl = bindingControl;
             BindingNameControl = bindingNameControl;
@@ -145,8 +152,10 @@ namespace Avalonia.PropertyGrid.Controls.Implements
             PropertyDescriptor propertyDescriptor,
             Expander expander,
             object target,
-            int depth) :
-            base(key, propertyDescriptor, expander, target, depth)
+            int depth,
+            string rootCategory
+            ) :
+            base(key, propertyDescriptor, expander, target, depth, rootCategory)
         {
         }
 
