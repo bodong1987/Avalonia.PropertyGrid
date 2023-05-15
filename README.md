@@ -286,8 +286,3 @@ Show Dynamic Visibility
 ## Avalonia.PropertyGrid.NugetSamples
 This example shows how to use PropertyGrid through the Nuget package. Its content is similar to the Sample that directly uses the source code, and it can also be used as a case for learning how to use it.  
 
-**My Blog: https://www.cnblogs.com/bodong**  
-**如果你来自中国或者认识中文，可以在这里获取更多相关信息:**  
-    https://www.cnblogs.com/bodong/p/17342817.html
-
-
