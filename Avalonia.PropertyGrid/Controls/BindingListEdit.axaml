@@ -42,7 +42,7 @@
 							  ToolTip.Tip="{ll:Localize ClearAllElements}"
 							  >U</Button>
 					  <ItemsControl x:Name="PART_ItemsPresenter"
-									Items="{Binding Model.Elements, RelativeSource={RelativeSource TemplatedParent}}"
+									ItemsSource="{Binding Model.Elements, RelativeSource={RelativeSource TemplatedParent}}"
 									Grid.Row="1"
 									Grid.ColumnSpan="4"
 									>

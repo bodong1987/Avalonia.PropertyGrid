@@ -27,15 +27,14 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Called when [property changed].
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="change">The change.</param>
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
-        {
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {        
             base.OnPropertyChanged(change);
 
             if(change.Property == DataContextProperty)
             {
-                OnDataDescPropertyChanged(change.OldValue.Value as BindingListElementDataDesc, change.NewValue.Value as BindingListElementDataDesc);
+                OnDataDescPropertyChanged(change.OldValue as BindingListElementDataDesc, change.NewValue as BindingListElementDataDesc);
             }
         }
 

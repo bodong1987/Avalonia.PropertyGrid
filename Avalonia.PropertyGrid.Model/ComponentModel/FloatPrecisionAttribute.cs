@@ -16,7 +16,7 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel
         /// <summary>
         /// The increment
         /// </summary>
-        public readonly float Increment;
+        public readonly Decimal Increment;
 
         /// <summary>
         /// The format string
@@ -29,10 +29,10 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel
         /// <param name="precision">The precision.</param>
         public FloatPrecisionAttribute(int precision = 2)
         {
-            float v = 1;
+            Decimal v = 1;
             for(int i=0; i < precision; ++i)
             {
-                v *= 0.1f;
+                v *= (Decimal)0.1;
             }
 
             Increment = v;
@@ -45,7 +45,7 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel
         /// </summary>
         /// <param name="increment">The increment.</param>
         /// <param name="formatString">The format string.</param>
-        public FloatPrecisionAttribute(float increment = 0.01f, string formatString = "{0:0.00}")
+        public FloatPrecisionAttribute(Decimal increment = (Decimal)0.01, string formatString = "{0:0.00}")
         {
             Increment = increment;
             FormatString = formatString;

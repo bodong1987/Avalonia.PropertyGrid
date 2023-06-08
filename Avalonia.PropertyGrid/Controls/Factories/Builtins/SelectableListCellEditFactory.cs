@@ -27,7 +27,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             var list = (propertyDescriptor.GetValue(target) as ISelectableList);
 
-            control.Items = list?.Values;
+            control.ItemsSource = list?.Values;
             control.HorizontalAlignment = Layout.HorizontalAlignment.Stretch;
 
             control.SelectionChanged += (s, e) =>
@@ -63,7 +63,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             if (control is ComboBox cb)
             {
                 var list = propertyDescriptor.GetValue(target) as ISelectableList;
-                cb.Items = list?.Values;
+                cb.ItemsSource = list?.Values;
                 cb.SelectedItem = list?.SelectedValue;
 
                 return true;

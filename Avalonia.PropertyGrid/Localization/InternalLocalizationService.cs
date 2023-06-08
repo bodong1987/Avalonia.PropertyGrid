@@ -1,4 +1,5 @@
-﻿using Avalonia.Platform;
+﻿using Avalonia;
+using Avalonia.Platform;
 using Avalonia.PropertyGrid.Model.ComponentModel;
 using Avalonia.PropertyGrid.Model.Extensions;
 using Avalonia.PropertyGrid.Model.Services;
@@ -98,13 +99,9 @@ namespace Avalonia.PropertyGrid.Localization
         /// <returns><c>true</c> if [is launguage file exists] [the specified culture]; otherwise, <c>false</c>.</returns>
         private bool IsLaunguageFileExists(string culture)
         {
-            var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
-
-            Debug.Assert(assets != null);
-                        
             var url = new Uri($"avares://{GetType().Assembly.GetName().Name}/Assets/Localizations/{culture}.json");
 
-            return assets.Exists(url);
+            return AssetLoader.Exists(url);
         }
 
         /// <summary>
@@ -116,12 +113,9 @@ namespace Avalonia.PropertyGrid.Localization
         {
             if(e.PropertyName == nameof(CultureName) && IsLaunguageFileExists(CultureName))
             {
-                var assets = AvaloniaLocator.Current.GetService<IAssetLoader>();
-                Debug.Assert(assets != null);
-
                 var url = new Uri($"avares://{GetType().Assembly.GetName().Name}/Assets/Localizations/{CultureName}.json");
 
-                using (var stream = assets.Open(url))
+                using (var stream = AssetLoader.Open(url))
                 {
                     using (StreamReader sr = new StreamReader(stream, Encoding.UTF8))
                     {

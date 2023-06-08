@@ -36,8 +36,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (attr != null)
             {
-                control.Minimum = (double)Convert.ChangeType(attr.Minimum, typeof(double));
-                control.MaxHeight = (double)Convert.ChangeType(attr.Maximum, typeof(double));
+                control.Minimum = (Decimal)(double)Convert.ChangeType(attr.Minimum, typeof(double));
+                control.Maximum = (Decimal)(double)Convert.ChangeType(attr.Maximum, typeof(double));
             }
 
             if (propertyDescriptor.PropertyType == typeof(sbyte) ||
@@ -62,7 +62,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 }
                 else
                 {
-                    control.Increment = 0.01;
+                    control.Increment = (Decimal)0.01;
                     control.FormatString = "{0:0.00}";
                 }                
             }
@@ -94,7 +94,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (control is NumericUpDown nup)
             {
-                nup.Value = (double)Convert.ChangeType(propertyDescriptor.GetValue(target), typeof(double));
+                nup.Value = (Decimal)(double)Convert.ChangeType(propertyDescriptor.GetValue(target), typeof(double));
 
                 return true;
             }
