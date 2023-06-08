@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
 	  <LangVersion>preview</LangVersion>
 	  <Authors>bodong</Authors>
-	  <Version>0.10.19.4</Version>
+	  <Version>0.10.19.5</Version>
 	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
 	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>

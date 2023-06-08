@@ -101,6 +101,11 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
         [Category("Numeric")]
         [Range(0.1f, 10.0f)]
+        [FloatPrecision(3)]
+        public float fValuePrecision { get; set; } = 0.5f;
+
+        [Category("Numeric")]
+        [Range(0.1f, 10.0f)]
         public double dValue { get; set; } = 5.5f;
 
         [Category("Numeric")]

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Avalonia.PropertyGrid.Model.Extensions;
 using Avalonia.Controls.Embedding;
 using Newtonsoft.Json.Linq;
+using Avalonia.PropertyGrid.Model.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
@@ -39,7 +40,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 control.MaxHeight = (double)Convert.ChangeType(attr.Maximum, typeof(double));
             }
 
-            if (propertyDescriptor.PropertyType == typeof(byte) ||
+            if (propertyDescriptor.PropertyType == typeof(sbyte) ||
+                propertyDescriptor.PropertyType == typeof(byte) ||
                 propertyDescriptor.PropertyType == typeof(short) ||
                 propertyDescriptor.PropertyType == typeof(ushort) ||
                 propertyDescriptor.PropertyType == typeof(int) ||
@@ -52,8 +54,17 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             }
             else
             {
-                control.Increment = 0.01;
-                control.FormatString = "{0:0.00}";
+                var precisionAttr = propertyDescriptor.GetCustomAttribute<FloatPrecisionAttribute>();
+                if(precisionAttr != null)
+                {
+                    control.Increment = precisionAttr.Increment;
+                    control.FormatString = precisionAttr.FormatString;
+                }
+                else
+                {
+                    control.Increment = 0.01;
+                    control.FormatString = "{0:0.00}";
+                }                
             }
 
             control.ValueChanged += (s, e) =>
