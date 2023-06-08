@@ -151,6 +151,11 @@ There are two ways to provide data validation capabilities:
     [Category("Numeric")]
     [Range(0.1f, 10.0f)]
     public float fValue { get; set; } = 0.5f;
+    
+    [Category("Numeric")]
+    [Range(0.1f, 10.0f)]
+    [FloatPrecision(3)]
+    public float fValuePrecision { get; set; } = 0.5f;
 ```
 
 ### Dynamic Visibilty
