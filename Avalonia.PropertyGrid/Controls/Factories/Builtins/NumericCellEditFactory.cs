@@ -37,7 +37,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             if (attr != null)
             {
                 control.Minimum = (double)Convert.ChangeType(attr.Minimum, typeof(double));
-                control.MaxHeight = (double)Convert.ChangeType(attr.Maximum, typeof(double));
+                control.Maximum = (double)Convert.ChangeType(attr.Maximum, typeof(double));
             }
 
             if (propertyDescriptor.PropertyType == typeof(sbyte) ||
