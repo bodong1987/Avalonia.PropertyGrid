@@ -370,7 +370,9 @@ namespace Avalonia.PropertyGrid.Controls
                 expander.SetValue(Grid.RowProperty, propertiesGrid.RowDefinitions.Count - 1);
                 expander.IsExpanded = true;
                 expander.HorizontalContentAlignment = Layout.HorizontalAlignment.Stretch;
+                expander.HorizontalAlignment = Layout.HorizontalAlignment.Stretch;
                 expander.Margin = new Thickness(2);
+                expander.Padding = new Thickness(2);
 
                 Grid grid = new Grid();
                 grid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
@@ -493,6 +495,7 @@ namespace Avalonia.PropertyGrid.Controls
                 childExpander.HorizontalAlignment = Layout.HorizontalAlignment.Stretch;
                 childExpander.HorizontalContentAlignment = Layout.HorizontalAlignment.Stretch;
                 childExpander.Margin = new Thickness(6,2,6,2);
+                childExpander.Padding = new Thickness(2);
 
                 Grid childGrid = new Grid();
                 childGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
