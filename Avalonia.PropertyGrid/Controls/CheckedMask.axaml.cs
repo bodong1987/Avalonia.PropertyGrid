@@ -101,20 +101,25 @@ namespace Avalonia.PropertyGrid.Controls
             allButton.MinWidth = ButtonMinWidth;
             allButton.HorizontalContentAlignment = Layout.HorizontalAlignment.Center;
 
-            allButton.Checked += (s, e) => 
-            { 
-                value.Check(value.All); 
-
-                foreach(ToggleButton btn in mainPanel.Children)
+            allButton.IsCheckedChanged += (s, e) =>
+            {
+                if ((bool)allButton.IsChecked)
                 {
-                    if(btn != allButton)
+                    value.Check(value.All);
+
+                    foreach (ToggleButton btn in mainPanel.Children)
                     {
-                        btn.IsChecked = false;
+                        if (btn != allButton)
+                        {
+                            btn.IsChecked = false;
+                        }
                     }
                 }
+                else
+                {
+                    value.UnCheck(value.All);
+                }
             };
-
-            allButton.Unchecked += (s, e) => { value.UnCheck(value.All); };
             
             mainPanel.Children.Add(allButton);
 
@@ -127,13 +132,20 @@ namespace Avalonia.PropertyGrid.Controls
                 button.MinWidth = ButtonMinWidth;
                 button.HorizontalContentAlignment = Layout.HorizontalAlignment.Center;
 
-                button.Checked += (s, e) => {
-                    value.UnCheck(value.All);
-                    value.Check(mask);
+                button.IsCheckedChanged += (s, e) => {
 
-                    allButton.IsChecked = false;
+                    if((bool)button.IsChecked)
+                    {
+                        value.UnCheck(value.All);
+                        value.Check(mask);
+
+                        allButton.IsChecked = false;
+                    }
+                    else
+                    {
+                        value.UnCheck(mask);
+                    }
                 };
-                button.Unchecked += (s, e) => { value.UnCheck(mask); };
 
                 mainPanel.Children.Add(button);
             }

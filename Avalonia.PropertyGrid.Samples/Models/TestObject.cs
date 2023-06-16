@@ -19,6 +19,15 @@ namespace Avalonia.PropertyGrid.Samples.Models
         public bool BooleanValue { get; set; }
 
         [Category("BuiltIn")]
+        [Browsable(false)]
+        public bool BooleanValueHidden { get; set; }
+
+        [Category("BuiltIn")]
+        [Browsable(true)]
+        [ReadOnly(true)]
+        public bool BooleanValueReadonly { get; set; } = true;
+
+        [Category("BuiltIn")]
         public bool? BooleanValueNullable { get; set; }
 
         [Category("BuiltIn")]
@@ -57,6 +66,9 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
         [Category("BuiltIn")]
         public TimeSpan? TimeSpanValueNullable { get; set; } = DateTime.Now.TimeOfDay;
+
+        [Category("BuiltIn")]
+        public System.Drawing.Color ColorValue { get; set; } = System.Drawing.Color.Green;
 
         [Category("BuiltIn")]
         public BindingList<string> StringList { get; set; } = new BindingList<string>() { "bodong", "china" };
