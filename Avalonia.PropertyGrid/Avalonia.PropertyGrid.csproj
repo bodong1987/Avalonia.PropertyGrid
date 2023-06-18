@@ -16,13 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Assets\Localizations\en-US.json" />
-    <None Remove="Assets\Localizations\zh-CN.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <AvaloniaResource Include="Assets\Localizations\en-US.json" />
-    <AvaloniaResource Include="Assets\Localizations\zh-CN.json" />
+    <AvaloniaResource Include="Assets\Localizations\*.json" />
   </ItemGroup>
 
   <ItemGroup>

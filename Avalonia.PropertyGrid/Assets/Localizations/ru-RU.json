@@ -1,0 +1,15 @@
+﻿{
+  "ShowGroup": "Показывать Категорию",
+  "IgnoreCase": "Игноривать регистр",
+  "UseRegex": "Использовать RegEx",
+  "Search": "Поиск",
+  "All": "Все",
+  "Name": "Название",
+  "Properties": "Свойства",
+  "Misc": "Разное",
+  "{0} Elements": "{0} элементов",
+  "InsertNewElement": "Вставить элемент перед этим элементом",
+  "RemoveElement": "Удалить элемент",
+  "AppendNewElement": "Добавить новый элемент",
+  "ClearAllElements": "Отчистить список"
+}
