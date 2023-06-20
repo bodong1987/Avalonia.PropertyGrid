@@ -30,13 +30,10 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             control.IsThreeState = propertyDescriptor.PropertyType == typeof(bool?);
 
-            control.Checked += (s, e) => { SetAndRaise(control, propertyDescriptor, target, true); };
-            control.Unchecked += (s, e) => { SetAndRaise(control, propertyDescriptor, target, false); };
-
-            if (control.IsThreeState)
+            control.IsCheckedChanged += (s, e) =>
             {
-                control.Indeterminate += (s, e) => { SetAndRaise(control, propertyDescriptor, target, null); };
-            }
+                SetAndRaise(control, propertyDescriptor, target, control.IsChecked);
+            };
 
             return control;
         }
@@ -52,14 +49,14 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (control is CheckBox ts)
             {
-                if(ts.IsThreeState)
+                if (ts.IsThreeState)
                 {
                     ts.IsChecked = propertyDescriptor.GetValue(target) as bool?;
                 }
                 else
                 {
                     ts.IsChecked = (bool)propertyDescriptor.GetValue(target);
-                }                
+                }
 
                 return true;
             }

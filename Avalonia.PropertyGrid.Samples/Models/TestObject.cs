@@ -19,6 +19,15 @@ namespace Avalonia.PropertyGrid.Samples.Models
         public bool BooleanValue { get; set; }
 
         [Category("BuiltIn")]
+        [Browsable(false)]
+        public bool BooleanValueHidden { get; set; }
+
+        [Category("BuiltIn")]
+        [Browsable(true)]
+        [ReadOnly(true)]
+        public bool BooleanValueReadonly { get; set; } = true;
+
+        [Category("BuiltIn")]
         public bool? BooleanValueNullable { get; set; }
 
         [Category("BuiltIn")]

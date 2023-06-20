@@ -19,10 +19,10 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The model property
         /// </summary>
-        public static readonly DirectProperty<CheckedMask, CheckedMaskModel> ModelProperty = 
+        public static readonly DirectProperty<CheckedMask, CheckedMaskModel> ModelProperty =
             AvaloniaProperty.RegisterDirect<CheckedMask, CheckedMaskModel>(
-                nameof(Model), 
-                o => o._Model, 
+                nameof(Model),
+                o => o._Model,
                 (o, v) => o.SetAndRaise(ModelProperty, ref o._Model, v)
                 );
 
@@ -89,7 +89,7 @@ namespace Avalonia.PropertyGrid.Controls
         {
             mainPanel.Children.Clear();
 
-            if(value == null)
+            if (value == null)
             {
                 return;
             }
@@ -101,24 +101,29 @@ namespace Avalonia.PropertyGrid.Controls
             allButton.MinWidth = ButtonMinWidth;
             allButton.HorizontalContentAlignment = Layout.HorizontalAlignment.Center;
 
-            allButton.Checked += (s, e) => 
-            { 
-                value.Check(value.All); 
-
-                foreach(ToggleButton btn in mainPanel.Children)
+            allButton.IsCheckedChanged += (s, e) =>
+            {
+                if ((bool)allButton.IsChecked)
                 {
-                    if(btn != allButton)
+                    value.Check(value.All);
+
+                    foreach (ToggleButton btn in mainPanel.Children)
                     {
-                        btn.IsChecked = false;
+                        if (btn != allButton)
+                        {
+                            btn.IsChecked = false;
+                        }
                     }
+                }
+                else
+                {
+                    value.UnCheck(value.All);
                 }
             };
 
-            allButton.Unchecked += (s, e) => { value.UnCheck(value.All); };
-            
             mainPanel.Children.Add(allButton);
 
-            foreach(var mask in value.Masks)
+            foreach (var mask in value.Masks)
             {
                 ToggleButton button = new ToggleButton();
                 button.Content = mask.ToString();
@@ -127,13 +132,21 @@ namespace Avalonia.PropertyGrid.Controls
                 button.MinWidth = ButtonMinWidth;
                 button.HorizontalContentAlignment = Layout.HorizontalAlignment.Center;
 
-                button.Checked += (s, e) => {
-                    value.UnCheck(value.All);
-                    value.Check(mask);
+                button.IsCheckedChanged += (s, e) =>
+                {
 
-                    allButton.IsChecked = false;
+                    if ((bool)button.IsChecked)
+                    {
+                        value.UnCheck(value.All);
+                        value.Check(mask);
+
+                        allButton.IsChecked = false;
+                    }
+                    else
+                    {
+                        value.UnCheck(mask);
+                    }
                 };
-                button.Unchecked += (s, e) => { value.UnCheck(mask); };
 
                 mainPanel.Children.Add(button);
             }
