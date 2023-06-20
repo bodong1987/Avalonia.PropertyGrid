@@ -1,7 +1,9 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Platform.Storage;
 using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -101,6 +103,11 @@ namespace Avalonia.PropertyGrid.Utils
             return files.FirstOrDefault();
         }
 
+        private static IStorageProvider GetStorageProvider(Window parentWindow)
+        {
+            return TopLevel.GetTopLevel(parentWindow).StorageProvider;
+        }
+
         /// <summary>
         /// Show dialog as an asynchronous operation.
         /// </summary>
@@ -113,36 +120,62 @@ namespace Avalonia.PropertyGrid.Utils
         /// <returns>A Task&lt;System.String[]&gt; representing the asynchronous operation.</returns>
         public static async Task<string[]> ShowDialogAsync(Window parentWindow, PathBrowsableType type, bool saveMode, string title, string filters, string initFileName)
         {
-            if (saveMode)
+            IStorageProvider storageProvider = GetStorageProvider(parentWindow);
+
+            Debug.Assert(storageProvider != null);
+            if(storageProvider == null)
             {
-                SaveFileDialog saveFileDialog = new SaveFileDialog();
-                saveFileDialog.Title = title ?? "Please select a file";
-                saveFileDialog.Filters = ConvertToFilterList(filters);
-                saveFileDialog.InitialFileName = initFileName;
-
-                var path = await saveFileDialog.ShowAsync(parentWindow);
-
-                return new string[] { path };
+                return null;
             }
-            else if (type == PathBrowsableType.Directory)
-            {
-                OpenFolderDialog openFolderDialog = new OpenFolderDialog();
-                openFolderDialog.Title = title ?? "Please select a Folder";
-                openFolderDialog.Directory = initFileName;
 
-                var path = await openFolderDialog.ShowAsync(parentWindow);
-                return new string[] { path };
+            if (saveMode)
+            {                
+                FilePickerSaveOptions options = new FilePickerSaveOptions();
+                options.Title = title ?? Controls.PropertyGrid.LocalizationService["Please select a file"];
+                options.SuggestedFileName = initFileName;
+                options.FileTypeChoices = ConvertToFilterList(filters);
+                var storage = await storageProvider.SaveFilePickerAsync(options);
+
+                return storage != null ? new string[] { storage.Path.LocalPath } : null;
+            }
+            else if (type == PathBrowsableType.Directory || type == PathBrowsableType.MultipleDirectories)
+            {
+                FolderPickerOpenOptions options = new FolderPickerOpenOptions();
+
+                if(type == PathBrowsableType.MultipleDirectories)
+                {
+                    options.Title = title ?? Controls.PropertyGrid.LocalizationService["Please select some folders"];
+                    options.AllowMultiple = true;
+                }
+                else
+                {
+                    options.Title = title ?? Controls.PropertyGrid.LocalizationService["Please select a folder"];
+                    options.AllowMultiple = false;
+                }               
+                
+                var storage = await storageProvider.OpenFolderPickerAsync(options);
+                return storage != null ? storage.Select(x => x.Path.LocalPath).ToArray() : null;
             }
             else if (type == PathBrowsableType.File || type == PathBrowsableType.MultipleFiles)
             {
-                OpenFileDialog openFileDialog = new OpenFileDialog();
-                openFileDialog.Title = title ?? (type == PathBrowsableType.MultipleFiles ? "Please select files" : "Please slect a file");
-                openFileDialog.InitialFileName = initFileName;
-                openFileDialog.Filters = ConvertToFilterList(filters);
+                FilePickerOpenOptions options = new FilePickerOpenOptions();
 
-                var paths = await openFileDialog.ShowAsync(parentWindow);
+                if (type == PathBrowsableType.MultipleFiles)
+                {
+                    options.Title = title ?? Controls.PropertyGrid.LocalizationService["Please select some files"];
+                    options.AllowMultiple = true;
+                }
+                else
+                {
+                    options.Title = title ?? Controls.PropertyGrid.LocalizationService["Please select a file"];
+                    options.AllowMultiple = false;
+                }
 
-                return paths;
+                options.FileTypeFilter = ConvertToFilterList(filters);
+
+                var storage = await storageProvider.OpenFilePickerAsync(options);
+
+                return storage != null ? storage.Select(x => x.Path.LocalPath).ToArray() : null;
             }
 
             return null;
@@ -153,9 +186,9 @@ namespace Avalonia.PropertyGrid.Utils
         /// </summary>
         /// <param name="filters">The filters.</param>
         /// <returns>List&lt;FileDialogFilter&gt;.</returns>
-        public static List<FileDialogFilter> ConvertToFilterList(string filters)
+        public static List<FilePickerFileType> ConvertToFilterList(string filters)
         {
-            List<FileDialogFilter> list = new List<FileDialogFilter>();
+            List<FilePickerFileType> list = new List<FilePickerFileType>();
 
             var results = filters.Split('|');
 
@@ -164,15 +197,11 @@ namespace Avalonia.PropertyGrid.Utils
                 string name = results[i * 2 + 0];
                 string exts = results[i * 2 + 1];
 
-                FileDialogFilter filter = new FileDialogFilter();
-                filter.Name = name;
-                filter.Extensions = exts.Split(';').Select(x =>
+                FilePickerFileType filter = new FilePickerFileType(name.Trim());
+                
+                filter.Patterns = exts.Split(';').Select(x =>
                 {
-                    var y = x.Trim();
-                    if (y.StartsWith("*."))
-                    {
-                        return y.Substring("*.".Length);
-                    }
+                    var y = x.Trim();                    
                     return y;
                 }).ToList();
 

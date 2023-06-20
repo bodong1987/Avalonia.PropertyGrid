@@ -24,7 +24,12 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations
         /// <summary>
         /// The directory
         /// </summary>
-        Directory
+        Directory,
+
+        /// <summary>
+        /// The multiple directories
+        /// </summary>
+        MultipleDirectories
     };
 
     /// <summary>
