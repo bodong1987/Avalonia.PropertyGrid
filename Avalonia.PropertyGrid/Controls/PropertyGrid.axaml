@@ -15,6 +15,7 @@
 		<StyleInclude Source="/Controls/CheckedListEdit.axaml"></StyleInclude>
 		<StyleInclude Source="/Controls/BindingListElementEdit.axaml"></StyleInclude>
 		<StyleInclude Source="/Controls/BindingListEdit.axaml"></StyleInclude>
+        <StyleInclude Source="avares://Avalonia.Controls.ColorPicker/Themes/Fluent/Fluent.xaml"/>
 	</UserControl.Styles>
 	
 	<Grid x:Name="mainGrid"

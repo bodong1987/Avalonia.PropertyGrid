@@ -68,6 +68,9 @@ namespace Avalonia.PropertyGrid.Samples.Models
         public TimeSpan? TimeSpanValueNullable { get; set; } = DateTime.Now.TimeOfDay;
 
         [Category("BuiltIn")]
+        public System.Drawing.Color ColorValue { get; set; } = System.Drawing.Color.Green;
+
+        [Category("BuiltIn")]
         public BindingList<string> StringList { get; set; } = new BindingList<string>() { "bodong", "china" };
 
         [Category("BuiltIn")]
