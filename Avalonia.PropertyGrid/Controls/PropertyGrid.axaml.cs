@@ -144,10 +144,14 @@ namespace Avalonia.PropertyGrid.Controls
 
             InitializeComponent();
 
-            column_name.PropertyChanged += OnColumnNamePropertyChanged;
+            // column_name.PropertyChanged += OnColumnNamePropertyChanged;
 
             Bindings.PropertyChangedEvent += OnBindingPropertyChanged;
+
+            splitterGrid.ColumnDefinitions[0].SharedSizeGroup = SharedSizeGroupName;
         }
+
+        private string SharedSizeGroupName => $"PropertyGridNameLabelGroup{GetHashCode()}";
 
         /// <summary>
         /// Handles the <see cref="E:BindingPropertyChanged" /> event.
@@ -344,10 +348,6 @@ namespace Avalonia.PropertyGrid.Controls
             {
                 referencePath.EndScope();
             }
-
-            double width = column_name.Bounds.Width;
-
-            SyncNameWidth(width, false);
         }
 
         #region Categories
@@ -375,7 +375,10 @@ namespace Avalonia.PropertyGrid.Controls
                 expander.Padding = new Thickness(2);
 
                 Grid grid = new Grid();
-                grid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
+                grid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto)
+                {
+                    SharedSizeGroup = SharedSizeGroupName
+                });
                 grid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
 
                 IndirectPropertyBinding binding = new IndirectPropertyBinding(
@@ -487,6 +490,7 @@ namespace Avalonia.PropertyGrid.Controls
                 grid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
 
                 Expander childExpander = new Expander();
+                
                 childExpander.ExpandDirection = ExpandDirection.Down;
                 childExpander.Header = propertyDescriptor.DisplayName;
                 childExpander.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
@@ -497,8 +501,8 @@ namespace Avalonia.PropertyGrid.Controls
                 childExpander.Margin = new Thickness(6,2,6,2);
                 childExpander.Padding = new Thickness(2);
 
-                Grid childGrid = new Grid();
-                childGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
+                Grid childGrid = new Grid();                
+                childGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto) { SharedSizeGroup = SharedSizeGroupName });
                 childGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
 
                 childExpander.Content = childGrid;
@@ -613,59 +617,14 @@ namespace Avalonia.PropertyGrid.Controls
         protected virtual void BuildAlphabeticPropertiesView(object target, ReferencePath referencePath)
         {
             propertiesGrid.ColumnDefinitions.Clear();
-            propertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
+            propertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto) 
+            {
+                SharedSizeGroup = SharedSizeGroupName
+            });
             propertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
 
             BuildPropertiesCellEdit(target, referencePath, ViewModel.AllProperties, null, propertiesGrid, null);
         }
         #endregion
-
-        #region Process Widths
-        /// <summary>
-        /// Synchronizes the width of the with maximum property name.
-        /// </summary>
-        private void SyncWithMaxPropertyNameWidth()
-        {
-            double maxLength = Bindings.CalcBindingNameMaxLength();
-
-            if(maxLength > 0)
-            {
-                SyncNameWidth(maxLength, true);
-            }            
-        }
-
-        /// <summary>
-        /// Synchronizes the width of the name.
-        /// </summary>
-        /// <param name="width">The width.</param>
-        /// <param name="syncToTitle">if set to <c>true</c> [synchronize to title].</param>
-        private void SyncNameWidth(double width, bool syncToTitle)
-        {
-            Bindings.SyncWidth(width);
-
-            if (syncToTitle)
-            {
-                //splitterGrid.ColumnDefinitions[0].Width = new GridLength(width);
-                column_name.Width = width;
-            }
-        }
-
-        /// <summary>
-        /// Handles the <see cref="E:ColumnNamePropertyChanged" /> event.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="AvaloniaPropertyChangedEventArgs"/> instance containing the event data.</param>
-        private void OnColumnNamePropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
-        {
-            if(e.Property == TextBlock.BoundsProperty)
-            {
-                double width = (sender as TextBlock).Bounds.Width;
-
-                SyncNameWidth(width, false);
-            }
-        }
-        #endregion
     }
-
-    
 }

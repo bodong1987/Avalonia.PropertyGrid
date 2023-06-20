@@ -61,8 +61,6 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         }
 
         public abstract bool HandlePropertyChanged();
-        public abstract double CalcBindingNameMaxLength();
-        public abstract void ApplyWidth(double width);
         protected abstract void OnVisiblityChanged(PropertyVisibility visibility);
 
         public abstract void PropagateVisiblityState();
@@ -98,30 +96,6 @@ namespace Avalonia.PropertyGrid.Controls.Implements
             Debug.Assert(BindingControl != null);
 
             return Factory.HandlePropertyChanged(Target, Property, BindingControl);
-        }
-
-        public override double CalcBindingNameMaxLength()
-        {
-            Debug.Assert(BindingNameControl != null);
-
-            if (BindingNameControl.Width > 0)
-            {
-                return BindingNameControl.Width;
-            }
-            else if (BindingNameControl.DesiredSize.Width > 0)
-            {
-                return BindingNameControl.DesiredSize.Width;
-            }
-
-            return 0;
-        }
-
-        public override void ApplyWidth(double width)
-        {
-            if (BindingNameControl != null)
-            {
-                BindingNameControl.Width = Math.Max(width - Depth * 6 / 2, 0);
-            }
         }
 
         protected override void OnVisiblityChanged(PropertyVisibility visibility)
@@ -172,31 +146,6 @@ namespace Avalonia.PropertyGrid.Controls.Implements
             }
 
             return true;
-        }
-
-        public override double CalcBindingNameMaxLength()
-        {
-            double maxLength = 0;
-
-            foreach(var binding in Children)
-            {
-                var width = binding.CalcBindingNameMaxLength();
-
-                if(width > maxLength)
-                {
-                    maxLength = width;
-                }
-            }
-
-            return maxLength;
-        }
-
-        public override void ApplyWidth(double width)
-        {
-            foreach(var binding in Children)
-            {
-                binding.ApplyWidth(width);
-            }
         }
 
         protected override void OnVisiblityChanged(PropertyVisibility visibility)
@@ -342,29 +291,6 @@ namespace Avalonia.PropertyGrid.Controls.Implements
 
                     binding.HandlePropertyChanged();
                 }
-            }
-        }
-
-        internal double CalcBindingNameMaxLength()
-        {
-            double maxLength = 0;
-            foreach (var info in this)
-            {
-                var width = info.CalcBindingNameMaxLength();
-                if (width > maxLength)
-                {
-                    maxLength = width;
-                }
-            }
-
-            return maxLength;
-        }
-
-        internal void SyncWidth(double width)
-        {
-            foreach (var info in this)
-            {
-                info.ApplyWidth(width);
             }
         }
 

@@ -20,6 +20,7 @@
 	
 	<Grid x:Name="mainGrid"
 		  RowDefinitions="Auto,Auto,Auto,*"
+		  IsSharedSizeScope="True"
 		>
 		<Grid x:Name="headerGrid"
 			  ColumnDefinitions="*,Auto, Auto, Auto"
