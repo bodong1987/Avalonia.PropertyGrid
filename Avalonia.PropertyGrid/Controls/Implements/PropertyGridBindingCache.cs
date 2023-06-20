@@ -62,7 +62,6 @@ namespace Avalonia.PropertyGrid.Controls.Implements
 
         public abstract bool HandlePropertyChanged();
         public abstract double CalcBindingNameMaxLength();
-        public abstract void ApplyWidth(double width);
         protected abstract void OnVisiblityChanged(PropertyVisibility visibility);
 
         public abstract void PropagateVisiblityState();
@@ -114,14 +113,6 @@ namespace Avalonia.PropertyGrid.Controls.Implements
             }
 
             return 0;
-        }
-
-        public override void ApplyWidth(double width)
-        {
-            if (BindingNameControl != null)
-            {
-                BindingNameControl.Width = Math.Max(width - Depth * 6 / 2, 0);
-            }
         }
 
         protected override void OnVisiblityChanged(PropertyVisibility visibility)
@@ -189,14 +180,6 @@ namespace Avalonia.PropertyGrid.Controls.Implements
             }
 
             return maxLength;
-        }
-
-        public override void ApplyWidth(double width)
-        {
-            foreach(var binding in Children)
-            {
-                binding.ApplyWidth(width);
-            }
         }
 
         protected override void OnVisiblityChanged(PropertyVisibility visibility)
@@ -358,14 +341,6 @@ namespace Avalonia.PropertyGrid.Controls.Implements
             }
 
             return maxLength;
-        }
-
-        internal void SyncWidth(double width)
-        {
-            foreach (var info in this)
-            {
-                info.ApplyWidth(width);
-            }
         }
 
         public IEnumerator<PropertyBinding> GetEnumerator()
