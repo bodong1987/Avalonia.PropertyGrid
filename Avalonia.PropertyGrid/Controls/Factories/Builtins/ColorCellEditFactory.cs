@@ -11,12 +11,24 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
     {
         public override int ImportPriority => base.ImportPriority - 100000;
 
+        public bool IsAvailableColorType(PropertyDescriptor property)
+        {
+            var type = property.PropertyType;
+
+            return type == typeof(Color) ||
+                type == typeof(Avalonia.Media.Color) ||
+                type == typeof(Avalonia.Media.HslColor) ||
+                type == typeof(Avalonia.Media.HsvColor);
+        }
+
         public override Control HandleNewProperty(object target, PropertyDescriptor propertyDescriptor)
         {
-            if (propertyDescriptor.PropertyType != typeof(Color))
+            if (!IsAvailableColorType(propertyDescriptor))
             {
                 return null;
             }
+
+            var type = propertyDescriptor.PropertyType;
 
             ColorPicker colorPicker = new ColorPicker()
             {
@@ -26,8 +38,23 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             colorPicker.ColorChanged += (s, e) =>
             {
-                Color c = Color.FromArgb(e.NewColor.A, e.NewColor.R, e.NewColor.G, e.NewColor.B);
-                SetAndRaise(colorPicker, propertyDescriptor, target, c);
+                if(type == typeof(Color))
+                {
+                    Color c = Color.FromArgb(e.NewColor.A, e.NewColor.R, e.NewColor.G, e.NewColor.B);
+                    SetAndRaise(colorPicker, propertyDescriptor, target, c);
+                }
+                else if(type == typeof(Avalonia.Media.Color))
+                {
+                    SetAndRaise(colorPicker, propertyDescriptor, target, e.NewColor);
+                }
+                else if(type == typeof(Avalonia.Media.HslColor))
+                {
+                    SetAndRaise(colorPicker, propertyDescriptor, target, e.NewColor.ToHsl());
+                }
+                else if(type == typeof(Avalonia.Media.HsvColor))
+                {
+                    SetAndRaise(colorPicker, propertyDescriptor, target, e.NewColor.ToHsv());
+                }
             };
 
             return colorPicker;
@@ -35,17 +62,40 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
         public override bool HandlePropertyChanged(object target, PropertyDescriptor propertyDescriptor, Control control)
         {
-            if (propertyDescriptor.PropertyType != typeof(Color))
+            if (!IsAvailableColorType(propertyDescriptor))
             {
                 return false;
             }
 
             ValidateProperty(control, propertyDescriptor, target);
 
+            var type = propertyDescriptor.PropertyType;
+
             if (control is ColorPicker colorPicker)
             {
-                Color color = (Color)propertyDescriptor.GetValue(target);
-                colorPicker.Color = Media.Color.FromArgb(color.A, color.R, color.G, color.B);
+                if (type == typeof(Color))
+                {
+                    Color color = (Color)propertyDescriptor.GetValue(target);
+                    colorPicker.Color = Media.Color.FromArgb(color.A, color.R, color.G, color.B);
+                }
+                else if (type == typeof(Avalonia.Media.Color))
+                {
+                    Media.Color color = (Media.Color)propertyDescriptor.GetValue(target);
+
+                    colorPicker.Color = color;
+                }
+                else if (type == typeof(Avalonia.Media.HslColor))
+                {
+                    Media.HslColor color = (Media.HslColor)propertyDescriptor.GetValue(target);
+
+                    colorPicker.Color = color.ToRgb();
+                }
+                else if (type == typeof(Avalonia.Media.HsvColor))
+                {
+                    Media.HsvColor color = (Media.HsvColor)propertyDescriptor.GetValue(target);
+
+                    colorPicker.Color = color.ToRgb();
+                }
 
                 return true;
             }
