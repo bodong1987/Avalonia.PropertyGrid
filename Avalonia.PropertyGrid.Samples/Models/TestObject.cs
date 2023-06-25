@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Avalonia.PropertyGrid.Model.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Samples.Models
 {
@@ -34,7 +35,15 @@ namespace Avalonia.PropertyGrid.Samples.Models
         public int IntValue { get; set; }
 
         [Category("BuiltIn")]
+        [IntegerIncrement(10)]
+        public int IntValueIncrement10 { get; set; }
+
+        [Category("BuiltIn")]
         public double DoubleValue { get; set; }
+
+        [Category("BuiltIn")]
+        [FloatPrecision(4)]
+        public double DoubleValue2 { get; set; }
 
         [Category("BuiltIn")]
         public System.Int64 Int64Value { get; set; }

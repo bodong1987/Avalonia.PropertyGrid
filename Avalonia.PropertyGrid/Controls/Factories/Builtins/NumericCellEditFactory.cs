@@ -50,7 +50,9 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 propertyDescriptor.PropertyType == typeof(UInt64)
                 )
             {
-                control.Increment = 1;
+                var incrementAttr = propertyDescriptor.GetCustomAttribute<IntegerIncrementAttribute>();
+
+                control.Increment = incrementAttr != null ? incrementAttr.Increment : 1;
             }
             else
             {
