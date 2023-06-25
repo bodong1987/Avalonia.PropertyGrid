@@ -476,9 +476,9 @@ namespace Avalonia.PropertyGrid.Controls
 
             PropertyDescriptorBuilder builder = new PropertyDescriptorBuilder(value);
 
-            var properties = builder.GetProperties();
+            var properties = builder.GetProperties().Cast<PropertyDescriptor>().ToList().FindAll(x => x.IsBrowsable);
 
-            if(properties.Count == 0)
+            if (properties.Count == 0)
             {
                 return false;
             }
