@@ -10,6 +10,8 @@ namespace Avalonia.PropertyGrid.Samples.Views
             DataContext = new MainWindowViewModel();
 
             InitializeComponent();
+
+            propertyGrid_ShowControlProperties.SelectedObject = propertyGrid_ShowControlProperties;
         }
     }
 }

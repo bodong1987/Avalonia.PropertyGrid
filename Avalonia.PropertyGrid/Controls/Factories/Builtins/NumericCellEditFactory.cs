@@ -96,7 +96,14 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (control is NumericUpDown nup)
             {
-                nup.Value = (Decimal)(double)Convert.ChangeType(propertyDescriptor.GetValue(target), typeof(double));
+                if(Decimal.TryParse(((double)Convert.ChangeType(propertyDescriptor.GetValue(target), typeof(double))).ToString(), out var d))
+                {
+                    nup.Value = d;
+                }
+                else
+                {
+                    nup.Value = null;
+                }
 
                 return true;
             }

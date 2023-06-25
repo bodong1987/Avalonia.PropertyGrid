@@ -90,5 +90,12 @@
 				<pgc:PropertyGrid Margin="4" SelectedObject="{Binding dynamicVisiblity}"></pgc:PropertyGrid>
 			</ScrollViewer>
 		</TabItem>
+
+		<TabItem Header="Self's Properties">
+			<ScrollViewer>
+				<pgc:PropertyGrid x:Name="propertyGrid_ShowControlProperties" Margin="4">					
+				</pgc:PropertyGrid>
+			</ScrollViewer>
+		</TabItem>
 	</TabControl>
 </Window>

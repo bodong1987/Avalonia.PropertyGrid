@@ -51,6 +51,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Gets or sets a value indicating whether [allow filter].
         /// </summary>
         /// <value><c>true</c> if [allow filter]; otherwise, <c>false</c>.</value>
+        [Category("Views")]
         public bool AllowFilter 
         { 
             get => GetValue(AllowFilterProperty); set => SetValue(AllowFilterProperty, value);
@@ -64,6 +65,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Gets or sets the show style.
         /// </summary>
         /// <value>The show style.</value>
+        [Category("Views")]
         public PropertyGridShowStyle ShowStyle
         {
             get => GetValue(ShowStyleProperty); 
@@ -89,6 +91,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Gets or sets the selected object.
         /// </summary>
         /// <value>The selected object.</value>
+        [Browsable(false)]
         public object SelectedObject
         {
             get => _SelectedObject;
