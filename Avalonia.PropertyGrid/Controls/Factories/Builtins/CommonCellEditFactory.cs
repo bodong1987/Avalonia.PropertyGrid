@@ -26,11 +26,27 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (control.IsEnabled)
             {
-                control.PropertyChanged += (s, e) =>
+                control.LostFocus += (s, e) =>
                 {
-                    if (e.Property == TextBox.TextProperty)
+                    string value = control.Text;
+
+                    try
                     {
-                        string value = e.NewValue as string;
+                        DataValidationErrors.ClearErrors(control);
+                        var obj = converter.ConvertFrom(value);
+                        SetAndRaise(control, propertyDescriptor, target, obj);
+                    }
+                    catch (Exception ee)
+                    {
+                        DataValidationErrors.SetErrors(control, new string[] { ee.Message });
+                    }
+                };
+
+                control.KeyUp += (s, e) =>
+                {
+                    if (e.Key == Input.Key.Enter)
+                    {
+                        string value = control.Text;
 
                         try
                         {

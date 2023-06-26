@@ -32,10 +32,45 @@ System.ComponentModel.ReadOnlyAttribute
 System.ComponentModel.DisplayNameAttribute
 System.ComponentModel.DescriptionAttribute
 System.ComponentModel.DataAnnotations.EditableAttribute
+System.ComponentModel.DataAnnotations.RangeAttribute  
 ```
 In addition, there are other classes that can be supported in Avalonia.PropertyGrid.Model.ComponentModel and Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations, which can assist in describing class properties.  
 If you want to have some associations between your class properties, for example, some properties depend on other properties in implementation, then you can try to mark this dependency with Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations.DependsOnPropertyAttribute  
 but you need to inherit your class from Avalonia.PropertyGrid.Model.ComponentModel.ReactiveObject, otherwise you need to maintain this relationship by yourself, just trigger the PropertyChanged event of the target property when the dependent property changes.  
+
+```
+Avalonia.PropertyGrid.Model.ComponentModel.FloatPrecisionAttribute  
+Avalonia.PropertyGrid.Model.ComponentModel.IntegerIncrementAttribute
+Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations.DependsOnPropertyAttribute
+Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations.FileNameValidationAttribute
+Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations.PathBrowsableAttribute
+Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations.VisibilityPropertyConditionAttribute
+```
+
+### Supported Builtin Types
+    bool  
+    bool?  
+    sbyte  
+    byte  
+    short  
+    ushort  
+    int  
+    uint  
+    Int64  
+    UInt64  
+    float  
+    double  
+    string  
+    enum/[Flags]  
+    System.ComponentModel.BindingList<>  
+    System.DateTime/System.DateTimeOffset/System.DateTime?/System.DateTimeOffset?  
+    System.TimeSpan/System.TimeSpan?      
+    System.Drawing.Color/Avalonia.Media.Color  
+    Avalonia.Media.FontFamily      
+    Avalonia.PropertyGrid.Model.Collections.ICheckedList  
+    Avalonia.PropertyGrid.Model.Collections.ISelectableList  
+    object which support TypeConverter.CanConvertFrom(typeof(string))  
+
 **Struct properties are not supported.**  
 
 ### Extra Data Structure
@@ -227,8 +262,10 @@ To customize CellEdit, you need to implement a Factory class from AbstractCellEd
             }
 
             ToggleSwitch control = new ToggleSwitch();
-            control.Checked += (s, e) => { SetAndRaise(control, propertyDescriptor, target, true); };
-            control.Unchecked += (s, e) => { SetAndRaise(control, propertyDescriptor, target, false); };
+            control.IsCheckedChanged += (s, e) =>
+            {
+                SetAndRaise(control, propertyDescriptor, target, control.IsChecked);
+            };
 
             return control;
         }
@@ -259,6 +296,10 @@ HandleProeprtyChanged method is used to synchronize external data. When the exte
 AbstractCellEditFactory also has a overrideable property ImportPriority. This value determines the order in which the PropertyGrid triggers these Factories. The larger the value, the earlier the trigger.   
 Overriding the Accept method allows your Factory to only take effect when appropriate.
 
+*** 
+You can also use this method to extend PropertyGrid so that you can edit types that are not supported by the built-in functionality.
+
+
 ## Description of Samples
 ![Basic View](./Docs/Images/BasicView.png)
 You can clone this project, and open Avalonia.PropertyGrid.sln, build it and run Avalonia.PropertyGrid.Samples, you can view this.
@@ -271,10 +312,12 @@ This page shows the basic functions of PropertyGrid, including the display of va
 Test all adjustable appearance properties.
 
 ### DataSync
+![DataSync](./Docs/Images/data-sync.png)
 Here you can verify data changes and auto-reload functionality.
 
 ### MultiObjects
 You can verify the function of multi-object editing here. Note:   
+  
 **some properties do not support editing multiple objects at the same time.**
 
 ### CustomObject
@@ -288,6 +331,10 @@ By default, PropertyGrid uses CheckBox to edit Boolean data, here shows how to u
 ### Dynamic Visibility
 ![DynamicVisibility](./Docs/Images/DynamicVisibility.png)
 Show Dynamic Visibility 
+
+### Self's Properties
+![Self's Properties](./Docs/Images/self-properties.png)
+Show PropertyGrid's properties.  
 
 ## Avalonia.PropertyGrid.NugetSamples
 This example shows how to use PropertyGrid through the Nuget package. Its content is similar to the Sample that directly uses the source code, and it can also be used as a case for learning how to use it.  
