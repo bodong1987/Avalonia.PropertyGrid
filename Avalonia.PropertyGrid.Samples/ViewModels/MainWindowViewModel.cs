@@ -40,6 +40,9 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
         readonly TestObject _TestObject = new TestObject();
         public TestObject testObject => _TestObject;
 
+        readonly TestExtendsObject _extendsObject = new TestExtendsObject();
+        public TestExtendsObject extendsObject => _extendsObject;
+
         #region View
         PropertyGridShowStyle _ShowStyle = PropertyGridShowStyle.Category;
 

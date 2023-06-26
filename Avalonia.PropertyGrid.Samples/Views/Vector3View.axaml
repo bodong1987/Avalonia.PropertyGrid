@@ -1,0 +1,29 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:Avalonia.PropertyGrid.Samples.Views">
+  <Design.PreviewWith>
+    <controls:Vector3View />
+  </Design.PreviewWith>
+
+  <Style Selector="controls|Vector3View">
+    <!-- Set Defaults -->
+    <Setter Property="Template">
+      <ControlTemplate>
+          <StackPanel Orientation="Horizontal">
+              <TextBlock Text="X" VerticalAlignment="Center" Padding="4"></TextBlock>
+              <NumericUpDown Value="{Binding X}"  ShowButtonSpinner="False">
+                  <NumericUpDown.FormatString>{0:0.0}</NumericUpDown.FormatString>
+              </NumericUpDown>
+              <TextBlock Text="Y" VerticalAlignment="Center" Padding="4"></TextBlock>
+              <NumericUpDown Value="{Binding Y}" ShowButtonSpinner="False">
+                  <NumericUpDown.FormatString>{0:0.0}</NumericUpDown.FormatString>
+              </NumericUpDown>
+              <TextBlock Text="Z" VerticalAlignment="Center" Padding="4"></TextBlock>
+              <NumericUpDown Value="{Binding Z}" ShowButtonSpinner="False">
+                  <NumericUpDown.FormatString>{0:0.0}</NumericUpDown.FormatString>
+              </NumericUpDown>
+          </StackPanel>          
+      </ControlTemplate>
+    </Setter>
+  </Style>
+</Styles>

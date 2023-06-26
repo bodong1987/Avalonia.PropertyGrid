@@ -18,6 +18,10 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
+    <Window.Styles>
+        <StyleInclude Source="/Views/Vector3View.axaml"></StyleInclude>
+    </Window.Styles>
+
 	<TabControl TabStripPlacement="Left">
 		<TabItem Header="Basic">
 			<ScrollViewer>
@@ -84,6 +88,16 @@
 				<lv:ToggleSwitchExtensionPropertyGrid Margin="4" SelectedObject="{Binding booleanExtension}"></lv:ToggleSwitchExtensionPropertyGrid>
 			</ScrollViewer>
 		</TabItem>
+
+        <TabItem Header="Extends">
+            <ScrollViewer>
+				<Grid ColumnDefinitions="Auto,2,*">
+					<GridSplitter Grid.Column="1"></GridSplitter>
+					<lv:TestExtendPropertyGrid Margin="2" SelectedObject="{Binding extendsObject}"></lv:TestExtendPropertyGrid>
+					<pgc:PropertyGrid Margin="2" Grid.Column="2" SelectedObject="{Binding extendsObject}"></pgc:PropertyGrid>
+				</Grid>
+            </ScrollViewer>
+        </TabItem>
 
 		<TabItem Header="Dynamic Visibility">
 			<ScrollViewer>

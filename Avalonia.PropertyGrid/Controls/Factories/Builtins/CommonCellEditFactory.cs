@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using Avalonia.PropertyGrid.Model.Extensions;
 using Avalonia.PropertyGrid.Utils;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,9 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             control.VerticalContentAlignment = Avalonia.Layout.VerticalAlignment.Center;
             control.FontFamily = FontUtils.DefaultFontFamily;
-            control.IsEnabled = converter != null && converter.CanConvertFrom(typeof(string)) && converter.CanConvertTo(typeof(string));
+            control.IsEnabled = converter != null && 
+                converter.CanConvertFrom(typeof(string)) && 
+                converter.CanConvertTo(typeof(string));
 
             // set first ...
             // HandlePropertyChanged(target, propertyDescriptor, control);

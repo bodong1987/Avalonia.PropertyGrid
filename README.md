@@ -328,6 +328,31 @@ Here shows how to create a custom object based on ICustomTypeDescriptor.
 ![CustomCellEdit](./Docs/Images/CustomCellEdit.png)
 By default, PropertyGrid uses CheckBox to edit Boolean data, here shows how to use ToggleSwitch to edit Boolean data in a simple way, and how to make this function only effective locally without affecting the whole.
 
+### Extends
+![Extends](./Docs/Images/extends.png)
+Under normal circumstances, PropertyGrid does not automatically handle structure properties, because structures have certain particularities. To support such internally unsupported types, you need to extend PropertyGrid yourself. This example shows how to support and edit the structure SVector3:
+```C#
+namespace Avalonia.PropertyGrid.Samples.Models
+{
+    public struct SVector3
+    {
+        public float x, y, z;
+
+        public override string ToString()
+        {
+            return string.Format("{0:0.0}, {1:0.0}, {2:0.0}", x, y, z);
+        }
+    }
+
+    public class TestExtendsObject : MiniReactiveObject
+    {
+        public Vector3 vec3Object { get; set; } = new Vector3();
+
+        public SVector3 vec3Struct { get; set; }
+    }
+}
+```
+
 ### Dynamic Visibility
 ![DynamicVisibility](./Docs/Images/DynamicVisibility.png)
 Show Dynamic Visibility 
