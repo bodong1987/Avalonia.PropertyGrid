@@ -23,11 +23,11 @@
     </Window.Styles>
 
 	<TabControl TabStripPlacement="Left">
-		<TabItem Header="Basic">
+		<!--<TabItem Header="Basic">
 			<ScrollViewer>
 				<pgc:PropertyGrid Margin="4" SelectedObject="{Binding simpleObject}"></pgc:PropertyGrid>	
 			</ScrollViewer>			
-		</TabItem>
+		</TabItem>-->
 
 		<TabItem Header="Views">
 			<Grid RowDefinitions="*,Auto">
@@ -52,7 +52,7 @@
 			</Grid>
 		</TabItem>
 		
-		<TabItem Header="DataSync">
+		<!--<TabItem Header="DataSync">
 			<ScrollViewer>
 				<Grid ColumnDefinitions="Auto,2,Auto">
 					<GridSplitter Grid.Column="1"></GridSplitter>
@@ -114,6 +114,6 @@
 				<pgc:PropertyGrid x:Name="propertyGrid_ShowControlProperties" Margin="4">					
 				</pgc:PropertyGrid>
 			</ScrollViewer>
-		</TabItem>
+		</TabItem>-->
 	</TabControl>
 </Window>

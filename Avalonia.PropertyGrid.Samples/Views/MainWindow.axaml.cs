@@ -11,7 +11,7 @@ namespace Avalonia.PropertyGrid.Samples.Views
 
             InitializeComponent();
 
-            propertyGrid_ShowControlProperties.SelectedObject = propertyGrid_ShowControlProperties;
+            //propertyGrid_ShowControlProperties.SelectedObject = propertyGrid_ShowControlProperties;
         }
     }
 }

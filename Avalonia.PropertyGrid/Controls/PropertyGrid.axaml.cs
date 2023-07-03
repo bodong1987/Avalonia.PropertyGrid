@@ -58,6 +58,36 @@ namespace Avalonia.PropertyGrid.Controls
         }
 
         /// <summary>
+        /// The allow toggle view property
+        /// </summary>
+        public static readonly StyledProperty<bool> AllowToggleViewProperty = AvaloniaProperty.Register<PropertyGrid, bool>(nameof(AllowToggleView), true);
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [allow toggle view].
+        /// </summary>
+        /// <value><c>true</c> if [allow toggle view]; otherwise, <c>false</c>.</value>
+        [Category("Views")]
+        public bool AllowToggleView
+        {
+            get => GetValue(AllowToggleViewProperty); set => SetValue(AllowToggleViewProperty, value);
+        }
+
+        /// <summary>
+        /// The allow quick filter property
+        /// </summary>
+        public static readonly StyledProperty<bool> AllowQuickFilterProperty = AvaloniaProperty.Register<PropertyGrid, bool>(nameof(AllowQuickFilter), true);
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [allow quick filter].
+        /// </summary>
+        /// <value><c>true</c> if [allow quick filter]; otherwise, <c>false</c>.</value>
+        [Category("Views")]
+        public bool AllowQuickFilter
+        {
+            get => GetValue(AllowQuickFilterProperty); set => SetValue(AllowQuickFilterProperty, value);
+        }
+
+        /// <summary>
         /// The show title property
         /// </summary>
         public static readonly StyledProperty<bool> ShowTitleProperty = AvaloniaProperty.Register<PropertyGrid, bool>(nameof(ShowTitle), true);
@@ -123,12 +153,9 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         public readonly ICellEditFactoryCollection Factories;
 
-        /// <summary>
-        /// The bindings
-        /// </summary>
-        readonly PropertyGridBindingCache Bindings = new PropertyGridBindingCache();
-
         readonly IExpandableObjectCache ExpandableObjectCache = new PropertyGridExpandableCache();
+        readonly IPropertyGridCellInfoCache CellInfoCache = new PropertyGridCellInfoCache();
+
         #endregion
 
         /// <summary>
@@ -165,21 +192,6 @@ namespace Avalonia.PropertyGrid.Controls
             InitializeComponent();
 
             column_name.PropertyChanged += OnColumnNamePropertyChanged;
-
-            Bindings.PropertyChangedEvent += OnBindingPropertyChanged;
-        }
-
-        /// <summary>
-        /// Handles the <see cref="E:BindingPropertyChanged" /> event.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="BindingPropertyChangedEventArgs"/> instance containing the event data.</param>
-        private void OnBindingPropertyChanged(object sender, BindingPropertyChangedEventArgs e)
-        {
-            if(e.Binding != null && e.Binding.Property != null && e.Binding.Property.IsDefined<ConditionTargetAttribute>())
-            {
-                SetVisiblity(Bindings);
-            }
         }
 
         /// <summary>
@@ -240,9 +252,18 @@ namespace Avalonia.PropertyGrid.Controls
         /// Clones the property grid.
         /// </summary>
         /// <returns>IPropertyGrid.</returns>
-        public IPropertyGrid ClonePropertyGrid()
+        public virtual IPropertyGrid ClonePropertyGrid()
         {
             return Activator.CreateInstance(GetType()) as IPropertyGrid;
+        }
+
+        /// <summary>
+        /// Gets the cell information cache.
+        /// </summary>
+        /// <returns>IPropertyGridCellInfoCache.</returns>
+        public IPropertyGridCellInfoCache GetCellInfoCache()
+        {
+            return CellInfoCache;
         }
 
         #region Styled Properties Handler
@@ -316,48 +337,6 @@ namespace Avalonia.PropertyGrid.Controls
             BuildPropertiesView(ViewModel.SelectedObject, ViewModel.ShowCategory ? PropertyGridShowStyle.Category : PropertyGridShowStyle.Alphabetic);
         }
 
-        /// <summary>
-        /// Sets the visiblity.
-        /// </summary>
-        /// <param name="bindings">The bindings.</param>
-        private void SetVisiblity(IEnumerable<PropertyBinding> bindings)
-        {
-            // first pass check all direct property binding visibility
-            foreach (var binding in bindings)
-            {
-                if(binding.Property != null && binding.Target != null)
-                {
-                    binding.Visibility = ViewModel.CheckVisibility(
-                        binding.Property, 
-                        binding.RootCategory,
-                        binding.Target
-                        );
-                }
-            }
-
-            // second pass, populate indirect property binding visibility
-
-            if(ViewModel.ShowCategory)
-            {
-                foreach (var info in bindings)
-                {
-                    if (info is IndirectPropertyBinding binding && binding.IsCategoryBinding)
-                    {
-                        binding.PropagateVisiblityState();
-                    }
-                }
-            }
-            else
-            {
-                foreach (var info in bindings)
-                {
-                    if (info is IndirectPropertyBinding binding)
-                    {
-                        binding.PropagateVisiblityState();
-                    }
-                }
-            }
-        }
 
         /// <summary>
         /// Handles the <see cref="E:FilterChanged" /> event.
@@ -366,7 +345,6 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void OnFilterChanged(object sender, EventArgs e)
         {
-            SetVisiblity(Bindings);
         }
 
         /// <summary>
@@ -377,11 +355,11 @@ namespace Avalonia.PropertyGrid.Controls
         private void BuildPropertiesView(object target, PropertyGridShowStyle propertyGridShowStyle)
         {
             propertiesGrid.RowDefinitions.Clear();
-            propertiesGrid.Children.Clear();
-            Bindings.Clear();
+            propertiesGrid.Children.Clear();              
             ExpandableObjectCache.Clear();
+            CellInfoCache.Clear();
 
-            if(target == null)
+            if (target == null)
             {
                 return;
             }
@@ -441,18 +419,17 @@ namespace Avalonia.PropertyGrid.Controls
                 grid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
                 grid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
 
-                IndirectPropertyBinding binding = new IndirectPropertyBinding(
-                    $"{referencePath.ToString()}[{categoryInfo.Key}]",
-                    null,
-                    expander,
-                    target,
-                    referencePath.Count,
-                    categoryInfo.Key
-                    );
+                var cellInfo = new PropertyGridCellInfo()
+                {
+                    ReferencePath = $"{referencePath.ToString()}[{categoryInfo.Key}]",
+                    Category = categoryInfo.Key,
+                    OwnerObject = target,
+                    Container = expander
+                };
 
-                Bindings.AddBinding(binding);
+                CellInfoCache.Add(cellInfo);
 
-                expander.IsVisible = BuildPropertiesCellEdit(target, referencePath, categoryInfo.Value, expander, grid, binding);
+                expander.IsVisible = BuildPropertiesCellEdit(target, referencePath, categoryInfo.Value, expander, grid, cellInfo);
 
                 expander.Content = grid;
 
@@ -470,7 +447,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="properties">The properties.</param>
         /// <param name="expander">The expander.</param>
         /// <param name="grid">The grid.</param>
-        /// <param name="parentBinding">The parent binding.</param>
+        /// <param name="parentCellInfo">The parent cell information.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         private bool BuildPropertiesCellEdit(
             object target, 
@@ -478,7 +455,7 @@ namespace Avalonia.PropertyGrid.Controls
             IEnumerable<PropertyDescriptor> properties, 
             Expander expander, 
             Grid grid,
-            IndirectPropertyBinding parentBinding
+            IPropertyGridCellInfo parentCellInfo
             )
         {
             bool AtLeastOneVisible = false;
@@ -490,7 +467,7 @@ namespace Avalonia.PropertyGrid.Controls
                 {
                     var value = property.GetValue(target);
 
-                    AtLeastOneVisible |= BuildPropertyCellEdit(target, referencePath, property, expander, grid, parentBinding);
+                    AtLeastOneVisible |= BuildPropertyCellEdit(target, referencePath, property, expander, grid, parentCellInfo);
                 }
                 finally
                 {
@@ -509,9 +486,9 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="propertyDescriptor">The property descriptor.</param>
         /// <param name="expander">The expander.</param>
         /// <param name="grid">The grid.</param>
-        /// <param name="parentBinding">The parent binding.</param>
+        /// <param name="parentCellInfo">The parent cell information.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
-        private bool BuildPropertyCellEdit(object target, ReferencePath referencePath, PropertyDescriptor propertyDescriptor, Expander expander, Grid grid, IndirectPropertyBinding parentBinding)
+        private bool BuildPropertyCellEdit(object target, ReferencePath referencePath, PropertyDescriptor propertyDescriptor, Expander expander, Grid grid, IPropertyGridCellInfo parentCellInfo)
         {
             var property = propertyDescriptor;
 
@@ -551,25 +528,24 @@ namespace Avalonia.PropertyGrid.Controls
 
             factory.HandlePropertyChanged(target, property, control);
 
-            var binding = new DirectPropertyBinding(
-                referencePath.ToString(),
-                property, 
-                expander, 
-                target, 
-                referencePath.Count, 
-                control, 
-                nameBlock, 
-                factory, 
-                parentBinding?.RootCategory
-                );
-
-            Bindings.AddBinding(binding);          
+            var cellInfo = new PropertyGridCellInfo()
+            {
+                ReferencePath = referencePath.ToString(),
+                NameControl = nameBlock,
+                CellEdit = control,
+                Property = property,
+                Category = parentCellInfo?.Category,
+                OwnerObject = target,
+                Container = parentCellInfo?.Container
+            };
             
-            parentBinding?.AddBinding(binding);
+            parentCellInfo?.Add(cellInfo);
 
-            binding.Visibility = ViewModel.CheckVisibility(binding.Property, binding.RootCategory, target);
+            CellInfoCache.Add(cellInfo);
 
-            return binding.Visibility == PropertyVisibility.AlwaysVisible;
+            var visibility = ViewModel.CheckVisibility(cellInfo, target);
+
+            return visibility == PropertyVisibility.AlwaysVisible;
         }
         #endregion
 
@@ -602,12 +578,24 @@ namespace Avalonia.PropertyGrid.Controls
                 return;
             }
 
-            Bindings.SyncWidth(width);
+            PropagateCellNameWidth(CellInfoCache.Infos, width);
 
             if (syncToTitle)
             {
-                //splitterGrid.ColumnDefinitions[0].Width = new GridLength(width);
                 column_name.Width = width;
+            }
+        }
+
+        private void PropagateCellNameWidth(IEnumerable<IPropertyGridCellInfo> cells, double width)
+        {
+            foreach(var i in cells)
+            {
+                PropagateCellNameWidth(i.Children, width);
+
+                if (i.NameControl != null)
+                {
+                    i.NameControl.Width = width;
+                }
             }
         }
 

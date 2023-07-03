@@ -68,7 +68,7 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// Gets or sets the filter pattern.
         /// </summary>
         /// <value>The filter pattern.</value>
-        public IPropertyGridFilterPattern FilterPattern { get; set; } = new PropertyGridFilterPattern();
+        public IFilterPattern FilterPattern { get; set; } = new PropertyGridFilterPattern();
 
         /// <summary>
         /// The selected object
@@ -187,31 +187,36 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// <summary>
         /// Checks the visibility.
         /// </summary>
-        /// <param name="property">The property.</param>
-        /// <param name="category">The category.</param>
+        /// <param name="cellInfo">The cell information.</param>
         /// <param name="context">The context.</param>
         /// <returns>PropertyVisibility.</returns>
-        public PropertyVisibility CheckVisibility(PropertyDescriptor property, string category, object context)
+        public PropertyVisibility CheckVisibility(IPropertyGridCellInfo cellInfo, object context)
         {
             PropertyVisibility visiblity = PropertyVisibility.AlwaysVisible;
 
-            if (property.GetCustomAttribute<AbstractVisiblityConditionAttribute>() is AbstractVisiblityConditionAttribute attr)
+            if(cellInfo.Property != null)
             {
-                if (!attr.CheckVisibility(context))
+                var property = cellInfo.Property;
+
+                if (property.GetCustomAttribute<AbstractVisiblityConditionAttribute>() is AbstractVisiblityConditionAttribute attr)
                 {
-                    visiblity |= PropertyVisibility.HiddenByCondition;
+                    if (!attr.CheckVisibility(context))
+                    {
+                        visiblity |= PropertyVisibility.HiddenByCondition;
+                    }
+                }
+
+                if (!FilterPattern.Match(property, context))
+                {
+                    visiblity |= PropertyVisibility.HiddenByFilter;
+                }
+
+                if (CategoryFilter != null && cellInfo.Category.IsNotNullOrEmpty() && !CategoryFilter.IsChecked(cellInfo.Category))
+                {
+                    visiblity |= PropertyVisibility.HiddenByCategoryFilter;
                 }
             }
-
-            if(!FilterPattern.Match(property, context))
-            {
-                visiblity |= PropertyVisibility.HiddenByFilter;
-            }
-
-            if(CategoryFilter != null && category.IsNotNullOrEmpty() && !CategoryFilter.IsChecked(category))
-            {
-                visiblity |= PropertyVisibility.HiddenByCategoryFilter;
-            }
+            
 
             return visiblity;
         }

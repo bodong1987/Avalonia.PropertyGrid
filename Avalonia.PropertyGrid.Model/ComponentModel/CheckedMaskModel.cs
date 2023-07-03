@@ -10,7 +10,7 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel
     /// <summary>
     /// Class CheckedMaskModel.
     /// </summary>
-    public class CheckedMaskModel
+    public class CheckedMaskModel : MiniReactiveObject, ICheckedMaskModel
     {
         /// <summary>
         /// The masks

@@ -11,10 +11,11 @@ using System.Threading.Tasks;
 
 namespace Avalonia.PropertyGrid.Controls.Implements
 {
-    internal class PropertyGridFilterPattern : MiniReactiveObject, IPropertyGridFilterPattern
+    internal class PropertyGridFilterPattern : MiniReactiveObject, IFilterPattern
     {
         string _FilterText;
         Regex _CachedRegex;
+        ICheckedMaskModel _QuickFilter;
 
         public string FilterText
         {
@@ -35,6 +36,16 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         {
             get => _IgnoreCase;
             set => this.RaiseAndSetIfChanged( ref _IgnoreCase, value);
+        }
+
+        /// <summary>
+        /// Gets the quick filter.
+        /// </summary>
+        /// <value>The quick filter.</value>
+        public ICheckedMaskModel QuickFilter
+        {
+            get => this._QuickFilter;
+            set => this.RaiseAndSetIfChanged(ref _QuickFilter, value);
         }
 
         public PropertyGridFilterPattern()

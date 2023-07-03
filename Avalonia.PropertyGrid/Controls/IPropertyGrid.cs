@@ -29,6 +29,12 @@ namespace Avalonia.PropertyGrid.Controls
         IExpandableObjectCache GetExpandableObjectCache();
 
         /// <summary>
+        /// Gets the cell information cache.
+        /// </summary>
+        /// <returns>IPropertyGridCellInfoCache.</returns>
+        IPropertyGridCellInfoCache GetCellInfoCache();
+
+        /// <summary>
         /// Gets or sets a value indicating whether [show title].
         /// </summary>
         /// <value><c>true</c> if [show title]; otherwise, <c>false</c>.</value>

@@ -1,33 +1,40 @@
-﻿using Avalonia.PropertyGrid.Model.ComponentModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace Avalonia.PropertyGrid.Controls
+namespace Avalonia.PropertyGrid.Model.ComponentModel
 {
     /// <summary>
-    /// Interface IPropertyGridFilterPattern
+    /// Interface IFilterPattern
+    /// Implements the <see cref="Avalonia.PropertyGrid.Model.ComponentModel.IReactiveObject" />
     /// </summary>
-    public interface IPropertyGridFilterPattern : IReactiveObject
+    /// <seealso cref="Avalonia.PropertyGrid.Model.ComponentModel.IReactiveObject" />
+    public interface IFilterPattern : IReactiveObject
     {
         /// <summary>
         /// Gets or sets the filter text.
         /// </summary>
         /// <value>The filter text.</value>
         string FilterText { get; set; }
+
         /// <summary>
         /// Gets or sets a value indicating whether [use regex].
         /// </summary>
         /// <value><c>true</c> if [use regex]; otherwise, <c>false</c>.</value>
         bool UseRegex { get; set; }
+
         /// <summary>
         /// Gets or sets a value indicating whether [ignore case].
         /// </summary>
         /// <value><c>true</c> if [ignore case]; otherwise, <c>false</c>.</value>
         bool IgnoreCase { get; set; }
+
+        /// <summary>
+        /// Gets the quick filter.
+        /// </summary>
+        /// <value>The quick filter.</value>
+        ICheckedMaskModel QuickFilter { get; }
 
         /// <summary>
         /// Matches the specified property descriptor.
