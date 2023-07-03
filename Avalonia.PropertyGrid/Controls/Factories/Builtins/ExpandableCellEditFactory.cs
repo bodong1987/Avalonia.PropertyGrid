@@ -56,6 +56,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             propertyGrid.ShowStyle = rootPropertyGrid.ShowStyle;
             propertyGrid.AllowFilter = false;
+            propertyGrid.AllowQuickFilter = false;
             propertyGrid.ShowTitle = false;
 
             border.Child = propertyGrid;
