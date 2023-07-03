@@ -33,13 +33,13 @@
 		<lc:CheckedMask x:Name="fastFilterBox" Grid.Row="1" Model="{Binding $parent[lc:PropertyGrid].ViewModel.CategoryFilter}"></lc:CheckedMask>
 		<Grid x:Name="splitterGrid" Grid.Row="2">
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="120" MinWidth="60"></ColumnDefinition>
+				<ColumnDefinition Width="180" MinWidth="60"></ColumnDefinition>
 				<ColumnDefinition Width="2"></ColumnDefinition>
 				<ColumnDefinition Width="*"></ColumnDefinition>				
 			</Grid.ColumnDefinitions>
 			<GridSplitter Grid.Column="1"></GridSplitter>
-			<TextBlock x:Name="column_name" Margin="2,0,2,2" Text="{ll:Localize Name}"></TextBlock>
-			<TextBlock x:Name="column_properties" Margin="2, 0, 2, 2" Text="{ll:Localize Properties}" Grid.Column="2"></TextBlock>
+			<TextBlock x:Name="column_name" Margin="8,0,2,2" Text="{ll:Localize Name}"></TextBlock>
+			<TextBlock x:Name="column_properties" Margin="6, 0, 2, 2" Text="{ll:Localize Properties}" Grid.Column="2"></TextBlock>
 		</Grid>
 		<Grid x:Name="propertiesGrid" Grid.Row="3">
 			
