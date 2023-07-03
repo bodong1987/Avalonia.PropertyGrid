@@ -1,4 +1,6 @@
 ﻿using Avalonia.Controls;
+using Avalonia.PropertyGrid.Model.ComponentModel;
+using Avalonia.PropertyGrid.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -58,5 +60,16 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="control">The control.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         bool HandlePropertyChanged(object target, PropertyDescriptor propertyDescriptor, Control control);
+
+        /// <summary>
+        /// Handles the property visibility.
+        /// </summary>
+        /// <param name="target">The target.</param>
+        /// <param name="propertyDescriptor">The property descriptor.</param>
+        /// <param name="control">The control.</param>
+        /// <param name="filterPattern">The filter pattern.</param>
+        /// <param name="categoryFilter">The category filter.</param>
+        /// <returns>PropertyVisibility.</returns>
+        PropertyVisibility? HandlePropertyVisibility(object target, PropertyDescriptor propertyDescriptor, Control control, IFilterPattern filterPattern, ICheckedMaskModel categoryFilter);
     }
 }

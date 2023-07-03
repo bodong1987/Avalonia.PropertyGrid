@@ -7,6 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Avalonia.PropertyGrid.Model.Extensions;
 using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
+using Avalonia.PropertyGrid.Model.ComponentModel;
+using Avalonia.PropertyGrid.ViewModels;
 
 namespace Avalonia.PropertyGrid.Controls.Factories
 {
@@ -107,6 +109,20 @@ namespace Avalonia.PropertyGrid.Controls.Factories
             {
                 DataValidationErrors.ClearErrors(sourceControl);
             }
+        }
+
+        /// <summary>
+        /// Handles the property visibility.
+        /// </summary>
+        /// <param name="target">The target.</param>
+        /// <param name="propertyDescriptor">The property descriptor.</param>
+        /// <param name="control">The control.</param>
+        /// <param name="filterPattern">The filter pattern.</param>
+        /// <param name="categoryFilter">The category filter.</param>
+        /// <returns>PropertyVisibility.</returns>
+        public virtual PropertyVisibility? HandlePropertyVisibility(object target, PropertyDescriptor propertyDescriptor, Control control, IFilterPattern filterPattern, ICheckedMaskModel categoryFilter)
+        {
+            return null;
         }
     }
 }

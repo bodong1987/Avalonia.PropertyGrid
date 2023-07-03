@@ -223,7 +223,7 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// <returns>PropertyVisibility.</returns>
         internal PropertyVisibility CheckVisibility(IPropertyGridCellInfo cellInfo, object context)
         {
-            PropertyVisibility visiblity = PropertyVisibility.AlwaysVisible;
+            PropertyVisibility visibility = PropertyVisibility.AlwaysVisible;
 
             if(cellInfo.CellType == PropertyGridCellType.Cell)
             {
@@ -237,18 +237,25 @@ namespace Avalonia.PropertyGrid.ViewModels
                     {
                         if (!attr.CheckVisibility(context))
                         {
-                            visiblity |= PropertyVisibility.HiddenByCondition;
+                            visibility |= PropertyVisibility.HiddenByCondition;
                         }
                     }
 
                     if (!FilterPattern.Match(property, context))
                     {
-                        visiblity |= PropertyVisibility.HiddenByFilter;
+                        visibility |= PropertyVisibility.HiddenByFilter;
                     }
 
                     if (CategoryFilter != null && cellInfo.Category.IsNotNullOrEmpty() && !CategoryFilter.IsChecked(cellInfo.Category))
                     {
-                        visiblity |= PropertyVisibility.HiddenByCategoryFilter;
+                        visibility |= PropertyVisibility.HiddenByCategoryFilter;
+                    }
+
+                    var factoryVisibility = cellInfo.Factory?.HandlePropertyVisibility(context, cellInfo.Property, cellInfo.CellEdit, FilterPattern, CategoryFilter);
+
+                    if(factoryVisibility != null)
+                    {
+                        visibility |= (PropertyVisibility)factoryVisibility;
                     }
                 }
             }
@@ -256,11 +263,11 @@ namespace Avalonia.PropertyGrid.ViewModels
             {
                 foreach(var child in cellInfo.Children)
                 {
-                    visiblity |= CheckVisibility(child, child.Target);
+                    visibility |= CheckVisibility(child, child.Target);
                 }
             }
 
-            return visiblity;
+            return visibility;
         }
 
         /// <summary>

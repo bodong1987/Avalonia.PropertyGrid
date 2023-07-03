@@ -556,9 +556,10 @@ namespace Avalonia.PropertyGrid.Controls
                 Property = property,
                 Category = (container as IPropertyGridCellInfo)?.Category ?? propertyDescriptor.Category,
                 OwnerObject = target,
-                Target = propertyDescriptor.GetValue(target),
+                Target = target,
                 Container = (container as IPropertyGridCellInfo)?.Container,
-                CellType = PropertyGridCellType.Cell
+                CellType = PropertyGridCellType.Cell,
+                Factory = factory
             };
             
             container?.Add(cellInfo);

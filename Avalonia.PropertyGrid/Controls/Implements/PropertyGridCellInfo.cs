@@ -51,6 +51,8 @@ namespace Avalonia.PropertyGrid.Controls.Implements
 
         public Expander Container { get; set; }
 
+        public ICellEditFactory Factory { get; set; }
+
         public override string ToString()
         {
             return ReferencePath;

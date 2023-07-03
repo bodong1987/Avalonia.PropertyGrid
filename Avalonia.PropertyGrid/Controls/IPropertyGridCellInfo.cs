@@ -114,6 +114,12 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <value><c>true</c> if this instance is visible; otherwise, <c>false</c>.</value>
         bool IsVisible { get; set; }
+
+        /// <summary>
+        /// Gets the factory.
+        /// </summary>
+        /// <value>The factory.</value>
+        ICellEditFactory Factory { get; }
     }
 
     /// <summary>
