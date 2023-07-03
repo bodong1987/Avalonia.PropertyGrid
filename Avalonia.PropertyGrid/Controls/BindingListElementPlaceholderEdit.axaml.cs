@@ -63,7 +63,9 @@ namespace Avalonia.PropertyGrid.Controls
 
             value.ValueChanged += OnElementValueChanged;
 
-            var control = value.Collection.BuildPropertyControl(value.List, value.Property, out Factory);
+            Debug.Assert(value.RootPropertyGrid!=null);
+
+            var control = value.RootPropertyGrid.GetCellEditFactoryCollection().BuildPropertyControl(value.RootPropertyGrid, value.List, value.Property, out Factory);
             if (control != null)
             {
                 BindingControl = control;

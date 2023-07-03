@@ -349,6 +349,12 @@ namespace Avalonia.PropertyGrid.Controls
         public ICellEditFactoryCollection Collection { get; set; }
 
         /// <summary>
+        /// Gets or sets the root.
+        /// </summary>
+        /// <value>The root.</value>
+        public IPropertyGrid Root { get; set; }
+
+        /// <summary>
         /// The list
         /// </summary>
         IBindingList _List;
@@ -453,7 +459,7 @@ namespace Avalonia.PropertyGrid.Controls
                             this, 
                             list, 
                             pd, 
-                            Collection, 
+                            Root, 
                             InsertCommand, 
                             RemoveCommand
                             );
@@ -481,10 +487,11 @@ namespace Avalonia.PropertyGrid.Controls
         /// The property
         /// </summary>
         public readonly BindingListElementPropertyDescriptor Property;
+
         /// <summary>
-        /// The collection
+        /// The root property grid
         /// </summary>
-        public readonly ICellEditFactoryCollection Collection;
+        public readonly IPropertyGrid RootPropertyGrid;
 
         /// <summary>
         /// Gets or sets the insert command.
@@ -521,19 +528,19 @@ namespace Avalonia.PropertyGrid.Controls
         public bool IsEditable => Model.IsEditable;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BindingListElementDataDesc"/> class.
+        /// Initializes a new instance of the <see cref="BindingListElementDataDesc" /> class.
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="list">The list.</param>
         /// <param name="property">The property.</param>
-        /// <param name="collection">The collection.</param>
+        /// <param name="rootPropertyGrid">The root property grid.</param>
         /// <param name="insertCommand">The insert command.</param>
         /// <param name="removeCommand">The remove command.</param>
         public BindingListElementDataDesc(
             BindingListViewModel model, 
             IBindingList list,
-            BindingListElementPropertyDescriptor property, 
-            ICellEditFactoryCollection collection,
+            BindingListElementPropertyDescriptor property,
+            IPropertyGrid rootPropertyGrid,
             ICommand insertCommand,
             ICommand removeCommand
             )
@@ -541,7 +548,8 @@ namespace Avalonia.PropertyGrid.Controls
             Model = model;
             this.List = list;
             this.Property = property;
-            Collection = collection;
+            this.RootPropertyGrid = rootPropertyGrid;
+
             InsertCommand = ReactiveCommand.Create(() => insertCommand.Execute(this));
             RemoveCommand = ReactiveCommand.Create(() => removeCommand.Execute(this));
 

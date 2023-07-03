@@ -12,7 +12,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
     {
         public override int ImportPriority => int.MinValue;
 
-        public override Control HandleNewProperty(object target, PropertyDescriptor propertyDescriptor)
+        public override Control HandleNewProperty(IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor)
         {
             var converter = TypeDescriptor.GetConverter(propertyDescriptor.PropertyType);
 

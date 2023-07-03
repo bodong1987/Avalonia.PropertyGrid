@@ -20,10 +20,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <summary>
         /// Handles the new property.
         /// </summary>
+        /// <param name="rootPropertyGrid">The root property grid.</param>
         /// <param name="target">The target.</param>
         /// <param name="propertyDescriptor">The property descriptor.</param>
         /// <returns>Control.</returns>
-        public override Control HandleNewProperty(object target, PropertyDescriptor propertyDescriptor)
+        public override Control HandleNewProperty(IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor)
         {
             if (!propertyDescriptor.PropertyType.IsNumericType())
             {

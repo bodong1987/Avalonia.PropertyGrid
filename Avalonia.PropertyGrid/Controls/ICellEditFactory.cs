@@ -44,10 +44,11 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Handles the new property.
         /// </summary>
+        /// <param name="rootPropertyGrid">The root property grid.</param>
         /// <param name="target">The target.</param>
         /// <param name="propertyDescriptor">The property descriptor.</param>
         /// <returns>Control.</returns>
-        Control HandleNewProperty(object target, PropertyDescriptor propertyDescriptor);
+        Control HandleNewProperty(IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor);
 
         /// <summary>
         /// Handles the property changed.

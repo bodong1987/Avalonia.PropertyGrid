@@ -44,7 +44,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             return null;
         }
 
-        public override Control HandleNewProperty(object target, PropertyDescriptor propertyDescriptor)
+        public override Control HandleNewProperty(IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor)
         {
             if (!IsAcceptType(propertyDescriptor) || propertyDescriptor.GetValue(target) == null)
             {
@@ -52,7 +52,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             }
 
             BindingListEdit control = new BindingListEdit();
-            control.Model.Collection = (this as ICellEditFactory).Collection;
+            control.Model.Root = rootPropertyGrid;
+            control.Model.Collection = (this as ICellEditFactory).Collection;            
 
             var attr = propertyDescriptor.GetCustomAttribute<EditableAttribute>();
             

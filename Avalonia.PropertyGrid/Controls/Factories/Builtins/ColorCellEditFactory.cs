@@ -21,7 +21,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 type == typeof(Avalonia.Media.HsvColor);
         }
 
-        public override Control HandleNewProperty(object target, PropertyDescriptor propertyDescriptor)
+        public override Control HandleNewProperty(IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor)
         {
             if (!IsAvailableColorType(propertyDescriptor))
             {

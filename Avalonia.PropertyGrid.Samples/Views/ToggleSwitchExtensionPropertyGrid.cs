@@ -26,7 +26,7 @@ namespace Avalonia.PropertyGrid.Samples.Views
             return accessToken is ToggleSwitchExtensionPropertyGrid;
         }
 
-        public override Control HandleNewProperty(object target, PropertyDescriptor propertyDescriptor)
+        public override Control HandleNewProperty(IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor)
         {
             if (propertyDescriptor.PropertyType != typeof(bool))
             {

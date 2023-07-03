@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using Avalonia.PropertyGrid.Controls;
 using Avalonia.PropertyGrid.Controls.Factories;
 using Avalonia.PropertyGrid.Model.ComponentModel;
 using Avalonia.PropertyGrid.Samples.Models;
@@ -67,7 +68,7 @@ namespace Avalonia.PropertyGrid.Samples.Views
             return accessToken is TestExtendPropertyGrid;
         }
 
-        public override Control HandleNewProperty(object target, PropertyDescriptor propertyDescriptor)
+        public override Control HandleNewProperty(IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor)
         {
             if(propertyDescriptor.PropertyType != typeof(SVector3))
             {

@@ -25,7 +25,7 @@ namespace Avalonia.PropertyGrid.Controls
     /// Implements the <see cref="UserControl" />
     /// </summary>
     /// <seealso cref="UserControl" />
-    public partial class PropertyGrid : UserControl
+    public partial class PropertyGrid : UserControl, IPropertyGrid
     {
         #region Factories
         /// <summary>
@@ -215,6 +215,15 @@ namespace Avalonia.PropertyGrid.Controls
         private void OnSelectedObjectChanged(object oldValue, object newValue)
         {
             ViewModel.SelectedObject = newValue;
+        }
+        
+        /// <summary>
+        /// Gets the cell edit factory collection.
+        /// </summary>
+        /// <returns>ICellEditFactoryCollection.</returns>
+        public ICellEditFactoryCollection GetCellEditFactoryCollection()
+        {
+            return Factories;
         }
 
         #region Styled Properties Handler
@@ -579,7 +588,7 @@ namespace Avalonia.PropertyGrid.Controls
             var property = propertyDescriptor;
 
             ICellEditFactory factory;
-            var control = Factories.BuildPropertyControl(target, property, out factory);
+            var control = Factories.BuildPropertyControl(this, target, property, out factory);
 
             if (control == null)
             {
