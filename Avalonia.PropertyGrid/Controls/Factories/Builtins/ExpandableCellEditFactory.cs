@@ -39,8 +39,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return null;
             }
 
-            var value = propertyDescriptor.GetValue(target);
             // avoid recursive expansion
+            var value = propertyDescriptor.GetValue(target);            
             if (rootPropertyGrid.GetExpandableObjectCache().IsExists(value))
             {
                 return null;
@@ -60,7 +60,9 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             border.Child = propertyGrid;
 
-            rootPropertyGrid.GetExpandableObjectCache().Add(value);
+            // avoid recursive expansion
+            propertyGrid.GetExpandableObjectCache().Add(value);
+            propertyGrid.GetExpandableObjectCache().Add(target);
 
             return border;
         }
