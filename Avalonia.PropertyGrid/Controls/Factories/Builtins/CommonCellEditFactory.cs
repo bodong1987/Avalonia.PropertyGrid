@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using Avalonia.PropertyGrid.Model.ComponentModel;
 using Avalonia.PropertyGrid.Model.Extensions;
 using Avalonia.PropertyGrid.Utils;
 using System;
@@ -14,6 +15,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
         public override Control HandleNewProperty(IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor)
         {
+            if(propertyDescriptor is MultiObjectPropertyDescriptor)
+            {
+                return null;
+            }
+
             var converter = TypeDescriptor.GetConverter(propertyDescriptor.PropertyType);
 
             TextBox control = new TextBox();
@@ -70,7 +76,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
         public override bool HandlePropertyChanged(object target, PropertyDescriptor propertyDescriptor, Control control)
         {
-            if(control is TextBox textBox)
+            if (propertyDescriptor is MultiObjectPropertyDescriptor)
+            {
+                return false;
+            }
+
+            if (control is TextBox textBox)
             {
                 var value = propertyDescriptor.GetValue(target);
 

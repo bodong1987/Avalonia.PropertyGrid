@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,23 +13,34 @@ namespace Avalonia.PropertyGrid.Controls.Implements
 
         public IPropertyGridCellInfo[] Children => _Children.ToArray();
 
-        public void Add(IPropertyGridCellInfo cellInfo)
+        public virtual void Add(IPropertyGridCellInfo cellInfo)
         {
             if(!_Children.Contains(cellInfo))
             {
                 _Children.Add(cellInfo);
+
+                cellInfo.AddPropertyChangedObserver();
             }            
         }
 
-        public void Clear()
+        public virtual void Clear()
         {
+            foreach(var child in _Children)
+            {
+                child.Clear();
+            }
+
             _Children.Clear();
         }
 
-        public void Remove(IPropertyGridCellInfo cellInfo)
+        public virtual void Remove(IPropertyGridCellInfo cellInfo)
         {
+            cellInfo.RemovePropertyChangedObserver();
+
             _Children.Remove(cellInfo);
         }
+
+        public int Count => _Children.Count;
     }
 
     internal class PropertyGridCellInfo : PropertyGridCellInfoContainer, IPropertyGridCellInfo
@@ -52,6 +64,16 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         public Expander Container { get; set; }
 
         public ICellEditFactory Factory { get; set; }
+
+        /// <summary>
+        /// Occurs when [cell property changed].
+        /// </summary>
+        public event EventHandler<CellPropertyChangedEventArgs> CellPropertyChanged;
+
+        private void PropertyGridCellInfo__CellPropertyChanged(object sender, CellPropertyChangedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
 
         public override string ToString()
         {
@@ -89,9 +111,58 @@ namespace Avalonia.PropertyGrid.Controls.Implements
                 }
             }
         }
+
+        
+
+        public override void Clear()
+        {
+            RemovePropertyChangedObserver();
+
+            base.Clear();
+        }
+
+        public void AddPropertyChangedObserver()
+        {
+            if (Target is System.ComponentModel.INotifyPropertyChanged npc2)
+            {
+                npc2.PropertyChanged += OnPropertyChanged;
+            }
+            else if (Target is IEnumerable<System.ComponentModel.INotifyPropertyChanged> npcs2)
+            {
+                foreach (var n in npcs2)
+                {
+                    n.PropertyChanged += OnPropertyChanged;
+                }
+            }
+        }
+
+        public void RemovePropertyChangedObserver()
+        {
+            if (Target is System.ComponentModel.INotifyPropertyChanged npc)
+            {
+                npc.PropertyChanged -= OnPropertyChanged;
+            }
+            else if (Target is IEnumerable<System.ComponentModel.INotifyPropertyChanged> npcs)
+            {
+                foreach (var n in npcs)
+                {
+                    n.PropertyChanged -= OnPropertyChanged;
+                }
+            }
+        }
+
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (Property != null && e.PropertyName == Property.Name)
+            {
+                Factory?.HandlePropertyChanged(Target, Property, CellEdit);
+
+                CellPropertyChanged?.Invoke(this, new CellPropertyChangedEventArgs(this));
+            }
+        }
     }
 
     internal class PropertyGridCellInfoCache : PropertyGridCellInfoContainer, IPropertyGridCellInfoCache
-    {
+    {        
     }
 }

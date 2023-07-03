@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using Avalonia.PropertyGrid.Model.ComponentModel;
 using Avalonia.PropertyGrid.Model.Extensions;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             var control = new CheckBox();
 
-            control.IsThreeState = propertyDescriptor.PropertyType == typeof(bool?);
+            control.IsThreeState = propertyDescriptor.PropertyType == typeof(bool?) || propertyDescriptor is MultiObjectPropertyDescriptor;
 
             control.IsCheckedChanged += (s, e) =>
             {
@@ -52,7 +53,16 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             {
                 if (ts.IsThreeState)
                 {
-                    ts.IsChecked = propertyDescriptor.GetValue(target) as bool?;
+                    var obj = propertyDescriptor.GetValue(target);
+
+                    if( obj != null)
+                    {
+                        ts.IsChecked = (bool)obj;
+                    }
+                    else
+                    {
+                        ts.IsChecked = null;
+                    }
                 }
                 else
                 {

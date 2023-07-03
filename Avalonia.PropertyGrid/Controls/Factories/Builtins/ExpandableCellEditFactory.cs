@@ -1,7 +1,9 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Media;
+using Avalonia.PropertyGrid.Model.ComponentModel;
 using Avalonia.PropertyGrid.Model.Extensions;
 using Avalonia.PropertyGrid.ViewModels;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,7 +18,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
         private bool IsExpandableType(PropertyDescriptor property)
         {
-            if(!property.PropertyType.IsClass)
+            if (!property.PropertyType.IsClass)
             {
                 return false;
             }    
@@ -35,7 +37,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
         public override Control HandleNewProperty(IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor)
         {
-            if(!IsExpandableType(propertyDescriptor))
+            if (propertyDescriptor is MultiObjectPropertyDescriptor)
+            {
+                return null;
+            }
+
+            if (!IsExpandableType(propertyDescriptor))
             {
                 return null;
             }
@@ -71,7 +78,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
         public override bool HandlePropertyChanged(object target, PropertyDescriptor propertyDescriptor, Control control)
         {
-            if(!IsExpandableType(propertyDescriptor))
+            if (propertyDescriptor is MultiObjectPropertyDescriptor)
+            {
+                return false;
+            }
+
+            if (!IsExpandableType(propertyDescriptor))
             {
                 return false;
             }

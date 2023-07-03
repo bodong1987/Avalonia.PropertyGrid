@@ -373,6 +373,8 @@ namespace Avalonia.PropertyGrid.Controls
             propertiesGrid.RowDefinitions.Clear();
             propertiesGrid.Children.Clear();              
             ExpandableObjectCache.Clear();
+
+            ClearPropertyChangedObservers(CellInfoCache.Children);
             CellInfoCache.Clear();
 
             if (target == null)
@@ -401,6 +403,8 @@ namespace Avalonia.PropertyGrid.Controls
             {
                 referencePath.EndScope();
             }
+
+            AddPropertyChangedObservers(CellInfoCache.Children);
 
             RefreshVisibilities();
 
@@ -561,7 +565,7 @@ namespace Avalonia.PropertyGrid.Controls
                 CellType = PropertyGridCellType.Cell,
                 Factory = factory
             };
-            
+
             container?.Add(cellInfo);
         }
         #endregion
@@ -659,6 +663,36 @@ namespace Avalonia.PropertyGrid.Controls
             return AtleastOneVisible ? PropertyVisibility.AlwaysVisible : PropertyVisibility.HiddenByNoVisibleChidlren;
         }
         #endregion
-    }
 
+        #region Property Changed
+        private void ClearPropertyChangedObservers(IEnumerable<IPropertyGridCellInfo> cells)
+        {
+            foreach(var i in cells)
+            {
+                i.CellPropertyChanged -= OnCellPropertyChanged;
+
+                ClearPropertyChangedObservers(i.Children);
+            }
+        }
+
+        private void AddPropertyChangedObservers(IEnumerable<IPropertyGridCellInfo> cells)
+        {
+            foreach(var i in cells)
+            {
+                i.CellPropertyChanged += OnCellPropertyChanged;
+
+                AddPropertyChangedObservers(i.Children);
+            }
+        }
+
+        private void OnCellPropertyChanged(object sender, CellPropertyChangedEventArgs e)
+        {
+            if(e.Cell != null && e.Cell.Property != null && e.Cell.Property.IsDefined<ConditionTargetAttribute>())
+            {
+                RefreshVisibilities();
+            }
+        }
+
+        #endregion
+    }
 }

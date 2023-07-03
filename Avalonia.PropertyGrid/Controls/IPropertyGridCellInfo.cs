@@ -120,6 +120,43 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <value>The factory.</value>
         ICellEditFactory Factory { get; }
+
+        /// <summary>
+        /// Occurs when [cell property changed].
+        /// </summary>
+        event EventHandler<CellPropertyChangedEventArgs> CellPropertyChanged;
+
+        /// <summary>
+        /// Binds this instance.
+        /// </summary>
+        void AddPropertyChangedObserver();
+
+        /// <summary>
+        /// Removes the property changed observer.
+        /// </summary>
+        void RemovePropertyChangedObserver();
+    }
+
+    /// <summary>
+    /// Class CellPropertyChangedEventArgs.
+    /// Implements the <see cref="EventArgs" />
+    /// </summary>
+    /// <seealso cref="EventArgs" />
+    public class CellPropertyChangedEventArgs : EventArgs
+    {
+        /// <summary>
+        /// The cell
+        /// </summary>
+        public readonly IPropertyGridCellInfo Cell;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CellPropertyChangedEventArgs"/> class.
+        /// </summary>
+        /// <param name="cell">The cell.</param>
+        public CellPropertyChangedEventArgs(IPropertyGridCellInfo cell)
+        {
+            Cell = cell;
+        }
     }
 
     /// <summary>
