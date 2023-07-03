@@ -81,6 +81,13 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
                 }
             }
         }
+
+        bool _IsShowTitle = true;
+        public bool IsShowTitle
+        {
+            get => _IsShowTitle;
+            set => this.RaiseAndSetIfChanged(ref _IsShowTitle, value);
+        }
         #endregion
 
         public MainWindowViewModel()

@@ -58,6 +58,21 @@ namespace Avalonia.PropertyGrid.Controls
         }
 
         /// <summary>
+        /// The show title property
+        /// </summary>
+        public static readonly StyledProperty<bool> ShowTitleProperty = AvaloniaProperty.Register<PropertyGrid, bool>(nameof(ShowTitle), true);
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [show title].
+        /// </summary>
+        /// <value><c>true</c> if [show title]; otherwise, <c>false</c>.</value>
+        [Category("Views")]
+        public bool ShowTitle
+        {
+            get => GetValue(ShowTitleProperty); set => SetValue(ShowTitleProperty, value);
+        }
+
+        /// <summary>
         /// The show style property
         /// </summary>
         public static readonly StyledProperty<PropertyGridShowStyle> ShowStyleProperty = AvaloniaProperty.Register<PropertyGrid, PropertyGridShowStyle>(nameof(ShowStyle), PropertyGridShowStyle.Category);
@@ -131,9 +146,10 @@ namespace Avalonia.PropertyGrid.Controls
 
             AllowFilterProperty.Changed.Subscribe(OnAllowFilterChanged);
             ShowStyleProperty.Changed.Subscribe(OnShowStyleChanged);
+            ShowTitleProperty.Changed.Subscribe(OnShowTitleChanged);
             SelectedObjectProperty.Changed.Subscribe(OnSelectedObjectChanged);
         }
-
+                
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyGrid" /> class.
         /// </summary>
@@ -245,6 +261,19 @@ namespace Avalonia.PropertyGrid.Controls
         private void OnShowStyleChanged(Optional<PropertyGridShowStyle> oldValue, BindingValue<PropertyGridShowStyle> newValue)
         {
             ViewModel.ShowCategory = newValue.Value == PropertyGridShowStyle.Category;
+        }
+
+        private static void OnShowTitleChanged(AvaloniaPropertyChangedEventArgs<bool> e)
+        {
+            if(e.Sender is PropertyGrid sender)
+            {
+                sender.OnShowTitleChanged(e.OldValue.Value, e.NewValue.Value);
+            }
+        }
+
+        private void OnShowTitleChanged(bool oldValue, bool newValue)
+        {
+            splitterGrid.IsVisible = newValue;
         }
 
         #endregion

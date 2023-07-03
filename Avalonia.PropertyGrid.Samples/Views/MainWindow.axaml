@@ -36,7 +36,9 @@
 						Margin="2"
 						SelectedObject="{Binding testObject}"
 						AllowFilter="{Binding AllowFilter}"
-						ShowStyle="{Binding ShowStyle, Mode=TwoWay}">
+						ShowStyle="{Binding ShowStyle, Mode=TwoWay}"
+                        ShowTitle="{Binding IsShowTitle, Mode=TwoWay}"
+                        >
 					</pgc:PropertyGrid>
 				</ScrollViewer>
 				<StackPanel Orientation="Horizontal" Grid.Row="1">
@@ -44,6 +46,8 @@
 					<ToggleSwitch IsChecked="{Binding IsShowCategory}" Margin="4"></ToggleSwitch>
 					<TextBlock VerticalAlignment="Center" Margin="4">Allow Filter:</TextBlock>
 					<ToggleSwitch IsChecked="{Binding AllowFilter}" Margin="4"></ToggleSwitch>
+                    <TextBlock VerticalAlignment="Center" Margin="4">ShowTitle:</TextBlock>
+                    <ToggleSwitch IsChecked="{Binding IsShowTitle}" Margin="4"></ToggleSwitch>
 				</StackPanel>
 			</Grid>
 		</TabItem>
