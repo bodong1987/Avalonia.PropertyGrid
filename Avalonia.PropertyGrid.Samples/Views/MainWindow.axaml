@@ -38,6 +38,7 @@
 						AllowFilter="{Binding AllowFilter}"
 						ShowStyle="{Binding ShowStyle, Mode=TwoWay}"
                         ShowTitle="{Binding IsShowTitle, Mode=TwoWay}"
+                        AllowQuickFilter="{Binding AllowQuickFilter, Mode=TwoWay}"
                         >
 					</pgc:PropertyGrid>
 				</ScrollViewer>
@@ -46,6 +47,8 @@
 					<ToggleSwitch IsChecked="{Binding IsShowCategory}" Margin="4"></ToggleSwitch>
 					<TextBlock VerticalAlignment="Center" Margin="4">Allow Filter:</TextBlock>
 					<ToggleSwitch IsChecked="{Binding AllowFilter}" Margin="4"></ToggleSwitch>
+                    <TextBlock VerticalAlignment="Center" Margin="4">Allow Quick Filter:</TextBlock>
+                    <ToggleSwitch IsChecked="{Binding AllowQuickFilter}" Margin="4"></ToggleSwitch>
                     <TextBlock VerticalAlignment="Center" Margin="4">ShowTitle:</TextBlock>
                     <ToggleSwitch IsChecked="{Binding IsShowTitle}" Margin="4"></ToggleSwitch>
 				</StackPanel>

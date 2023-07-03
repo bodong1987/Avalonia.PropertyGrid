@@ -67,6 +67,13 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
             set => this.RaiseAndSetIfChanged(ref _AllowFilter, value);
         }
 
+        bool _AllowQuickFilter = true;
+        public bool AllowQuickFilter
+        {
+            get => _AllowQuickFilter;
+            set => this.RaiseAndSetIfChanged(ref _AllowQuickFilter, value);
+        }
+
         public bool IsShowCategory
         {
             get => ShowStyle == PropertyGridShowStyle.Category;

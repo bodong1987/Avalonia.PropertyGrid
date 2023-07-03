@@ -173,11 +173,12 @@ namespace Avalonia.PropertyGrid.Controls
             }
 
             AllowFilterProperty.Changed.Subscribe(OnAllowFilterChanged);
+            AllowQuickFilterProperty.Changed.Subscribe(OnAllowQuickFilterChanged);
             ShowStyleProperty.Changed.Subscribe(OnShowStyleChanged);
             ShowTitleProperty.Changed.Subscribe(OnShowTitleChanged);
             SelectedObjectProperty.Changed.Subscribe(OnSelectedObjectChanged);
         }
-                
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyGrid" /> class.
         /// </summary>
@@ -285,8 +286,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="oldValue">The old value.</param>
         /// <param name="newValue">The new value.</param>
         private void OnAllowFilterChanged(object oldValue, object newValue)
-        {
-            fastFilterBox.IsVisible = (bool)newValue;
+        {            
             headerGrid.IsVisible = (bool)newValue;
         }
 
@@ -323,6 +323,20 @@ namespace Avalonia.PropertyGrid.Controls
         private void OnShowTitleChanged(bool oldValue, bool newValue)
         {
             splitterGrid.IsVisible = newValue;
+        }
+
+
+        private static void OnAllowQuickFilterChanged(AvaloniaPropertyChangedEventArgs<bool> e)
+        {
+            if(e.Sender is PropertyGrid sender)
+            {
+                sender.OnAllowQuickFilterChanged(e.OldValue.Value, e.NewValue.Value);
+            }
+        }
+
+        private void OnAllowQuickFilterChanged(bool oldValue, bool newValue)
+        {
+            fastFilterBox.IsVisible = newValue;
         }
 
         #endregion

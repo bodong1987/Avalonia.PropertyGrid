@@ -26,9 +26,21 @@ namespace Avalonia.PropertyGrid.Controls.Implements
             return Targets.Contains(target);
         }
 
+        public void Merge(IExpandableObjectCache cache)
+        {
+            if(cache is PropertyGridExpandableCache c)
+            {
+                foreach(object target in c.Targets)
+                {
+                    Add(target);
+                }
+            }
+        }
+
         public void Remove(object target)
         {
             Targets.Remove(target);
         }
+
     }
 }

@@ -87,5 +87,11 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="target">The target.</param>
         /// <returns><c>true</c> if the specified target is exists; otherwise, <c>false</c>.</returns>
         bool IsExists(object target);
+
+        /// <summary>
+        /// Merges the specified cache.
+        /// </summary>
+        /// <param name="cache">The cache.</param>
+        void Merge(IExpandableObjectCache cache);
     }
 }

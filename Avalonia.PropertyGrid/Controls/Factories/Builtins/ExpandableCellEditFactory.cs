@@ -61,8 +61,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             border.Child = propertyGrid;
 
             // avoid recursive expansion
+            propertyGrid.GetExpandableObjectCache().Merge(rootPropertyGrid.GetExpandableObjectCache());
             propertyGrid.GetExpandableObjectCache().Add(value);
-            propertyGrid.GetExpandableObjectCache().Add(target);
 
             return border;
         }
