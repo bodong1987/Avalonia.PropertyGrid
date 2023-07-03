@@ -8,6 +8,8 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -162,11 +164,11 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// <param name="e">The <see cref="PropertyChangedEventArgs" /> instance containing the event data.</param>
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if(e.PropertyName == nameof(SelectedObject))
+            if (e.PropertyName == nameof(SelectedObject))
             {
                 RefreshProperties();
             }
-            else if(sender == FilterPattern)
+            else if (sender == FilterPattern)
             {
                 FilterChanged?.Invoke(this, EventArgs.Empty);
             }
@@ -184,39 +186,79 @@ namespace Avalonia.PropertyGrid.ViewModels
             return category;
         }
 
+        internal void PropagateVisibility(IPropertyGridCellInfo info)
+        {
+            if (info.CellType == PropertyGridCellType.Category)
+            {
+                if (CategoryFilter != null && info.Category.IsNotNullOrEmpty() && !CategoryFilter.IsChecked(info.Category))
+                {
+                    info.IsVisible = false;
+                    return;
+                }
+
+                bool AtleastOneVisible = false;
+
+                foreach (var child in info.Children)
+                {
+                    var v = CheckVisibility(child, child.Target);
+
+                    AtleastOneVisible |= (v == PropertyVisibility.AlwaysVisible);
+
+                    child.IsVisible = v == PropertyVisibility.AlwaysVisible;
+                }
+
+                info.IsVisible = AtleastOneVisible;
+            }
+            else
+            {
+                info.IsVisible = CheckVisibility(info, info.Target) == PropertyVisibility.AlwaysVisible;
+            }
+        }
+
         /// <summary>
         /// Checks the visibility.
         /// </summary>
         /// <param name="cellInfo">The cell information.</param>
         /// <param name="context">The context.</param>
         /// <returns>PropertyVisibility.</returns>
-        public PropertyVisibility CheckVisibility(IPropertyGridCellInfo cellInfo, object context)
+        internal PropertyVisibility CheckVisibility(IPropertyGridCellInfo cellInfo, object context)
         {
             PropertyVisibility visiblity = PropertyVisibility.AlwaysVisible;
 
-            if(cellInfo.Property != null)
+            if(cellInfo.CellType == PropertyGridCellType.Cell)
             {
                 var property = cellInfo.Property;
 
-                if (property.GetCustomAttribute<AbstractVisiblityConditionAttribute>() is AbstractVisiblityConditionAttribute attr)
+                Debug.Assert(property != null);
+
+                if (property != null)
                 {
-                    if (!attr.CheckVisibility(context))
+                    if (property.GetCustomAttribute<AbstractVisiblityConditionAttribute>() is AbstractVisiblityConditionAttribute attr)
                     {
-                        visiblity |= PropertyVisibility.HiddenByCondition;
+                        if (!attr.CheckVisibility(context))
+                        {
+                            visiblity |= PropertyVisibility.HiddenByCondition;
+                        }
+                    }
+
+                    if (!FilterPattern.Match(property, context))
+                    {
+                        visiblity |= PropertyVisibility.HiddenByFilter;
+                    }
+
+                    if (CategoryFilter != null && cellInfo.Category.IsNotNullOrEmpty() && !CategoryFilter.IsChecked(cellInfo.Category))
+                    {
+                        visiblity |= PropertyVisibility.HiddenByCategoryFilter;
                     }
                 }
-
-                if (!FilterPattern.Match(property, context))
+            }
+            else if(cellInfo.CellType == PropertyGridCellType.Category)
+            {
+                foreach(var child in cellInfo.Children)
                 {
-                    visiblity |= PropertyVisibility.HiddenByFilter;
-                }
-
-                if (CategoryFilter != null && cellInfo.Category.IsNotNullOrEmpty() && !CategoryFilter.IsChecked(cellInfo.Category))
-                {
-                    visiblity |= PropertyVisibility.HiddenByCategoryFilter;
+                    visiblity |= CheckVisibility(child, child.Target);
                 }
             }
-            
 
             return visiblity;
         }

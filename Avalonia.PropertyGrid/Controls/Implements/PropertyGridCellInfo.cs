@@ -6,30 +6,18 @@ using System.Text;
 
 namespace Avalonia.PropertyGrid.Controls.Implements
 {
-    internal class PropertyGridCellInfo : IPropertyGridCellInfo
+    internal class PropertyGridCellInfoContainer : IPropertyGridCellInfoContainer
     {
-        public string ReferencePath { get; set; }
-
-        public Control NameControl { get; set; }
-
-        public Control CellEdit { get; set; }
-
-        public PropertyDescriptor Property { get; set; }
-
-        public string Category { get; set; }
-
-        public object OwnerObject { get; set; }
-
-        public Expander Container { get; set; }
-
-
         readonly List<IPropertyGridCellInfo> _Children = new List<IPropertyGridCellInfo>();
 
         public IPropertyGridCellInfo[] Children => _Children.ToArray();
 
         public void Add(IPropertyGridCellInfo cellInfo)
         {
-            _Children.Add(cellInfo);
+            if(!_Children.Contains(cellInfo))
+            {
+                _Children.Add(cellInfo);
+            }            
         }
 
         public void Clear()
@@ -43,25 +31,65 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         }
     }
 
-    internal class PropertyGridCellInfoCache : IPropertyGridCellInfoCache
+    internal class PropertyGridCellInfo : PropertyGridCellInfoContainer, IPropertyGridCellInfo
     {
-        readonly List<IPropertyGridCellInfo> _Cells = new List<IPropertyGridCellInfo>();
+        public string ReferencePath { get; set; }
 
-        public IPropertyGridCellInfo[] Infos => _Cells.ToArray();
+        public PropertyGridCellType CellType { get; set; }
 
-        public void Add(IPropertyGridCellInfo info)
+        public Control NameControl { get; set; }
+
+        public Control CellEdit { get; set; }
+
+        public PropertyDescriptor Property { get; set; }
+
+        public string Category { get; set; }
+
+        public object OwnerObject { get; set; }
+
+        public object Target { get; set; }
+
+        public Expander Container { get; set; }
+
+        public override string ToString()
         {
-            _Cells.Add(info);
+            return ReferencePath;
         }
 
-        public void Clear()
+        bool _IsVisible = true;
+        public bool IsVisible
         {
-            _Cells.Clear();
-        }
+            get
+            {
+                return _IsVisible;
+            }
+            set
+            {
+                if (_IsVisible != value)
+                {
+                    if(NameControl != null)
+                    {
+                        NameControl.IsVisible = value;
+                    }
 
-        public void Remove(IPropertyGridCellInfo info)
-        {
-            _Cells.Remove(info);
+                    if(CellEdit != null)
+                    {
+                        CellEdit.IsVisible = value;
+                    }
+
+                    if(Container != null && CellEdit == null && NameControl == null)
+                    {
+                        Container.IsVisible = value;
+                    }
+
+                    _IsVisible = value;
+
+                }
+            }
         }
+    }
+
+    internal class PropertyGridCellInfoCache : PropertyGridCellInfoContainer, IPropertyGridCellInfoCache
+    {
     }
 }

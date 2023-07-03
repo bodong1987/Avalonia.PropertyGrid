@@ -7,15 +7,65 @@ using System.Text;
 namespace Avalonia.PropertyGrid.Controls
 {
     /// <summary>
+    /// Interface IPropertyGridCellInfoContainer
+    /// </summary>
+    public interface IPropertyGridCellInfoContainer
+    {
+        /// <summary>
+        /// Gets the children.
+        /// </summary>
+        /// <value>The children.</value>
+        IPropertyGridCellInfo[] Children { get; }
+
+        /// <summary>
+        /// Adds the specified cell information.
+        /// </summary>
+        /// <param name="cellInfo">The cell information.</param>
+        void Add(IPropertyGridCellInfo cellInfo);
+
+        /// <summary>
+        /// Removes the specified cell information.
+        /// </summary>
+        /// <param name="cellInfo">The cell information.</param>
+        void Remove(IPropertyGridCellInfo cellInfo);
+
+        /// <summary>
+        /// Clears this instance.
+        /// </summary>
+        void Clear();
+    }
+
+    /// <summary>
+    /// Enum PropertyGridCellType
+    /// </summary>
+    public enum PropertyGridCellType
+    {
+        /// <summary>
+        /// The category
+        /// </summary>
+        Category,
+        /// <summary>
+        /// The cell
+        /// </summary>
+        Cell
+    }
+
+    /// <summary>
     /// Interface IPropertyGridCellInfo
     /// </summary>
-    public interface IPropertyGridCellInfo
+    public interface IPropertyGridCellInfo : IPropertyGridCellInfoContainer
     {
         /// <summary>
         /// Gets the reference path.
         /// </summary>
         /// <value>The reference path.</value>
         string ReferencePath { get; }
+
+        /// <summary>
+        /// Gets the type of the cell.
+        /// </summary>
+        /// <value>The type of the cell.</value>
+        PropertyGridCellType CellType { get; }
 
         /// <summary>
         /// Gets the name control.
@@ -48,60 +98,28 @@ namespace Avalonia.PropertyGrid.Controls
         object OwnerObject { get; }
 
         /// <summary>
+        /// Gets the target.
+        /// </summary>
+        /// <value>The target.</value>
+        object Target { get; }
+
+        /// <summary>
         /// Gets the container.
         /// </summary>
         /// <value>The container.</value>
         Expander Container { get; }
 
         /// <summary>
-        /// Gets the children.
+        /// Gets or sets a value indicating whether this instance is visible.
         /// </summary>
-        /// <value>The children.</value>
-        IPropertyGridCellInfo[] Children { get; }
-
-        /// <summary>
-        /// Adds the specified cell information.
-        /// </summary>
-        /// <param name="cellInfo">The cell information.</param>
-        void Add(IPropertyGridCellInfo cellInfo);
-
-        /// <summary>
-        /// Removes the specified cell information.
-        /// </summary>
-        /// <param name="cellInfo">The cell information.</param>
-        void Remove(IPropertyGridCellInfo cellInfo);
-
-        /// <summary>
-        /// Clears this instance.
-        /// </summary>
-        void Clear();
+        /// <value><c>true</c> if this instance is visible; otherwise, <c>false</c>.</value>
+        bool IsVisible { get; set; }
     }
 
     /// <summary>
     /// Interface IPropertyGridCellInfoCache
     /// </summary>
-    public interface IPropertyGridCellInfoCache
-    {
-        /// <summary>
-        /// Gets the infos.
-        /// </summary>
-        /// <value>The infos.</value>
-        IPropertyGridCellInfo[] Infos { get; }
-
-        /// <summary>
-        /// Adds the specified information.
-        /// </summary>
-        /// <param name="info">The information.</param>
-        void Add(IPropertyGridCellInfo info);
-        /// <summary>
-        /// Removes the specified information.
-        /// </summary>
-        /// <param name="info">The information.</param>
-        void Remove(IPropertyGridCellInfo info);
-        /// <summary>
-        /// Clears this instance.
-        /// </summary>
-        void Clear();
-
+    public interface IPropertyGridCellInfoCache : IPropertyGridCellInfoContainer
+    {        
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -45,6 +46,9 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel
         /// </summary>
         public event EventHandler CheckChanged;
 
+        bool _IsUpdating = false;
+        bool _IsDirty = false;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CheckedMaskModel"/> class.
         /// </summary>
@@ -79,6 +83,45 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel
         }
 
         /// <summary>
+        /// Begins the update.
+        /// </summary>
+        public void BeginUpdate()
+        {
+            Debug.Assert(!_IsUpdating);
+
+            _IsUpdating = true;
+            _IsDirty = false;
+        }
+
+        /// <summary>
+        /// Ends the update.
+        /// </summary>
+        public void EndUpdate()
+        {
+            Debug.Assert(_IsUpdating);
+
+            _IsUpdating = false;
+
+            if(_IsDirty)
+            {
+                CheckChanged?.Invoke(this, EventArgs.Empty);
+                _IsDirty = false;
+            }
+        }
+
+        private void RaiseChangedEvent()
+        {
+            if(!_IsUpdating)
+            {
+                CheckChanged?.Invoke(this, EventArgs.Empty);
+            }
+            else
+            {
+                _IsDirty = true;
+            }
+        }
+
+        /// <summary>
         /// Checks the specified mask.
         /// </summary>
         /// <param name="mask">The mask.</param>
@@ -90,7 +133,7 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel
 
                 CheckedValues.Clear();
 
-                CheckChanged?.Invoke(this, EventArgs.Empty);
+                RaiseChangedEvent();
 
                 return;
             }
@@ -99,7 +142,7 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel
             {
                 CheckedValues.Add(mask);
 
-                CheckChanged?.Invoke(this, EventArgs.Empty);
+                RaiseChangedEvent();
             }
         }
 
@@ -113,14 +156,15 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel
             {
                 IsAllChecked = false;
 
-                CheckChanged?.Invoke(this, EventArgs.Empty);
+                RaiseChangedEvent();
                 return;
             }
 
             if(CheckedValues.Contains(mask))
             {
                 CheckedValues.Remove(mask);
-                CheckChanged?.Invoke(this, EventArgs.Empty);
+
+                RaiseChangedEvent();
             }            
         }
     }

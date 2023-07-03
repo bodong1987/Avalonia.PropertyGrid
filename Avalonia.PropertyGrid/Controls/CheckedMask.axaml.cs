@@ -134,7 +134,6 @@ namespace Avalonia.PropertyGrid.Controls
 
                 button.IsCheckedChanged += (s, e) =>
                 {
-
                     if ((bool)button.IsChecked)
                     {
                         value.UnCheck(value.All);

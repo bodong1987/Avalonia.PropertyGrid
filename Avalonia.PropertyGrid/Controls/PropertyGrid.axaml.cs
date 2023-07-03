@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Data;
+using Avalonia.Dialogs.Internal;
 using Avalonia.PropertyGrid.Controls.Implements;
 using Avalonia.PropertyGrid.Localization;
 using Avalonia.PropertyGrid.Model.ComponentModel;
@@ -359,8 +360,9 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void OnFilterChanged(object sender, EventArgs e)
         {
+            RefreshVisibilities();
         }
-
+               
         /// <summary>
         /// Builds the properties view.
         /// </summary>
@@ -400,6 +402,8 @@ namespace Avalonia.PropertyGrid.Controls
                 referencePath.EndScope();
             }
 
+            RefreshVisibilities();
+
             double width = column_name.Bounds.Width;
 
             SyncNameWidth(width, false);
@@ -438,12 +442,13 @@ namespace Avalonia.PropertyGrid.Controls
                     ReferencePath = $"{referencePath.ToString()}[{categoryInfo.Key}]",
                     Category = categoryInfo.Key,
                     OwnerObject = target,
-                    Container = expander
+                    Container = expander,
+                    CellType = PropertyGridCellType.Category
                 };
 
                 CellInfoCache.Add(cellInfo);
 
-                expander.IsVisible = BuildPropertiesCellEdit(target, referencePath, categoryInfo.Value, expander, grid, cellInfo);
+                BuildPropertiesCellEdit(target, referencePath, categoryInfo.Value, expander, grid, cellInfo);
 
                 expander.Content = grid;
 
@@ -461,19 +466,16 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="properties">The properties.</param>
         /// <param name="expander">The expander.</param>
         /// <param name="grid">The grid.</param>
-        /// <param name="parentCellInfo">The parent cell information.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
-        private bool BuildPropertiesCellEdit(
+        /// <param name="container">The container.</param>
+        private void BuildPropertiesCellEdit(
             object target, 
             ReferencePath referencePath, 
             IEnumerable<PropertyDescriptor> properties, 
             Expander expander, 
             Grid grid,
-            IPropertyGridCellInfo parentCellInfo
+            IPropertyGridCellInfoContainer container
             )
         {
-            bool AtLeastOneVisible = false;
-
             foreach(var property in properties)
             {
                 referencePath.BeginScope(property.Name);
@@ -481,15 +483,13 @@ namespace Avalonia.PropertyGrid.Controls
                 {
                     var value = property.GetValue(target);
 
-                    AtLeastOneVisible |= BuildPropertyCellEdit(target, referencePath, property, expander, grid, parentCellInfo);
+                    BuildPropertyCellEdit(target, referencePath, property, expander, grid, container);
                 }
                 finally
                 {
                     referencePath.EndScope();
                 }
             }
-
-            return AtLeastOneVisible;
         }
 
         /// <summary>
@@ -500,9 +500,15 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="propertyDescriptor">The property descriptor.</param>
         /// <param name="expander">The expander.</param>
         /// <param name="grid">The grid.</param>
-        /// <param name="parentCellInfo">The parent cell information.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
-        private bool BuildPropertyCellEdit(object target, ReferencePath referencePath, PropertyDescriptor propertyDescriptor, Expander expander, Grid grid, IPropertyGridCellInfo parentCellInfo)
+        /// <param name="container">The container.</param>
+        private void BuildPropertyCellEdit(
+            object target, 
+            ReferencePath referencePath, 
+            PropertyDescriptor propertyDescriptor, 
+            Expander expander, 
+            Grid grid,
+            IPropertyGridCellInfoContainer container
+            )
         {
             var property = propertyDescriptor;
 
@@ -514,7 +520,7 @@ namespace Avalonia.PropertyGrid.Controls
 #if DEBUG
                 Debug.WriteLine($"Failed build property control for property:{property.Name}({property.PropertyType}");
 #endif
-                return false;
+                return;
             }
 
             grid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
@@ -548,18 +554,14 @@ namespace Avalonia.PropertyGrid.Controls
                 NameControl = nameBlock,
                 CellEdit = control,
                 Property = property,
-                Category = parentCellInfo?.Category,
+                Category = (container as IPropertyGridCellInfo)?.Category ?? propertyDescriptor.Category,
                 OwnerObject = target,
-                Container = parentCellInfo?.Container
+                Target = propertyDescriptor.GetValue(target),
+                Container = (container as IPropertyGridCellInfo)?.Container,
+                CellType = PropertyGridCellType.Cell
             };
             
-            parentCellInfo?.Add(cellInfo);
-
-            CellInfoCache.Add(cellInfo);
-
-            var visibility = ViewModel.CheckVisibility(cellInfo, target);
-
-            return visibility == PropertyVisibility.AlwaysVisible;
+            container?.Add(cellInfo);
         }
         #endregion
 
@@ -575,7 +577,7 @@ namespace Avalonia.PropertyGrid.Controls
             propertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
             propertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
 
-            BuildPropertiesCellEdit(target, referencePath, ViewModel.AllProperties, null, propertiesGrid, null);
+            BuildPropertiesCellEdit(target, referencePath, ViewModel.AllProperties, null, propertiesGrid, CellInfoCache);
         }
         #endregion
 
@@ -592,7 +594,7 @@ namespace Avalonia.PropertyGrid.Controls
                 return;
             }
 
-            PropagateCellNameWidth(CellInfoCache.Infos, width);
+            PropagateCellNameWidth(CellInfoCache.Children, width);
 
             if (syncToTitle)
             {
@@ -628,7 +630,24 @@ namespace Avalonia.PropertyGrid.Controls
             }
         }
         #endregion
+
+        #region Visibilities
+        /// <summary>
+        /// Refreshes the visibilities.
+        /// </summary>
+        private void RefreshVisibilities()
+        {
+            RefreshVisibilities(CellInfoCache.Children);
+        }
+
+        private void RefreshVisibilities(IEnumerable<IPropertyGridCellInfo> infos)
+        {
+            foreach(var info in infos)
+            {
+                ViewModel.PropagateVisibility(info);
+            }
+        }
+        #endregion
     }
 
-    
 }
