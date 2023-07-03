@@ -70,7 +70,6 @@ namespace Avalonia.PropertyGrid.Controls
             {
                 BindingControl = control;
                 control.Margin = new Thickness(2,2);
-                control.HorizontalAlignment = Layout.HorizontalAlignment.Stretch;
 
                 mainBorder.Child = control;
 

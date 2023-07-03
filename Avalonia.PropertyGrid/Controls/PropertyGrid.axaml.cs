@@ -638,15 +638,25 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         private void RefreshVisibilities()
         {
-            RefreshVisibilities(CellInfoCache.Children);
+            FilterCells(ViewModel, FilterCategory.Default);
         }
 
-        private void RefreshVisibilities(IEnumerable<IPropertyGridCellInfo> infos)
+        /// <summary>
+        /// Filters the cells.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="category">The category.</param>
+        /// <returns>PropertyVisibility.</returns>
+        public PropertyVisibility FilterCells(IPropertyGridFilterContext context, FilterCategory category = FilterCategory.Default)
         {
-            foreach(var info in infos)
+            bool AtleastOneVisible = false;
+
+            foreach (var info in CellInfoCache.Children)
             {
-                ViewModel.PropagateVisibility(info);
+                AtleastOneVisible |= context.PropagateVisibility(info, category) == PropertyVisibility.AlwaysVisible;
             }
+
+            return AtleastOneVisible ? PropertyVisibility.AlwaysVisible : PropertyVisibility.HiddenByNoVisibleChidlren;
         }
         #endregion
     }

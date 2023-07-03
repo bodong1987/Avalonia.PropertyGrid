@@ -133,6 +133,9 @@ namespace Avalonia.PropertyGrid.Samples.Models
         [Category("Binding List")]
         public BindingList<PlatformID> enumList { get; set; } = new BindingList<PlatformID>() { PlatformID.Win32NT, PlatformID.Unix };
 
+        [Category("Binding List")]
+        public BindingList<Vector3> Vec3List { get; set; } = new BindingList<Vector3>() { new Vector3(1024.0f, 2048.0f, 4096.0f) };
+
         [Category("Date Time")]
         public DateTime dateTime { get; set; } = DateTime.Now;
 
@@ -166,6 +169,9 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
         [Category("Color")]
         public System.Drawing.Color Color2 { get; set; } = System.Drawing.Color.FromArgb(255, 122, 50, 177);
+
+        [Category("Color")]
+        public BindingList<System.Drawing.Color> ColorList { get; set; } = new BindingList<System.Drawing.Color>() { System.Drawing.Color.Pink, System.Drawing.Color.Purple };
 
         [DisplayName("Login User Data")]
         [TypeConverter(typeof(ExpandableObjectConverter))]

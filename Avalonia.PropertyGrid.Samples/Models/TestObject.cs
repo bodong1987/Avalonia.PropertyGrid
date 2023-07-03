@@ -93,6 +93,9 @@ namespace Avalonia.PropertyGrid.Samples.Models
         public BindingList<Vector3> Vec3List { get; set; } = new BindingList<Vector3>() { new Vector3(1024.0f, 2048.0f, 4096.0f) };
 
         [Category("BuiltIn")]
+        public BindingList<System.Drawing.Color> ColorList { get; set; } = new BindingList<System.Drawing.Color>() { System.Drawing.Color.Pink, System.Drawing.Color.Purple };
+
+        [Category("BuiltIn")]
         public CheckedList<string> CheckedListValue { get; set; } = new CheckedList<string>(new string[] { "bodong", "John", "David" }, new string[] { "bodong" });
 
         [Category("BuiltIn")]

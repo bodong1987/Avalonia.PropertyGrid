@@ -112,15 +112,14 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         }
 
         /// <summary>
-        /// Handles the property visibility.
+        /// Handles the propagate visibility.
         /// </summary>
         /// <param name="target">The target.</param>
         /// <param name="propertyDescriptor">The property descriptor.</param>
         /// <param name="control">The control.</param>
-        /// <param name="filterPattern">The filter pattern.</param>
-        /// <param name="categoryFilter">The category filter.</param>
-        /// <returns>PropertyVisibility.</returns>
-        public virtual PropertyVisibility? HandlePropertyVisibility(object target, PropertyDescriptor propertyDescriptor, Control control, IFilterPattern filterPattern, ICheckedMaskModel categoryFilter)
+        /// <param name="filterContext">The filter context.</param>
+        /// <returns>System.Nullable&lt;PropertyVisibility&gt;.</returns>
+        public virtual PropertyVisibility? HandlePropagateVisibility(object target, PropertyDescriptor propertyDescriptor, Control control, IPropertyGridFilterContext filterContext)
         {
             return null;
         }

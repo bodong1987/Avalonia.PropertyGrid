@@ -64,7 +64,7 @@ namespace Avalonia.PropertyGrid.ViewModels
     /// Implements the <see cref="ReactiveObject" />
     /// </summary>
     /// <seealso cref="ReactiveObject" />
-    internal class PropertyGridViewModel : ReactiveObject
+    internal class PropertyGridViewModel : ReactiveObject, IPropertyGridFilterContext
     {
         /// <summary>
         /// Gets or sets the filter pattern.
@@ -114,6 +114,12 @@ namespace Avalonia.PropertyGrid.ViewModels
             get => _CategoryFilter;
             set => this.RaiseAndSetIfChanged(ref _CategoryFilter, value);
         }
+
+        /// <summary>
+        /// Gets the fast filter pattern.
+        /// </summary>
+        /// <value>The fast filter pattern.</value>
+        public ICheckedMaskModel FastFilterPattern => CategoryFilter;
 
         /// <summary>
         /// Gets all properties.
@@ -186,42 +192,35 @@ namespace Avalonia.PropertyGrid.ViewModels
             return category;
         }
 
-        internal void PropagateVisibility(IPropertyGridCellInfo info)
+        /// <summary>
+        /// Propagates the visibility.
+        /// </summary>
+        /// <param name="info">The information.</param>
+        /// <param name="category">The category.</param>
+        public PropertyVisibility PropagateVisibility(IPropertyGridCellInfo info, FilterCategory category = FilterCategory.Default)
         {
             if (info.CellType == PropertyGridCellType.Category)
-            {
-                if (CategoryFilter != null && info.Category.IsNotNullOrEmpty() && !CategoryFilter.IsChecked(info.Category))
-                {
-                    info.IsVisible = false;
-                    return;
-                }
-
+            {                
                 bool AtleastOneVisible = false;
 
                 foreach (var child in info.Children)
                 {
-                    var v = CheckVisibility(child, child.Target);
+                    var v = PropagateVisibility(child, child.Target, category);
 
                     AtleastOneVisible |= (v == PropertyVisibility.AlwaysVisible);
-
-                    child.IsVisible = v == PropertyVisibility.AlwaysVisible;
                 }
 
                 info.IsVisible = AtleastOneVisible;
+
+                return AtleastOneVisible ? PropertyVisibility.AlwaysVisible : PropertyVisibility.HiddenByNoVisibleChidlren;
             }
             else
             {
-                info.IsVisible = CheckVisibility(info, info.Target) == PropertyVisibility.AlwaysVisible;
+                return PropagateVisibility(info, info.Target, category);
             }
         }
 
-        /// <summary>
-        /// Checks the visibility.
-        /// </summary>
-        /// <param name="cellInfo">The cell information.</param>
-        /// <param name="context">The context.</param>
-        /// <returns>PropertyVisibility.</returns>
-        internal PropertyVisibility CheckVisibility(IPropertyGridCellInfo cellInfo, object context)
+        PropertyVisibility PropagateVisibility(IPropertyGridCellInfo cellInfo, object context, FilterCategory category = FilterCategory.Default)
         {
             PropertyVisibility visibility = PropertyVisibility.AlwaysVisible;
 
@@ -233,39 +232,59 @@ namespace Avalonia.PropertyGrid.ViewModels
 
                 if (property != null)
                 {
-                    if (property.GetCustomAttribute<AbstractVisiblityConditionAttribute>() is AbstractVisiblityConditionAttribute attr)
+                    PropertyVisibility? childrenVisibilty = null;
+
+                    if (category.HasFlag(FilterCategory.Factory))
                     {
-                        if (!attr.CheckVisibility(context))
+                        childrenVisibilty = cellInfo.Factory?.HandlePropagateVisibility(context, cellInfo.Property, cellInfo.CellEdit, this);
+                    }
+
+                    if (category.HasFlag(FilterCategory.PropertyCondition))
+                    {
+                        if (property.GetCustomAttribute<AbstractVisiblityConditionAttribute>() is AbstractVisiblityConditionAttribute attr)
                         {
-                            visibility |= PropertyVisibility.HiddenByCondition;
+                            if (!attr.CheckVisibility(context))
+                            {
+                                visibility |= PropertyVisibility.HiddenByCondition;
+                            }
                         }
                     }
-
-                    if (!FilterPattern.Match(property, context))
+                    
+                    if(category.HasFlag(FilterCategory.Filter))
                     {
-                        visibility |= PropertyVisibility.HiddenByFilter;
-                    }
+                        if (!FilterPattern.Match(property, context))
+                        {
+                            if(childrenVisibilty == null || childrenVisibilty != PropertyVisibility.AlwaysVisible)
+                            {
+                                visibility |= PropertyVisibility.HiddenByFilter;
+                            }
+                            else
+                            {
+                                visibility = PropertyVisibility.AlwaysVisible;
+                            }
+                        }
+                    }                    
 
-                    if (CategoryFilter != null && cellInfo.Category.IsNotNullOrEmpty() && !CategoryFilter.IsChecked(cellInfo.Category))
+                    if(category.HasFlag(FilterCategory.Category))
                     {
-                        visibility |= PropertyVisibility.HiddenByCategoryFilter;
+                        if (CategoryFilter != null && cellInfo.Category.IsNotNullOrEmpty() && !CategoryFilter.IsChecked(cellInfo.Category))
+                        {
+                            visibility |= PropertyVisibility.HiddenByCategoryFilter;
+                        }
                     }
-
-                    var factoryVisibility = cellInfo.Factory?.HandlePropertyVisibility(context, cellInfo.Property, cellInfo.CellEdit, FilterPattern, CategoryFilter);
-
-                    if(factoryVisibility != null)
-                    {
-                        visibility |= (PropertyVisibility)factoryVisibility;
-                    }
+                                        
+                                    
                 }
             }
             else if(cellInfo.CellType == PropertyGridCellType.Category)
             {
                 foreach(var child in cellInfo.Children)
                 {
-                    visibility |= CheckVisibility(child, child.Target);
+                    visibility |= PropagateVisibility(child, child.Target, category);
                 }
             }
+
+            cellInfo.IsVisible = visibility == PropertyVisibility.AlwaysVisible;
 
             return visibility;
         }

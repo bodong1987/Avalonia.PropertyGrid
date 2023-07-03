@@ -1,6 +1,7 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.PropertyGrid.Model.Extensions;
+using Avalonia.PropertyGrid.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -85,6 +86,24 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             }
 
             return false;
+        }
+
+        public override PropertyVisibility? HandlePropagateVisibility(object target, PropertyDescriptor propertyDescriptor, Control control, IPropertyGridFilterContext filterContext)
+        {
+            if(!IsExpandableType(propertyDescriptor))
+            {
+                return null;
+            }
+
+            if (control is Border border && border.Child is PropertyGrid pg)
+            {
+                var category = FilterCategory.Default;
+                category &= ~FilterCategory.Category;
+
+                return pg.FilterCells(filterContext, category);
+            }
+
+            return null;
         }
     }
 }
