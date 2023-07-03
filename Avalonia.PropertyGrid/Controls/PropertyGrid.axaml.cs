@@ -128,6 +128,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         readonly PropertyGridBindingCache Bindings = new PropertyGridBindingCache();
 
+        readonly IExpandableObjectCache ExpandableObjectCache = new PropertyGridExpandableCache();
         #endregion
 
         /// <summary>
@@ -224,6 +225,24 @@ namespace Avalonia.PropertyGrid.Controls
         public ICellEditFactoryCollection GetCellEditFactoryCollection()
         {
             return Factories;
+        }
+
+        /// <summary>
+        /// Gets the expandable object cache.
+        /// </summary>
+        /// <returns>IExpandableObjectCache.</returns>
+        public IExpandableObjectCache GetExpandableObjectCache()
+        {
+            return ExpandableObjectCache;
+        }
+
+        /// <summary>
+        /// Clones the property grid.
+        /// </summary>
+        /// <returns>IPropertyGrid.</returns>
+        public IPropertyGrid ClonePropertyGrid()
+        {
+            return Activator.CreateInstance(GetType()) as IPropertyGrid;
         }
 
         #region Styled Properties Handler
@@ -360,6 +379,7 @@ namespace Avalonia.PropertyGrid.Controls
             propertiesGrid.RowDefinitions.Clear();
             propertiesGrid.Children.Clear();
             Bindings.Clear();
+            ExpandableObjectCache.Clear();
 
             if(target == null)
             {
@@ -370,6 +390,8 @@ namespace Avalonia.PropertyGrid.Controls
             
             try
             {
+                ExpandableObjectCache.Add(target);
+
                 referencePath.BeginScope(target.GetType().Name);
 
                 if (propertyGridShowStyle == PropertyGridShowStyle.Category)
@@ -468,24 +490,6 @@ namespace Avalonia.PropertyGrid.Controls
                 {
                     var value = property.GetValue(target);
 
-                    // if is expand object, expand again will cause overflow exception.
-                    if (value != null && !Bindings.IsBinding(value))
-                    {
-                        var attr = property.GetCustomAttribute<TypeConverterAttribute>();
-
-                        if (attr == null)
-                        {
-                            attr = property.PropertyType.GetCustomAttribute<TypeConverterAttribute>();
-                        }
-
-                        if (attr != null && attr.GetConverterType().IsChildOf<ExpandableObjectConverter>())
-                        {
-                            AtLeastOneVisible |= BuildExpandableObjectPropertyCellEdit(target, value, referencePath, property, expander, grid, parentBinding);
-
-                            continue;
-                        }
-                    }
-
                     AtLeastOneVisible |= BuildPropertyCellEdit(target, referencePath, property, expander, grid, parentBinding);
                 }
                 finally
@@ -495,82 +499,6 @@ namespace Avalonia.PropertyGrid.Controls
             }
 
             return AtLeastOneVisible;
-        }
-
-        /// <summary>
-        /// Builds the expandable object property cell edit.
-        /// </summary>
-        /// <param name="target">The target.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="referencePath">The reference path.</param>
-        /// <param name="propertyDescriptor">The property descriptor.</param>
-        /// <param name="expander">The expander.</param>
-        /// <param name="grid">The grid.</param>
-        /// <param name="parentBinding">The parent binding.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
-        private bool BuildExpandableObjectPropertyCellEdit(object target, object value, ReferencePath referencePath, PropertyDescriptor propertyDescriptor, Expander expander, Grid grid, IndirectPropertyBinding parentBinding)
-        {
-            Debug.Assert(value != null);
-
-            PropertyDescriptorBuilder builder = new PropertyDescriptorBuilder(value);
-
-            var properties = builder.GetProperties().Cast<PropertyDescriptor>().ToList().FindAll(x => x.IsBrowsable);
-
-            if (properties.Count == 0)
-            {
-                return false;
-            }
-
-            try
-            {
-                referencePath.BeginScope(value.GetType().Name);
-
-                grid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
-
-                Expander childExpander = new Expander();
-                childExpander.ExpandDirection = ExpandDirection.Down;
-                childExpander.Header = propertyDescriptor.DisplayName;
-                childExpander.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
-                childExpander.SetValue(Grid.ColumnSpanProperty, 2);
-                childExpander.IsExpanded = true;
-                childExpander.HorizontalAlignment = Layout.HorizontalAlignment.Stretch;
-                childExpander.HorizontalContentAlignment = Layout.HorizontalAlignment.Stretch;
-                childExpander.Margin = new Thickness(6,2,6,2);
-                childExpander.Padding = new Thickness(2);
-
-                Grid childGrid = new Grid();
-                childGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
-                childGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
-
-                childExpander.Content = childGrid;
-                grid.Children.Add(childExpander);
-
-                IndirectPropertyBinding binding = new IndirectPropertyBinding(
-                        referencePath.ToString(),
-                        propertyDescriptor,
-                        childExpander,
-                        target,
-                        referencePath.Count,
-                        parentBinding?.RootCategory
-                    );
-
-                Bindings.AddBinding(binding);
-
-                parentBinding?.AddBinding(binding);
-
-                binding.Visibility = ViewModel.CheckVisibility(binding.Property, binding.RootCategory, target);
-
-                BuildPropertiesCellEdit(value, referencePath, properties.Cast<PropertyDescriptor>(), childExpander, childGrid, binding);
-
-                binding.PropagateVisiblityState();
-            }
-            finally
-            {
-                referencePath.EndScope();
-            }
-            
-
-            return true;
         }
 
         /// <summary>
@@ -663,25 +591,17 @@ namespace Avalonia.PropertyGrid.Controls
 
         #region Process Widths
         /// <summary>
-        /// Synchronizes the width of the with maximum property name.
-        /// </summary>
-        private void SyncWithMaxPropertyNameWidth()
-        {
-            double maxLength = Bindings.CalcBindingNameMaxLength();
-
-            if(maxLength > 0)
-            {
-                SyncNameWidth(maxLength, true);
-            }            
-        }
-
-        /// <summary>
         /// Synchronizes the width of the name.
         /// </summary>
         /// <param name="width">The width.</param>
         /// <param name="syncToTitle">if set to <c>true</c> [synchronize to title].</param>
         private void SyncNameWidth(double width, bool syncToTitle)
         {
+            if(!ShowTitle)
+            {
+                return;
+            }
+
             Bindings.SyncWidth(width);
 
             if (syncToTitle)
