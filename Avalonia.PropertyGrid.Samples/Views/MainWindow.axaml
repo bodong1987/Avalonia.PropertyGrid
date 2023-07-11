@@ -57,7 +57,7 @@
 		
 		<TabItem Header="DataSync">
 			<ScrollViewer>
-				<Grid ColumnDefinitions="Auto,2,Auto">
+				<Grid ColumnDefinitions="1*,2,1*">
 					<GridSplitter Grid.Column="1"></GridSplitter>
 					<pgc:PropertyGrid Margin="2" SelectedObject="{Binding syncObject}"></pgc:PropertyGrid>
 					<pgc:PropertyGrid Margin="2" Grid.Column="2" SelectedObject="{Binding syncObject}"></pgc:PropertyGrid>
@@ -66,7 +66,7 @@
 		</TabItem>
 		<TabItem Header="MultiObjects">
 			<ScrollViewer>
-				<Grid ColumnDefinitions="Auto,2,Auto,2,Auto">
+				<Grid ColumnDefinitions="1*,2,1*,2,1*">
 					<GridSplitter Grid.Column="1"></GridSplitter>
 					<GridSplitter Grid.Column="3"></GridSplitter>
 					<StackPanel Orientation="Vertical">
@@ -98,7 +98,7 @@
 
         <TabItem Header="Extends">
             <ScrollViewer>
-				<Grid ColumnDefinitions="Auto,2,*">
+				<Grid ColumnDefinitions="1*,2,1*">
 					<GridSplitter Grid.Column="1"></GridSplitter>
 					<lv:TestExtendPropertyGrid Margin="2" SelectedObject="{Binding extendsObject}"></lv:TestExtendPropertyGrid>
 					<pgc:PropertyGrid Margin="2" Grid.Column="2" SelectedObject="{Binding extendsObject}"></pgc:PropertyGrid>

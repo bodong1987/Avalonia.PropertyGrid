@@ -1,6 +1,7 @@
 ﻿using Avalonia.PropertyGrid.Model.ComponentModel;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,5 +23,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
         public Vector3 vec3Object { get; set; } = new Vector3();
 
         public SVector3 vec3Struct { get; set; }
+
+        public BindingList<SVector3> vec3BindingList { get; set;} = new BindingList<SVector3>();
     }
 }
