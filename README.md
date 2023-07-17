@@ -316,6 +316,7 @@ Test all adjustable appearance properties.
 Here you can verify data changes and auto-reload functionality.
 
 ### MultiObjects
+![Multi-Views](./Docs/Images/Multi-Objects.png)
 You can verify the function of multi-object editing here. Note:   
   
 **some properties do not support editing multiple objects at the same time.**
@@ -349,13 +350,17 @@ namespace Avalonia.PropertyGrid.Samples.Models
         public Vector3 vec3Object { get; set; } = new Vector3();
 
         public SVector3 vec3Struct { get; set; }
+
+        public BindingList<SVector3> vec3BindingList { get; set;} = new BindingList<SVector3>();
     }
 }
 ```
 
 ### Dynamic Visibility
 ![DynamicVisibility](./Docs/Images/DynamicVisibility.png)
-Show Dynamic Visibility 
+Show Dynamic Visibility  
+If you check 'IsShowPath', the Path can be edited.  
+If you select Unix in Platform and input anything in UnixVersion, you can edit the extra properties.
 
 ### Self's Properties
 ![Self's Properties](./Docs/Images/self-properties.png)
