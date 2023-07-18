@@ -104,7 +104,7 @@ public IEnumerable<SimpleObject> multiObjects => new SimpleObject[] { multiObjec
 You can find usage examples directly in Samples
 
 ### Array Support
-PropertyGrid supports array editing. The array properties here can only be declared using BindingList. Setting [Editable(false)] can disable the creation and deletion functions, which is consistent with the behavior of Array. In addition, in order to support creation functions, **the template parameters of BindingList can only be non-pure virtual classes.**   
+PropertyGrid supports array editing. The array properties here can only be declared using BindingList. Setting **[Editable(false)]** can disable the creation and deletion functions, which is consistent with the behavior of Array. In addition, in order to support creation functions, **the template parameters of BindingList can only be non-pure virtual classes.**   
 **Struct properties are not supported.**
 
 ### Expand Class Properties
@@ -225,7 +225,12 @@ By setting Attribute, you can make certain Properties only displayed when condit
     }
 ```
 In this example, you can check IsShowPath first, then set the Platform to Unix, and then enter something in UnixVersion, and you will see the unixLoginInfo field.
-To do this, you only need to mark the property with a custom Attribute. If you need to implement your own rules, just implement your own rules from **AbstractVisiblityConditionAttribute**.  
+To do this, you only need to mark the property with a custom Attribute. If you need to implement your own rules, just implement your own rules from.  
+
+
+***The implementation behind this depends on IReactiveObject in Avalonia.PropertyGrid.Model, you can implement it yourself, or directly derive your Model from ReactiveObject.***
+
+**AbstractVisiblityConditionAttribute**.  
 One thing to pay special attention to is **that any property that needs to be used as a visibility condition for other properties needs to be marked with [ConditionTarget].**   
 The purpose is to let PropertyGrid know that when this property changes, it needs to notify the upper layer to refresh the visibility information.
 
@@ -355,6 +360,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
     }
 }
 ```
+More details can be seen in the file TestExtendPropertyGrid.cs.  
 
 ### Dynamic Visibility
 ![DynamicVisibility](./Docs/Images/DynamicVisibility.png)

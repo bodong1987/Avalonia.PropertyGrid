@@ -51,6 +51,7 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel
     public class ReactiveObject : MiniReactiveObject
     {
         #region Properties        
+        [NonSerialized]
         private Stack<string> ProcessStack = new Stack<string>();
         #endregion
 
@@ -65,6 +66,7 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel
             AutoCollectDependsInfo();
         }
 
+        [NonSerialized]
         private static Dictionary<System.Type, Dictionary<string, List<string>>> MetaCaches = new Dictionary<Type, Dictionary<string, List<string>>>();
 
         /// <summary>
