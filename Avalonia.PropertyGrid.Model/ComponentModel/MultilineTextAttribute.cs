@@ -1,0 +1,29 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Avalonia.PropertyGrid.Model.ComponentModel
+{
+    /// <summary>
+    /// Class MultilineTextAttribute.
+    /// Implements the <see cref="Attribute" />
+    /// </summary>
+    /// <seealso cref="Attribute" />
+    [AttributeUsage(AttributeTargets.Property|AttributeTargets.Field, AllowMultiple = false)]
+    public class MultilineTextAttribute : Attribute
+    {
+        /// <summary>
+        /// The is multiline
+        /// </summary>
+        public readonly bool IsMultiline;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MultilineTextAttribute"/> class.
+        /// </summary>
+        /// <param name="isMultiline">if set to <c>true</c> [is multiline].</param>
+        public MultilineTextAttribute(bool isMultiline = true)
+        {
+            IsMultiline = isMultiline;
+        }
+    }
+}

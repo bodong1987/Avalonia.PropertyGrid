@@ -82,7 +82,16 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 if (propertyDescriptor.GetCustomAttribute<PasswordPropertyTextAttribute>() is PasswordPropertyTextAttribute ppt && ppt.Password)
                 {
                     control.PasswordChar = '*';
-                }                
+                }
+
+                MultilineTextAttribute multilineAttr = propertyDescriptor.GetCustomAttribute<MultilineTextAttribute>();
+
+                if(multilineAttr != null && multilineAttr.IsMultiline)
+                {
+                    control.TextWrapping = Media.TextWrapping.Wrap;
+                    control.AcceptsReturn = true;
+                    control.AcceptsTab = true;
+                }
 
                 control.PropertyChanged += (s, e) =>
                 {

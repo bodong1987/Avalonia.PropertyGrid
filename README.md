@@ -42,6 +42,7 @@ but you need to inherit your class from Avalonia.PropertyGrid.Model.ComponentMod
 ```
 Avalonia.PropertyGrid.Model.ComponentModel.FloatPrecisionAttribute  
 Avalonia.PropertyGrid.Model.ComponentModel.IntegerIncrementAttribute
+Avalonia.PropertyGrid.Model.ComponentModel.WatermarkAttribute
 Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations.DependsOnPropertyAttribute
 Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations.FileNameValidationAttribute
 Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations.PathBrowsableAttribute
