@@ -22,101 +22,125 @@
         <StyleInclude Source="/Views/Vector3View.axaml"></StyleInclude>
     </Window.Styles>
 
-	<TabControl TabStripPlacement="Left">
-		<TabItem Header="Basic">
-			<ScrollViewer>
-				<pgc:PropertyGrid Margin="4" SelectedObject="{Binding simpleObject}"></pgc:PropertyGrid>	
-			</ScrollViewer>			
-		</TabItem>
+    <Grid RowDefinitions="*, Auto">
+        <TabControl TabStripPlacement="Left">
+            <TabItem Header="Basic">
+                <ScrollViewer>
+                    <pgc:PropertyGrid Margin="4" SelectedObject="{Binding simpleObject}"></pgc:PropertyGrid>
+                </ScrollViewer>
+            </TabItem>
 
-		<TabItem Header="Views">
-			<Grid RowDefinitions="*,Auto">
-				<ScrollViewer>
-					<pgc:PropertyGrid
-						Margin="2"
-						SelectedObject="{Binding testObject}"
-						AllowFilter="{Binding AllowFilter}"
-						ShowStyle="{Binding ShowStyle, Mode=TwoWay}"
-                        ShowTitle="{Binding IsShowTitle, Mode=TwoWay}"
-                        AllowQuickFilter="{Binding AllowQuickFilter, Mode=TwoWay}"
+            <TabItem Header="Views">
+                <Grid RowDefinitions="*,Auto">
+                    <ScrollViewer>
+                        <pgc:PropertyGrid
+                            Margin="2"
+                            SelectedObject="{Binding testObject}"
+                            AllowFilter="{Binding AllowFilter}"
+                            ShowStyle="{Binding ShowStyle, Mode=TwoWay}"
+                            ShowTitle="{Binding IsShowTitle, Mode=TwoWay}"
+                            AllowQuickFilter="{Binding AllowQuickFilter, Mode=TwoWay}"
                         >
-					</pgc:PropertyGrid>
-				</ScrollViewer>
-				<StackPanel Orientation="Horizontal" Grid.Row="1">
-					<TextBlock VerticalAlignment="Center" Margin="4">Show Category:</TextBlock>
-					<ToggleSwitch IsChecked="{Binding IsShowCategory}" Margin="4"></ToggleSwitch>
-					<TextBlock VerticalAlignment="Center" Margin="4">Allow Filter:</TextBlock>
-					<ToggleSwitch IsChecked="{Binding AllowFilter}" Margin="4"></ToggleSwitch>
-                    <TextBlock VerticalAlignment="Center" Margin="4">Allow Quick Filter:</TextBlock>
-                    <ToggleSwitch IsChecked="{Binding AllowQuickFilter}" Margin="4"></ToggleSwitch>
-                    <TextBlock VerticalAlignment="Center" Margin="4">ShowTitle:</TextBlock>
-                    <ToggleSwitch IsChecked="{Binding IsShowTitle}" Margin="4"></ToggleSwitch>
-				</StackPanel>
-			</Grid>
-		</TabItem>
-		
-		<TabItem Header="DataSync">
-			<ScrollViewer>
-				<Grid ColumnDefinitions="1*,2,1*">
-					<GridSplitter Grid.Column="1"></GridSplitter>
-					<pgc:PropertyGrid Margin="2" SelectedObject="{Binding syncObject}"></pgc:PropertyGrid>
-					<pgc:PropertyGrid Margin="2" Grid.Column="2" SelectedObject="{Binding syncObject}"></pgc:PropertyGrid>
-				</Grid>
-			</ScrollViewer>
-		</TabItem>
-		<TabItem Header="MultiObjects">
-			<ScrollViewer>
-				<Grid ColumnDefinitions="1*,2,1*,2,1*">
-					<GridSplitter Grid.Column="1"></GridSplitter>
-					<GridSplitter Grid.Column="3"></GridSplitter>
-					<StackPanel Orientation="Vertical">
-						<TextBlock>MultiObjects's Properties</TextBlock>
-						<pgc:PropertyGrid x:Name="propertyGrid_MultipleObjects" Margin="2" SelectedObject="{Binding multiObjects}"></pgc:PropertyGrid>
-					</StackPanel>
-					<StackPanel Orientation="Vertical" Grid.Column="2">
-						<TextBlock>First Object's Properties</TextBlock>
-						<pgc:PropertyGrid x:Name="propertyGrid_MultipleObjects0" Margin="2" SelectedObject="{Binding multiObject0}"></pgc:PropertyGrid>
-					</StackPanel>
-					<StackPanel Orientation="Vertical" Grid.Column="4">
-						<TextBlock>Second Object's Properties</TextBlock>
-						<pgc:PropertyGrid x:Name="propertyGrid_MultipleObjects1" Margin="2" SelectedObject="{Binding multiObject1}"></pgc:PropertyGrid>
-					</StackPanel>
-				</Grid>
-			</ScrollViewer>			
-		</TabItem>
-		<TabItem Header="CustomObject">
-			<ScrollViewer>
-				<pgc:PropertyGrid Margin="4" SelectedObject="{Binding customOptions}"></pgc:PropertyGrid>
-			</ScrollViewer>
-		</TabItem>
+                        </pgc:PropertyGrid>
+                    </ScrollViewer>
+                    <StackPanel Orientation="Horizontal" Grid.Row="1">
+                        <TextBlock VerticalAlignment="Center" Margin="4">Show Category:</TextBlock>
+                        <ToggleSwitch IsChecked="{Binding IsShowCategory}" Margin="4"></ToggleSwitch>
+                        <TextBlock VerticalAlignment="Center" Margin="4">Allow Filter:</TextBlock>
+                        <ToggleSwitch IsChecked="{Binding AllowFilter}" Margin="4"></ToggleSwitch>
+                        <TextBlock VerticalAlignment="Center" Margin="4">Allow Quick Filter:</TextBlock>
+                        <ToggleSwitch IsChecked="{Binding AllowQuickFilter}" Margin="4"></ToggleSwitch>
+                        <TextBlock VerticalAlignment="Center" Margin="4">ShowTitle:</TextBlock>
+                        <ToggleSwitch IsChecked="{Binding IsShowTitle}" Margin="4"></ToggleSwitch>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
 
-		<TabItem Header="CustomCellEdit">
-			<ScrollViewer>
-				<lv:ToggleSwitchExtensionPropertyGrid Margin="4" SelectedObject="{Binding booleanExtension}"></lv:ToggleSwitchExtensionPropertyGrid>
-			</ScrollViewer>
-		</TabItem>
+            <TabItem Header="DataSync">
+                <ScrollViewer>
+                    <Grid ColumnDefinitions="1*,2,1*">
+                        <GridSplitter Grid.Column="1"></GridSplitter>
+                        <pgc:PropertyGrid Margin="2" SelectedObject="{Binding syncObject}"></pgc:PropertyGrid>
+                        <pgc:PropertyGrid Margin="2" Grid.Column="2" SelectedObject="{Binding syncObject}"></pgc:PropertyGrid>
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Header="MultiObjects">
+                <ScrollViewer>
+                    <Grid ColumnDefinitions="1*,2,1*,2,1*">
+                        <GridSplitter Grid.Column="1"></GridSplitter>
+                        <GridSplitter Grid.Column="3"></GridSplitter>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock>MultiObjects's Properties</TextBlock>
+                            <pgc:PropertyGrid x:Name="propertyGrid_MultipleObjects" Margin="2" SelectedObject="{Binding multiObjects}"></pgc:PropertyGrid>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Grid.Column="2">
+                            <TextBlock>First Object's Properties</TextBlock>
+                            <pgc:PropertyGrid x:Name="propertyGrid_MultipleObjects0" Margin="2" SelectedObject="{Binding multiObject0}"></pgc:PropertyGrid>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Grid.Column="4">
+                            <TextBlock>Second Object's Properties</TextBlock>
+                            <pgc:PropertyGrid x:Name="propertyGrid_MultipleObjects1" Margin="2" SelectedObject="{Binding multiObject1}"></pgc:PropertyGrid>
+                        </StackPanel>
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Header="CustomObject">
+                <ScrollViewer>
+                    <pgc:PropertyGrid Margin="4" SelectedObject="{Binding customOptions}"></pgc:PropertyGrid>
+                </ScrollViewer>
+            </TabItem>
 
-        <TabItem Header="Extends">
-            <ScrollViewer>
-				<Grid ColumnDefinitions="1*,2,1*">
-					<GridSplitter Grid.Column="1"></GridSplitter>
-					<lv:TestExtendPropertyGrid Margin="2" SelectedObject="{Binding extendsObject}"></lv:TestExtendPropertyGrid>
-					<pgc:PropertyGrid Margin="2" Grid.Column="2" SelectedObject="{Binding extendsObject}"></pgc:PropertyGrid>
-				</Grid>
-            </ScrollViewer>
-        </TabItem>
+            <TabItem Header="CustomCellEdit">
+                <ScrollViewer>
+                    <lv:ToggleSwitchExtensionPropertyGrid Margin="4" SelectedObject="{Binding booleanExtension}"></lv:ToggleSwitchExtensionPropertyGrid>
+                </ScrollViewer>
+            </TabItem>
 
-		<TabItem Header="Dynamic Visibility">
-			<ScrollViewer>
-				<pgc:PropertyGrid Margin="4" SelectedObject="{Binding dynamicVisiblity}"></pgc:PropertyGrid>
-			</ScrollViewer>
-		</TabItem>
+            <TabItem Header="Extends">
+                <ScrollViewer>
+                    <Grid ColumnDefinitions="1*,2,1*">
+                        <GridSplitter Grid.Column="1"></GridSplitter>
+                        <lv:TestExtendPropertyGrid Margin="2" SelectedObject="{Binding extendsObject}"></lv:TestExtendPropertyGrid>
+                        <pgc:PropertyGrid Margin="2" Grid.Column="2" SelectedObject="{Binding extendsObject}"></pgc:PropertyGrid>
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
 
-		<TabItem Header="Self's Properties">
-			<ScrollViewer>
-				<pgc:PropertyGrid x:Name="propertyGrid_ShowControlProperties" Margin="4">					
-				</pgc:PropertyGrid>
-			</ScrollViewer>
-		</TabItem>
-	</TabControl>
+            <TabItem Header="Dynamic Visibility">
+                <ScrollViewer>
+                    <pgc:PropertyGrid Margin="4" SelectedObject="{Binding dynamicVisiblity}"></pgc:PropertyGrid>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="Self's Properties">
+                <ScrollViewer>
+                    <pgc:PropertyGrid x:Name="propertyGrid_ShowControlProperties" Margin="4">
+                    </pgc:PropertyGrid>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right">
+            <TextBlock Text="Theme" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="2" ></TextBlock>
+            <ComboBox x:Name="ThemeBox" Width="125" Padding="4" SelectedIndex="0">
+                <ComboBox.Items>
+                    <lv:ThemeType>Fluent</lv:ThemeType>
+                    <lv:ThemeType>Simple</lv:ThemeType>
+                </ComboBox.Items>
+            </ComboBox>            
+            <TextBlock Text="ThemeVariants" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="2"></TextBlock>
+            <ComboBox x:Name="ThemeVariantsBox" 
+                      Width="125" 
+                      Padding="4"
+                      DisplayMemberBinding="{Binding Key, x:DataType=ThemeVariant}"
+                      SelectedIndex="0">
+                <ComboBox.Items>
+                    <ThemeVariant>Default</ThemeVariant>
+                    <ThemeVariant>Light</ThemeVariant>
+                    <ThemeVariant>Dark</ThemeVariant>
+                </ComboBox.Items>
+            </ComboBox>
+        </StackPanel>
+    </Grid>
+
 </Window>
