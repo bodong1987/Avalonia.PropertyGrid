@@ -32,6 +32,7 @@
 						  Command="{TemplateBinding InsertCommand}"
 						  ToolTip.Tip="{ll:Localize InsertNewElement}"
 						  IsVisible="{Binding IsEditable}"
+						  FontSize="18"
 						  >+</Button>
 				  <Button x:Name="RemoveButton"
 						  Grid.Column="3"
@@ -44,6 +45,7 @@
 						  Command="{TemplateBinding RemoveCommand}"
 						  ToolTip.Tip="{ll:Localize RemoveElement}"
 						  IsVisible="{Binding IsEditable}"
+						  FontSize="18"
 						  >-</Button>
 			  </Grid>
 		  </DataValidationErrors>

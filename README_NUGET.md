@@ -1,13 +1,13 @@
 ﻿# Avalonia.PropertyGrid
 This is a PropertyGrid implementation for Avalonia, you can use it in Avalonia Applications.  
 Its main features are:  
-* Support automatically analyze object properties and display, like DevExpress's PropertyGridControl of WinForms
+* Support automatic analysis of class's Properties like DevExpress's PropertyGridControl and display and edit
 * Support simultaneous editing of multiple objects in one PropertyGrid
-* Support ICustomTypeDescriptor
-* Support BindingList/Array editing, support dynamic addition and deletion
+* Support Supports custom types that implement the ICustomTypeDescriptor interface
+* Support array editing, support for creating, inserting, deleting and clearing in the control
 * Support data verification
-* Support dynamic visibility
-* Support path selection
+* Support Support for automatically adjusting the visibility of properties based on conditions
+* Support path picking
 * Support two display modes: category-based and alphabetical sorting  
 * Support text filtering, regular expression filtering, and supports ignoring case settings  
 * Support fast filtering by Category
@@ -15,6 +15,6 @@ Its main features are:
 * Support automatic expansion of sub-objects
 * Support adjust the width of the property name and property value by drag the title
 * Support localization
-* Supprot Custom Cell Edit
+* Support custom property cell editors
 
 Check more information here: https://github.com/bodong1987/Avalonia.PropertyGrid

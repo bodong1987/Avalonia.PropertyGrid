@@ -1,13 +1,13 @@
 ﻿# Avalonia.PropertyGrid
 This is a PropertyGrid implementation for Avalonia, you can use it in Avalonia Applications.  
 Its main features are:  
-* Support automatically analyze object properties and display, like DevExpress 's PropertyGrid of WinForms
+* Support automatic analysis of class's Properties like DevExpress's PropertyGridControl and display and edit
 * Support simultaneous editing of multiple objects in one PropertyGrid
-* Support ICustomTypeDescriptor
-* Support BindingList/Array editing, support dynamic addition and deletion. 
-* Support data verification.
-* Support dynamic visibility
-* Support path selection
+* Support Supports custom types that implement the ICustomTypeDescriptor interface
+* Support array editing, support for creating, inserting, deleting and clearing in the control
+* Support data verification
+* Support Support for automatically adjusting the visibility of properties based on conditions
+* Support path picking
 * Support two display modes: category-based and alphabetical sorting  
 * Support text filtering, regular expression filtering, and supports ignoring case settings  
 * Support fast filtering by Category
@@ -15,7 +15,7 @@ Its main features are:
 * Support automatic expansion of sub-objects
 * Support adjust the width of the property name and property value by drag the title
 * Support localization
-* Supprot Custom Cell Edit
+* Support custom property cell editors
 
 ## How To Use
 Use the source code of this project directly or add packages from nuget(https://www.nuget.org/packages/bodong.Avalonia.PropertyGrid).  
@@ -243,6 +243,12 @@ The purpose is to let PropertyGrid know that when this property changes, it need
 Implement your Avalonia.PropertyGrid.Model.Services.ILocalizationService class, and register its instance by :
 ```C#
     PropertyGrid.LocalizationService.AddExtraService(new YourLocalizationService());
+```
+If you want to provide the corresponding language pack for the built-in text, please add the corresponding file to Avalonia.PropertyGrid/Assets/Localizations, and name it with the CultureInfo.Name of the language. for example:  
+```
+    en-US.json
+    ru-RU.json
+    zh-CN.json
 ```
 
 ### Custom Cell Edit

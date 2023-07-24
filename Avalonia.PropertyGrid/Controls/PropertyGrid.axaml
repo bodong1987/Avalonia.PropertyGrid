@@ -25,7 +25,7 @@
 			  ColumnDefinitions="*,Auto, Auto, Auto"
 			  Margin="2"
 		  >
-			<TextBox x:Name="searchTextBox" Watermark="{ll:Localize Search}" Grid.Column="0" Text="{Binding $parent[lc:PropertyGrid].ViewModel.FilterPattern.FilterText}" ></TextBox>
+			<TextBox x:Name="searchTextBox" VerticalAlignment="Center" VerticalContentAlignment="Center" Watermark="{ll:Localize Search}" Grid.Column="0" Text="{Binding $parent[lc:PropertyGrid].ViewModel.FilterPattern.FilterText}" ></TextBox>
 			<ToggleButton Margin="2" Content="C" Grid.Column="1" IsChecked="{Binding $parent[lc:PropertyGrid].ViewModel.ShowCategory}" ToolTip.Tip="{ll:Localize ShowGroup}"></ToggleButton>
 			<ToggleButton Margin="2" Content="R" Grid.Column="2" IsChecked="{Binding $parent[lc:PropertyGrid].ViewModel.FilterPattern.UseRegex}" ToolTip.Tip="{ll:Localize UseRegex}"></ToggleButton>
 			<ToggleButton Margin="2" Content="K" Grid.Column="3" IsChecked="{Binding $parent[lc:PropertyGrid].ViewModel.FilterPattern.IgnoreCase}" ToolTip.Tip="{ll:Localize IgnoreCase}"></ToggleButton>

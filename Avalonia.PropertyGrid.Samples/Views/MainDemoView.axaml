@@ -89,9 +89,14 @@
             <TabItem Header="Extends">
                 <ScrollViewer>
                     <Grid ColumnDefinitions="1*,2,1*">
-                        <GridSplitter Grid.Column="1"></GridSplitter>
-                        <lv:TestExtendPropertyGrid Margin="2" SelectedObject="{Binding extendsObject}"></lv:TestExtendPropertyGrid>
-                        <pgc:PropertyGrid Margin="2" Grid.Column="2" SelectedObject="{Binding extendsObject}"></pgc:PropertyGrid>
+						<Expander IsExpanded="True" Margin="2" Grid.Column="0" Header="Native" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+							<pgc:PropertyGrid SelectedObject="{Binding extendsObject}"></pgc:PropertyGrid>
+						</Expander>
+						<GridSplitter Grid.Column="1"></GridSplitter>
+						<Expander IsExpanded="True" Header="Extends" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+							<lv:TestExtendPropertyGrid Margin="2" SelectedObject="{Binding extendsObject}"></lv:TestExtendPropertyGrid>
+						</Expander>
+						
                     </Grid>
                 </ScrollViewer>
             </TabItem>

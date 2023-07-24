@@ -30,6 +30,7 @@
 							  Command="{TemplateBinding NewElementCommand}"
 							  IsVisible="{Binding Model.IsEditable, RelativeSource={RelativeSource TemplatedParent}}"
 							  ToolTip.Tip="{ll:Localize AppendNewElement}"
+							  FontSize="18"
 							  >N</Button>
 					  <Button x:Name="ClearElements" 
 							  Grid.Column="3" 
@@ -42,6 +43,7 @@
 							  Command="{TemplateBinding ClearElementsCommand}"
 							  IsVisible="{Binding Model.IsEditable, RelativeSource={RelativeSource TemplatedParent}}"
 							  ToolTip.Tip="{ll:Localize ClearAllElements}"
+							  FontSize="18"
 							  >U</Button>
 					  <ItemsControl x:Name="PART_ItemsPresenter"
 									ItemsSource="{Binding Model.Elements, RelativeSource={RelativeSource TemplatedParent}}"
