@@ -40,6 +40,11 @@
     <Compile Include="..\Avalonia.PropertyGrid.Samples\Views\Vector3View.axaml.cs" Link="Views\Vector3View.axaml.cs" />
   </ItemGroup>
 
+  
+  <ItemGroup>
+    <AvaloniaResource Include="..\Avalonia.PropertyGrid.Samples\Assets\avalonia-banner.png" Link="Assets\avalonia-banner.png" />
+  </ItemGroup>
+
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.Controls.ColorPicker" Version="11.0.0" />

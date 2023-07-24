@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Avalonia.PropertyGrid.Model.ComponentModel;
 using Avalonia.PropertyGrid.Model.Extensions;
 using Avalonia.Media;
+using Avalonia.Platform;
 
 namespace Avalonia.PropertyGrid.Samples.Models
 {
@@ -20,12 +21,20 @@ namespace Avalonia.PropertyGrid.Samples.Models
         public SimpleObject(string description)
         {
             Description = description;
+
+            using (var stream = AssetLoader.Open(new Uri($"avares://{GetType().Assembly.GetName().Name}/Assets/avalonia-banner.png")))
+            {
+                AvaloniaBanner = new Avalonia.Media.Imaging.Bitmap(stream);
+            }
         }
 
         public override string ToString()
         {
             return $"({GetHashCode()}){Description}";
         }
+
+        [Category("Imaging")]
+        public Avalonia.Media.IImage AvaloniaBanner { get; set; }
 
         [Category("String")]
         [DisplayName("Target Name")]
