@@ -15,7 +15,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
     internal class NumericCellEditFactory : AbstractCellEditFactory
     {
-        public override int ImportPriority => base.ImportPriority - 1000000;
+        public override int ImportPriority => base.ImportPriority - 10000000;
 
         /// <summary>
         /// Handles the new property.

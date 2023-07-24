@@ -60,7 +60,9 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return false;
             }
 
-            if(control is Image imageControl)
+            ValidateProperty(control, propertyDescriptor, target);
+
+            if (control is Image imageControl)
             {
                 object imageData = propertyDescriptor.GetValue(target);
 

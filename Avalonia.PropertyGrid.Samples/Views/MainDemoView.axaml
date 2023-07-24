@@ -24,7 +24,7 @@
                     <ScrollViewer>
                         <pgc:PropertyGrid
                             Margin="2"
-                            SelectedObject="{Binding testObject}"
+                            SelectedObject="{Binding simpleObject}"
                             AllowFilter="{Binding AllowFilter}"
                             ShowStyle="{Binding ShowStyle, Mode=TwoWay}"
                             ShowTitle="{Binding IsShowTitle, Mode=TwoWay}"

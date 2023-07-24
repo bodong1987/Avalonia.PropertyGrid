@@ -127,6 +127,10 @@ namespace Avalonia.PropertyGrid.Samples.Models
         [Category("Numeric")]
         public Int64 i64Value { get; set; } = 1000000000;
 
+        [Category("Numeric")]
+        [ProgressAttribute]
+        public double progressValue { get; set; } = 47;
+
         [Category("Binding List")]
         public BindingList<string> stringList { get; set; } = new BindingList<string>() { "bodong", "china" };
 
