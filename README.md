@@ -44,6 +44,7 @@ Avalonia.PropertyGrid.Model.ComponentModel.FloatPrecisionAttribute
 Avalonia.PropertyGrid.Model.ComponentModel.IntegerIncrementAttribute
 Avalonia.PropertyGrid.Model.ComponentModel.WatermarkAttribute
 Avalonia.PropertyGrid.Model.ComponentModel.MultilineTextAttribute
+Avalonia.PropertyGrid.Model.ComponentModel.ProgressAttribute
 Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations.DependsOnPropertyAttribute
 Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations.FileNameValidationAttribute
 Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations.PathBrowsableAttribute
@@ -69,6 +70,7 @@ Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations.VisibilityPropertyCon
     System.DateTime/System.DateTimeOffset/System.DateTime?/System.DateTimeOffset?  
     System.TimeSpan/System.TimeSpan?      
     System.Drawing.Color/Avalonia.Media.Color  
+    System.Drawing.Image/Avalonia.Media.IImage
     Avalonia.Media.FontFamily      
     Avalonia.PropertyGrid.Model.Collections.ICheckedList  
     Avalonia.PropertyGrid.Model.Collections.ISelectableList  
@@ -376,5 +378,5 @@ If you select Unix in Platform and input anything in UnixVersion, you can edit t
 Show PropertyGrid's properties.  
 
 ## Avalonia.PropertyGrid.NugetSamples
-This example shows how to use PropertyGrid through the Nuget package. Its content is similar to the Sample that directly uses the source code, and it can also be used as a case for learning how to use it.  
+This example shows how to use PropertyGrid through the Nuget package. 
 
