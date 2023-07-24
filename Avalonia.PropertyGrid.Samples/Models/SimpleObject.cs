@@ -131,27 +131,33 @@ namespace Avalonia.PropertyGrid.Samples.Models
         [ProgressAttribute]
         public double progressValue { get; set; } = 47;
 
-        [Category("Binding List")]
+        [Category("Array")]
         public BindingList<string> stringList { get; set; } = new BindingList<string>() { "bodong", "china" };
 
-        [Category("Binding List")]
+        [Category("Array")]
         [DisplayName("Not Editable")]
         [Editable(false)]
         public BindingList<string> stringListNotEditable { get; set; } = new BindingList<string>() { "bodong", "china" };
 
-        [Category("Binding List")]
+        [Category("Array")]
         [DisplayName("Readonly List")]
         [ReadOnly(true)]
         public BindingList<string> stringListReadonly { get; set; } = new BindingList<string>() { "bodong", "china" };
 
-        [Category("Binding List")]
+        [Category("Array")]
         public BindingList<Boolean> boolList { get; set; } = new BindingList<bool> { true, false };
 
-        [Category("Binding List")]
+        [Category("Array")]
         public BindingList<PlatformID> enumList { get; set; } = new BindingList<PlatformID>() { PlatformID.Win32NT, PlatformID.Unix };
 
-        [Category("Binding List")]
+        [Category("Array")]
         public BindingList<Vector3> Vec3List { get; set; } = new BindingList<Vector3>() { new Vector3(1024.0f, 2048.0f, 4096.0f) };
+
+        [Category("Checked List")]
+        public CheckedList<string> CheckedListString { get; set; } = new CheckedList<string>(new string[] { "bodong", "John", "David" }, new string[] { "bodong" });
+
+        [Category("Checked List")]
+        public CheckedList<int> CheckedListInt { get; set; } = new CheckedList<int>(new int[] { 1024, 2048, 4096, 8192 }, new int[] { 1024, 8192 });
 
         [Category("Date Time")]
         public DateTime dateTime { get; set; } = DateTime.Now;
@@ -179,6 +185,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
         [ReadOnly(true)]
         public TimeSpan timeReadonly { get; set; } = DateTime.Now.TimeOfDay;
 
+        [Category("Expandable")]
         public Vector3 vec3 { get; set; } = new Vector3(1, 2, 3);
 
         [Category("Color")]
@@ -192,7 +199,11 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
         [DisplayName("Login User Data")]
         [TypeConverter(typeof(ExpandableObjectConverter))]
+        [Category("Expandable")]
         public LoginInfo loginInfo { get; set; } = new LoginInfo();
+
+        [Category("Font")]
+        public Avalonia.Media.FontFamily FontFamily { get; set; } = new FontFamily("Courier New");
     }
 
     [Flags]
