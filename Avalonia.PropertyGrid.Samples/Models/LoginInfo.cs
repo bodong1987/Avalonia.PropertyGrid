@@ -20,7 +20,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
         public string Password { get; set; }
 
         [MultilineText(true)]
-        public string HelpText { get; set; } = "This is multiline Text\nTry it.";
+        public string HelpText { get; set; } = "This is multiline Text\nTry edit me.";
 
         public PlatformID ServerType { get; set; } = PlatformID.Unix;
 

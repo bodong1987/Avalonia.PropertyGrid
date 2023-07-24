@@ -19,6 +19,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.PropertyGrid.Sampl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.PropertyGrid.Samples.Desktop", "Avalonia.PropertyGrid.Samples.Desktop\Avalonia.PropertyGrid.Samples.Desktop.csproj", "{EE298801-1D50-4457-9FEA-B17F02318F22}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.PropertyGrid.NugetSamples", "Avalonia.PropertyGrid.NugetSamples\Avalonia.PropertyGrid.NugetSamples.csproj", "{16BA4F62-EA85-49D4-BDDE-A609A50D5CDD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.PropertyGrid.NugetSamples.Desktop", "Avalonia.PropertyGrid.NugetSamples.Desktop\Avalonia.PropertyGrid.NugetSamples.Desktop.csproj", "{60C74EF8-9E39-4268-9F33-20332D919C1B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{EE298801-1D50-4457-9FEA-B17F02318F22}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE298801-1D50-4457-9FEA-B17F02318F22}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE298801-1D50-4457-9FEA-B17F02318F22}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16BA4F62-EA85-49D4-BDDE-A609A50D5CDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16BA4F62-EA85-49D4-BDDE-A609A50D5CDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16BA4F62-EA85-49D4-BDDE-A609A50D5CDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16BA4F62-EA85-49D4-BDDE-A609A50D5CDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60C74EF8-9E39-4268-9F33-20332D919C1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60C74EF8-9E39-4268-9F33-20332D919C1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60C74EF8-9E39-4268-9F33-20332D919C1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60C74EF8-9E39-4268-9F33-20332D919C1B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +67,8 @@ Global
 		{4EE1842A-F3F7-4E8A-9278-B1F1A96D627C} = {37180D91-5EA1-457A-9907-D4304889EB39}
 		{FF770310-EBD8-4B95-B31D-CFD373B08FA1} = {27094F4D-5BF1-4940-9726-D583AC395C69}
 		{EE298801-1D50-4457-9FEA-B17F02318F22} = {27094F4D-5BF1-4940-9726-D583AC395C69}
+		{16BA4F62-EA85-49D4-BDDE-A609A50D5CDD} = {27094F4D-5BF1-4940-9726-D583AC395C69}
+		{60C74EF8-9E39-4268-9F33-20332D919C1B} = {27094F4D-5BF1-4940-9726-D583AC395C69}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {17C0E5EE-D41B-4A3A-A626-4CF865CC6D71}

@@ -43,6 +43,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
         [Category("String")]
         [PasswordPropertyText(true)]
+        [Watermark("Input your parassword")]
         public string Password { get; set; }
 
         [Category("Boolean")]

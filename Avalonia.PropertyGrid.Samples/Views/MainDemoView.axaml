@@ -12,7 +12,7 @@
     </UserControl.Styles>
 
     <Grid RowDefinitions="*, Auto">
-        <TabControl TabStripPlacement="Left">
+        <TabControl TabStripPlacement="Left" Grid.Row="0" Padding="4">
             <TabItem Header="Basic">
                 <ScrollViewer>
                     <pgc:PropertyGrid Margin="4" SelectedObject="{Binding simpleObject}"></pgc:PropertyGrid>
@@ -109,7 +109,7 @@
                 </ScrollViewer>
             </TabItem>
         </TabControl>
-        <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right">
+        <StackPanel Margin="4" Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right">
             <TextBlock Text="Theme" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="2" ></TextBlock>
             <ComboBox x:Name="ThemeBox" Width="125" Padding="4" SelectedIndex="0">
                 <ComboBox.Items>
