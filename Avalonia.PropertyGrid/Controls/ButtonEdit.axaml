@@ -18,6 +18,7 @@
 								 VerticalContentAlignment="Center"
 								 FontFamily="{x:Static lu:FontUtils.DefaultFontFamily}"
 								 Text="{TemplateBinding Text, Mode=TwoWay}"
+                                 Watermark="{TemplateBinding Watermark, Mode=TwoWay}"
 						   ></TextBox>
 						<Button x:Name="BrowserButton"
 								Grid.Column="1"

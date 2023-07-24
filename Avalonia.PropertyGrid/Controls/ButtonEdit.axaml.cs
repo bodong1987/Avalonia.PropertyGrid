@@ -64,6 +64,27 @@ namespace Avalonia.PropertyGrid.Controls
             set => SetAndRaise(TextProperty, ref _Text, value);
         }
 
+        /// <summary>
+        /// The watermark property
+        /// </summary>
+        public static readonly DirectProperty<ButtonEdit, string> WatermarkProperty =
+            AvaloniaProperty.RegisterDirect<ButtonEdit, string>(
+                nameof(Watermark),
+                o => o.Watermark,
+                (o, v) => o.Watermark = v
+                );
+        string _Watermark;
+
+        /// <summary>
+        /// Gets or sets the Watermark.
+        /// </summary>
+        /// <value>The Watermark.</value>
+        public string Watermark
+        {
+            get => _Watermark;
+            set=> SetAndRaise(WatermarkProperty, ref _Watermark, value);
+        }
+
         #region Events
         /// <summary>
         /// The button click event

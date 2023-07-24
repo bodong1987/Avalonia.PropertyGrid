@@ -31,6 +31,7 @@ System.ComponentModel.BrowsableAttribute
 System.ComponentModel.ReadOnlyAttribute
 System.ComponentModel.DisplayNameAttribute
 System.ComponentModel.DescriptionAttribute
+System.ComponentModel.PasswordPropertyTextAttribute
 System.ComponentModel.DataAnnotations.EditableAttribute
 System.ComponentModel.DataAnnotations.RangeAttribute  
 ```

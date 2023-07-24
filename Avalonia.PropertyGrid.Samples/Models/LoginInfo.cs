@@ -12,9 +12,11 @@ namespace Avalonia.PropertyGrid.Samples.Models
 {
     public class LoginInfo : MiniReactiveObject
     {
+        [Watermark("Your Login Name")]
         public string UserName { get; set; }
 
         [PasswordPropertyText(true)]
+        [Watermark("Your Password")]
         public string Password { get; set; }
 
         public PlatformID ServerType { get; set; } = PlatformID.Unix;

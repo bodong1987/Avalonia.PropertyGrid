@@ -29,11 +29,13 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
         [Category("String")]
         [DisplayName("Target Name")]
+        [Watermark("Your Target Name")]
         public string Name { get; set; }
 
         [Category("String")]
         [DisplayName("Target Path")]
         [PathBrowsable(Filters = "Image Files(*.jpg;*.png;*.bmp;*.tag)|*.jpg;*.png;*.bmp;*.tag")]
+        [Watermark("Image Path")]
         public string Path { get; set; }
 
         [Category("String")]
@@ -70,6 +72,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
         string _SourceImagePath;
         [Category("DataValidation")]
         [PathBrowsable(Filters = "Image Files(*.jpg;*.png;*.bmp;*.tag)|*.jpg;*.png;*.bmp;*.tag")]
+        [Watermark("This path can be validated")]
         public string SourceImagePath
         {
             get => _SourceImagePath;

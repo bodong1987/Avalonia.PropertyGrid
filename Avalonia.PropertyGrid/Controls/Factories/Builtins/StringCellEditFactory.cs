@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using Avalonia.PropertyGrid.Model.ComponentModel;
 using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
 using Avalonia.PropertyGrid.Model.Extensions;
 using Avalonia.PropertyGrid.Utils;
@@ -24,6 +25,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             }
 
             bool IsPathBrowsable = propertyDescriptor.IsDefined<PathBrowsableAttribute>();
+            WatermarkAttribute watermarkAttr = propertyDescriptor.GetCustomAttribute<WatermarkAttribute>();
 
             if (IsPathBrowsable)
             {
@@ -33,6 +35,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 control.Text = propertyDescriptor.GetValue(target) as string;
                 //control.HorizontalContentAlignment = Avalonia.Layout.HorizontalAlignment.Center;
                 // control.VerticalContentAlignment = Avalonia.Layout.VerticalAlignment.Center;
+
+                if(watermarkAttr!=null)
+                {
+                    control.Watermark = watermarkAttr.Watermask;
+                }
 
                 control.ButtonClick += async (s, e) =>
                 {
@@ -67,7 +74,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 control.VerticalContentAlignment = Avalonia.Layout.VerticalAlignment.Center;
                 control.FontFamily = FontUtils.DefaultFontFamily;
 
-                if(propertyDescriptor.GetCustomAttribute<PasswordPropertyTextAttribute>() is PasswordPropertyTextAttribute ppt && ppt.Password)
+                if (watermarkAttr != null)
+                {
+                    control.Watermark = watermarkAttr.Watermask;
+                }
+
+                if (propertyDescriptor.GetCustomAttribute<PasswordPropertyTextAttribute>() is PasswordPropertyTextAttribute ppt && ppt.Password)
                 {
                     control.PasswordChar = '*';
                 }                
