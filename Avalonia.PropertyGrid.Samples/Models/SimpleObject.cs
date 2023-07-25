@@ -131,6 +131,21 @@ namespace Avalonia.PropertyGrid.Samples.Models
         [ProgressAttribute]
         public double progressValue { get; set; } = 47;
 
+        [Category("Numeric")]
+        [Trackable(0, 100)]
+        public double trackableValue
+        {
+            get => progressValue;
+            set
+            {
+                if(progressValue != value)
+                {
+                    progressValue = value;
+                    RaisePropertyChanged(nameof(progressValue));
+                }
+            }
+        }
+
         [Category("Array")]
         public BindingList<string> stringList { get; set; } = new BindingList<string>() { "bodong", "china" };
 

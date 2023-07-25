@@ -1,0 +1,40 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:Avalonia.PropertyGrid.Controls"
+		xmlns:lu="using:Avalonia.PropertyGrid.Utils"
+		>
+  <Design.PreviewWith>
+    <controls:TrackableEdit />
+  </Design.PreviewWith>
+	<Styles.Resources>
+		<controls:DoubleToDecimalConverter x:Key="Double2Decimal"></controls:DoubleToDecimalConverter>
+	</Styles.Resources>
+
+  <Style Selector="controls|TrackableEdit">
+    <!-- Set Defaults -->
+    <Setter Property="Template">
+      <ControlTemplate>
+		  <DataValidationErrors>
+			  <Grid ColumnDefinitions="8*,Auto, 2*" HorizontalAlignment="Stretch">
+				  <Slider Grid.Column="0" 
+						  Padding="2" Margin="1"
+						  x:Name="slider"
+						  Minimum="{TemplateBinding Minimum}"
+						  Maximum="{TemplateBinding Maximum}"
+						  Value="{TemplateBinding Value}"
+						  >					  
+				  </Slider>
+				  <Panel Grid.Column="1" MinWidth="4" MaxWidth="20"></Panel>
+				  <NumericUpDown Grid.Column="2"
+								 x:Name="numericUpDown"
+								 Padding="2" 
+								 Margin="1"
+								 FontFamily="{x:Static lu:FontUtils.DefaultFontFamily}"
+								 VerticalContentAlignment="Center"
+								 ></NumericUpDown>
+			  </Grid>
+		  </DataValidationErrors>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+</Styles>
