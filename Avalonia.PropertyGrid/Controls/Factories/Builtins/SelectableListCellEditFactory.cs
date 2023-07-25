@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Avalonia.PropertyGrid.Model.Extensions;
+using Avalonia.PropertyGrid.Model.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
@@ -37,9 +38,25 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             {
                 var item = control.SelectedItem;
 
-                if (list != null)
+                if (list != null && !list.SelectedValue.Equals(item))
                 {
-                    list.SelectedValue = item;
+                    var oldValue = list.SelectedValue;
+
+                    GenericCancelableCommand command = new GenericCancelableCommand(
+                        string.Format(PropertyGrid.LocalizationService["Change {0} selection from {1} to {2}"], context.Property.DisplayName, oldValue!=null?oldValue.ToString():"null", item!=null?item.ToString():"null"),
+                        () =>
+                        {
+                            list.SelectedValue = item;
+                            return true;
+                        },
+                        () =>
+                        {
+                            list.SelectedValue = oldValue;
+                            return true;
+                        }
+                        );
+
+                    ExecuteCommand(command, context, list, list, oldValue);
                 }
             };
 
@@ -47,7 +64,10 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             {
                 list.SelectionChanged += (s, e) =>
                 {
-                    control.SelectedItem = list.SelectedValue;
+                    if(control.SelectedItem == null || !control.SelectedItem.Equals(list.SelectedValue))
+                    {
+                        control.SelectedItem = list.SelectedValue;
+                    }                    
                 };
             }            
 
