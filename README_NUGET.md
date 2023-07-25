@@ -6,6 +6,7 @@ Its main features are:
 * Support Supports custom types that implement the ICustomTypeDescriptor interface
 * Support array editing, support for creating, inserting, deleting and clearing in the control
 * Support data verification
+* Support Built-in undo and redo framework
 * Support Support for automatically adjusting the visibility of properties based on conditions
 * Support path picking
 * Support two display modes: category-based and alphabetical sorting  

@@ -6,6 +6,7 @@ Its main features are:
 * Support Supports custom types that implement the ICustomTypeDescriptor interface
 * Support array editing, support for creating, inserting, deleting and clearing in the control
 * Support data verification
+* Support Built-in undo and redo framework
 * Support Support for automatically adjusting the visibility of properties based on conditions
 * Support path picking
 * Support two display modes: category-based and alphabetical sorting  
@@ -254,7 +255,7 @@ If you want to provide the corresponding language pack for the built-in text, pl
 ### Custom Cell Edit
 To customize CellEdit, you need to implement a Factory class from AbstractCellEditFactory, and then append this class instance to PropertyGrid.FactoryTemplates, such as:
 ```C#
-    public class ToggleSwitchExtensionPropertyGrid : Controls.PropertyGrid
+   public class ToggleSwitchExtensionPropertyGrid : Controls.PropertyGrid
     {
         static ToggleSwitchExtensionPropertyGrid()
         {
@@ -270,8 +271,11 @@ To customize CellEdit, you need to implement a Factory class from AbstractCellEd
             return accessToken is ToggleSwitchExtensionPropertyGrid;
         }
 
-        public override Control HandleNewProperty(object target, PropertyDescriptor propertyDescriptor)
+        public override Control HandleNewProperty(PropertyCellContext context)
         {
+            var propertyDescriptor = context.Property;
+            var target = context.Target;
+            
             if (propertyDescriptor.PropertyType != typeof(bool))
             {
                 return null;
@@ -280,14 +284,18 @@ To customize CellEdit, you need to implement a Factory class from AbstractCellEd
             ToggleSwitch control = new ToggleSwitch();
             control.IsCheckedChanged += (s, e) =>
             {
-                SetAndRaise(control, propertyDescriptor, target, control.IsChecked);
+                SetAndRaise(context, control, control.IsChecked);
             };
 
             return control;
         }
 
-        public override bool HandlePropertyChanged(object target, PropertyDescriptor propertyDescriptor, Control control)
+        public override bool HandlePropertyChanged(PropertyCellContext context)
         {
+            var propertyDescriptor = context.Property;
+            var target = context.Target;
+            var control = context.CellEdit;
+
             if (propertyDescriptor.PropertyType != typeof(bool))
             {
                 return false;
@@ -307,7 +315,8 @@ To customize CellEdit, you need to implement a Factory class from AbstractCellEd
     }
 ```
 There are only two methods that must be overridden:   
-HandleNewProperty is used to create the control you want to edit the property, and you need to pass the edited data of the property by yourself.  
+HandleNewProperty is used to create the control you want to edit the property, 
+You need to pass the value out through the interface of the framework after the UI edits the data, so as to ensure that other related objects receive the message notification and save the undo redo command.  
 HandleProeprtyChanged method is used to synchronize external data. When the external data changes, the data is reacquired and synchronized to the control.
 AbstractCellEditFactory also has a overrideable property ImportPriority. This value determines the order in which the PropertyGrid triggers these Factories. The larger the value, the earlier the trigger.   
 Overriding the Accept method allows your Factory to only take effect when appropriate.
@@ -378,6 +387,10 @@ More details can be seen in the file TestExtendPropertyGrid.cs.
 Show Dynamic Visibility  
 If you check 'IsShowPath', the Path can be edited.  
 If you select Unix in Platform and input anything in UnixVersion, you can edit the extra properties.
+
+### RodoUndo
+![RedoUndo](./Docs/Images/undoredo.png)
+This example shows how to implement undo and redo functions based on the built-in undo-redo framework.
 
 ### Self's Properties
 ![Self's Properties](./Docs/Images/self-properties.png)

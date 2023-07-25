@@ -24,6 +24,7 @@
   
   <ItemGroup>
     <Compile Include="..\Avalonia.PropertyGrid.Samples\Models\BooleanExtensionObject.cs" Link="Models\BooleanExtensionObject.cs" />
+    <Compile Include="..\Avalonia.PropertyGrid.Samples\Models\CancelableObject.cs" Link="Models\CancelableObject.cs" />
     <Compile Include="..\Avalonia.PropertyGrid.Samples\Models\DynamicVisibilityObject.cs" Link="Models\DynamicVisibilityObject.cs" />
     <Compile Include="..\Avalonia.PropertyGrid.Samples\Models\LoginInfo.cs" Link="Models\LoginInfo.cs" />
     <Compile Include="..\Avalonia.PropertyGrid.Samples\Models\ScriptableObject.cs" Link="Models\ScriptableObject.cs" />
@@ -53,10 +54,6 @@
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.0" />
-    <PackageReference Include="bodong.Avalonia.PropertyGrid" Version="11.0.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\" />
+    <PackageReference Include="bodong.Avalonia.PropertyGrid" Version="11.0.0.4" />
   </ItemGroup>
 </Project>
