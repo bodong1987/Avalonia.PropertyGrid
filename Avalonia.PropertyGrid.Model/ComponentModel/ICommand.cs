@@ -1,0 +1,240 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Avalonia.PropertyGrid.Model.ComponentModel
+{
+    /// <summary>
+    /// Interface ICommand
+    /// </summary>
+    public interface IBaseCommand
+    {
+        /// <summary>
+        /// Gets the name.
+        /// </summary>
+        /// <value>The name.</value>
+        string Name { get; }
+
+        /// <summary>
+        /// Determines whether this instance can execute.
+        /// </summary>
+        /// <returns><c>true</c> if this instance can execute; otherwise, <c>false</c>.</returns>
+        bool CanExecute();
+        /// <summary>
+        /// Executes this instance.
+        /// </summary>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        bool Execute();
+    }
+
+    /// <summary>
+    /// Interface ICancelableCommand
+    /// Implements the <see cref="Avalonia.PropertyGrid.Model.ComponentModel.IBaseCommand" />
+    /// </summary>
+    /// <seealso cref="Avalonia.PropertyGrid.Model.ComponentModel.IBaseCommand" />
+    public interface ICancelableCommand : IBaseCommand
+    {
+        /// <summary>
+        /// Determines whether this instance can cancel.
+        /// </summary>
+        /// <returns><c>true</c> if this instance can cancel; otherwise, <c>false</c>.</returns>
+        bool CanCancel();
+
+        /// <summary>
+        /// Cancels this instance.
+        /// </summary>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        bool Cancel();
+    }
+
+    /// <summary>
+    /// Class AbstractCommand.
+    /// Implements the <see cref="Avalonia.PropertyGrid.Model.ComponentModel.IBaseCommand" />
+    /// </summary>
+    /// <seealso cref="Avalonia.PropertyGrid.Model.ComponentModel.IBaseCommand" />
+    public abstract class AbstractBaseCommand : IBaseCommand
+    {
+        /// <summary>
+        /// Gets the name.
+        /// </summary>
+        /// <value>The name.</value>
+        public string Name { get; protected set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AbstractBaseCommand"/> class.
+        /// </summary>
+        public AbstractBaseCommand()
+        {
+            Name = GetType().Name;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AbstractBaseCommand"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        public AbstractBaseCommand(string name)
+        {
+            Name = name;
+        }
+
+        /// <summary>
+        /// Determines whether this instance can execute.
+        /// </summary>
+        /// <returns><c>true</c> if this instance can execute; otherwise, <c>false</c>.</returns>
+        public virtual bool CanExecute()
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Executes this instance.
+        /// </summary>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        public abstract bool Execute();
+    }
+
+    /// <summary>
+    /// Class GenericCommand.
+    /// Implements the <see cref="Avalonia.PropertyGrid.Model.ComponentModel.AbstractBaseCommand" />
+    /// </summary>
+    /// <seealso cref="Avalonia.PropertyGrid.Model.ComponentModel.AbstractBaseCommand" />
+    public class GenericCommand : AbstractBaseCommand
+    {
+        Func<bool> _CanExecuteFunc;
+        Func<bool> _ExecuteFunc;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GenericCommand" /> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="executeFunc">The execute function.</param>
+        /// <param name="canExecuteFunc">The can execute function.</param>
+        public GenericCommand(string name, Func<bool> executeFunc, Func<bool> canExecuteFunc = null) :
+            base(name)
+        {            
+            _ExecuteFunc = executeFunc;
+            _CanExecuteFunc = canExecuteFunc;
+        }
+
+        /// <summary>
+        /// Determines whether this instance can execute.
+        /// </summary>
+        /// <returns><c>true</c> if this instance can execute; otherwise, <c>false</c>.</returns>
+        public override bool CanExecute()
+        {
+            return _CanExecuteFunc != null ? _CanExecuteFunc() : base.CanExecute();
+        }
+
+        /// <summary>
+        /// Executes this instance.
+        /// </summary>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        public override bool Execute()
+        {
+            return _ExecuteFunc != null && _ExecuteFunc();
+        }
+    }
+
+    /// <summary>
+    /// Class AbstractCancelableCommand.
+    /// Implements the <see cref="Avalonia.PropertyGrid.Model.ComponentModel.AbstractBaseCommand" />
+    /// Implements the <see cref="Avalonia.PropertyGrid.Model.ComponentModel.ICancelableCommand" />
+    /// </summary>
+    /// <seealso cref="Avalonia.PropertyGrid.Model.ComponentModel.AbstractBaseCommand" />
+    /// <seealso cref="Avalonia.PropertyGrid.Model.ComponentModel.ICancelableCommand" />
+    public abstract class AbstractCancelableCommand : AbstractBaseCommand, ICancelableCommand
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AbstractCancelableCommand"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        public AbstractCancelableCommand(string name) :
+            base(name)
+        {
+        }
+
+        /// <summary>
+        /// Determines whether this instance can cancel.
+        /// </summary>
+        /// <returns><c>true</c> if this instance can cancel; otherwise, <c>false</c>.</returns>
+        public virtual bool CanCancel()
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// Cancels this instance.
+        /// </summary>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        public abstract bool Cancel();
+    }
+
+    /// <summary>
+    /// Class GenericCancelableCommand.
+    /// Implements the <see cref="Avalonia.PropertyGrid.Model.ComponentModel.AbstractCancelableCommand" />
+    /// </summary>
+    /// <seealso cref="Avalonia.PropertyGrid.Model.ComponentModel.AbstractCancelableCommand" />
+    public class GenericCancelableCommand : AbstractCancelableCommand
+    {
+        Func<bool> _CanCancelFunc, _CanExecuteFunc, _CancelFunc, _ExecuteFunc;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GenericCancelableCommand"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="executeFunc">The execute function.</param>
+        /// <param name="cancelFunc">The cancel function.</param>
+        /// <param name="canExecuteFunc">The can execute function.</param>
+        /// <param name="canCancelFunc">The can cancel function.</param>
+        public GenericCancelableCommand(
+            string name, 
+            Func<bool> executeFunc, 
+            Func<bool> cancelFunc,
+            Func<bool> canExecuteFunc = null,
+            Func<bool> canCancelFunc = null
+            ) :
+            base(name)
+        {
+            _ExecuteFunc = executeFunc;
+            _CancelFunc = cancelFunc;
+            _CanExecuteFunc = canExecuteFunc;
+            _CanCancelFunc = canCancelFunc;
+        }
+
+        /// <summary>
+        /// Cancels this instance.
+        /// </summary>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        public override bool Cancel()
+        {
+            return _CancelFunc != null && _CancelFunc();
+        }
+
+        /// <summary>
+        /// Executes this instance.
+        /// </summary>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        public override bool Execute()
+        {
+            return _ExecuteFunc == null && _CanExecuteFunc();
+        }
+
+        /// <summary>
+        /// Determines whether this instance can cancel.
+        /// </summary>
+        /// <returns><c>true</c> if this instance can cancel; otherwise, <c>false</c>.</returns>
+        public override bool CanCancel()
+        {
+            return _CanCancelFunc != null ? _CanCancelFunc() : base.CanCancel();
+        }
+
+        /// <summary>
+        /// Determines whether this instance can execute.
+        /// </summary>
+        /// <returns><c>true</c> if this instance can execute; otherwise, <c>false</c>.</returns>
+        public override bool CanExecute()
+        {
+            return _CanExecuteFunc != null ? _CanExecuteFunc() : base.CanExecute();
+        }
+    }
+}
