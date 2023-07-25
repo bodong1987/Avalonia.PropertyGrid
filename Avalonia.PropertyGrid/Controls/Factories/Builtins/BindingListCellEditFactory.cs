@@ -65,11 +65,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             Debug.Assert(control.Model.Collection != null);
 
-            control.NewElement += (s, e) => HandleNewElement(s, e, target, propertyDescriptor, control);
-            control.InsertElement += (s, e) => HandleInsertElement(s, e, target, propertyDescriptor, control);
-            control.RemoveElement += (s, e) => HandleRemoveElement(s, e, target, propertyDescriptor, control);
-            control.ClearElements += (s, e) => HandleClearElements(s, e, target, propertyDescriptor, control);
-            control.ElementValueChanged += (s, e) => HandleElementValueChanged(s, e, target, propertyDescriptor, control);
+            control.NewElement += (s, e) => HandleNewElement(s, e, rootPropertyGrid, target, propertyDescriptor, control);
+            control.InsertElement += (s, e) => HandleInsertElement(s, e, rootPropertyGrid, target, propertyDescriptor, control);
+            control.RemoveElement += (s, e) => HandleRemoveElement(s, e, rootPropertyGrid, target, propertyDescriptor, control);
+            control.ClearElements += (s, e) => HandleClearElements(s, e, rootPropertyGrid, target, propertyDescriptor, control);
+            control.ElementValueChanged += (s, e) => HandleElementValueChanged(s, e, rootPropertyGrid, target, propertyDescriptor, control);
 
             return control;
         }
@@ -93,7 +93,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             return false;
         }
 
-        private void HandleRemoveElement(object s, BindingListRoutedEventArgs e, object target, PropertyDescriptor propertyDescriptor, BindingListEdit control)
+        private void HandleRemoveElement(object s, BindingListRoutedEventArgs e, IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor, BindingListEdit control)
         {
             Debug.Assert(e.Index != -1);
 
@@ -140,11 +140,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     Tag = "Remove"
                 };
 
-                ExecuteCommand(command, propertyDescriptor, target, value, value, oldElement);
+                ExecuteCommand(rootPropertyGrid, command, propertyDescriptor, target, value, value, oldElement);
             }            
         }
 
-        private void HandleClearElements(object s, BindingListRoutedEventArgs e, object target, PropertyDescriptor propertyDescriptor, BindingListEdit control)
+        private void HandleClearElements(object s, BindingListRoutedEventArgs e, IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor, BindingListEdit control)
         {
             var value = propertyDescriptor.GetValue(target) as IBindingList;
 
@@ -178,11 +178,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     Tag = "Clear"
                 };
 
-                ExecuteCommand(command, propertyDescriptor, target, value, value, list);
+                ExecuteCommand(rootPropertyGrid, command, propertyDescriptor, target, value, value, list);
             }
         }
 
-        private void HandleInsertElement(object s, BindingListRoutedEventArgs e, object target, PropertyDescriptor propertyDescriptor, BindingListEdit control)
+        private void HandleInsertElement(object s, BindingListRoutedEventArgs e, IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor, BindingListEdit control)
         {
             Debug.Assert(e.Index != -1);
 
@@ -219,11 +219,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     Tag = "Insert"
                 };
 
-                ExecuteCommand(command, propertyDescriptor, target, value, value, NewElement);                
+                ExecuteCommand(rootPropertyGrid, command, propertyDescriptor, target, value, value, NewElement);                
             }
         }
 
-        private void HandleNewElement(object s, BindingListRoutedEventArgs e, object target, PropertyDescriptor propertyDescriptor, BindingListEdit control)
+        private void HandleNewElement(object s, BindingListRoutedEventArgs e, IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor, BindingListEdit control)
         {
             var value = propertyDescriptor.GetValue(target) as IBindingList;
 
@@ -252,11 +252,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     Tag = "NewElement"
                 };
 
-                ExecuteCommand(command, propertyDescriptor, target, value, value, NewElement);                
+                ExecuteCommand(rootPropertyGrid, command, propertyDescriptor, target, value, value, NewElement);                
             }
         }
 
-        private void HandleElementValueChanged(object s, BindingListRoutedEventArgs e, object target, PropertyDescriptor propertyDescriptor, BindingListEdit control)
+        private void HandleElementValueChanged(object s, BindingListRoutedEventArgs e, IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor, BindingListEdit control)
         {
             propertyDescriptor.RaiseEvent(target);
         }

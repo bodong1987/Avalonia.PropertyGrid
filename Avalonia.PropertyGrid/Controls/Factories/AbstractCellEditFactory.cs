@@ -99,21 +99,40 @@ namespace Avalonia.PropertyGrid.Controls.Factories
                     Tag = "CommonEvent"
                 };
 
-                ExecuteCommand(command, propertyDescriptor, component, oldValue, value, value);
+                ExecuteCommand(rootPropertyGrid, command, propertyDescriptor, component, oldValue, value, value);
             }
         }
 
         /// <summary>
         /// Executes the command.
         /// </summary>
+        /// <param name="rootPropertyGrid">The root property grid.</param>
         /// <param name="command">The command.</param>
         /// <param name="propertyDescriptor">The property descriptor.</param>
         /// <param name="component">The component.</param>
         /// <param name="oldValue">The old value.</param>
         /// <param name="value">The value.</param>
         /// <param name="context">The context.</param>
-        protected virtual void ExecuteCommand(ICancelableCommand command, PropertyDescriptor propertyDescriptor, object component, object oldValue, object value, object context)
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        protected virtual bool ExecuteCommand(IPropertyGrid rootPropertyGrid, ICancelableCommand command, PropertyDescriptor propertyDescriptor, object component, object oldValue, object value, object context)
         {
+            RoutedCommandExecutingEventArgs evt = new RoutedCommandExecutingEventArgs(
+                    PropertyGrid.CommandExecutingEvent,
+                    command,
+                    component,
+                    propertyDescriptor,
+                    oldValue,
+                    value,
+                    context
+                    );
+
+            rootPropertyGrid.RaiseCommandExecutingEvent(evt);
+
+            if(evt.Canceled)
+            {
+                return false;
+            }
+
             if (component is INotifyCommandExecuting nce)
             {
                 CommandExecutingEventArgs args = new CommandExecutingEventArgs(command, component, propertyDescriptor, oldValue, value, context);
@@ -122,11 +141,27 @@ namespace Avalonia.PropertyGrid.Controls.Factories
 
                 if (args.Cancel)
                 {
-                    return;
+                    return false;
                 }
             }
 
-            command.Execute();
+            if(!command.Execute())
+            {
+                return false;
+            }
+
+            RoutedCommandExecutedEventArgs evt2 = new RoutedCommandExecutedEventArgs(
+                PropertyGrid.CommandExecutedEvent,
+                command,
+                component,
+                propertyDescriptor,
+                oldValue,
+                value,
+                context);
+
+            rootPropertyGrid.RaiseCommandExecutedEvent(evt2);
+
+            return true;
         }
 
         private void HandleSetValue(Control sourceControl, PropertyDescriptor propertyDescriptor, object component, object value)
