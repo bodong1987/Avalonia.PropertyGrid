@@ -79,17 +79,49 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         /// <param name="value">The value.</param>
         protected virtual void SetAndRaise(Control sourceControl, PropertyDescriptor propertyDescriptor, object component, object value) 
         {
+            if(propertyDescriptor.IsPropertyChanged(component, value, out var oldValue))
+            {
+                GenericCancelableCommand command = new GenericCancelableCommand(
+                    string.Format(PropertyGrid.LocalizationService["Change {0} form {1} to {2}"], propertyDescriptor.DisplayName, oldValue != null ? oldValue.ToString() : "null", value != null ? value.ToString() : "null"),
+                    () => {
+                        HandleSetValue(sourceControl, propertyDescriptor, component, value);
+                        return true;
+                    },
+                    () => {
+                        HandleSetValue(sourceControl, propertyDescriptor, component, oldValue);
+                        return true;
+                    }
+                    );
+
+                if(component is INotifyCommandExecuting nce)
+                {
+                    CommandExecutingEventArgs args = new CommandExecutingEventArgs(command, component, propertyDescriptor, oldValue, value);
+
+                    nce.RaiseCommandExecuting(args);
+
+                    if(args.Cancel)
+                    {
+                        return;
+                    }
+                }
+
+                command.Execute();
+            }
+        }
+
+        private void HandleSetValue(Control sourceControl, PropertyDescriptor propertyDescriptor, object component, object value)
+        {
             DataValidationErrors.ClearErrors(sourceControl);
 
             try
-            {                
+            {
                 propertyDescriptor.SetAndRaiseEvent(component, value);
 
                 ValidateProperty(sourceControl, propertyDescriptor, component);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                DataValidationErrors.SetErrors(sourceControl, new object[] {e.Message});
+                DataValidationErrors.SetErrors(sourceControl, new object[] { e.Message });
             }
         }
 
