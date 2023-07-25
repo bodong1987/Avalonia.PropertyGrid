@@ -81,12 +81,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories
                     string.Format(PropertyGrid.LocalizationService["Change {0} form {1} to {2}"], context.Property.DisplayName, oldValue != null ? oldValue.ToString() : "null", value != null ? value.ToString() : "null"),
                     () =>
                     {
-                        HandleSetValue(sourceControl, context.Property, context.Target, value);
+                        HandleSetValue(sourceControl, context, value);
                         return true;
                     },
                     () =>
                     {
-                        HandleSetValue(sourceControl, context.Property, context.Target, oldValue);
+                        HandleSetValue(sourceControl, context, oldValue);
                         return true;
                     }
                     )
@@ -157,21 +157,49 @@ namespace Avalonia.PropertyGrid.Controls.Factories
             return true;
         }
 
-        private void HandleSetValue(Control sourceControl, PropertyDescriptor propertyDescriptor, object component, object value)
+        /// <summary>
+        /// Handles the set value.
+        /// </summary>
+        /// <param name="sourceControl">The source control.</param>
+        /// <param name="context">The context.</param>
+        /// <param name="value">The value.</param>
+        protected virtual void HandleSetValue(Control sourceControl, PropertyCellContext context, object value)
         {
             DataValidationErrors.ClearErrors(sourceControl);
 
             try
             {
-                propertyDescriptor.SetAndRaiseEvent(component, value);
+                context.Property.SetAndRaiseEvent(context.Target, value);
 
-                ValidateProperty(sourceControl, propertyDescriptor, component);
+                ValidateProperty(sourceControl, context.Property, context.Target);
             }
             catch (Exception e)
             {
                 DataValidationErrors.SetErrors(sourceControl, new object[] { e.Message });
             }
         }
+
+        /// <summary>
+        /// Handles the raise event.
+        /// </summary>
+        /// <param name="sourceControl">The source control.</param>
+        /// <param name="context">The context.</param>
+        protected virtual void HandleRaiseEvent(Control sourceControl, PropertyCellContext context)
+        {
+            DataValidationErrors.ClearErrors(sourceControl);
+
+            try
+            {
+                context.Property.RaiseEvent(context.Target);
+
+                ValidateProperty(sourceControl, context.Property, context.Target);
+            }
+            catch (Exception e)
+            {
+                DataValidationErrors.SetErrors(sourceControl, new object[] { e.Message });
+            }
+        }
+
 
         /// <summary>
         /// Validates the property.

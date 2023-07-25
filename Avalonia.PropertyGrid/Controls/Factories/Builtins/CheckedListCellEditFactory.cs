@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Avalonia.PropertyGrid.Model.Extensions;
+using Avalonia.PropertyGrid.Model.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
@@ -37,34 +38,41 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             control.SelectedItemsChanged += (s, e) =>
             {
                 var items = control.SelectedItems;
+                var oldItems = list.Items;
 
-                list.SelectRange(items);
+                if(!CheckEquals(oldItems, items))
+                {
+                    GenericCancelableCommand command = new GenericCancelableCommand(
+                        string.Format(PropertyGrid.LocalizationService["Change {0} selection from {1} to {2}"], context.Property.DisplayName, ArrayToString(oldItems), ArrayToString(items)),
+                        () =>
+                        {
+                            list.SelectRange(items);
+                            HandleRaiseEvent(control, context);
 
-                SetAndRaise(context, control, list);
+                            return true;
+                        },
+                        () =>
+                        {
+                            list.SelectRange(oldItems);
+                            HandleRaiseEvent(control, context);
+
+                            return true;
+                        }
+                        );
+
+                    ExecuteCommand(command, context, list, list, oldItems);
+                }
             };
 
             list.SelectionChanged += (s, e) =>
             {
                 var cItems = control.Items;
                 var lItems = list.Items;
-                if(cItems.Length == lItems.Length)
+                
+                if(CheckEquals(cItems, lItems))
                 {
-                    bool Same = true;
-                    for(int i=0; i<lItems.Length; i++)
-                    {
-                        if (!lItems[i].Equals(cItems[i]))
-                        {
-                            Same = false;
-                            break;
-                        }
-                    }
-
-                    if(Same)
-                    {
-                        return;
-                    }
+                    return;
                 }
-
                 
                 var old = control.EnableRaiseSelectedItemsChangedEvent;
                 try
@@ -121,6 +129,44 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             }
 
             return false;
+        }
+
+        private bool CheckEquals(object[] first, object[] second)
+        {
+            if(first == null && second == null)
+            {
+                return true;
+            }
+
+            if(first == null || second == null)
+            {
+                return false;
+            }
+
+            if (first.Length == second.Length)
+            {
+                for (int i = 0; i < first.Length; i++)
+                {
+                    if (!first[i].Equals(second[i]))
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private string ArrayToString(object[] array)
+        {
+            if(array == null || array.Length == 0)
+            {
+                return string.Empty;
+            }
+
+            return string.Join(", ", array.Select(x => x.ToString()));
         }
     }
 }

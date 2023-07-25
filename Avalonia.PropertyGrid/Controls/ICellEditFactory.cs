@@ -94,6 +94,12 @@ namespace Avalonia.PropertyGrid.Controls
         public readonly PropertyDescriptor Property;
 
         /// <summary>
+        /// Gets the display name.
+        /// </summary>
+        /// <value>The display name.</value>
+        public string DisplayName => Property?.DisplayName;
+
+        /// <summary>
         /// The cell edit
         /// </summary>
         public Control CellEdit { get; set; }
@@ -152,6 +158,15 @@ namespace Avalonia.PropertyGrid.Controls
             Owner = context.Owner;
             Target = target;
             Property = property;
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        public override string ToString()
+        {
+            return DisplayName;
         }
     }
 }

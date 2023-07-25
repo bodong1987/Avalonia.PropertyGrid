@@ -112,6 +112,9 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                         if (value != null && e.Index >= 0 && e.Index < value.Count)
                         {
                             value.RemoveAt(e.Index);
+
+                            HandleRaiseEvent(context.CellEdit, context);
+
                             return true;
                         }
 
@@ -122,6 +125,9 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                         if (e.Index < value.Count)
                         {
                             value.Insert(e.Index, oldElement);
+
+                            HandleRaiseEvent(context.CellEdit, context);
+
                             return true;
                         }
 
@@ -140,7 +146,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     Tag = "Remove"
                 };
 
-                ExecuteCommand(command, context, value, value, oldElement);
+                ExecuteCommand(command, context, value, value, oldElement);                
             }            
         }
 
@@ -163,6 +169,9 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     () =>
                     {
                         value.Clear();
+
+                        HandleRaiseEvent(context.CellEdit, context);
+
                         return true;
                     },
                     () =>
@@ -171,6 +180,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                         {
                             value.Add(l);
                         }
+
+                        HandleRaiseEvent(context.CellEdit, context);
 
                         return true;
                     })
@@ -199,11 +210,17 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     () =>
                     {
                         value.Insert(e.Index, NewElement);
+
+                        HandleRaiseEvent(context.CellEdit, context);
+
                         return true;
                     },
                     () =>
                     {
                         value.RemoveAt(e.Index);
+
+                        HandleRaiseEvent(context.CellEdit, context);
+
                         return true;
                     },
                     () =>
@@ -238,11 +255,17 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     () =>
                     {
                         value.Add(NewElement);
+
+                        HandleRaiseEvent(context.CellEdit, context);
+
                         return true;
                     },
                     () =>
                     {
                         value.RemoveAt(value.Count - 1);
+
+                        HandleRaiseEvent(context.CellEdit, context);
+
                         return true;
                     },
                     null,

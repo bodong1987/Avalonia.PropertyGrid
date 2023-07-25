@@ -57,6 +57,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                         );
 
                     ExecuteCommand(command, context, list, list, oldValue);
+
+                    HandleRaiseEvent(control, context);
                 }
             };
 
