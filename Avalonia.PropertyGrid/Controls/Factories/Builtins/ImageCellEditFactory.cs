@@ -11,8 +11,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
     {
         public override int ImportPriority => base.ImportPriority - 1000000;
 
-        public override Control HandleNewProperty(IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor)
+        public override Control HandleNewProperty(PropertyCellContext context)
         {
+            var propertyDescriptor = context.Property;
+            var target = context.Target;
+
             if (propertyDescriptor is MultiObjectPropertyDescriptor)
             {
                 return null;
@@ -52,8 +55,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             }   
         }
 
-        public override bool HandlePropertyChanged(object target, PropertyDescriptor propertyDescriptor, Control control)
+        public override bool HandlePropertyChanged(PropertyCellContext context)
         {
+            var propertyDescriptor = context.Property;
+            var target = context.Target;
+            var control = context.CellEdit;
+
             if (propertyDescriptor.PropertyType != typeof(Avalonia.Media.IImage) &&
                 propertyDescriptor.PropertyType != typeof(System.Drawing.Image))
             {

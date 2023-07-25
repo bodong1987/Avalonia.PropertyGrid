@@ -26,8 +26,11 @@ namespace Avalonia.PropertyGrid.Samples.Views
             return accessToken is ToggleSwitchExtensionPropertyGrid;
         }
 
-        public override Control HandleNewProperty(IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor)
+        public override Control HandleNewProperty(PropertyCellContext context)
         {
+            var propertyDescriptor = context.Property;
+            var target = context.Target;
+            
             if (propertyDescriptor.PropertyType != typeof(bool))
             {
                 return null;
@@ -36,14 +39,18 @@ namespace Avalonia.PropertyGrid.Samples.Views
             ToggleSwitch control = new ToggleSwitch();
             control.IsCheckedChanged += (s, e) =>
             {
-                SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, control.IsChecked);
+                SetAndRaise(context, control, control.IsChecked);
             };
 
             return control;
         }
 
-        public override bool HandlePropertyChanged(object target, PropertyDescriptor propertyDescriptor, Control control)
+        public override bool HandlePropertyChanged(PropertyCellContext context)
         {
+            var propertyDescriptor = context.Property;
+            var target = context.Target;
+            var control = context.CellEdit;
+
             if (propertyDescriptor.PropertyType != typeof(bool))
             {
                 return false;

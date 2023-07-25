@@ -46,20 +46,16 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Handles the new property.
         /// </summary>
-        /// <param name="rootPropertyGrid">The root property grid.</param>
-        /// <param name="target">The target.</param>
-        /// <param name="propertyDescriptor">The property descriptor.</param>
+        /// <param name="context">The context.</param>
         /// <returns>Control.</returns>
-        Control HandleNewProperty(IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor);
+        Control HandleNewProperty(PropertyCellContext context);
 
         /// <summary>
         /// Handles the property changed.
         /// </summary>
-        /// <param name="target">The target.</param>
-        /// <param name="propertyDescriptor">The property descriptor.</param>
-        /// <param name="control">The control.</param>
+        /// <param name="context">The context.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
-        bool HandlePropertyChanged(object target, PropertyDescriptor propertyDescriptor, Control control);
+        bool HandlePropertyChanged(PropertyCellContext context);
 
         /// <summary>
         /// Handles the propagate visibility.
@@ -70,5 +66,92 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="filterContext">The filter context.</param>
         /// <returns>System.Nullable&lt;PropertyVisibility&gt;.</returns>
         PropertyVisibility? HandlePropagateVisibility(object target, PropertyDescriptor propertyDescriptor, Control control, IPropertyGridFilterContext filterContext);
+    }
+
+    /// <summary>
+    /// Class PropertyCellContext.
+    /// </summary>
+    public class PropertyCellContext
+    {
+        /// <summary>
+        /// The root
+        /// </summary>
+        public readonly IPropertyGrid Root;
+
+        /// <summary>
+        /// The owner
+        /// </summary>
+        public readonly IPropertyGrid Owner;
+
+        /// <summary>
+        /// The target
+        /// </summary>
+        public readonly object Target;
+
+        /// <summary>
+        /// The property
+        /// </summary>
+        public readonly PropertyDescriptor Property;
+
+        /// <summary>
+        /// The cell edit
+        /// </summary>
+        public Control CellEdit { get; set; }
+
+        /// <summary>
+        /// Gets or sets the factory.
+        /// </summary>
+        /// <value>The factory.</value>
+        public ICellEditFactory Factory { get; set; }
+
+        /// <summary>
+        /// Gets the value.
+        /// </summary>
+        /// <returns>System.Object.</returns>
+        public object GetValue()
+        {
+            return Target != null ? Property.GetValue(Target) : null;
+        }
+
+        /// <summary>
+        /// Gets the cell edit factory collection.
+        /// </summary>
+        /// <returns>ICellEditFactoryCollection.</returns>
+        public ICellEditFactoryCollection GetCellEditFactoryCollection()
+        {
+            return Root?.GetCellEditFactoryCollection();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PropertyCellContext"/> class.
+        /// </summary>
+        /// <param name="root">The root.</param>
+        /// <param name="owner">The owner.</param>
+        /// <param name="target">The target.</param>
+        /// <param name="property">The property.</param>
+        /// <param name="cellEdit">The cell edit.</param>
+        public PropertyCellContext(IPropertyGrid root, IPropertyGrid owner, object target, PropertyDescriptor property, Control cellEdit = null) 
+        {
+            Root = root;
+            Owner = owner;
+            Target = target;
+            Property = property;
+
+            CellEdit = cellEdit;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PropertyCellContext"/> class.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="target">The target.</param>
+        /// <param name="property">The property.</param>
+        public PropertyCellContext(PropertyCellContext context, object target, PropertyDescriptor property)
+        {
+            Root = context.Root;
+            Owner = context.Owner;
+            Target = target;
+            Property = property;
+        }
     }
 }

@@ -56,6 +56,12 @@ namespace Avalonia.PropertyGrid.Controls
     public interface IPropertyGridCellInfo : IPropertyGridCellInfoContainer
     {
         /// <summary>
+        /// Gets the context.
+        /// </summary>
+        /// <value>The context.</value>
+        PropertyCellContext Context { get; }
+
+        /// <summary>
         /// Gets the reference path.
         /// </summary>
         /// <value>The reference path.</value>
@@ -72,18 +78,6 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <value>The name control.</value>
         Control NameControl { get; }
-
-        /// <summary>
-        /// Gets the cell edit.
-        /// </summary>
-        /// <value>The cell edit.</value>
-        Control CellEdit { get; }
-
-        /// <summary>
-        /// Gets the property.
-        /// </summary>
-        /// <value>The property.</value>
-        PropertyDescriptor Property { get; }
 
         /// <summary>
         /// Gets the category.
@@ -114,12 +108,6 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <value><c>true</c> if this instance is visible; otherwise, <c>false</c>.</value>
         bool IsVisible { get; set; }
-
-        /// <summary>
-        /// Gets the factory.
-        /// </summary>
-        /// <value>The factory.</value>
-        ICellEditFactory Factory { get; }
 
         /// <summary>
         /// Occurs when [cell property changed].

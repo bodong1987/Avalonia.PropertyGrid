@@ -7,6 +7,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 
@@ -35,8 +36,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             return attr != null && attr.GetConverterType().IsChildOf<ExpandableObjectConverter>();
         }
 
-        public override Control HandleNewProperty(IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor)
+        public override Control HandleNewProperty(PropertyCellContext context)
         {
+            var propertyDescriptor = context.Property;
+            var target = context.Target;
+
             if (propertyDescriptor is MultiObjectPropertyDescriptor)
             {
                 return null;
@@ -49,7 +53,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             // avoid recursive expansion
             var value = propertyDescriptor.GetValue(target);            
-            if (rootPropertyGrid.GetExpandableObjectCache().IsExists(value))
+            if (context.Root.GetExpandableObjectCache().IsExists(value))
             {
                 return null;
             }
@@ -60,9 +64,13 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             border.CornerRadius = new CornerRadius(0, 0, 5, 5);
             border.Margin = new Thickness(0);
                         
-            PropertyGrid propertyGrid = rootPropertyGrid.ClonePropertyGrid() as PropertyGrid;
+            PropertyGrid propertyGrid = context.Root.ClonePropertyGrid() as PropertyGrid;
+            propertyGrid.RootPropertyGrid = context.Root;
 
-            propertyGrid.ShowStyle = rootPropertyGrid.ShowStyle;
+            Debug.Assert(propertyGrid.RootPropertyGrid != null);
+            Debug.Assert(propertyGrid.RootPropertyGrid != propertyGrid);
+
+            propertyGrid.ShowStyle = context.Root.ShowStyle;
             propertyGrid.AllowFilter = false;
             propertyGrid.AllowQuickFilter = false;
             propertyGrid.ShowTitle = false;
@@ -70,14 +78,18 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             border.Child = propertyGrid;
 
             // avoid recursive expansion
-            propertyGrid.GetExpandableObjectCache().Merge(rootPropertyGrid.GetExpandableObjectCache());
+            propertyGrid.GetExpandableObjectCache().Merge(context.Root.GetExpandableObjectCache());
             propertyGrid.GetExpandableObjectCache().Add(value);
 
             return border;
         }
 
-        public override bool HandlePropertyChanged(object target, PropertyDescriptor propertyDescriptor, Control control)
+        public override bool HandlePropertyChanged(PropertyCellContext context)
         {
+            var propertyDescriptor = context.Property;
+            var target = context.Target;
+            var control = context.CellEdit;
+
             if (propertyDescriptor is MultiObjectPropertyDescriptor)
             {
                 return false;

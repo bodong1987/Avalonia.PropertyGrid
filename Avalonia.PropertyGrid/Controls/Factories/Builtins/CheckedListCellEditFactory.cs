@@ -14,15 +14,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
     {
         public override int ImportPriority => base.ImportPriority - 100000;
 
-        /// <summary>
-        /// Handles the new property.
-        /// </summary>
-        /// <param name="rootPropertyGrid">The root property grid.</param>
-        /// <param name="target">The target.</param>
-        /// <param name="propertyDescriptor">The property descriptor.</param>
-        /// <returns>Control.</returns>
-        public override Control HandleNewProperty(IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor)
+        public override Control HandleNewProperty(PropertyCellContext context)
         {
+            var propertyDescriptor = context.Property;
+            var target = context.Target;
+
             if (!propertyDescriptor.PropertyType.IsImplementFrom<ICheckedList>() || propertyDescriptor.GetValue(target) == null)
             {
                 return null;
@@ -44,7 +40,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                 list.SelectRange(items);
 
-                SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, list);
+                SetAndRaise(context, control, list);
             };
 
             list.SelectionChanged += (s, e) =>
@@ -87,8 +83,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             return control;
         }
 
-        public override bool HandlePropertyChanged(object target, PropertyDescriptor propertyDescriptor, Control control)
+        public override bool HandlePropertyChanged(PropertyCellContext context)
         {
+            var propertyDescriptor = context.Property;
+            var target = context.Target;
+            var control = context.CellEdit;
+
             if (!propertyDescriptor.PropertyType.IsImplementFrom<ICheckedList>())
             {
                 return false;

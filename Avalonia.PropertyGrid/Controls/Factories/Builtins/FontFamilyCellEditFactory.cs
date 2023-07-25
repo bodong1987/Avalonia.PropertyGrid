@@ -12,9 +12,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
     {
         public override int ImportPriority => base.ImportPriority - 1000000;
 
-        public override Control HandleNewProperty(IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor)
+        public override Control HandleNewProperty(PropertyCellContext context)
         {
-            if(propertyDescriptor.PropertyType != typeof(FontFamily))
+            var propertyDescriptor = context.Property;
+            var target = context.Target;
+
+            if (propertyDescriptor.PropertyType != typeof(FontFamily))
             {
                 return null;
             }
@@ -31,7 +34,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 {                    
                     if (ff != propertyDescriptor.GetValue(target) as FontFamily)
                     {
-                        SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, ff);
+                        SetAndRaise(context, control, ff);
                     }
                 }
             };
@@ -39,8 +42,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             return control;
         }
 
-        public override bool HandlePropertyChanged(object target, PropertyDescriptor propertyDescriptor, Control control)
+        public override bool HandlePropertyChanged(PropertyCellContext context)
         {
+            var propertyDescriptor = context.Property;
+            var target = context.Target;
+            var control = context.CellEdit;
+
             if (propertyDescriptor.PropertyType != typeof(FontFamily))
             {
                 return false;

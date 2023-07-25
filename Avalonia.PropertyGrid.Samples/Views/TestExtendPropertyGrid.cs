@@ -68,9 +68,12 @@ namespace Avalonia.PropertyGrid.Samples.Views
             return accessToken is TestExtendPropertyGrid;
         }
 
-        public override Control HandleNewProperty(IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor)
+        public override Control HandleNewProperty(PropertyCellContext context)
         {
-            if(propertyDescriptor.PropertyType != typeof(SVector3))
+            var propertyDescriptor = context.Property;
+            var target = context.Target;
+
+            if (propertyDescriptor.PropertyType != typeof(SVector3))
             {
                 return null;
             }
@@ -80,9 +83,13 @@ namespace Avalonia.PropertyGrid.Samples.Views
             return control;
         }
 
-        public override bool HandlePropertyChanged(object target, PropertyDescriptor propertyDescriptor, Control control)
+        public override bool HandlePropertyChanged(PropertyCellContext context)
         {
-            if(propertyDescriptor.PropertyType != typeof(SVector3))
+            var propertyDescriptor = context.Property;
+            var target = context.Target;
+            var control = context.CellEdit;
+
+            if (propertyDescriptor.PropertyType != typeof(SVector3))
             {
                 return false;
             }
@@ -98,7 +105,7 @@ namespace Avalonia.PropertyGrid.Samples.Views
 
                 model.PropertyChanged += (s, e) =>
                 {
-                    SetAndRaise(vv, propertyDescriptor, target, model._vec);
+                    SetAndRaise(context, context.CellEdit, model._vec);
                 };
 
                 return true;

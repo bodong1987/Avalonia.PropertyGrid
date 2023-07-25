@@ -17,15 +17,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
     {
         public override int ImportPriority => base.ImportPriority - 10000000;
 
-        /// <summary>
-        /// Handles the new property.
-        /// </summary>
-        /// <param name="rootPropertyGrid">The root property grid.</param>
-        /// <param name="target">The target.</param>
-        /// <param name="propertyDescriptor">The property descriptor.</param>
-        /// <returns>Control.</returns>
-        public override Control HandleNewProperty(IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor)
+        public override Control HandleNewProperty(PropertyCellContext context)
         {
+            var propertyDescriptor = context.Property;
+            var target = context.Target;
+            
             if (!propertyDescriptor.PropertyType.IsNumericType())
             {
                 return null;
@@ -75,7 +71,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 try
                 {
                     object value = Convert.ChangeType(control.Value, propertyDescriptor.PropertyType);
-                    SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, value);
+                    SetAndRaise(context, control, value);
                 }
                 catch(Exception ex)
                 {
@@ -86,8 +82,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             return control;
         }
 
-        public override bool HandlePropertyChanged(object target, PropertyDescriptor propertyDescriptor, Control control)
+        public override bool HandlePropertyChanged(PropertyCellContext context)
         {
+            var propertyDescriptor = context.Property;
+            var target = context.Target;
+            var control = context.CellEdit;
+
             if (!propertyDescriptor.PropertyType.IsNumericType())
             {
                 return false;

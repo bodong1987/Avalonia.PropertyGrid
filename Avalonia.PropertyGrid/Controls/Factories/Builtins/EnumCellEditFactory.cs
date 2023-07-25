@@ -19,15 +19,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <value>The import priority.</value>
         public override int ImportPriority => base.ImportPriority - 100000;
 
-        /// <summary>
-        /// Handles the new property.
-        /// </summary>
-        /// <param name="rootPropertyGrid">The root property grid.</param>
-        /// <param name="target">The target.</param>
-        /// <param name="propertyDescriptor">The property descriptor.</param>
-        /// <returns>Control.</returns>
-        public override Control HandleNewProperty(IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor)
+        public override Control HandleNewProperty(PropertyCellContext context)
         {
+            var propertyDescriptor = context.Property;
+            var target = context.Target;
+
             if (!propertyDescriptor.PropertyType.IsEnum)
             {
                 return null;
@@ -47,7 +43,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                     if ((propertyDescriptor.GetValue(target) as Enum)?.ToString() != selectedValue?.ToString())
                     {
-                        SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, selectedValue);
+                        SetAndRaise(context, control, selectedValue);
                     }
                 };
 
@@ -70,7 +66,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                         if (v != propertyDescriptor.GetValue(target) as Enum)
                         {
-                            SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, v);
+                            SetAndRaise(context, control, v);
                         }
                     }
                 };
@@ -79,15 +75,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             }
         }
 
-        /// <summary>
-        /// Handles the property changed.
-        /// </summary>
-        /// <param name="target">The target.</param>
-        /// <param name="propertyDescriptor">The property descriptor.</param>
-        /// <param name="control">The control.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
-        public override bool HandlePropertyChanged(object target, PropertyDescriptor propertyDescriptor, Control control)
+        public override bool HandlePropertyChanged(PropertyCellContext context)
         {
+            var propertyDescriptor = context.Property;
+            var target = context.Target;
+            var control = context.CellEdit;
+
             if (!propertyDescriptor.PropertyType.IsEnum)
             {
                 return false;

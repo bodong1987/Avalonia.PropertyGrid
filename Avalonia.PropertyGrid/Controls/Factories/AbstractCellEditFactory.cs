@@ -9,6 +9,7 @@ using Avalonia.PropertyGrid.Model.Extensions;
 using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
 using Avalonia.PropertyGrid.Model.ComponentModel;
 using Avalonia.PropertyGrid.ViewModels;
+using Avalonia.Interactivity;
 
 namespace Avalonia.PropertyGrid.Controls.Factories
 {
@@ -55,43 +56,37 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         /// <summary>
         /// Handles the new property.
         /// </summary>
-        /// <param name="rootPropertyGrid">The root property grid.</param>
-        /// <param name="target">The target.</param>
-        /// <param name="propertyDescriptor">The property descriptor.</param>
+        /// <param name="context">The context.</param>
         /// <returns>Control.</returns>
-        public abstract Control HandleNewProperty(IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor);
+        public abstract Control HandleNewProperty(PropertyCellContext context);
 
         /// <summary>
         /// Handles the property changed.
         /// </summary>
-        /// <param name="target">The target.</param>
-        /// <param name="propertyDescriptor">The property descriptor.</param>
-        /// <param name="control">The control.</param>
+        /// <param name="context">The context.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
-        public abstract bool HandlePropertyChanged(object target, PropertyDescriptor propertyDescriptor, Control control);
+        public abstract bool HandlePropertyChanged(PropertyCellContext context);
 
         /// <summary>
         /// Sets the and raise.
         /// </summary>
-        /// <param name="rootPropertyGrid">The root property grid.</param>
+        /// <param name="context">The context.</param>
         /// <param name="sourceControl">The source control.</param>
-        /// <param name="propertyDescriptor">The property descriptor.</param>
-        /// <param name="component">The component.</param>
         /// <param name="value">The value.</param>
-        protected virtual void SetAndRaise(IPropertyGrid rootPropertyGrid, Control sourceControl, PropertyDescriptor propertyDescriptor, object component, object value) 
+        protected virtual void SetAndRaise(PropertyCellContext context, Control sourceControl, object value) 
         {
-            if(propertyDescriptor.IsPropertyChanged(component, value, out var oldValue))
+            if(context.Property.IsPropertyChanged(context.Target, value, out var oldValue))
             {
                 GenericCancelableCommand command = new GenericCancelableCommand(
-                    string.Format(PropertyGrid.LocalizationService["Change {0} form {1} to {2}"], propertyDescriptor.DisplayName, oldValue != null ? oldValue.ToString() : "null", value != null ? value.ToString() : "null"),
+                    string.Format(PropertyGrid.LocalizationService["Change {0} form {1} to {2}"], context.Property.DisplayName, oldValue != null ? oldValue.ToString() : "null", value != null ? value.ToString() : "null"),
                     () =>
                     {
-                        HandleSetValue(sourceControl, propertyDescriptor, component, value);
+                        HandleSetValue(sourceControl, context.Property, context.Target, value);
                         return true;
                     },
                     () =>
                     {
-                        HandleSetValue(sourceControl, propertyDescriptor, component, oldValue);
+                        HandleSetValue(sourceControl, context.Property, context.Target, oldValue);
                         return true;
                     }
                     )
@@ -99,43 +94,41 @@ namespace Avalonia.PropertyGrid.Controls.Factories
                     Tag = "CommonEvent"
                 };
 
-                ExecuteCommand(rootPropertyGrid, command, propertyDescriptor, component, oldValue, value, value);
+                ExecuteCommand(command, context, oldValue, value, value);
             }
         }
 
         /// <summary>
         /// Executes the command.
         /// </summary>
-        /// <param name="rootPropertyGrid">The root property grid.</param>
         /// <param name="command">The command.</param>
-        /// <param name="propertyDescriptor">The property descriptor.</param>
-        /// <param name="component">The component.</param>
+        /// <param name="propertyContext">The property context.</param>
         /// <param name="oldValue">The old value.</param>
         /// <param name="value">The value.</param>
         /// <param name="context">The context.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
-        protected virtual bool ExecuteCommand(IPropertyGrid rootPropertyGrid, ICancelableCommand command, PropertyDescriptor propertyDescriptor, object component, object oldValue, object value, object context)
+        protected virtual bool ExecuteCommand(ICancelableCommand command, PropertyCellContext propertyContext, object oldValue, object value, object context)
         {
             RoutedCommandExecutingEventArgs evt = new RoutedCommandExecutingEventArgs(
                     PropertyGrid.CommandExecutingEvent,
                     command,
-                    component,
-                    propertyDescriptor,
+                    propertyContext.Target,
+                    propertyContext.Property,
                     oldValue,
                     value,
                     context
                     );
 
-            rootPropertyGrid.RaiseCommandExecutingEvent(evt);
+            (propertyContext.Owner as Interactive)?.RaiseEvent(evt);
 
             if(evt.Canceled)
             {
                 return false;
             }
 
-            if (component is INotifyCommandExecuting nce)
+            if (propertyContext.Target is INotifyCommandExecuting nce)
             {
-                CommandExecutingEventArgs args = new CommandExecutingEventArgs(command, component, propertyDescriptor, oldValue, value, context);
+                CommandExecutingEventArgs args = new CommandExecutingEventArgs(command, propertyContext.Target, propertyContext.Property, oldValue, value, context);
 
                 nce.RaiseCommandExecuting(args);
 
@@ -153,13 +146,13 @@ namespace Avalonia.PropertyGrid.Controls.Factories
             RoutedCommandExecutedEventArgs evt2 = new RoutedCommandExecutedEventArgs(
                 PropertyGrid.CommandExecutedEvent,
                 command,
-                component,
-                propertyDescriptor,
+                propertyContext.Target,
+                propertyContext.Property,
                 oldValue,
                 value,
                 context);
 
-            rootPropertyGrid.RaiseCommandExecutedEvent(evt2);
+            (propertyContext.Owner as Interactive)?.RaiseEvent(evt2);
 
             return true;
         }

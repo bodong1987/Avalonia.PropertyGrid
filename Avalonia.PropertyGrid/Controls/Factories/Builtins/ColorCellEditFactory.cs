@@ -21,8 +21,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 type == typeof(Avalonia.Media.HsvColor);
         }
 
-        public override Control HandleNewProperty(IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor)
+        public override Control HandleNewProperty(PropertyCellContext context)
         {
+            var propertyDescriptor = context.Property;
+            var target = context.Target;
+            
             if (!IsAvailableColorType(propertyDescriptor))
             {
                 return null;
@@ -41,27 +44,31 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 if(type == typeof(Color))
                 {
                     Color c = Color.FromArgb(e.NewColor.A, e.NewColor.R, e.NewColor.G, e.NewColor.B);
-                    SetAndRaise(rootPropertyGrid, colorPicker, propertyDescriptor, target, c);
+                    SetAndRaise(context, colorPicker, c);
                 }
                 else if(type == typeof(Avalonia.Media.Color))
                 {
-                    SetAndRaise(rootPropertyGrid, colorPicker, propertyDescriptor, target, e.NewColor);
+                    SetAndRaise(context, colorPicker, e.NewColor);
                 }
                 else if(type == typeof(Avalonia.Media.HslColor))
                 {
-                    SetAndRaise(rootPropertyGrid, colorPicker, propertyDescriptor, target, e.NewColor.ToHsl());
+                    SetAndRaise(context, colorPicker, e.NewColor.ToHsl());
                 }
                 else if(type == typeof(Avalonia.Media.HsvColor))
                 {
-                    SetAndRaise(rootPropertyGrid, colorPicker, propertyDescriptor, target, e.NewColor.ToHsv());
+                    SetAndRaise(context, colorPicker, e.NewColor.ToHsv());
                 }
             };
 
             return colorPicker;
         }
 
-        public override bool HandlePropertyChanged(object target, PropertyDescriptor propertyDescriptor, Control control)
+        public override bool HandlePropertyChanged(PropertyCellContext context)
         {
+            var propertyDescriptor = context.Property;
+            var target = context.Target;
+            var control = context.CellEdit;
+
             if (!IsAvailableColorType(propertyDescriptor))
             {
                 return false;

@@ -88,25 +88,22 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         /// <summary>
         /// Builds the property control.
         /// </summary>
-        /// <param name="rootPropertyGrid">The root property grid.</param>
-        /// <param name="component">The component.</param>
-        /// <param name="propertyDescriptor">The property descriptor.</param>
-        /// <param name="factory">The factory.</param>
+        /// <param name="context">The context.</param>
         /// <returns>Control.</returns>
-        public Control BuildPropertyControl(IPropertyGrid rootPropertyGrid, object component, PropertyDescriptor propertyDescriptor, out ICellEditFactory factory)
+        public Control BuildPropertyControl(PropertyCellContext context)
         {
             foreach (var Factory in _Factories)
             {
-                var control = Factory.HandleNewProperty(rootPropertyGrid, component, propertyDescriptor);
+                var control = Factory.HandleNewProperty(context);
 
                 if (control != null)
                 {
-                    factory = Factory;
+                    context.CellEdit = control;
+                    context.Factory = Factory;
+
                     return control;
                 }
             }
-
-            factory = null;
 
             return null;
         }

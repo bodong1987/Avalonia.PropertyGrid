@@ -14,15 +14,10 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
     {
         public override int ImportPriority => base.ImportPriority - 100000;
 
-        /// <summary>
-        /// Handles the new property.
-        /// </summary>
-        /// <param name="rootPropertyGrid">The root property grid.</param>
-        /// <param name="target">The target.</param>
-        /// <param name="propertyDescriptor">The property descriptor.</param>
-        /// <returns>Control.</returns>
-        public override Control HandleNewProperty(IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor)
+        public override Control HandleNewProperty(PropertyCellContext context)
         {
+            var propertyDescriptor = context.Property;
+
             if (propertyDescriptor.PropertyType != typeof(bool) && propertyDescriptor.PropertyType != typeof(bool?))
             {
                 return null;
@@ -34,14 +29,18 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             control.IsCheckedChanged += (s, e) =>
             {
-                SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, control.IsChecked);
+                SetAndRaise(context, control, control.IsChecked);
             };
 
             return control;
         }
 
-        public override bool HandlePropertyChanged(object target, PropertyDescriptor propertyDescriptor, Control control)
+        public override bool HandlePropertyChanged(PropertyCellContext context)
         {
+            var propertyDescriptor = context.Property;
+            var target = context.Target;
+            var control = context.CellEdit;
+
             if (propertyDescriptor.PropertyType != typeof(bool) && propertyDescriptor.PropertyType != typeof(bool?))
             {
                 return false;

@@ -158,6 +158,12 @@ namespace Avalonia.PropertyGrid.Controls
         readonly IExpandableObjectCache ExpandableObjectCache = new PropertyGridExpandableCache();
         readonly IPropertyGridCellInfoCache CellInfoCache = new PropertyGridCellInfoCache();
 
+        /// <summary>
+        /// Gets or sets the root property grid.
+        /// </summary>
+        /// <value>The root property grid.</value>
+        public IPropertyGrid RootPropertyGrid { get; set; }
+
         #endregion
 
         #region Events
@@ -189,24 +195,6 @@ namespace Avalonia.PropertyGrid.Controls
         {
             add => AddHandler(CommandExecutedEvent, value);
             remove => RemoveHandler(CommandExecutedEvent, value);
-        }
-
-        /// <summary>
-        /// Raises the command executing event.
-        /// </summary>
-        /// <param name="e">The <see cref="RoutedCommandExecutingEventArgs"/> instance containing the event data.</param>
-        void IPropertyGrid.RaiseCommandExecutingEvent(RoutedCommandExecutingEventArgs e)
-        {
-            this.RaiseEvent(e);
-        }
-
-        /// <summary>
-        /// Raises the command executed event.
-        /// </summary>
-        /// <param name="e">The <see cref="RoutedCommandExecutedEventArgs"/> instance containing the event data.</param>
-        void IPropertyGrid.RaiseCommandExecutedEvent(RoutedCommandExecutedEventArgs e)
-        {
-            this.RaiseEvent(e);
         }
         #endregion
 
@@ -492,7 +480,7 @@ namespace Avalonia.PropertyGrid.Controls
                 grid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
                 grid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
 
-                var cellInfo = new PropertyGridCellInfo()
+                var cellInfo = new PropertyGridCellInfo(null)
                 {
                     ReferencePath = $"{referencePath.ToString()}[{categoryInfo.Key}]",
                     Category = categoryInfo.Key,
@@ -566,17 +554,24 @@ namespace Avalonia.PropertyGrid.Controls
             )
         {
             var property = propertyDescriptor;
+                        
+            PropertyCellContext context = new PropertyCellContext(RootPropertyGrid ?? this, this, target, propertyDescriptor);
 
-            ICellEditFactory factory;
-            var control = Factories.BuildPropertyControl(this, target, property, out factory);
+            var control = Factories.BuildPropertyControl(context);
 
             if (control == null)
             {
 #if DEBUG
-                Debug.WriteLine($"Failed build property control for property:{property.Name}({property.PropertyType}");
+                Debug.WriteLine($"Warning: Failed build property control for property:{property.Name}({property.PropertyType}");
 #endif
                 return;
             }
+
+            Debug.Assert(context.Factory != null);
+            Debug.Assert(context.CellEdit != null);
+            Debug.Assert(context.CellEdit == control);
+
+            ICellEditFactory factory = context.Factory;
 
             grid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
 
@@ -601,20 +596,17 @@ namespace Avalonia.PropertyGrid.Controls
 
             grid.Children.Add(control);
 
-            factory.HandlePropertyChanged(target, property, control);
+            factory.HandlePropertyChanged(context);
 
-            var cellInfo = new PropertyGridCellInfo()
+            var cellInfo = new PropertyGridCellInfo(context)
             {
                 ReferencePath = referencePath.ToString(),
-                NameControl = nameBlock,
-                CellEdit = control,
-                Property = property,
+                NameControl = nameBlock,                
                 Category = (container as IPropertyGridCellInfo)?.Category ?? propertyDescriptor.Category,
                 OwnerObject = target,
                 Target = target,
                 Container = (container as IPropertyGridCellInfo)?.Container,
-                CellType = PropertyGridCellType.Cell,
-                Factory = factory
+                CellType = PropertyGridCellType.Cell
             };
 
             container?.Add(cellInfo);
@@ -738,7 +730,7 @@ namespace Avalonia.PropertyGrid.Controls
 
         private void OnCellPropertyChanged(object sender, CellPropertyChangedEventArgs e)
         {
-            if(e.Cell != null && e.Cell.Property != null && e.Cell.Property.IsDefined<ConditionTargetAttribute>())
+            if(e.Cell != null && e.Cell.Context.Property != null && e.Cell.Context.Property.IsDefined<ConditionTargetAttribute>())
             {
                 RefreshVisibilities();
             }

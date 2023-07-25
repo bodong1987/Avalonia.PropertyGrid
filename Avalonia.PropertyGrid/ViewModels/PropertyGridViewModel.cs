@@ -226,7 +226,7 @@ namespace Avalonia.PropertyGrid.ViewModels
 
             if(cellInfo.CellType == PropertyGridCellType.Cell)
             {
-                var property = cellInfo.Property;
+                var property = cellInfo.Context.Property;
 
                 Debug.Assert(property != null);
 
@@ -236,7 +236,7 @@ namespace Avalonia.PropertyGrid.ViewModels
 
                     if (category.HasFlag(FilterCategory.Factory))
                     {
-                        childrenVisibilty = cellInfo.Factory?.HandlePropagateVisibility(context, cellInfo.Property, cellInfo.CellEdit, this);
+                        childrenVisibilty = cellInfo.Context.Factory?.HandlePropagateVisibility(context, cellInfo.Context.Property, cellInfo.Context.CellEdit, this);
                     }
 
                     if (category.HasFlag(FilterCategory.PropertyCondition))

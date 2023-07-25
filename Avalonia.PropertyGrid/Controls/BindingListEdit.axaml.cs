@@ -349,10 +349,10 @@ namespace Avalonia.PropertyGrid.Controls
         public ICellEditFactoryCollection Collection { get; set; }
 
         /// <summary>
-        /// Gets or sets the root.
+        /// Gets or sets the property context.
         /// </summary>
-        /// <value>The root.</value>
-        public IPropertyGrid Root { get; set; }
+        /// <value>The property context.</value>
+        public PropertyCellContext PropertyContext { get; set; }
 
         /// <summary>
         /// The list
@@ -459,7 +459,7 @@ namespace Avalonia.PropertyGrid.Controls
                             this, 
                             list, 
                             pd, 
-                            Root, 
+                            PropertyContext, 
                             InsertCommand, 
                             RemoveCommand
                             );
@@ -491,7 +491,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The root property grid
         /// </summary>
-        public readonly IPropertyGrid RootPropertyGrid;
+        public readonly PropertyCellContext Context;
 
         /// <summary>
         /// Gets or sets the insert command.
@@ -533,14 +533,14 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="model">The model.</param>
         /// <param name="list">The list.</param>
         /// <param name="property">The property.</param>
-        /// <param name="rootPropertyGrid">The root property grid.</param>
+        /// <param name="context">The context.</param>
         /// <param name="insertCommand">The insert command.</param>
         /// <param name="removeCommand">The remove command.</param>
         public BindingListElementDataDesc(
             BindingListViewModel model, 
             IBindingList list,
             BindingListElementPropertyDescriptor property,
-            IPropertyGrid rootPropertyGrid,
+            PropertyCellContext context,
             ICommand insertCommand,
             ICommand removeCommand
             )
@@ -548,7 +548,7 @@ namespace Avalonia.PropertyGrid.Controls
             Model = model;
             this.List = list;
             this.Property = property;
-            this.RootPropertyGrid = rootPropertyGrid;
+            this.Context = context;
 
             InsertCommand = ReactiveCommand.Create(() => insertCommand.Execute(this));
             RemoveCommand = ReactiveCommand.Create(() => removeCommand.Execute(this));

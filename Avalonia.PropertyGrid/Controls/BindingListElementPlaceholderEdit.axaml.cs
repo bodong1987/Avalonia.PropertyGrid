@@ -13,8 +13,7 @@ namespace Avalonia.PropertyGrid.Controls
     /// <seealso cref="UserControl" />
     public partial class BindingListElementPlaceholderEdit : UserControl
     {
-        ICellEditFactory Factory;
-        Control BindingControl;
+        PropertyCellContext Context;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BindingListElementPlaceholderEdit"/> class.
@@ -63,17 +62,20 @@ namespace Avalonia.PropertyGrid.Controls
 
             value.ValueChanged += OnElementValueChanged;
 
-            Debug.Assert(value.RootPropertyGrid!=null);
+            Debug.Assert(value.Context.Root!=null);
 
-            var control = value.RootPropertyGrid.GetCellEditFactoryCollection().BuildPropertyControl(value.RootPropertyGrid, value.List, value.Property, out Factory);
+            Context = new PropertyCellContext(value.Context, value.List, value.Property);
+
+            var control = Context.GetCellEditFactoryCollection().BuildPropertyControl(Context);
             if (control != null)
             {
-                BindingControl = control;
                 control.Margin = new Thickness(2,2);
 
                 mainBorder.Child = control;
 
-                Factory.HandlePropertyChanged(value.List, value.Property, control);
+                Debug.Assert(Context.Factory != null);
+
+                Context.Factory.HandlePropertyChanged(Context);
             }
         }
 
@@ -87,9 +89,12 @@ namespace Avalonia.PropertyGrid.Controls
                 return;
             }
 
-            if(Factory!=null && BindingControl != null)
+            if(Context != null && Context.Factory != null)
             {
-                Factory.HandlePropertyChanged(value.List, value.Property, BindingControl);
+                Debug.Assert(Context!=null);
+                Debug.Assert(Context.CellEdit != null);
+
+                Context.Factory.HandlePropertyChanged(Context);
             }
         }
     }

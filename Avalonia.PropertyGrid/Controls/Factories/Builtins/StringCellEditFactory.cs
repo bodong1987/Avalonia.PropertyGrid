@@ -17,8 +17,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
     {
         public override int ImportPriority => base.ImportPriority - 1000000;
 
-        public override Control HandleNewProperty(IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor)
+        public override Control HandleNewProperty(PropertyCellContext context)
         {
+            var propertyDescriptor = context.Property;
+            var target = context.Target;
+            
             if (propertyDescriptor.PropertyType != typeof(string))
             {
                 return null;
@@ -51,7 +54,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                         if (file != propertyDescriptor.GetValue(target) as string)
                         {
-                            SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, file);
+                            SetAndRaise(context, control, file);
                             control.Text = file;
                         }
                     }
@@ -61,7 +64,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 {
                     if (control.Text != propertyDescriptor.GetValue(target) as string)
                     {
-                        SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, control.Text);
+                        SetAndRaise(context, control, control.Text);
                     }
                 };
 
@@ -99,7 +102,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     {
                         if (e.NewValue as string != propertyDescriptor.GetValue(target) as string)
                         {
-                            SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, e.NewValue);
+                            SetAndRaise(context, control, e.NewValue);
                         }
                     }
                 };
@@ -108,8 +111,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             }
         }
 
-        public override bool HandlePropertyChanged(object target, PropertyDescriptor propertyDescriptor, Control control)
+        public override bool HandlePropertyChanged(PropertyCellContext context)
         {
+            var propertyDescriptor = context.Property;
+            var target = context.Target;
+            var control = context.CellEdit;
+
             if (propertyDescriptor.PropertyType != typeof(string))
             {
                 return false;

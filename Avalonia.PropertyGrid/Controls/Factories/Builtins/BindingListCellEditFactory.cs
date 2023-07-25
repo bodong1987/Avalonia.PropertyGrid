@@ -45,45 +45,45 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             return null;
         }
 
-        public override Control HandleNewProperty(IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor)
+        public override Control HandleNewProperty(PropertyCellContext context)
         {
-            if (!IsAcceptType(propertyDescriptor) || propertyDescriptor.GetValue(target) == null)
+            if (!IsAcceptType(context.Property) || context.Property.GetValue(context.Target) == null)
             {
                 return null;
             }
 
             BindingListEdit control = new BindingListEdit();
-            control.Model.Root = rootPropertyGrid;
+            control.Model.PropertyContext = context;
             control.Model.Collection = (this as ICellEditFactory).Collection;            
 
-            var attr = propertyDescriptor.GetCustomAttribute<EditableAttribute>();
+            var attr = context.Property.GetCustomAttribute<EditableAttribute>();
             
-            if((attr != null && !attr.AllowEdit) || propertyDescriptor.IsReadOnly)
+            if((attr != null && !attr.AllowEdit) || context.Property.IsReadOnly)
             {
                 control.Model.IsEditable = false;
             }
 
             Debug.Assert(control.Model.Collection != null);
 
-            control.NewElement += (s, e) => HandleNewElement(s, e, rootPropertyGrid, target, propertyDescriptor, control);
-            control.InsertElement += (s, e) => HandleInsertElement(s, e, rootPropertyGrid, target, propertyDescriptor, control);
-            control.RemoveElement += (s, e) => HandleRemoveElement(s, e, rootPropertyGrid, target, propertyDescriptor, control);
-            control.ClearElements += (s, e) => HandleClearElements(s, e, rootPropertyGrid, target, propertyDescriptor, control);
-            control.ElementValueChanged += (s, e) => HandleElementValueChanged(s, e, rootPropertyGrid, target, propertyDescriptor, control);
+            control.NewElement += (s, e) => HandleNewElement(s, e, context, control);
+            control.InsertElement += (s, e) => HandleInsertElement(s, e, context, control);
+            control.RemoveElement += (s, e) => HandleRemoveElement(s, e, context, control);
+            control.ClearElements += (s, e) => HandleClearElements(s, e, context, control);
+            control.ElementValueChanged += (s, e) => HandleElementValueChanged(s, e, context, control);
 
             return control;
         }
 
-        public override bool HandlePropertyChanged(object target, PropertyDescriptor propertyDescriptor, Control control)
+        public override bool HandlePropertyChanged(PropertyCellContext context)
         {
-            if (!IsAcceptType(propertyDescriptor))
+            if (!IsAcceptType(context.Property))
             {
                 return false;
             }
 
-            if (control is BindingListEdit ae)
+            if (context.CellEdit is BindingListEdit ae)
             {
-                var value = propertyDescriptor.GetValue(target) as IBindingList;
+                var value = context.GetValue() as IBindingList;
 
                 ae.DataList = value;
 
@@ -93,11 +93,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             return false;
         }
 
-        private void HandleRemoveElement(object s, BindingListRoutedEventArgs e, IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor, BindingListEdit control)
+        private void HandleRemoveElement(object s, BindingListRoutedEventArgs e, PropertyCellContext context, BindingListEdit control)
         {
             Debug.Assert(e.Index != -1);
 
-            var value = propertyDescriptor.GetValue(target) as IBindingList;
+            var value = context.GetValue() as IBindingList;
 
             Debug.Assert(value != null);
 
@@ -140,13 +140,13 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     Tag = "Remove"
                 };
 
-                ExecuteCommand(rootPropertyGrid, command, propertyDescriptor, target, value, value, oldElement);
+                ExecuteCommand(command, context, value, value, oldElement);
             }            
         }
 
-        private void HandleClearElements(object s, BindingListRoutedEventArgs e, IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor, BindingListEdit control)
+        private void HandleClearElements(object s, BindingListRoutedEventArgs e, PropertyCellContext context, BindingListEdit control)
         {
-            var value = propertyDescriptor.GetValue(target) as IBindingList;
+            var value = context.GetValue() as IBindingList;
 
             Debug.Assert(value != null);
 
@@ -178,21 +178,21 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     Tag = "Clear"
                 };
 
-                ExecuteCommand(rootPropertyGrid, command, propertyDescriptor, target, value, value, list);
+                ExecuteCommand(command, context, value, value, list);
             }
         }
 
-        private void HandleInsertElement(object s, BindingListRoutedEventArgs e, IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor, BindingListEdit control)
+        private void HandleInsertElement(object s, BindingListRoutedEventArgs e, PropertyCellContext context, BindingListEdit control)
         {
             Debug.Assert(e.Index != -1);
 
-            var value = propertyDescriptor.GetValue(target) as IBindingList;
+            var value = context.GetValue() as IBindingList;
 
             Debug.Assert(value != null);
 
             if (value != null)
             {
-                var NewElement = ObjectCreator.Create(GetElementType(propertyDescriptor));
+                var NewElement = ObjectCreator.Create(GetElementType(context.Property));
 
                 GenericCancelableCommand command = new GenericCancelableCommand(
                     string.Format(PropertyGrid.LocalizationService["Insert a new element at {0}"], e.Index),
@@ -219,19 +219,19 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     Tag = "Insert"
                 };
 
-                ExecuteCommand(rootPropertyGrid, command, propertyDescriptor, target, value, value, NewElement);                
+                ExecuteCommand(command, context, value, value, NewElement);                
             }
         }
 
-        private void HandleNewElement(object s, BindingListRoutedEventArgs e, IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor, BindingListEdit control)
+        private void HandleNewElement(object s, BindingListRoutedEventArgs e, PropertyCellContext context, BindingListEdit control)
         {
-            var value = propertyDescriptor.GetValue(target) as IBindingList;
+            var value = context.GetValue() as IBindingList;
 
             Debug.Assert(value != null);
 
             if (value != null)
             {
-                var NewElement = ObjectCreator.Create(GetElementType(propertyDescriptor));
+                var NewElement = ObjectCreator.Create(GetElementType(context.Property));
 
                 GenericCancelableCommand command = new GenericCancelableCommand(
                     PropertyGrid.LocalizationService["Insert a new element at the end of the array"],
@@ -252,13 +252,15 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     Tag = "NewElement"
                 };
 
-                ExecuteCommand(rootPropertyGrid, command, propertyDescriptor, target, value, value, NewElement);                
+                ExecuteCommand(command, context, value, value, NewElement);                
             }
         }
 
-        private void HandleElementValueChanged(object s, BindingListRoutedEventArgs e, IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor, BindingListEdit control)
+        private void HandleElementValueChanged(object s, BindingListRoutedEventArgs e, PropertyCellContext context, BindingListEdit control)
         {
-            propertyDescriptor.RaiseEvent(target);
+            // element has been changed
+            // we just raise event, so property grid can refresh ui...
+            context.Property.RaiseEvent(context.Target);
         }
     }
 }

@@ -62,6 +62,12 @@ namespace Avalonia.PropertyGrid.Controls
         object SelectedObject { get; set; }
 
         /// <summary>
+        /// Gets or sets the root property grid.
+        /// </summary>
+        /// <value>The root property grid.</value>
+        IPropertyGrid RootPropertyGrid { get; set; }
+
+        /// <summary>
         /// Occurs when [command executing].
         /// </summary>
         event EventHandler<RoutedCommandExecutingEventArgs> CommandExecuting;
@@ -70,18 +76,6 @@ namespace Avalonia.PropertyGrid.Controls
         /// Occurs when [command executed].
         /// </summary>
         event EventHandler<RoutedCommandExecutedEventArgs> CommandExecuted;
-
-        /// <summary>
-        /// Raises the command executing event.
-        /// </summary>
-        /// <param name="e">The <see cref="RoutedCommandExecutingEventArgs"/> instance containing the event data.</param>
-        internal void RaiseCommandExecutingEvent(RoutedCommandExecutingEventArgs e);
-
-        /// <summary>
-        /// Raises the command executed event.
-        /// </summary>
-        /// <param name="e">The <see cref="RoutedCommandExecutedEventArgs"/> instance containing the event data.</param>
-        internal void RaiseCommandExecutedEvent(RoutedCommandExecutedEventArgs e);
     }
 
     /// <summary>

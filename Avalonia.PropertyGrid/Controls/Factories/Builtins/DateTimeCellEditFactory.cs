@@ -10,8 +10,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
     {
         public override int ImportPriority => base.ImportPriority - 1000000;
 
-        public override Control HandleNewProperty(IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor)
+        public override Control HandleNewProperty(PropertyCellContext context)
         {
+            var propertyDescriptor = context.Property;
+            var target = context.Target;
+
             var propertyType = propertyDescriptor.PropertyType;
             if(propertyType != typeof(DateTime) &&
                 propertyType != typeof(DateTimeOffset) &&
@@ -21,14 +24,6 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return null;
             }
 
-//             if((propertyType != typeof(DateTime) ||
-//                 propertyType != typeof(DateTimeOffset)) &&
-//                 propertyDescriptor.GetValue(target) == null)
-//             {
-//                 // we can't support this case
-//                 return null;
-//             }
-
             DatePicker control = new DatePicker();
             control.SelectedDateChanged += (s, e) =>
             {
@@ -36,31 +31,35 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 {
                     if(control.SelectedDate !=null && control.SelectedDate.HasValue)
                     {
-                        SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, control.SelectedDate.Value.DateTime);
+                        SetAndRaise(context, control, control.SelectedDate.Value.DateTime);
                     }                    
                 }
                 else if(propertyType == typeof(DateTimeOffset))
                 {
                     if (control.SelectedDate != null && control.SelectedDate.HasValue)
                     {
-                        SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, control.SelectedDate.Value);
+                        SetAndRaise(context, control, control.SelectedDate.Value);
                     }                        
                 }
                 else if (propertyType == typeof(DateTime?))
                 {
-                    SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, control.SelectedDate?.DateTime);
+                    SetAndRaise(context, control, control.SelectedDate?.DateTime);
                 }
                 else if (propertyType == typeof(DateTimeOffset?))
                 {
-                    SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, control.SelectedDate);
+                    SetAndRaise(context, control, control.SelectedDate);
                 }
             };
 
             return control;
         }
 
-        public override bool HandlePropertyChanged(object target, PropertyDescriptor propertyDescriptor, Control control)
+        public override bool HandlePropertyChanged(PropertyCellContext context)
         {
+            var propertyDescriptor = context.Property;
+            var target = context.Target;
+            var control = context.CellEdit;
+
             var propertyType = propertyDescriptor.PropertyType;
             if (propertyType != typeof(DateTime) &&
                 propertyType != typeof(DateTimeOffset) &&

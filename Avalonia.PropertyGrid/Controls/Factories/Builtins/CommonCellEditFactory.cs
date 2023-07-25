@@ -13,9 +13,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
     {
         public override int ImportPriority => int.MinValue;
 
-        public override Control HandleNewProperty(IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor)
+        public override Control HandleNewProperty(PropertyCellContext context)
         {
-            if(propertyDescriptor is MultiObjectPropertyDescriptor)
+            var propertyDescriptor = context.Property;
+            var target = context.Target;
+
+            if (propertyDescriptor is MultiObjectPropertyDescriptor)
             {
                 return null;
             }
@@ -43,7 +46,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     {
                         DataValidationErrors.ClearErrors(control);
                         var obj = converter.ConvertFrom(value);
-                        SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, obj);
+                        SetAndRaise(context, control, obj);
                     }
                     catch (Exception ee)
                     {
@@ -61,7 +64,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                         {
                             DataValidationErrors.ClearErrors(control);
                             var obj = converter.ConvertFrom(value);
-                            SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, obj);
+                            SetAndRaise(context, control, obj);
                         }
                         catch (Exception ee)
                         {
@@ -74,8 +77,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             return control;
         }
 
-        public override bool HandlePropertyChanged(object target, PropertyDescriptor propertyDescriptor, Control control)
+        public override bool HandlePropertyChanged(PropertyCellContext context)
         {
+            var propertyDescriptor = context.Property;
+            var target = context.Target;
+            var control = context.CellEdit;
+
             if (propertyDescriptor is MultiObjectPropertyDescriptor)
             {
                 return false;

@@ -10,8 +10,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
     {
         public override int ImportPriority => base.ImportPriority - 100000;
 
-        public override Control HandleNewProperty(IPropertyGrid rootPropertyGrid, object target, PropertyDescriptor propertyDescriptor)
+        public override Control HandleNewProperty(PropertyCellContext context)
         {
+            var propertyDescriptor = context.Property;
+            var target = context.Target;
+            
             var propertyType = propertyDescriptor.PropertyType;
 
             if(propertyType != typeof(TimeSpan) && propertyType != typeof(TimeSpan?))
@@ -26,19 +29,23 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             {
                 if (propertyType == typeof(TimeSpan?))
                 {
-                    SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, control.SelectedTime);
+                    SetAndRaise(context, control, control.SelectedTime);
                 }
                 else if (propertyType == typeof(TimeSpan) && control.SelectedTime != null && control.SelectedTime.HasValue)
                 {
-                    SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, control.SelectedTime.Value);
+                    SetAndRaise(context, control, control.SelectedTime.Value);
                 }
             };
 
             return control;
         }
 
-        public override bool HandlePropertyChanged(object target, PropertyDescriptor propertyDescriptor, Control control)
+        public override bool HandlePropertyChanged(PropertyCellContext context)
         {
+            var propertyDescriptor = context.Property;
+            var target = context.Target;
+            var control = context.CellEdit;
+
             var propertyType = propertyDescriptor.PropertyType;
 
             if (propertyType != typeof(TimeSpan) && propertyType != typeof(TimeSpan?))

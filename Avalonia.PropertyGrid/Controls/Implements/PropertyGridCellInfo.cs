@@ -45,15 +45,17 @@ namespace Avalonia.PropertyGrid.Controls.Implements
 
     internal class PropertyGridCellInfo : PropertyGridCellInfoContainer, IPropertyGridCellInfo
     {
+        public PropertyCellContext Context { get; set; }
+
         public string ReferencePath { get; set; }
 
         public PropertyGridCellType CellType { get; set; }
 
         public Control NameControl { get; set; }
 
-        public Control CellEdit { get; set; }
+        public Control CellEdit => Context?.CellEdit;
 
-        public PropertyDescriptor Property { get; set; }
+        public PropertyDescriptor Property => Context?.Property;
 
         public string Category { get; set; }
 
@@ -63,17 +65,12 @@ namespace Avalonia.PropertyGrid.Controls.Implements
 
         public Expander Container { get; set; }
 
-        public ICellEditFactory Factory { get; set; }
+        public ICellEditFactory Factory => Context?.Factory;
 
         /// <summary>
         /// Occurs when [cell property changed].
         /// </summary>
         public event EventHandler<CellPropertyChangedEventArgs> CellPropertyChanged;
-
-        private void PropertyGridCellInfo__CellPropertyChanged(object sender, CellPropertyChangedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
 
         public override string ToString()
         {
@@ -112,7 +109,11 @@ namespace Avalonia.PropertyGrid.Controls.Implements
             }
         }
 
-        
+        public PropertyGridCellInfo(PropertyCellContext context)
+        {
+            Context = context;
+        }
+
 
         public override void Clear()
         {
@@ -155,7 +156,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         {
             if (Property != null && e.PropertyName == Property.Name)
             {
-                Factory?.HandlePropertyChanged(Target, Property, CellEdit);
+                Factory?.HandlePropertyChanged(Context);
 
                 CellPropertyChanged?.Invoke(this, new CellPropertyChangedEventArgs(this));
             }
