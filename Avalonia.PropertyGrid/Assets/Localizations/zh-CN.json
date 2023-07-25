@@ -15,5 +15,10 @@
     "Please select some folders": "请选择文件夹",
     "Please select a folder": "请选择一个文件夹",
     "Please select some files": "请选择一些文件",
-    "Please select a file": "请选择一个文件"
+    "Please select a file": "请选择一个文件",
+    "Remove array element at {0}": "从数组{0}处移除一个元素",
+    "Clear all elements of the array": "清空数组",
+    "Insert a new element at {0}": "在数组{0}处插入一个新的元素",
+    "Insert a new element at the end of the array": "在数组尾部新增一个新的元素",
+    "Change {0} form {1} to {2}": "将属性[{0}]从<{1}>修改为<{2}>"
 }

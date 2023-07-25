@@ -1,4 +1,5 @@
-﻿using Avalonia.PropertyGrid.Model.ComponentModel;
+﻿using Avalonia.PropertyGrid.Controls;
+using Avalonia.PropertyGrid.Model.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,7 +10,7 @@ using System.Windows.Input;
 
 namespace Avalonia.PropertyGrid.Samples.Models
 {
-    public class CancelableObject : SimpleObject, INotifyCommandExecuting
+    public class CancelableObject : SimpleObject
     {
         CancelableCommandRecorder _Recorder = new CancelableCommandRecorder();
 
@@ -29,12 +30,10 @@ namespace Avalonia.PropertyGrid.Samples.Models
         public ICommand UndoCommand { get; set; }
 
         [Browsable(false)]
-        public ICommand RedoCommand { get; set; }        
+        public ICommand RedoCommand { get; set; }
 
         public CancelableObject(string description) : base(description)
         {
-            CommandExecuting += OnCommandExecuting;
-
             UndoCommand = ReactiveCommand.Create(() =>
             {
                 _Recorder.Undo();
@@ -59,16 +58,9 @@ namespace Avalonia.PropertyGrid.Samples.Models
             RaisePropertyChanged(nameof(RedoDescription));
         }
 
-        private void OnCommandExecuting(object sender, CommandExecutingEventArgs e)
+        public void OnCommandExecuted(object sender, RoutedCommandExecutedEventArgs e)
         {
             _Recorder.PushCommand(e.Command);
-        }
-
-        public event EventHandler<CommandExecutingEventArgs> CommandExecuting;
-
-        public void RaiseCommandExecuting(CommandExecutingEventArgs eventArgs)
-        {
-            CommandExecuting?.Invoke(this, eventArgs);
         }
     }
 }

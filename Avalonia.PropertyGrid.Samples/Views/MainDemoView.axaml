@@ -122,7 +122,10 @@
                                 ></Button>
                     </StackPanel>
                     <ScrollViewer Grid.Row="1">
-                        <pgc:PropertyGrid Margin="4" SelectedObject="{Binding cancelableObject}"></pgc:PropertyGrid>
+                        <pgc:PropertyGrid x:Name="proeprtyGrid_RedoUndo" 
+                                          Margin="4" 
+                                          SelectedObject="{Binding cancelableObject}"
+                                          ></pgc:PropertyGrid>
                     </ScrollViewer>
                 </Grid>
 
