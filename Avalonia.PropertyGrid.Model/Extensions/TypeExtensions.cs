@@ -533,15 +533,22 @@ namespace Avalonia.PropertyGrid.Model.Extensions
         /// <param name="value">The value.</param>
         public static void SetAndRaiseEvent(this PropertyDescriptor property, object component, object value)
         {
-            var obj = property.GetValue(component);
+            SetAndRaiseEvent(property, component, value, out _);
+        }
 
-            if (obj == null && value == null)
+        /// <summary>
+        /// Sets the and raise event.
+        /// </summary>
+        /// <param name="property">The property.</param>
+        /// <param name="component">The component.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="oldValue">The old value.</param>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        public static bool SetAndRaiseEvent(this PropertyDescriptor property, object component, object value, out object oldValue)
+        {
+            if(!IsPropertyChanged(property, component, value, out oldValue))
             {
-                return;
-            }
-            else if (obj != null && value != null && obj.Equals(value))
-            {
-                return;
+                return false;
             }
 
             if (component is ComponentModel.INotifyPropertyChanging npcp)
@@ -550,15 +557,42 @@ namespace Avalonia.PropertyGrid.Model.Extensions
             }
             else if (component is IEnumerable<ComponentModel.INotifyPropertyChanging> enpcps)
             {
-                foreach(ComponentModel.INotifyPropertyChanging e in enpcps)
+                foreach (ComponentModel.INotifyPropertyChanging e in enpcps)
                 {
                     e.RaisePropertyChanging(property.Name);
                 }
             }
 
-            property.SetValue(component, value);            
+            property.SetValue(component, value);
 
             RaiseEvent(property, component);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Determines whether [is property changed] [the specified component].
+        /// </summary>
+        /// <param name="property">The property.</param>
+        /// <param name="component">The component.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="oldValue">The old value.</param>
+        /// <returns><c>true</c> if [is property changed] [the specified component]; otherwise, <c>false</c>.</returns>
+        public static bool IsPropertyChanged(this PropertyDescriptor property, object component, object value, out object oldValue)
+        {
+            var obj = property.GetValue(component);
+            oldValue = obj;
+
+            if (obj == null && value == null)
+            {
+                return false;
+            }
+            else if (obj != null && value != null && obj.Equals(value))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>
