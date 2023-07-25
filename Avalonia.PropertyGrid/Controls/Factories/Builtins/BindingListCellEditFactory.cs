@@ -2,6 +2,7 @@
 using Avalonia.Logging;
 using Avalonia.PropertyGrid.Model.ComponentModel;
 using Avalonia.PropertyGrid.Model.Extensions;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -102,8 +103,45 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (value != null && e.Index >= 0 && e.Index < value.Count)
             {
-                value.RemoveAt(e.Index);
-            }
+                var oldElement = value[e.Index];
+
+                GenericCancelableCommand command = new GenericCancelableCommand(
+                    string.Format(PropertyGrid.LocalizationService["Remove array element at {0}"], e.Index),
+                    () =>
+                    {
+                        if (value != null && e.Index >= 0 && e.Index < value.Count)
+                        {
+                            value.RemoveAt(e.Index);
+                            return true;
+                        }
+
+                        return false;
+                    },
+                    () =>
+                    {
+                        if (e.Index < value.Count)
+                        {
+                            value.Insert(e.Index, oldElement);
+                            return true;
+                        }
+
+                        return false;
+                    },
+                    () =>
+                    {
+                        return value != null && e.Index >= 0 && e.Index < value.Count;
+                    },
+                    () =>
+                    {
+                        return e.Index >= 0 && e.Index < value.Count;
+                    }
+                )
+                { 
+                    Tag = "Remove"
+                };
+
+                ExecuteCommand(command, propertyDescriptor, target, value, value, oldElement);
+            }            
         }
 
         private void HandleClearElements(object s, BindingListRoutedEventArgs e, object target, PropertyDescriptor propertyDescriptor, BindingListEdit control)
@@ -114,7 +152,33 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (value != null)
             {
-                value.Clear();
+                List<object> list = new List<object>();
+                foreach(var obj in value)
+                {
+                    list.Add(obj);
+                }
+
+                GenericCancelableCommand command = new GenericCancelableCommand(
+                    PropertyGrid.LocalizationService["Clear all elements of the array"],
+                    () =>
+                    {
+                        value.Clear();
+                        return true;
+                    },
+                    () =>
+                    {
+                        foreach (var l in list)
+                        {
+                            value.Add(l);
+                        }
+
+                        return true;
+                    })
+                {
+                    Tag = "Clear"
+                };
+
+                ExecuteCommand(command, propertyDescriptor, target, value, value, list);
             }
         }
 
@@ -128,7 +192,34 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (value != null)
             {
-                value.Insert(e.Index, ObjectCreator.Create(GetElementType(propertyDescriptor)));
+                var NewElement = ObjectCreator.Create(GetElementType(propertyDescriptor));
+
+                GenericCancelableCommand command = new GenericCancelableCommand(
+                    string.Format(PropertyGrid.LocalizationService["Insert a new element at {0}"], e.Index),
+                    () =>
+                    {
+                        value.Insert(e.Index, NewElement);
+                        return true;
+                    },
+                    () =>
+                    {
+                        value.RemoveAt(e.Index);
+                        return true;
+                    },
+                    () =>
+                    {
+                        return e.Index >= 0 && e.Index <= value.Count;
+                    },
+                    () =>
+                    {
+                        return e.Index >= 0 && e.Index < value.Count;
+                    }
+                    )
+                {
+                    Tag = "Insert"
+                };
+
+                ExecuteCommand(command, propertyDescriptor, target, value, value, NewElement);                
             }
         }
 
@@ -140,7 +231,28 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (value != null)
             {
-                value.Add(ObjectCreator.Create(GetElementType(propertyDescriptor)));
+                var NewElement = ObjectCreator.Create(GetElementType(propertyDescriptor));
+
+                GenericCancelableCommand command = new GenericCancelableCommand(
+                    PropertyGrid.LocalizationService["Insert a new element at the end of the array"],
+                    () =>
+                    {
+                        value.Add(NewElement);
+                        return true;
+                    },
+                    () =>
+                    {
+                        value.RemoveAt(value.Count - 1);
+                        return true;
+                    },
+                    null,
+                    () => value.Count > 0
+                    )
+                {
+                    Tag = "NewElement"
+                };
+
+                ExecuteCommand(command, propertyDescriptor, target, value, value, NewElement);                
             }
         }
 

@@ -83,30 +83,49 @@ namespace Avalonia.PropertyGrid.Controls.Factories
             {
                 GenericCancelableCommand command = new GenericCancelableCommand(
                     string.Format(PropertyGrid.LocalizationService["Change {0} form {1} to {2}"], propertyDescriptor.DisplayName, oldValue != null ? oldValue.ToString() : "null", value != null ? value.ToString() : "null"),
-                    () => {
+                    () =>
+                    {
                         HandleSetValue(sourceControl, propertyDescriptor, component, value);
                         return true;
                     },
-                    () => {
+                    () =>
+                    {
                         HandleSetValue(sourceControl, propertyDescriptor, component, oldValue);
                         return true;
                     }
-                    );
-
-                if(component is INotifyCommandExecuting nce)
+                    )
                 {
-                    CommandExecutingEventArgs args = new CommandExecutingEventArgs(command, component, propertyDescriptor, oldValue, value);
+                    Tag = "CommonEvent"
+                };
 
-                    nce.RaiseCommandExecuting(args);
-
-                    if(args.Cancel)
-                    {
-                        return;
-                    }
-                }
-
-                command.Execute();
+                ExecuteCommand(command, propertyDescriptor, component, oldValue, value, value);
             }
+        }
+
+        /// <summary>
+        /// Executes the command.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="propertyDescriptor">The property descriptor.</param>
+        /// <param name="component">The component.</param>
+        /// <param name="oldValue">The old value.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="context">The context.</param>
+        protected virtual void ExecuteCommand(ICancelableCommand command, PropertyDescriptor propertyDescriptor, object component, object oldValue, object value, object context)
+        {
+            if (component is INotifyCommandExecuting nce)
+            {
+                CommandExecutingEventArgs args = new CommandExecutingEventArgs(command, component, propertyDescriptor, oldValue, value, context);
+
+                nce.RaiseCommandExecuting(args);
+
+                if (args.Cancel)
+                {
+                    return;
+                }
+            }
+
+            command.Execute();
         }
 
         private void HandleSetValue(Control sourceControl, PropertyDescriptor propertyDescriptor, object component, object value)

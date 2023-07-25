@@ -91,6 +91,15 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel
         /// </summary>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public abstract bool Execute();
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 
     /// <summary>
@@ -177,6 +186,12 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel
     public class GenericCancelableCommand : AbstractCancelableCommand
     {
         Func<bool> _CanCancelFunc, _CanExecuteFunc, _CancelFunc, _ExecuteFunc;
+
+        /// <summary>
+        /// Gets or sets the tag.
+        /// </summary>
+        /// <value>The tag.</value>
+        public object Tag { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GenericCancelableCommand"/> class.

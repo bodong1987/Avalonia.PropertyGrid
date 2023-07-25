@@ -55,20 +55,27 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel
         public readonly object NewValue;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CommandExecutingEventArgs"/> class.
+        /// The context
+        /// </summary>
+        public readonly object Context;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CommandExecutingEventArgs" /> class.
         /// </summary>
         /// <param name="command">The command.</param>
         /// <param name="target">The target.</param>
         /// <param name="property">The property.</param>
         /// <param name="oldValue">The old value.</param>
         /// <param name="newValue">The new value.</param>
-        public CommandExecutingEventArgs(ICancelableCommand command, object target, PropertyDescriptor property, object oldValue, object newValue)
+        /// <param name="context">The context.</param>
+        public CommandExecutingEventArgs(ICancelableCommand command, object target, PropertyDescriptor property, object oldValue, object newValue, object context)
         {
             Command = command;
             Target = target;
             Property = property;
             OldValue = oldValue;
             NewValue = newValue;
+            Context = context;
         }
     }
 }
