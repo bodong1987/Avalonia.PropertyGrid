@@ -216,7 +216,7 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public override bool Execute()
         {
-            return _ExecuteFunc == null && _CanExecuteFunc();
+            return _ExecuteFunc != null && _ExecuteFunc();
         }
 
         /// <summary>

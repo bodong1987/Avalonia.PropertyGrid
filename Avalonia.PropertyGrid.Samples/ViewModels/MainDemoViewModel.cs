@@ -43,6 +43,10 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
         readonly TestExtendsObject _extendsObject = new TestExtendsObject();
         public TestExtendsObject extendsObject => _extendsObject;
 
+        readonly CancelableObject _cancelableObject = new CancelableObject("Cancelable");
+
+        public CancelableObject cancelableObject => _cancelableObject;
+
         #region View
         PropertyGridShowStyle _ShowStyle = PropertyGridShowStyle.Category;
 

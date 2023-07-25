@@ -107,6 +107,27 @@
                 </ScrollViewer>
             </TabItem>
 
+            <TabItem Header="RedoUndo">
+                <Grid RowDefinitions="Auto, *">
+                    <StackPanel Orientation="Horizontal" Margin="6">
+                        <Button IsEnabled="{Binding cancelableObject.CanUndo}" 
+                                Content="Undo" Margin="2" 
+                                Command="{Binding cancelableObject.UndoCommand}"
+                                ToolTip.Tip="{Binding cancelableObject.UndoDescription}"
+                                ></Button>
+                        <Button IsEnabled="{Binding cancelableObject.CanRedo}" 
+                                Content="Redo" Margin="2" 
+                                Command="{Binding cancelableObject.RedoCommand}"
+                                ToolTip.Tip="{Binding cancelableObject.RedoDescription}"
+                                ></Button>
+                    </StackPanel>
+                    <ScrollViewer Grid.Row="1">
+                        <pgc:PropertyGrid Margin="4" SelectedObject="{Binding cancelableObject}"></pgc:PropertyGrid>
+                    </ScrollViewer>
+                </Grid>
+
+            </TabItem>
+
             <TabItem Header="Self's Properties">
                 <ScrollViewer>
                     <pgc:PropertyGrid x:Name="propertyGrid_ShowControlProperties" Margin="4">
