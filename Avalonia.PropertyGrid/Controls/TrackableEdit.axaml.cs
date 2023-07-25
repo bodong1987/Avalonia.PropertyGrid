@@ -45,7 +45,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// treated as an application exception.</remarks>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(targetType == typeof(Decimal) && value is Double d)
+            if((targetType == typeof(Decimal) || targetType == typeof(Decimal?)) && value is Double d)
             {
                 return (Decimal)d;
             }
@@ -66,9 +66,17 @@ namespace Avalonia.PropertyGrid.Controls
         /// treated as an application exception.</remarks>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(targetType == typeof(double) && value is Decimal d)
+            if(targetType == typeof(double) && value != null)
             {
-                return (double)d;
+                var d = value as Decimal?;
+                if (d != null)
+                {
+                    return (double)d;
+                }
+                else if(value is decimal d2)
+                {
+                    return (double)d2;
+                }                
             }
 
             return value;

@@ -31,6 +31,9 @@
 								 Margin="1"
 								 FontFamily="{x:Static lu:FontUtils.DefaultFontFamily}"
 								 VerticalContentAlignment="Center"
+								 Minimum="{TemplateBinding Minimum, Converter={StaticResource Double2Decimal}}"
+								 Maximum="{TemplateBinding Maximum, Converter={StaticResource Double2Decimal}}"
+								 Value="{TemplateBinding Value, Converter={StaticResource Double2Decimal}} Mode=TwoWay"
 								 ></NumericUpDown>
 			  </Grid>
 		  </DataValidationErrors>
