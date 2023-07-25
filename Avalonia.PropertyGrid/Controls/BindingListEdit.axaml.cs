@@ -295,7 +295,7 @@ namespace Avalonia.PropertyGrid.Controls
             }
             else if (e.ListChangedType == ListChangedType.ItemChanged)
             {
-                var et = new BindingListRoutedEventArgs(ElementValueChangedEvent, DataContext as IBindingList, e.NewIndex);
+                var et = new BindingListRoutedEventArgs(ElementValueChangedEvent, Model.List, e.NewIndex);
                 RaiseEvent(et);
             }
         }
