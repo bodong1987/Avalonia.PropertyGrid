@@ -51,7 +51,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                         if (file != propertyDescriptor.GetValue(target) as string)
                         {
-                            SetAndRaise(control, propertyDescriptor, target, file);
+                            SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, file);
                             control.Text = file;
                         }
                     }
@@ -61,7 +61,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 {
                     if (control.Text != propertyDescriptor.GetValue(target) as string)
                     {
-                        SetAndRaise(control, propertyDescriptor, target, control.Text);
+                        SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, control.Text);
                     }
                 };
 
@@ -99,7 +99,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     {
                         if (e.NewValue as string != propertyDescriptor.GetValue(target) as string)
                         {
-                            SetAndRaise(control, propertyDescriptor, target, e.NewValue);
+                            SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, e.NewValue);
                         }
                     }
                 };

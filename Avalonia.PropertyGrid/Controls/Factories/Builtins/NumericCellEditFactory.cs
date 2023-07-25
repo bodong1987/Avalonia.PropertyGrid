@@ -75,7 +75,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 try
                 {
                     object value = Convert.ChangeType(control.Value, propertyDescriptor.PropertyType);
-                    SetAndRaise(control, propertyDescriptor, target, value);
+                    SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, value);
                 }
                 catch(Exception ex)
                 {

@@ -1,6 +1,9 @@
-﻿using Avalonia.PropertyGrid.ViewModels;
+﻿using Avalonia.Interactivity;
+using Avalonia.PropertyGrid.Model.ComponentModel;
+using Avalonia.PropertyGrid.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace Avalonia.PropertyGrid.Controls
@@ -57,6 +60,28 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <value>The selected object.</value>
         object SelectedObject { get; set; }
+
+        /// <summary>
+        /// Occurs when [command executing].
+        /// </summary>
+        event EventHandler<RoutedCommandExecutingEventArgs> CommandExecuting;
+
+        /// <summary>
+        /// Occurs when [command executed].
+        /// </summary>
+        event EventHandler<RoutedCommandExecutedEventArgs> CommandExecuted;
+
+        /// <summary>
+        /// Raises the command executing event.
+        /// </summary>
+        /// <param name="e">The <see cref="RoutedCommandExecutingEventArgs"/> instance containing the event data.</param>
+        internal void RaiseCommandExecutingEvent(RoutedCommandExecutingEventArgs e);
+
+        /// <summary>
+        /// Raises the command executed event.
+        /// </summary>
+        /// <param name="e">The <see cref="RoutedCommandExecutedEventArgs"/> instance containing the event data.</param>
+        internal void RaiseCommandExecutedEvent(RoutedCommandExecutedEventArgs e);
     }
 
     /// <summary>
@@ -93,5 +118,107 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <param name="cache">The cache.</param>
         void Merge(IExpandableObjectCache cache);
+    }
+
+    /// <summary>
+    /// Class RoutedCommandExecutedEventArgs.
+    /// Implements the <see cref="RoutedEventArgs" />
+    /// </summary>
+    /// <seealso cref="RoutedEventArgs" />
+    public class RoutedCommandExecutedEventArgs : RoutedEventArgs
+    {
+        /// <summary>
+        /// The command
+        /// </summary>
+        public readonly ICancelableCommand Command;
+
+        /// <summary>
+        /// The target
+        /// </summary>
+        public readonly Object Target;
+
+        /// <summary>
+        /// The property
+        /// </summary>
+        public readonly PropertyDescriptor Property;
+
+        /// <summary>
+        /// The old value
+        /// </summary>
+        public readonly object OldValue;
+
+        /// <summary>
+        /// Creates new value.
+        /// </summary>
+        public readonly object NewValue;
+
+        /// <summary>
+        /// The context
+        /// </summary>
+        public readonly object Context;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RoutedCommandExecutedEventArgs"/> class.
+        /// </summary>
+        /// <param name="routedEvent">The routed event.</param>
+        /// <param name="command">The command.</param>
+        /// <param name="target">The target.</param>
+        /// <param name="property">The property.</param>
+        /// <param name="oldValue">The old value.</param>
+        /// <param name="newValue">The new value.</param>
+        /// <param name="context">The context.</param>
+        public RoutedCommandExecutedEventArgs(
+            RoutedEvent routedEvent,
+            ICancelableCommand command,
+            object target,
+            PropertyDescriptor property,
+            object oldValue,
+            object newValue,
+            object context) :
+            base(routedEvent)
+        {
+            Command = command;
+            Target = target;
+            Property = property;
+            OldValue = oldValue;
+            NewValue = newValue;
+            Context = context;
+        }
+    }
+
+    /// <summary>
+    /// Class RoutedCommandExecutingEventArgs.
+    /// Implements the <see cref="Avalonia.PropertyGrid.Controls.RoutedCommandExecutedEventArgs" />
+    /// </summary>
+    /// <seealso cref="Avalonia.PropertyGrid.Controls.RoutedCommandExecutedEventArgs" />
+    public class RoutedCommandExecutingEventArgs : RoutedCommandExecutedEventArgs
+    {   
+        /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="RoutedCommandExecutingEventArgs"/> is canceled.
+        /// </summary>
+        /// <value><c>true</c> if canceled; otherwise, <c>false</c>.</value>
+        public bool Canceled { get; set; } = false;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RoutedCommandExecutingEventArgs"/> class.
+        /// </summary>
+        /// <param name="routedEvent">The routed event.</param>
+        /// <param name="command">The command.</param>
+        /// <param name="target">The target.</param>
+        /// <param name="property">The property.</param>
+        /// <param name="oldValue">The old value.</param>
+        /// <param name="newValue">The new value.</param>
+        /// <param name="context">The context.</param>
+        public RoutedCommandExecutingEventArgs(
+            RoutedEvent routedEvent, 
+            ICancelableCommand command, 
+            object target, 
+            PropertyDescriptor property, 
+            object oldValue, 
+            object newValue, 
+            object context) :
+            base(routedEvent, command, target, property, oldValue, newValue, context)
+        {
+        }
     }
 }

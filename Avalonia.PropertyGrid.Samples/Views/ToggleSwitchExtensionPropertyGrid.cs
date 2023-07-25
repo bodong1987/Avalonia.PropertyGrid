@@ -36,7 +36,7 @@ namespace Avalonia.PropertyGrid.Samples.Views
             ToggleSwitch control = new ToggleSwitch();
             control.IsCheckedChanged += (s, e) =>
             {
-                SetAndRaise(control, propertyDescriptor, target, control.IsChecked);
+                SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, control.IsChecked);
             };
 
             return control;

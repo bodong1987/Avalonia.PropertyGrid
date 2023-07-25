@@ -44,7 +44,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                 list.SelectRange(items);
 
-                SetAndRaise(control, propertyDescriptor, target, list);
+                SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, list);
             };
 
             list.SelectionChanged += (s, e) =>

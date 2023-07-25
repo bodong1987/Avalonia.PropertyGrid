@@ -26,11 +26,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             {
                 if (propertyType == typeof(TimeSpan?))
                 {
-                    SetAndRaise(control, propertyDescriptor, target, control.SelectedTime);
+                    SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, control.SelectedTime);
                 }
                 else if (propertyType == typeof(TimeSpan) && control.SelectedTime != null && control.SelectedTime.HasValue)
                 {
-                    SetAndRaise(control, propertyDescriptor, target, control.SelectedTime.Value);
+                    SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, control.SelectedTime.Value);
                 }
             };
 

@@ -43,7 +43,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     {
                         DataValidationErrors.ClearErrors(control);
                         var obj = converter.ConvertFrom(value);
-                        SetAndRaise(control, propertyDescriptor, target, obj);
+                        SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, obj);
                     }
                     catch (Exception ee)
                     {
@@ -61,7 +61,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                         {
                             DataValidationErrors.ClearErrors(control);
                             var obj = converter.ConvertFrom(value);
-                            SetAndRaise(control, propertyDescriptor, target, obj);
+                            SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, obj);
                         }
                         catch (Exception ee)
                         {

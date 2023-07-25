@@ -34,7 +34,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             control.IsCheckedChanged += (s, e) =>
             {
-                SetAndRaise(control, propertyDescriptor, target, control.IsChecked);
+                SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, control.IsChecked);
             };
 
             return control;

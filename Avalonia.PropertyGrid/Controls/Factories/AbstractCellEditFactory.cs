@@ -73,11 +73,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         /// <summary>
         /// Sets the and raise.
         /// </summary>
+        /// <param name="rootPropertyGrid">The root property grid.</param>
         /// <param name="sourceControl">The source control.</param>
         /// <param name="propertyDescriptor">The property descriptor.</param>
         /// <param name="component">The component.</param>
         /// <param name="value">The value.</param>
-        protected virtual void SetAndRaise(Control sourceControl, PropertyDescriptor propertyDescriptor, object component, object value) 
+        protected virtual void SetAndRaise(IPropertyGrid rootPropertyGrid, Control sourceControl, PropertyDescriptor propertyDescriptor, object component, object value) 
         {
             if(propertyDescriptor.IsPropertyChanged(component, value, out var oldValue))
             {

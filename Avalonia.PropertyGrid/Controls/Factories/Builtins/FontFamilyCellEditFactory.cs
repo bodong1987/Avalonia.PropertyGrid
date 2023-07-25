@@ -31,7 +31,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 {                    
                     if (ff != propertyDescriptor.GetValue(target) as FontFamily)
                     {
-                        SetAndRaise(control, propertyDescriptor, target, ff);
+                        SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, ff);
                     }
                 }
             };

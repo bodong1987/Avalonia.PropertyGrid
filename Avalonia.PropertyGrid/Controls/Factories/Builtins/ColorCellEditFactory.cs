@@ -41,19 +41,19 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 if(type == typeof(Color))
                 {
                     Color c = Color.FromArgb(e.NewColor.A, e.NewColor.R, e.NewColor.G, e.NewColor.B);
-                    SetAndRaise(colorPicker, propertyDescriptor, target, c);
+                    SetAndRaise(rootPropertyGrid, colorPicker, propertyDescriptor, target, c);
                 }
                 else if(type == typeof(Avalonia.Media.Color))
                 {
-                    SetAndRaise(colorPicker, propertyDescriptor, target, e.NewColor);
+                    SetAndRaise(rootPropertyGrid, colorPicker, propertyDescriptor, target, e.NewColor);
                 }
                 else if(type == typeof(Avalonia.Media.HslColor))
                 {
-                    SetAndRaise(colorPicker, propertyDescriptor, target, e.NewColor.ToHsl());
+                    SetAndRaise(rootPropertyGrid, colorPicker, propertyDescriptor, target, e.NewColor.ToHsl());
                 }
                 else if(type == typeof(Avalonia.Media.HsvColor))
                 {
-                    SetAndRaise(colorPicker, propertyDescriptor, target, e.NewColor.ToHsv());
+                    SetAndRaise(rootPropertyGrid, colorPicker, propertyDescriptor, target, e.NewColor.ToHsv());
                 }
             };
 

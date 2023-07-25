@@ -36,23 +36,23 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 {
                     if(control.SelectedDate !=null && control.SelectedDate.HasValue)
                     {
-                        SetAndRaise(control, propertyDescriptor, target, control.SelectedDate.Value.DateTime);
+                        SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, control.SelectedDate.Value.DateTime);
                     }                    
                 }
                 else if(propertyType == typeof(DateTimeOffset))
                 {
                     if (control.SelectedDate != null && control.SelectedDate.HasValue)
                     {
-                        SetAndRaise(control, propertyDescriptor, target, control.SelectedDate.Value);
+                        SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, control.SelectedDate.Value);
                     }                        
                 }
                 else if (propertyType == typeof(DateTime?))
                 {
-                    SetAndRaise(control, propertyDescriptor, target, control.SelectedDate?.DateTime);
+                    SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, control.SelectedDate?.DateTime);
                 }
                 else if (propertyType == typeof(DateTimeOffset?))
                 {
-                    SetAndRaise(control, propertyDescriptor, target, control.SelectedDate);
+                    SetAndRaise(rootPropertyGrid, control, propertyDescriptor, target, control.SelectedDate);
                 }
             };
 

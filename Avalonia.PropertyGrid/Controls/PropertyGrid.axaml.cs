@@ -1,6 +1,7 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Data;
 using Avalonia.Dialogs.Internal;
+using Avalonia.Interactivity;
 using Avalonia.PropertyGrid.Controls.Implements;
 using Avalonia.PropertyGrid.Localization;
 using Avalonia.PropertyGrid.Model.ComponentModel;
@@ -157,6 +158,56 @@ namespace Avalonia.PropertyGrid.Controls
         readonly IExpandableObjectCache ExpandableObjectCache = new PropertyGridExpandableCache();
         readonly IPropertyGridCellInfoCache CellInfoCache = new PropertyGridCellInfoCache();
 
+        #endregion
+
+        #region Events
+        /// <summary>
+        /// The command executing event
+        /// </summary>
+        public static readonly RoutedEvent<RoutedCommandExecutingEventArgs> CommandExecutingEvent =
+            RoutedEvent.Register<PropertyGrid, RoutedCommandExecutingEventArgs>(nameof(CommandExecuting), RoutingStrategies.Bubble);
+
+        /// <summary>
+        /// Occurs when [command executing].
+        /// </summary>
+        public event EventHandler<RoutedCommandExecutingEventArgs> CommandExecuting
+        {
+            add => AddHandler(CommandExecutingEvent, value);
+            remove => RemoveHandler(CommandExecutingEvent, value);
+        }
+
+        /// <summary>
+        /// The command executed event
+        /// </summary>
+        public static readonly RoutedEvent<RoutedCommandExecutedEventArgs> CommandExecutedEvent =
+            RoutedEvent.Register<PropertyGrid, RoutedCommandExecutedEventArgs>(nameof(CommandExecuted), RoutingStrategies.Bubble);
+
+        /// <summary>
+        /// Occurs when [command executed].
+        /// </summary>
+        public event EventHandler<RoutedCommandExecutedEventArgs> CommandExecuted
+        {
+            add => AddHandler(CommandExecutedEvent, value);
+            remove => RemoveHandler(CommandExecutedEvent, value);
+        }
+
+        /// <summary>
+        /// Raises the command executing event.
+        /// </summary>
+        /// <param name="e">The <see cref="RoutedCommandExecutingEventArgs"/> instance containing the event data.</param>
+        void IPropertyGrid.RaiseCommandExecutingEvent(RoutedCommandExecutingEventArgs e)
+        {
+            this.RaiseEvent(e);
+        }
+
+        /// <summary>
+        /// Raises the command executed event.
+        /// </summary>
+        /// <param name="e">The <see cref="RoutedCommandExecutedEventArgs"/> instance containing the event data.</param>
+        void IPropertyGrid.RaiseCommandExecutedEvent(RoutedCommandExecutedEventArgs e)
+        {
+            this.RaiseEvent(e);
+        }
         #endregion
 
         /// <summary>
