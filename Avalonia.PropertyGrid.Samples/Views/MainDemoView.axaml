@@ -8,7 +8,7 @@
 		     xmlns:lv="clr-namespace:Avalonia.PropertyGrid.Samples.Views"             
              >
     <UserControl.Styles>
-        <StyleInclude Source="/Views/Vector3View.axaml"></StyleInclude>
+        <StyleInclude Source="/Views/Vector3View.axaml"></StyleInclude>        
     </UserControl.Styles>
 
     <Grid RowDefinitions="*, Auto">
@@ -19,7 +19,7 @@
                 </ScrollViewer>
             </TabItem>
 
-            <TabItem Header="Views">
+            <TabItem Header="Styles">
                 <Grid RowDefinitions="*,Auto">
                     <ScrollViewer>
                         <pgc:PropertyGrid
@@ -29,6 +29,7 @@
                             ShowStyle="{Binding ShowStyle, Mode=TwoWay}"
                             ShowTitle="{Binding IsShowTitle, Mode=TwoWay}"
                             AllowQuickFilter="{Binding AllowQuickFilter, Mode=TwoWay}"
+                            NameWidth="{Binding DefaultNameWidth}"
                         >
                         </pgc:PropertyGrid>
                     </ScrollViewer>
@@ -41,6 +42,8 @@
                         <ToggleSwitch IsChecked="{Binding AllowQuickFilter}" Margin="4"></ToggleSwitch>
                         <TextBlock VerticalAlignment="Center" Margin="4">ShowTitle:</TextBlock>
                         <ToggleSwitch IsChecked="{Binding IsShowTitle}" Margin="4"></ToggleSwitch>
+                        <TextBlock VerticalAlignment="Center" Margin="4">Name Width:</TextBlock>
+                        <Slider Minimum="60" Maximum="400" Value="{Binding DefaultNameWidth}" Margin="4" Width="180"></Slider>
                     </StackPanel>
                 </Grid>
             </TabItem>

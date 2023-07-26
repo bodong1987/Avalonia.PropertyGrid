@@ -99,6 +99,13 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
             get => _IsShowTitle;
             set => this.RaiseAndSetIfChanged(ref _IsShowTitle, value);
         }
+
+        double _DefaultNameWidth = 180;
+        public double DefaultNameWidth
+        {
+            get => _DefaultNameWidth;
+            set => this.RaiseAndSetIfChanged(ref _DefaultNameWidth, value);
+        }
         #endregion
 
         public MainDemoViewModel()

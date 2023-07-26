@@ -123,6 +123,22 @@ namespace Avalonia.PropertyGrid.Controls
         }
 
         /// <summary>
+        /// The name width property
+        /// </summary>
+        public static readonly StyledProperty<double> NameWidthProperty = AvaloniaProperty.Register<PropertyGrid, double>(nameof(NameWidth), 180);
+
+        /// <summary>
+        /// Gets or sets the width of the name.
+        /// </summary>
+        /// <value>The width of the name.</value>
+        [Category("Views")]
+        public double NameWidth 
+        {
+            get => GetValue(NameWidthProperty);
+            set => SetValue(NameWidthProperty, value);
+        }
+
+        /// <summary>
         /// The selected object
         /// </summary>
         private object _SelectedObject;
@@ -217,6 +233,7 @@ namespace Avalonia.PropertyGrid.Controls
             ShowStyleProperty.Changed.Subscribe(OnShowStyleChanged);
             ShowTitleProperty.Changed.Subscribe(OnShowTitleChanged);
             SelectedObjectProperty.Changed.Subscribe(OnSelectedObjectChanged);
+            NameWidthProperty.Changed.Subscribe(OnNameWidthChanged);
         }
 
         /// <summary>
@@ -328,6 +345,19 @@ namespace Avalonia.PropertyGrid.Controls
         private void OnAllowFilterChanged(object oldValue, object newValue)
         {            
             headerGrid.IsVisible = (bool)newValue;
+        }
+
+        private static void OnNameWidthChanged(AvaloniaPropertyChangedEventArgs e)
+        {
+            if(e.Sender is PropertyGrid sender)
+            {
+                sender.OnNameWidthChanged(e.OldValue, e.NewValue);
+            }
+        }
+
+        private void OnNameWidthChanged(object oldValue, object newValue)
+        {
+            this.splitterGrid.ColumnDefinitions[0].Width = new GridLength((double)newValue);
         }
 
         /// <summary>

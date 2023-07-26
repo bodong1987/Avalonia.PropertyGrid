@@ -333,8 +333,8 @@ You can clone this project, and open Avalonia.PropertyGrid.sln, build it and run
 ### Basic
 This page shows the basic functions of PropertyGrid, including the display of various properties and the default editor, etc.  
 
-### Views
-![Views](./Docs/Images/Views.png)
+### Styles
+![Styles](./Docs/Images/Styles.png)
 Test all adjustable appearance properties.
 
 ### DataSync
