@@ -15,25 +15,26 @@
     <Setter Property="Template">
       <ControlTemplate>
 		  <DataValidationErrors>
-			  <Grid ColumnDefinitions="8*,Auto, 2*" HorizontalAlignment="Stretch">
+			  <Grid ColumnDefinitions="8*, 2*" HorizontalAlignment="Stretch">
 				  <Slider Grid.Column="0" 
 						  Padding="2" Margin="1"
 						  x:Name="slider"
-						  Minimum="{TemplateBinding Minimum}"
-						  Maximum="{TemplateBinding Maximum}"
-						  Value="{TemplateBinding Value}"
-						  >					  
+						  Minimum="{Binding Minimum, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+						  Maximum="{Binding Maximum, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+						  Value="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+						  >
 				  </Slider>
-				  <Panel Grid.Column="1" MinWidth="4" MaxWidth="20"></Panel>
-				  <NumericUpDown Grid.Column="2"
+				  <NumericUpDown Grid.Column="1"
 								 x:Name="numericUpDown"
 								 Padding="2" 
 								 Margin="1"
 								 FontFamily="{x:Static lu:FontUtils.DefaultFontFamily}"
 								 VerticalContentAlignment="Center"
-								 Minimum="{TemplateBinding Minimum, Converter={StaticResource Double2Decimal}}"
-								 Maximum="{TemplateBinding Maximum, Converter={StaticResource Double2Decimal}}"
-								 Value="{TemplateBinding Value, Converter={StaticResource Double2Decimal}} Mode=TwoWay"
+								 Minimum="{Binding Minimum, Converter={StaticResource Double2Decimal}, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+								 Maximum="{Binding Maximum, Converter={StaticResource Double2Decimal}, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
+								 Value="{Binding Value, Converter={StaticResource Double2Decimal},RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                 Increment="{TemplateBinding Increment, Converter={StaticResource Double2Decimal}}"
+                                 FormatString="{TemplateBinding FormatString}"
 								 ></NumericUpDown>
 			  </Grid>
 		  </DataValidationErrors>

@@ -46,6 +46,7 @@ Avalonia.PropertyGrid.Model.ComponentModel.IntegerIncrementAttribute
 Avalonia.PropertyGrid.Model.ComponentModel.WatermarkAttribute
 Avalonia.PropertyGrid.Model.ComponentModel.MultilineTextAttribute
 Avalonia.PropertyGrid.Model.ComponentModel.ProgressAttribute
+Avalonia.PropertyGrid.Model.ComponentModel.TrackableAttribute
 Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations.DependsOnPropertyAttribute
 Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations.FileNameValidationAttribute
 Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations.PathBrowsableAttribute

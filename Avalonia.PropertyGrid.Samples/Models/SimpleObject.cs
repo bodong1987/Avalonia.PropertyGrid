@@ -132,8 +132,8 @@ namespace Avalonia.PropertyGrid.Samples.Models
         public double progressValue { get; set; } = 47;
 
         [Category("Numeric")]
-        [Trackable(0, 100)]
-        public double trackableValue
+        [Trackable(0, 100, Increment = 0.1, FormatString = "{0:0.0}")]
+        public double trackableDoubleValue
         {
             get => progressValue;
             set
@@ -145,6 +145,10 @@ namespace Avalonia.PropertyGrid.Samples.Models
                 }
             }
         }
+
+        [Category("Numeric")]
+        [Trackable(-1000, 1000, Increment = 1, FormatString = "{0:0}")]
+        public int trackableIntValue { get; set; } = 10;
 
         [Category("Array")]
         public BindingList<string> stringList { get; set; } = new BindingList<string>() { "bodong", "china" };

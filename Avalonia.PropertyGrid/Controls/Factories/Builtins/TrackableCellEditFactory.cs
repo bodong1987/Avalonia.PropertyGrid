@@ -1,6 +1,7 @@
 ﻿using Avalonia.Controls;
 using Avalonia.PropertyGrid.Model.ComponentModel;
 using Avalonia.PropertyGrid.Model.Extensions;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,9 +31,63 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             control.Minimum = attr.Minimum;
             control.Maximum = attr.Maximum;
 
+            if (context.Property.PropertyType == typeof(sbyte) ||
+                context.Property.PropertyType == typeof(byte) ||
+                context.Property.PropertyType == typeof(short) ||
+                context.Property.PropertyType == typeof(ushort) ||
+                context.Property.PropertyType == typeof(int) ||
+                context.Property.PropertyType == typeof(uint) ||
+                context.Property.PropertyType == typeof(Int64) ||
+                context.Property.PropertyType == typeof(UInt64)
+                )
+            {
+
+                var incrementAttr = context.Property.GetCustomAttribute<IntegerIncrementAttribute>();
+
+                if(incrementAttr != null)
+                {
+                    control.Increment = (int)incrementAttr.Increment;
+                }
+                else
+                {
+                    if((int)attr.Increment != 0)
+                    {
+                        control.Increment = (int)attr.Increment;
+                    }
+                    else
+                    {
+                        control.Increment = 1;
+                    }
+                }
+
+                control.FormatString = "{0:0}";
+            }
+            else
+            {
+                var precisionAttr = context.Property.GetCustomAttribute<FloatPrecisionAttribute>();
+                if (precisionAttr != null)
+                {
+                    control.Increment = (double)precisionAttr.Increment;
+                    control.FormatString = precisionAttr.FormatString;
+                }
+                else
+                {
+                    control.Increment = attr.Increment;
+                    control.FormatString = attr.FormatString;
+                }
+            }
+
             control.ValueChanged += (s, e) =>
             {
-                SetAndRaise(context, control, e.NewValue);
+                try
+                {                    
+                    object value = Convert.ChangeType(e.NewValue, context.Property.PropertyType);
+                    SetAndRaise(context, control, value);
+                }
+                catch (Exception ex)
+                {
+                    DataValidationErrors.SetErrors(control, new string[] { ex.Message });
+                }
             };
 
             return control;

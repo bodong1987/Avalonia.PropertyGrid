@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Data.Converters;
 using System;
+using System.ComponentModel;
 using System.Globalization;
 
 namespace Avalonia.PropertyGrid.Controls
@@ -15,13 +16,35 @@ namespace Avalonia.PropertyGrid.Controls
     public class TrackableEdit : RangeBase
     {
         /// <summary>
-        /// Handles the <see cref="E:PropertyChanged" /> event.
+        /// The increment property
         /// </summary>
-        /// <param name="change">The <see cref="AvaloniaPropertyChangedEventArgs"/> instance containing the event data.</param>
-        /// <inheritdoc />
-        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        public static readonly StyledProperty<double> IncrementProperty =
+            AvaloniaProperty.Register<TrackableEdit, double>(nameof(Increment), 0.01);
+
+        /// <summary>
+        /// Gets or sets the increment.
+        /// </summary>
+        /// <value>The increment.</value>
+        public double Increment
         {
-            base.OnPropertyChanged(change);
+            get => GetValue(IncrementProperty);
+            set => SetValue(IncrementProperty, value);
+        }
+
+        /// <summary>
+        /// The format string property
+        /// </summary>
+        public static readonly StyledProperty<string> FormatStringProperty = 
+            AvaloniaProperty.Register<TrackableEdit, string>(nameof(FormatString), "{0:0.00}");
+
+        /// <summary>
+        /// Gets or sets the format string.
+        /// </summary>
+        /// <value>The format string.</value>
+        public string FormatString
+        {
+            get => GetValue(FormatStringProperty);
+            set => SetValue(FormatStringProperty, value);
         }
     }
 
@@ -45,9 +68,12 @@ namespace Avalonia.PropertyGrid.Controls
         /// treated as an application exception.</remarks>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if((targetType == typeof(Decimal) || targetType == typeof(Decimal?)) && value is Double d)
+            if((targetType == typeof(Decimal) || targetType == typeof(Decimal?)) && value != null)
             {
-                return (Decimal)d;
+                if(decimal.TryParse(value.ToString(), out decimal result))
+                {
+                    return result;
+                }
             }
 
             return value;
@@ -66,17 +92,20 @@ namespace Avalonia.PropertyGrid.Controls
         /// treated as an application exception.</remarks>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(targetType == typeof(double) && value != null)
+            if(value != null)
             {
-                var d = value as Decimal?;
-                if (d != null)
+                try
                 {
-                    return (double)d;
+                    var v = System.Convert.ChangeType(value, targetType);
+
+                    if(v != null)
+                    {
+                        return v;
+                    }
                 }
-                else if(value is decimal d2)
+                catch
                 {
-                    return (double)d2;
-                }                
+                }
             }
 
             return value;
