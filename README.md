@@ -94,6 +94,7 @@ if you implementing from Avalonia.PropertyGrid.Model.ComponentModel.INotifyPrope
 ### Change Size
 You can change the width of namelabel and cell edit by drag here:
 ![Dragging](./Docs/Images/ChangeSize.png)
+Or set the NameWidth property of PropertyGrid directly.  
 
 ### Multiple Objects Edit
 
