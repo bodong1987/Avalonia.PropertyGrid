@@ -1,4 +1,7 @@
-﻿using Avalonia.PropertyGrid.Model.Utils;
+﻿using Avalonia.Platform;
+using Avalonia.PropertyGrid.Model.ComponentModel;
+using Avalonia.PropertyGrid.Model.Utils;
+using Avalonia.PropertyGrid.Utils;
 
 namespace Avalonia.PropertyGrid.Tests.Model
 {
@@ -21,7 +24,26 @@ namespace Avalonia.PropertyGrid.Tests.Model
             Assert.IsNotNull(properties2);
             Assert.AreEqual(2, properties2.Count);
         }
+
+        [TestMethod]
+        public void Test_EnumUtils()
+        {
+            var enums = EnumUtils.GetEnumValues<EnumPlatform>();
+
+            Assert.IsNotNull(enums);
+            Assert.AreEqual(2, enums.Length);
+        }
     }
+
+    public enum EnumPlatform
+    {
+        [EnumDisplayName("Microsoft.Windows")]
+        Windows,
+
+        [EnumDisplayName("Apple.MacOS")]
+        MacOS
+    }
+
 
     public class TestObject
     {

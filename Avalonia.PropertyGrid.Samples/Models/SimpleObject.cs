@@ -73,6 +73,9 @@ namespace Avalonia.PropertyGrid.Samples.Models
         [Category("Enum")]
         public PlatformID Platform { get; set; } = Environment.OSVersion.Platform;
 
+        [Category("Enum")]
+        public PlatformType EnumWithDisplayName { get; set; } = PlatformType.Windows;
+
         [Category("Selectable List")]
         public SelectableList<string> LoginName { get; set; } = new SelectableList<string>(new string[] { "John", "David", "bodong" }, "bodong");
 
@@ -228,12 +231,26 @@ namespace Avalonia.PropertyGrid.Samples.Models
     [Flags]
     public enum PhoneService
     {
+        [EnumDisplayName("Default")]
         None = 0,
         LandLine = 1,
         Cell = 2,
         Fax = 4,
         Internet = 8,
         Other = 16
+    }
+
+    public enum PlatformType
+    {
+        [EnumDisplayName("Microsoft.Windows")]
+        Windows,
+        [EnumDisplayName("Apple.MacOS")]
+        MacOS,
+        [EnumDisplayName("Apple.IOS")]
+        Ios,
+
+        [EnumDisplayName("Unknown.Other")]
+        Other
     }
 
     public class ValidatePlatformAttribute : ValidationAttribute

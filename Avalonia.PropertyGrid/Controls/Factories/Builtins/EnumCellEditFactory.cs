@@ -7,6 +7,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Avalonia.PropertyGrid.Utils;
+using Avalonia.PropertyGrid.Model.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
@@ -45,7 +47,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             if (IsFlags)
             {
                 var control = new CheckedListEdit();
-                control.Items = Enum.GetValues(propertyDescriptor.PropertyType).Select(x => x.ToString()).ToArray();
+                control.Items = EnumUtils.GetEnumValues(propertyDescriptor.PropertyType);
 
                 control.SelectedItemsChanged += (s, e) =>
                 {
@@ -63,7 +65,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             {
                 var control = new ComboBox();
 
-                control.ItemsSource = Enum.GetValues(propertyDescriptor.PropertyType);
+                control.ItemsSource = EnumUtils.GetEnumValues(propertyDescriptor.PropertyType);
                 control.HorizontalAlignment = Layout.HorizontalAlignment.Stretch;
 
                 control.SelectionChanged += (s, e) =>
@@ -72,7 +74,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                     if (item != null)
                     {
-                        var v = Enum.Parse(propertyDescriptor.PropertyType, item.ToString()) as Enum;
+                        var v = (item as EnumValueWrapper).Value;
 
                         if (v != propertyDescriptor.GetValue(target) as Enum)
                         {
@@ -115,7 +117,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                     try
                     {
-                        c.SelectedItems = value.GetUniqueFlags().Select(x => x.ToString()).ToArray();
+                        c.SelectedItems = value.GetUniqueFlags().Select(x => new EnumValueWrapper(x as Enum)).ToArray();
                     }
                     finally
                     {
@@ -128,7 +130,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             else if (control is ComboBox cb)
             {
                 Enum value = propertyDescriptor.GetValue(target) as Enum;
-                cb.SelectedItem = value;
+                cb.SelectedItem = new EnumValueWrapper(value);
                 return true;
             }
 
@@ -149,17 +151,17 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             }
             else if (items.Length == 1)
             {
-                return (Enum)Enum.Parse(enumType, items[0].ToString());
+                return (items[0] as EnumValueWrapper)?.Value;
             }
             else
             {
                 StringBuilder sb = new StringBuilder();
-                sb.Append(items[0]);
+                sb.Append((items[0] as EnumValueWrapper)?.Value?.ToString());
 
                 foreach (var i in items.Skip(1))
                 {
                     sb.Append(", ");
-                    sb.Append(i.ToString());
+                    sb.Append((i as EnumValueWrapper)?.Value?.ToString());
                 }
 
                 return (Enum)Enum.Parse(enumType, sb.ToString());

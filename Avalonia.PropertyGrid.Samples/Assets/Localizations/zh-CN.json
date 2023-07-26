@@ -1,0 +1,23 @@
+﻿{
+  "Imaging": "图像",
+  "String": "字符串",
+  "Enum": "枚举",
+  "Array": "数组",
+  "Boolean": "布尔值",
+  "Checked List": "可选列表",
+  "Color": "颜色",
+  "DataValidation": "数据校验",
+  "Date Time": "日期和时间",
+  "Expandable": "可展开对象",
+  "Font": "字体",
+  "Numeric": "数值",
+  "Selectable List": "可选对象",
+  "SelectableList": "可选对象",
+  "Your Login Name": "您的登录名称",
+  "Your Password": "您的登录密码",
+  "Default": "默认",
+  "Struct": "结构体",
+  "Native": "内置",
+  "Extends": "扩展",
+  "Microsoft.Windows": "微软.视窗操作系统"
+}

@@ -18,13 +18,13 @@ using System.Threading.Tasks;
 namespace Avalonia.PropertyGrid.Localization
 {
     /// <summary>
-    /// Class InternalLocalizationService.
-    /// Implements the <see cref="ReactiveObject" />
+    /// Class JsonAssetLocalizationService.
+    /// Implements the <see cref="MiniReactiveObject" />
     /// Implements the <see cref="ILocalizationService" />
     /// </summary>
-    /// <seealso cref="ReactiveObject" />
+    /// <seealso cref="MiniReactiveObject" />
     /// <seealso cref="ILocalizationService" />
-    internal class InternalLocalizationService : MiniReactiveObject, ILocalizationService
+    public class JsonAssetLocalizationService : MiniReactiveObject, ILocalizationService
     {
         /// <summary>
         /// The local texts
@@ -76,9 +76,9 @@ namespace Avalonia.PropertyGrid.Localization
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="InternalLocalizationService"/> class.
+        /// Initializes a new instance of the <see cref="JsonAssetLocalizationService"/> class.
         /// </summary>
-        public InternalLocalizationService()
+        public JsonAssetLocalizationService()
         {
             PropertyChanged += OnPropertyChanged;       
             
@@ -137,11 +137,19 @@ namespace Avalonia.PropertyGrid.Localization
             }
         }
 
+        /// <summary>
+        /// Adds the extra service.
+        /// </summary>
+        /// <param name="service">The service.</param>
         public void AddExtraService(ILocalizationService service)
         {
             ExtraServices.Add(service);
         }
 
+        /// <summary>
+        /// Removes the extra service.
+        /// </summary>
+        /// <param name="service">The service.</param>
         public void RemoveExtraService(ILocalizationService service)
         {
             ExtraServices.Remove(service);

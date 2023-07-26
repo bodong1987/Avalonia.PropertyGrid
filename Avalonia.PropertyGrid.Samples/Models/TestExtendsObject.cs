@@ -44,7 +44,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
         {
             List<CountryInfo> list = new List<CountryInfo>();
 
-            var assets = AssetLoader.GetAssets(new Uri($"avares://{GetType().Assembly.GetName().Name}/Assets/contry-flags"), null);
+            var assets = AssetLoader.GetAssets(new Uri($"avares://{GetType().Assembly.GetName().Name}/Assets/country-flags"), null);
             foreach (var asset in assets)
             {
                 list.Add(new CountryInfo(asset));

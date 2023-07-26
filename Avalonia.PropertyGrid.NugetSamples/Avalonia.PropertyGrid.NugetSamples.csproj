@@ -51,14 +51,14 @@
 
   
   <ItemGroup>
-    <AvaloniaResource Include="..\Avalonia.PropertyGrid.Samples\Assets\contry-flags\au.png" Link="Assets\contry-flags\au.png" />
-    <AvaloniaResource Include="..\Avalonia.PropertyGrid.Samples\Assets\contry-flags\bl.png" Link="Assets\contry-flags\bl.png" />
-    <AvaloniaResource Include="..\Avalonia.PropertyGrid.Samples\Assets\contry-flags\ca.png" Link="Assets\contry-flags\ca.png" />
-    <AvaloniaResource Include="..\Avalonia.PropertyGrid.Samples\Assets\contry-flags\cn.png" Link="Assets\contry-flags\cn.png" />
-    <AvaloniaResource Include="..\Avalonia.PropertyGrid.Samples\Assets\contry-flags\de.png" Link="Assets\contry-flags\de.png" />
-    <AvaloniaResource Include="..\Avalonia.PropertyGrid.Samples\Assets\contry-flags\gb.png" Link="Assets\contry-flags\gb.png" />
-    <AvaloniaResource Include="..\Avalonia.PropertyGrid.Samples\Assets\contry-flags\ua.png" Link="Assets\contry-flags\ua.png" />
-    <AvaloniaResource Include="..\Avalonia.PropertyGrid.Samples\Assets\contry-flags\us.png" Link="Assets\contry-flags\us.png" />
+    <AvaloniaResource Include="..\Avalonia.PropertyGrid.Samples\Assets\country-flags\au.png" Link="Assets\country-flags\au.png" />
+    <AvaloniaResource Include="..\Avalonia.PropertyGrid.Samples\Assets\country-flags\bl.png" Link="Assets\country-flags\bl.png" />
+    <AvaloniaResource Include="..\Avalonia.PropertyGrid.Samples\Assets\country-flags\ca.png" Link="Assets\country-flags\ca.png" />
+    <AvaloniaResource Include="..\Avalonia.PropertyGrid.Samples\Assets\country-flags\cn.png" Link="Assets\country-flags\cn.png" />
+    <AvaloniaResource Include="..\Avalonia.PropertyGrid.Samples\Assets\country-flags\de.png" Link="Assets\country-flags\de.png" />
+    <AvaloniaResource Include="..\Avalonia.PropertyGrid.Samples\Assets\country-flags\gb.png" Link="Assets\country-flags\gb.png" />
+    <AvaloniaResource Include="..\Avalonia.PropertyGrid.Samples\Assets\country-flags\ua.png" Link="Assets\country-flags\ua.png" />
+    <AvaloniaResource Include="..\Avalonia.PropertyGrid.Samples\Assets\country-flags\us.png" Link="Assets\country-flags\us.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -74,6 +74,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Assets\contry-flags\" />
+    <Folder Include="Assets\country-flags\" />
   </ItemGroup>
 </Project>
