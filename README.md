@@ -374,12 +374,37 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
     public class TestExtendsObject : MiniReactiveObject
     {
+        [Category("Struct")]
         public Vector3 vec3Object { get; set; } = new Vector3();
 
+        [Category("Struct")]
         public SVector3 vec3Struct { get; set; }
 
-        public BindingList<SVector3> vec3BindingList { get; set;} = new BindingList<SVector3>();
+        [Category("Struct")]
+        public BindingList<SVector3> vec3BindingList { get; set; } = new BindingList<SVector3>()
+        {
+            new SVector3(){ x = 7.8f, y = 3.14f, z = 0.0f }
+        };
+                
+        [Category("SelectableList")]
+        public SelectableList<CountryInfo> Countries { get; set; }
+
+
+        public TestExtendsObject()
+        {
+            List<CountryInfo> list = new List<CountryInfo>();
+
+            var assets = AssetLoader.GetAssets(new Uri($"avares://{GetType().Assembly.GetName().Name}/Assets/contry-flags"), null);
+            foreach (var asset in assets)
+            {
+                list.Add(new CountryInfo(asset));
+            }
+
+            Countries = new SelectableList<CountryInfo>(list, list.Find(x => x.Code == "cn"));
+        }
     }
+
+    // ignore some codes
 }
 ```
 There is also an example of SelectableList customization for reference.  
