@@ -3,11 +3,11 @@ This is a PropertyGrid implementation for Avalonia, you can use it in Avalonia A
 Its main features are:  
 * Support automatic analysis of class's Properties like DevExpress's PropertyGridControl and display and edit
 * Support simultaneous editing of multiple objects in one PropertyGrid
-* Support Supports custom types that implement the ICustomTypeDescriptor interface
+* Support custom types that implement the ICustomTypeDescriptor interface
 * Support array editing, support for creating, inserting, deleting and clearing in the control
 * Support data verification
 * Support Built-in undo and redo framework
-* Support Support for automatically adjusting the visibility of properties based on conditions
+* Support for automatically adjusting the visibility of properties based on conditions
 * Support path picking
 * Support two display modes: category-based and alphabetical sorting  
 * Support text filtering, regular expression filtering, and supports ignoring case settings  
@@ -47,6 +47,7 @@ Avalonia.PropertyGrid.Model.ComponentModel.WatermarkAttribute
 Avalonia.PropertyGrid.Model.ComponentModel.MultilineTextAttribute
 Avalonia.PropertyGrid.Model.ComponentModel.ProgressAttribute
 Avalonia.PropertyGrid.Model.ComponentModel.TrackableAttribute
+Avalonia.PropertyGrid.Model.ComponentModel.EnumDisplayNameAttribute
 Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations.DependsOnPropertyAttribute
 Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations.FileNameValidationAttribute
 Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations.PathBrowsableAttribute

@@ -111,29 +111,34 @@ namespace Avalonia.PropertyGrid.Localization
         /// <param name="e">The <see cref="PropertyChangedEventArgs"/> instance containing the event data.</param>
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if(e.PropertyName == nameof(CultureName) && IsLaunguageFileExists(CultureName))
+            if(e.PropertyName == nameof(CultureName))
             {
-                var url = new Uri($"avares://{GetType().Assembly.GetName().Name}/Assets/Localizations/{CultureName}.json");
-
-                using (var stream = AssetLoader.Open(url))
+                if(IsLaunguageFileExists(CultureName))
                 {
-                    using (StreamReader sr = new StreamReader(stream, Encoding.UTF8))
-                    {
-                        try
-                        {
-                            var tempDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(sr.ReadToEnd());
+                    var url = new Uri($"avares://{GetType().Assembly.GetName().Name}/Assets/Localizations/{CultureName}.json");
 
-                            if (tempDict != null)
+                    using (var stream = AssetLoader.Open(url))
+                    {
+                        using (StreamReader sr = new StreamReader(stream, Encoding.UTF8))
+                        {
+                            try
                             {
-                                LocalTexts = tempDict;
+                                var tempDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(sr.ReadToEnd());
+
+                                if (tempDict != null)
+                                {
+                                    LocalTexts = tempDict;
+                                }
+                            }
+                            catch
+                            {
+
                             }
                         }
-                        catch
-                        {
-
-                        }                        
                     }
                 }
+                
+                ExtraServices.ForEach(x=>x.CultureName = CultureName);
             }
         }
 
@@ -153,6 +158,48 @@ namespace Avalonia.PropertyGrid.Localization
         public void RemoveExtraService(ILocalizationService service)
         {
             ExtraServices.Remove(service);
+        }
+
+        /// <summary>
+        /// Gets the available cultures.
+        /// </summary>
+        /// <value>The available cultures.</value>
+        public CultureInfo[] AvailableCultures
+        {
+            get
+            {
+                HashSet<string> results = new HashSet<string>();
+
+                var url = new Uri($"avares://{GetType().Assembly.GetName().Name}/Assets/Localizations");
+                var assets = AssetLoader.GetAssets(url, null);
+                foreach (var i in assets)
+                {
+                    string cultureName = Path.GetFileNameWithoutExtension(i.LocalPath);
+                    if(!results.Contains(cultureName))
+                    {
+                        results.Add(cultureName);
+                    }
+                }
+
+                foreach(var i in ExtraServices)
+                {
+                    foreach(var culture in i.AvailableCultures)
+                    {
+                        if(!results.Contains(culture.Name))
+                        {
+                            results.Add(culture.Name);
+                        }
+                    }
+                }
+
+                List<CultureInfo> list = new List<CultureInfo>();
+                foreach(var i in results)
+                {
+                    list.Add(new CultureInfo(i));
+                }
+
+                return list.ToArray();
+            }
         }
     }
 }

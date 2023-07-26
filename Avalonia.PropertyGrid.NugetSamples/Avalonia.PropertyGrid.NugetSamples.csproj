@@ -36,6 +36,7 @@
     <Compile Include="..\Avalonia.PropertyGrid.Samples\Models\TestExtendsObject.cs" Link="Models\TestExtendsObject.cs" />
     <Compile Include="..\Avalonia.PropertyGrid.Samples\Models\Vector3.cs" Link="Models\Vector3.cs" />
     <Compile Include="..\Avalonia.PropertyGrid.Samples\ViewModels\MainDemoViewModel.cs" Link="ViewModels\MainDemoViewModel.cs" />
+    <Compile Include="..\Avalonia.PropertyGrid.Samples\ViewModels\SampleLocalizationService.cs" Link="ViewModels\SampleLocalizationService.cs" />
     <Compile Include="..\Avalonia.PropertyGrid.Samples\Views\AppThemeUtils.cs" Link="Views\AppThemeUtils.cs" />
     <Compile Include="..\Avalonia.PropertyGrid.Samples\Views\CountryView.axaml.cs" Link="Views\CountryView.axaml.cs" />
     <Compile Include="..\Avalonia.PropertyGrid.Samples\Views\MainDemoView.axaml.cs" Link="Views\MainDemoView.axaml.cs" />
@@ -61,19 +62,26 @@
     <AvaloniaResource Include="..\Avalonia.PropertyGrid.Samples\Assets\country-flags\us.png" Link="Assets\country-flags\us.png" />
   </ItemGroup>
 
+  
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
-    <PackageReference Include="Avalonia.Controls.ColorPicker" Version="11.0.0" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
-    <PackageReference Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)" />
+    <AvaloniaResource Include="..\Avalonia.PropertyGrid.Samples\Assets\Localizations\en-US.json" Link="Assets\Localizations\en-US.json" />
+    <AvaloniaResource Include="..\Avalonia.PropertyGrid.Samples\Assets\Localizations\zh-CN.json" Link="Assets\Localizations\zh-CN.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="11.0.1" />
+    <PackageReference Include="Avalonia.Controls.ColorPicker" Version="11.0.1" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.1" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.1" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.1" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
-    <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.0" />
-    <PackageReference Include="bodong.Avalonia.PropertyGrid" Version="11.0.0.6" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.1" />
+    <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.1" />
+    <PackageReference Include="bodong.Avalonia.PropertyGrid" Version="11.0.1.1" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Assets\country-flags\" />
+    <Folder Include="Assets\Localizations\" />
   </ItemGroup>
 </Project>

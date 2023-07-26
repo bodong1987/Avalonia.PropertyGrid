@@ -56,7 +56,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                 if(watermarkAttr!=null)
                 {
-                    control.Watermark = watermarkAttr.Watermask;
+                    control.Watermark = PropertyGrid.LocalizationService[watermarkAttr.Watermask];
                 }
 
                 control.ButtonClick += async (s, e) =>
@@ -94,7 +94,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                 if (watermarkAttr != null)
                 {
-                    control.Watermark = watermarkAttr.Watermask;
+                    control.Watermark = PropertyGrid.LocalizationService[watermarkAttr.Watermask];
                 }
 
                 if (propertyDescriptor.GetCustomAttribute<PasswordPropertyTextAttribute>() is PasswordPropertyTextAttribute ppt && ppt.Password)

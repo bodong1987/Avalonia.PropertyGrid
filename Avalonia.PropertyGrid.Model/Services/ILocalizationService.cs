@@ -1,6 +1,7 @@
 ﻿using Avalonia.PropertyGrid.Model.ComponentModel;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +27,12 @@ namespace Avalonia.PropertyGrid.Model.Services
         /// </summary>
         /// <value>The name of the culture.</value>
         string CultureName { get; set; }
+
+        /// <summary>
+        /// Gets the available cultures.
+        /// </summary>
+        /// <value>The available cultures.</value>
+        CultureInfo[] AvailableCultures { get; }
 
         /// <summary>
         /// Adds the extra service.

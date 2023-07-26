@@ -5,7 +5,8 @@
              mc:Ignorable="d" d:DesignWidth="1400" d:DesignHeight="900"
              x:Class="Avalonia.PropertyGrid.Samples.Views.MainDemoView"
              xmlns:pgc="clr-namespace:Avalonia.PropertyGrid.Controls;assembly=Avalonia.PropertyGrid"
-		     xmlns:lv="clr-namespace:Avalonia.PropertyGrid.Samples.Views"             
+		     xmlns:lv="clr-namespace:Avalonia.PropertyGrid.Samples.Views"
+			 xmlns:ll="clr-namespace:Avalonia.PropertyGrid.Localization;assembly=Avalonia.PropertyGrid"
              >
     <UserControl.Styles>
         <StyleInclude Source="/Views/Vector3View.axaml"></StyleInclude>
@@ -14,13 +15,13 @@
 
     <Grid RowDefinitions="*, Auto">
         <TabControl TabStripPlacement="Left" Grid.Row="0" Padding="4">
-            <TabItem Header="Basic">
+            <TabItem Header="{ll:Localize Basic}">
                 <ScrollViewer>
                     <pgc:PropertyGrid Margin="4" SelectedObject="{Binding simpleObject}"></pgc:PropertyGrid>
                 </ScrollViewer>
             </TabItem>
 
-            <TabItem Header="Styles">
+            <TabItem Header="{ll:Localize Styles}">
                 <Grid RowDefinitions="*,Auto">
                     <ScrollViewer>
                         <pgc:PropertyGrid
@@ -49,7 +50,7 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Header="DataSync">
+            <TabItem Header="{ll:Localize DataSync}">
                 <ScrollViewer>
                     <Grid ColumnDefinitions="1*,2,1*">
                         <GridSplitter Grid.Column="1"></GridSplitter>
@@ -58,7 +59,7 @@
                     </Grid>
                 </ScrollViewer>
             </TabItem>
-            <TabItem Header="MultiObjects">
+            <TabItem Header="{ll:Localize MultiObjects}">
                 <ScrollViewer>
                     <Grid ColumnDefinitions="1*,2,1*,2,1*">
                         <GridSplitter Grid.Column="1"></GridSplitter>
@@ -78,19 +79,19 @@
                     </Grid>
                 </ScrollViewer>
             </TabItem>
-            <TabItem Header="CustomObject">
+            <TabItem Header="{ll:Localize CustomObject}">
                 <ScrollViewer>
                     <pgc:PropertyGrid Margin="4" SelectedObject="{Binding customOptions}"></pgc:PropertyGrid>
                 </ScrollViewer>
             </TabItem>
 
-            <TabItem Header="CustomCellEdit">
+            <TabItem Header="{ll:Localize CustomCellEdit}">
                 <ScrollViewer>
                     <lv:ToggleSwitchExtensionPropertyGrid Margin="4" SelectedObject="{Binding simpleExtends}"></lv:ToggleSwitchExtensionPropertyGrid>
                 </ScrollViewer>
             </TabItem>
 
-            <TabItem Header="Extends">
+            <TabItem Header="{ll:Localize Extends}">
                 <ScrollViewer>
                     <Grid ColumnDefinitions="1*,2,1*">
 						<Expander IsExpanded="True" Margin="2" Grid.Column="0" Header="Native" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
@@ -105,26 +106,26 @@
                 </ScrollViewer>
             </TabItem>
 
-            <TabItem Header="Dynamic Visibility">
+            <TabItem Header="{ll:Localize Dynamic_Visibility}">
                 <ScrollViewer>
                     <pgc:PropertyGrid Margin="4" SelectedObject="{Binding dynamicVisiblity}"></pgc:PropertyGrid>
                 </ScrollViewer>
             </TabItem>
 
-            <TabItem Header="RedoUndo">
+            <TabItem Header="{ll:Localize RedoUndo}">
                 <Grid RowDefinitions="Auto, *">
                     <StackPanel Orientation="Horizontal" Margin="6">
                         <Button IsEnabled="{Binding cancelableObject.CanUndo}" 
-                                Content="Undo" Margin="2" 
+                                Content="{ll:Localize Undo}" Margin="2" 
                                 Command="{Binding cancelableObject.UndoCommand}"
                                 ToolTip.Tip="{Binding cancelableObject.UndoDescription}"
                                 ></Button>
                         <Button IsEnabled="{Binding cancelableObject.CanRedo}" 
-                                Content="Redo" Margin="2" 
+                                Content="{ll:Localize Redo}" Margin="2" 
                                 Command="{Binding cancelableObject.RedoCommand}"
                                 ToolTip.Tip="{Binding cancelableObject.RedoDescription}"
                                 ></Button>
-                        <Button Content="Clear" Margin="2"
+                        <Button Content="{ll:Localize Clear}" Margin="2"
                                 Command="{Binding cancelableObject.ClearCommand}"
                                 ToolTip.Tip="Clear all cached commands"
                                 ></Button>
@@ -139,7 +140,7 @@
 
             </TabItem>
 
-            <TabItem Header="Self's Properties">
+            <TabItem Header="{ll:Localize Self_s_Properties}">
                 <ScrollViewer>
                     <pgc:PropertyGrid x:Name="propertyGrid_ShowControlProperties" Margin="4">
                     </pgc:PropertyGrid>
@@ -147,14 +148,14 @@
             </TabItem>
         </TabControl>
         <StackPanel Margin="4" Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right">
-            <TextBlock Text="Theme" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="2" ></TextBlock>
+            <TextBlock Text="{ll:Localize Theme}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="2" ></TextBlock>
             <ComboBox x:Name="ThemeBox" Width="125" Padding="4" SelectedIndex="0">
                 <ComboBox.Items>
                     <lv:ThemeType>Fluent</lv:ThemeType>
                     <lv:ThemeType>Simple</lv:ThemeType>
                 </ComboBox.Items>
             </ComboBox>
-            <TextBlock Text="ThemeVariants" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="2"></TextBlock>
+            <TextBlock Text="{ll:Localize ThemeVariants}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="2"></TextBlock>
             <ComboBox x:Name="ThemeVariantsBox"
                       Width="125"
                       Padding="4"
