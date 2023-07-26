@@ -123,6 +123,10 @@
                                 Command="{Binding cancelableObject.RedoCommand}"
                                 ToolTip.Tip="{Binding cancelableObject.RedoDescription}"
                                 ></Button>
+                        <Button Content="Clear" Margin="2"
+                                Command="{Binding cancelableObject.ClearCommand}"
+                                ToolTip.Tip="Clear all cached commands"
+                                ></Button>
                     </StackPanel>
                     <ScrollViewer Grid.Row="1">
                         <pgc:PropertyGrid x:Name="proeprtyGrid_RedoUndo" 

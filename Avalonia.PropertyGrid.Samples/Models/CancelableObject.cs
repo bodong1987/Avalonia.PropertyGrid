@@ -32,6 +32,9 @@ namespace Avalonia.PropertyGrid.Samples.Models
         [Browsable(false)]
         public ICommand RedoCommand { get; set; }
 
+        [Browsable(false)]
+        public ICommand ClearCommand { get; set; }
+
         public CancelableObject(string description) : base(description)
         {
             UndoCommand = ReactiveCommand.Create(() =>
@@ -42,6 +45,11 @@ namespace Avalonia.PropertyGrid.Samples.Models
             RedoCommand = ReactiveCommand.Create(() =>
             {
                 _Recorder.Redo();
+            });
+
+            ClearCommand = ReactiveCommand.Create(() =>
+            {
+                _Recorder.Clear();
             });
 
             _Recorder.OnNewCommandAdded += (s, e) => RefreshFlags();
