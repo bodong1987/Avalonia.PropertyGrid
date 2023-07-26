@@ -1,4 +1,6 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Controls.Templates;
+using Avalonia.Data;
 using Avalonia.Media;
 using System;
 using System.Collections.Generic;
@@ -25,6 +27,13 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             ComboBox control = new ComboBox();
             control.ItemsSource = FontManager.Current.SystemFonts.ToArray();
             control.HorizontalAlignment = Layout.HorizontalAlignment.Stretch;
+            control.ItemTemplate = new FuncDataTemplate<FontFamily>((value, namescope) =>            
+                new TextBlock
+                {
+                    [!TextBlock.TextProperty] = new Binding("Name"),
+                    [!TextBlock.FontFamilyProperty] = new Binding()
+                }
+            );
 
             control.SelectionChanged += (s, e) =>
             {
