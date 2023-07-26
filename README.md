@@ -382,6 +382,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
     }
 }
 ```
+There is also an example of SelectableList customization for reference.  
 More details can be seen in the file TestExtendPropertyGrid.cs.  
 
 ### Dynamic Visibility

@@ -13,11 +13,26 @@ using System.Text;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
-    internal class ExpandableCellEditFactory : AbstractCellEditFactory
+    /// <summary>
+    /// Class ExpandableCellEditFactory.
+    /// Implements the <see cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
+    /// </summary>
+    /// <seealso cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
+    public class ExpandableCellEditFactory : AbstractCellEditFactory
     {
+        /// <summary>
+        /// Gets the import priority.
+        /// The larger the value, the earlier the object will be processed
+        /// </summary>
+        /// <value>The import priority.</value>
         public override int ImportPriority => int.MinValue + 10000;
 
-        private bool IsExpandableType(PropertyDescriptor property)
+        /// <summary>
+        /// Determines whether [is expandable type] [the specified property].
+        /// </summary>
+        /// <param name="property">The property.</param>
+        /// <returns><c>true</c> if [is expandable type] [the specified property]; otherwise, <c>false</c>.</returns>
+        protected virtual bool IsExpandableType(PropertyDescriptor property)
         {
             if (!property.PropertyType.IsClass)
             {
@@ -36,6 +51,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             return attr != null && attr.GetConverterType().IsChildOf<ExpandableObjectConverter>();
         }
 
+        /// <summary>
+        /// Handles the new property.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns>Control.</returns>
         public override Control HandleNewProperty(PropertyCellContext context)
         {
             var propertyDescriptor = context.Property;
@@ -84,6 +104,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             return border;
         }
 
+        /// <summary>
+        /// Handles the property changed.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public override bool HandlePropertyChanged(PropertyCellContext context)
         {
             var propertyDescriptor = context.Property;
@@ -112,6 +137,14 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             return false;
         }
 
+        /// <summary>
+        /// Handles the propagate visibility.
+        /// </summary>
+        /// <param name="target">The target.</param>
+        /// <param name="propertyDescriptor">The property descriptor.</param>
+        /// <param name="control">The control.</param>
+        /// <param name="filterContext">The filter context.</param>
+        /// <returns>System.Nullable&lt;PropertyVisibility&gt;.</returns>
         public override PropertyVisibility? HandlePropagateVisibility(object target, PropertyDescriptor propertyDescriptor, Control control, IPropertyGridFilterContext filterContext)
         {
             if(!IsExpandableType(propertyDescriptor))

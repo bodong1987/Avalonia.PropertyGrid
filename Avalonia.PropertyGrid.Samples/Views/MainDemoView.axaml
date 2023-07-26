@@ -8,7 +8,8 @@
 		     xmlns:lv="clr-namespace:Avalonia.PropertyGrid.Samples.Views"             
              >
     <UserControl.Styles>
-        <StyleInclude Source="/Views/Vector3View.axaml"></StyleInclude>        
+        <StyleInclude Source="/Views/Vector3View.axaml"></StyleInclude>
+        <StyleInclude Source="/Views/CountryView.axaml"></StyleInclude>
     </UserControl.Styles>
 
     <Grid RowDefinitions="*, Auto">
@@ -85,7 +86,7 @@
 
             <TabItem Header="CustomCellEdit">
                 <ScrollViewer>
-                    <lv:ToggleSwitchExtensionPropertyGrid Margin="4" SelectedObject="{Binding booleanExtension}"></lv:ToggleSwitchExtensionPropertyGrid>
+                    <lv:ToggleSwitchExtensionPropertyGrid Margin="4" SelectedObject="{Binding simpleExtends}"></lv:ToggleSwitchExtensionPropertyGrid>
                 </ScrollViewer>
             </TabItem>
 

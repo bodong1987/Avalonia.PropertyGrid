@@ -231,5 +231,75 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         {
             return null;
         }
+
+        /// <summary>
+        /// Checks the equal.
+        /// </summary>
+        /// <param name="first">The first.</param>
+        /// <param name="second">The second.</param>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        protected virtual bool CheckEqual(object first, object second)
+        {
+            if (first == null && second == null)
+            {
+                return true;
+            }
+
+            if (first == null || second == null)
+            {
+                return false;
+            }
+
+            return first.Equals(second);
+        }
+
+        /// <summary>
+        /// Checks the equals.
+        /// </summary>
+        /// <param name="first">The first.</param>
+        /// <param name="second">The second.</param>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        protected virtual bool CheckEquals(object[] first, object[] second)
+        {
+            if (first == null && second == null)
+            {
+                return true;
+            }
+
+            if (first == null || second == null)
+            {
+                return false;
+            }
+
+            if (first.Length == second.Length)
+            {
+                for (int i = 0; i < first.Length; i++)
+                {
+                    if (!first[i].Equals(second[i]))
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Arrays to string.
+        /// </summary>
+        /// <param name="array">The array.</param>
+        /// <returns>System.String.</returns>
+        protected virtual string ArrayToString(object[] array)
+        {
+            if (array == null || array.Length == 0)
+            {
+                return string.Empty;
+            }
+
+            return string.Join(", ", array.Select(x => x.ToString()));
+        }
     }
 }

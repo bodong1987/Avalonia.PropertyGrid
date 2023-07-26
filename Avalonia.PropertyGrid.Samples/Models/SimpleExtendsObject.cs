@@ -1,14 +1,18 @@
-﻿using Avalonia.PropertyGrid.Model.ComponentModel;
+﻿using Avalonia.Platform;
+using Avalonia.PropertyGrid.Model.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Avalonia.PropertyGrid.Samples.Models
 {
-    public class BooleanExtensionObject : MiniReactiveObject
+    public class SimpleExtendsObject : MiniReactiveObject
     {
         public bool toggleAble { get; set; } = true;
 

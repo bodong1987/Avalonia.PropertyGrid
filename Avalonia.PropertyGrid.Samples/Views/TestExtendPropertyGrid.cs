@@ -1,6 +1,9 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Controls.Templates;
 using Avalonia.PropertyGrid.Controls;
 using Avalonia.PropertyGrid.Controls.Factories;
+using Avalonia.PropertyGrid.Controls.Factories.Builtins;
+using Avalonia.PropertyGrid.Model.Collections;
 using Avalonia.PropertyGrid.Model.ComponentModel;
 using Avalonia.PropertyGrid.Samples.Models;
 using System;
@@ -17,9 +20,11 @@ namespace Avalonia.PropertyGrid.Samples.Views
         static TestExtendPropertyGrid()
         {
             FactoryTemplates.AddFactory(new Vector3CellEditFactory());
+            FactoryTemplates.AddFactory(new CountryInfoCellEditFactory());
         }
     }
 
+    #region SVector3
     public class SVector3ViewModel : MiniReactiveObject
     {
         public SVector3 _vec;
@@ -114,4 +119,37 @@ namespace Avalonia.PropertyGrid.Samples.Views
             return false;
         }
     }
+    #endregion
+
+    #region Countries
+    internal class CountryInfoCellEditFactory : SelectableListCellEditFactory
+    {
+        public override int ImportPriority => base.ImportPriority + 100;
+
+        public override bool Accept(object accessToken)
+        {
+            return accessToken is TestExtendPropertyGrid;
+        }
+
+        public override Control HandleNewProperty(PropertyCellContext context)
+        {
+            if(context.Property.PropertyType != typeof(SelectableList<CountryInfo>))
+            {
+                return null;
+            }
+
+            Control control = base.HandleNewProperty(context);
+
+            if(control is ComboBox cb)
+            {
+                cb.ItemTemplate = new FuncDataTemplate<CountryInfo>((value, namescope) =>
+                {
+                    return new CountryView();
+                });
+            }
+
+            return control;
+        }
+    }
+    #endregion
 }

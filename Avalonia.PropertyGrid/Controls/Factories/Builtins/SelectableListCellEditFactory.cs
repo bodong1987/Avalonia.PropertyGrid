@@ -11,10 +11,25 @@ using Avalonia.PropertyGrid.Model.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
-    internal class SelectableListCellEditFactory : AbstractCellEditFactory
+    /// <summary>
+    /// Class SelectableListCellEditFactory.
+    /// Implements the <see cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
+    /// </summary>
+    /// <seealso cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
+    public class SelectableListCellEditFactory : AbstractCellEditFactory
     {
+        /// <summary>
+        /// Gets the import priority.
+        /// The larger the value, the earlier the object will be processed
+        /// </summary>
+        /// <value>The import priority.</value>
         public override int ImportPriority => base.ImportPriority - 100000;
 
+        /// <summary>
+        /// Handles the new property.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns>Control.</returns>
         public override Control HandleNewProperty(PropertyCellContext context)
         {
             var propertyDescriptor = context.Property;
@@ -66,7 +81,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             {
                 list.SelectionChanged += (s, e) =>
                 {
-                    if(control.SelectedItem == null || !control.SelectedItem.Equals(list.SelectedValue))
+                    if(!CheckEqual(control.SelectedItem, list.SelectedValue))
                     {
                         control.SelectedItem = list.SelectedValue;
                     }                    
@@ -76,6 +91,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             return control;
         }
 
+        /// <summary>
+        /// Handles the property changed.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public override bool HandlePropertyChanged(PropertyCellContext context)
         {
             var propertyDescriptor = context.Property;
@@ -92,8 +112,16 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             if (control is ComboBox cb)
             {
                 var list = propertyDescriptor.GetValue(target) as ISelectableList;
-                cb.ItemsSource = list?.Values;
-                cb.SelectedItem = list?.SelectedValue;
+
+                if(!CheckEquals(cb.ItemsSource as object[], list?.Values))
+                {
+                    cb.ItemsSource = list?.Values;
+                }
+                
+                if(!CheckEqual(cb.SelectedItem, list?.SelectedValue))
+                {
+                    cb.SelectedItem = list?.SelectedValue;
+                }                
 
                 return true;
             }

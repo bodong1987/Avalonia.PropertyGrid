@@ -10,7 +10,12 @@ using System.Threading.Tasks;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
-    internal class EnumCellEditFactory : AbstractCellEditFactory
+    /// <summary>
+    /// Class EnumCellEditFactory.
+    /// Implements the <see cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
+    /// </summary>
+    /// <seealso cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
+    public class EnumCellEditFactory : AbstractCellEditFactory
     {
         /// <summary>
         /// Gets the import priority.
@@ -19,6 +24,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <value>The import priority.</value>
         public override int ImportPriority => base.ImportPriority - 100000;
 
+        /// <summary>
+        /// Handles the new property.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns>Control.</returns>
         public override Control HandleNewProperty(PropertyCellContext context)
         {
             var propertyDescriptor = context.Property;
@@ -75,6 +85,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             }
         }
 
+        /// <summary>
+        /// Handles the property changed.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public override bool HandlePropertyChanged(PropertyCellContext context)
         {
             var propertyDescriptor = context.Property;

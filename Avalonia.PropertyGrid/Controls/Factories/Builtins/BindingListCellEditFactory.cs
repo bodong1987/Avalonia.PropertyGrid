@@ -14,8 +14,18 @@ using System.Threading.Tasks;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
-    internal class BindingListCellEditFactory : AbstractCellEditFactory
+    /// <summary>
+    /// Class BindingListCellEditFactory.
+    /// Implements the <see cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
+    /// </summary>
+    /// <seealso cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
+    public class BindingListCellEditFactory : AbstractCellEditFactory
     {
+        /// <summary>
+        /// Gets the import priority.
+        /// The larger the value, the earlier the object will be processed
+        /// </summary>
+        /// <value>The import priority.</value>
         public override int ImportPriority => base.ImportPriority - 1000000;
 
         /// <summary>
@@ -45,6 +55,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             return null;
         }
 
+        /// <summary>
+        /// Handles the new property.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns>Control.</returns>
         public override Control HandleNewProperty(PropertyCellContext context)
         {
             if (!IsAcceptType(context.Property) || context.Property.GetValue(context.Target) == null)
@@ -74,6 +89,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             return control;
         }
 
+        /// <summary>
+        /// Handles the property changed.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public override bool HandlePropertyChanged(PropertyCellContext context)
         {
             if (!IsAcceptType(context.Property))
@@ -93,7 +113,14 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             return false;
         }
 
-        private void HandleRemoveElement(object s, BindingListRoutedEventArgs e, PropertyCellContext context, BindingListEdit control)
+        /// <summary>
+        /// Handles the remove element.
+        /// </summary>
+        /// <param name="s">The s.</param>
+        /// <param name="e">The <see cref="BindingListRoutedEventArgs"/> instance containing the event data.</param>
+        /// <param name="context">The context.</param>
+        /// <param name="control">The control.</param>
+        protected virtual void HandleRemoveElement(object s, BindingListRoutedEventArgs e, PropertyCellContext context, BindingListEdit control)
         {
             Debug.Assert(e.Index != -1);
 
@@ -150,7 +177,14 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             }            
         }
 
-        private void HandleClearElements(object s, BindingListRoutedEventArgs e, PropertyCellContext context, BindingListEdit control)
+        /// <summary>
+        /// Handles the clear elements.
+        /// </summary>
+        /// <param name="s">The s.</param>
+        /// <param name="e">The <see cref="BindingListRoutedEventArgs"/> instance containing the event data.</param>
+        /// <param name="context">The context.</param>
+        /// <param name="control">The control.</param>
+        protected virtual void HandleClearElements(object s, BindingListRoutedEventArgs e, PropertyCellContext context, BindingListEdit control)
         {
             var value = context.GetValue() as IBindingList;
 
@@ -193,7 +227,14 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             }
         }
 
-        private void HandleInsertElement(object s, BindingListRoutedEventArgs e, PropertyCellContext context, BindingListEdit control)
+        /// <summary>
+        /// Handles the insert element.
+        /// </summary>
+        /// <param name="s">The s.</param>
+        /// <param name="e">The <see cref="BindingListRoutedEventArgs"/> instance containing the event data.</param>
+        /// <param name="context">The context.</param>
+        /// <param name="control">The control.</param>
+        protected virtual void HandleInsertElement(object s, BindingListRoutedEventArgs e, PropertyCellContext context, BindingListEdit control)
         {
             Debug.Assert(e.Index != -1);
 
@@ -240,7 +281,14 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             }
         }
 
-        private void HandleNewElement(object s, BindingListRoutedEventArgs e, PropertyCellContext context, BindingListEdit control)
+        /// <summary>
+        /// Handles the new element.
+        /// </summary>
+        /// <param name="s">The s.</param>
+        /// <param name="e">The <see cref="BindingListRoutedEventArgs"/> instance containing the event data.</param>
+        /// <param name="context">The context.</param>
+        /// <param name="control">The control.</param>
+        protected virtual void HandleNewElement(object s, BindingListRoutedEventArgs e, PropertyCellContext context, BindingListEdit control)
         {
             var value = context.GetValue() as IBindingList;
 
@@ -279,7 +327,14 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             }
         }
 
-        private void HandleElementValueChanged(object s, BindingListRoutedEventArgs e, PropertyCellContext context, BindingListEdit control)
+        /// <summary>
+        /// Handles the element value changed.
+        /// </summary>
+        /// <param name="s">The s.</param>
+        /// <param name="e">The <see cref="BindingListRoutedEventArgs"/> instance containing the event data.</param>
+        /// <param name="context">The context.</param>
+        /// <param name="control">The control.</param>
+        protected virtual void HandleElementValueChanged(object s, BindingListRoutedEventArgs e, PropertyCellContext context, BindingListEdit control)
         {
             // element has been changed
             // we just raise event, so property grid can refresh ui...

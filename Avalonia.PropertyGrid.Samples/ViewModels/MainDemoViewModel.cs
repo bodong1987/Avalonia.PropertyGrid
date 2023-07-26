@@ -33,9 +33,9 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
         readonly ScriptableOptions _Options = new ScriptableOptions();
         public ScriptableOptions customOptions => _Options;
 
-        readonly BooleanExtensionObject _BooleanExtension = new BooleanExtensionObject();
+        readonly SimpleExtendsObject _SimpleExtends = new SimpleExtendsObject();
 
-        public BooleanExtensionObject booleanExtension => _BooleanExtension;
+        public SimpleExtendsObject simpleExtends => _SimpleExtends;
 
         readonly DynamicVisibilityObject _DynamicVisiblityObject = new DynamicVisibilityObject();
         public DynamicVisibilityObject dynamicVisiblity => _DynamicVisiblityObject;
