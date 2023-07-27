@@ -1,4 +1,9 @@
 ﻿{
-  "Dynamic_Visibility": "Dynamic Visibility",
-  "Self_s_Properties": "Self's Properties"
+    "Dynamic_Visibility": "Dynamic Visibility",
+    "Self_s_Properties": "Self's Properties",
+    "Show_Category": "Show Category",
+    "Allow_Filter": "Allow Filter",
+    "Allow_Quick_Filter": "Allow Quick Filter",
+    "Show_Title": "Show Title",
+    "Name_Width": "Name Width"
 }

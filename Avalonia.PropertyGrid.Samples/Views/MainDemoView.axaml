@@ -36,15 +36,15 @@
                         </pgc:PropertyGrid>
                     </ScrollViewer>
                     <StackPanel Orientation="Horizontal" Grid.Row="1">
-                        <TextBlock VerticalAlignment="Center" Margin="4">Show Category:</TextBlock>
+                        <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Show_Category}"></TextBlock>
                         <ToggleSwitch IsChecked="{Binding IsShowCategory}" Margin="4"></ToggleSwitch>
-                        <TextBlock VerticalAlignment="Center" Margin="4">Allow Filter:</TextBlock>
+                        <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Allow_Filter}"></TextBlock>
                         <ToggleSwitch IsChecked="{Binding AllowFilter}" Margin="4"></ToggleSwitch>
-                        <TextBlock VerticalAlignment="Center" Margin="4">Allow Quick Filter:</TextBlock>
+                        <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Allow_Quick_Filter}"></TextBlock>
                         <ToggleSwitch IsChecked="{Binding AllowQuickFilter}" Margin="4"></ToggleSwitch>
-                        <TextBlock VerticalAlignment="Center" Margin="4">ShowTitle:</TextBlock>
+                        <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Show_Title}"></TextBlock>
                         <ToggleSwitch IsChecked="{Binding IsShowTitle}" Margin="4"></ToggleSwitch>
-                        <TextBlock VerticalAlignment="Center" Margin="4">Name Width:</TextBlock>
+                        <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Name_Width}"></TextBlock>
                         <Slider Minimum="60" Maximum="400" Value="{Binding DefaultNameWidth}" Margin="4" Width="180"></Slider>
                     </StackPanel>
                 </Grid>

@@ -119,5 +119,11 @@
     "This path can be validated": "此路径可以被校验",
     "Image Path": "图像路径",
     "Your Target Name": "您的目标名称",
-    "Input your password": "请输入您的密码"
+    "Input your password": "请输入您的密码",
+
+    "Show_Category": "显示分类",
+    "Allow_Filter": "允许过滤",
+    "Allow_Quick_Filter": "允许快速过滤",
+    "Show_Title": "显示标题",
+    "Name_Width": "名称宽度"
 }
