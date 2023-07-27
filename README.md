@@ -15,7 +15,7 @@ Its main features are:
 * Support data automatic reloading
 * Support automatic expansion of sub-objects
 * Support adjust the width of the property name and property value by drag the title
-* Support localization
+* Support localization and realtime change language without restart
 * Support custom property cell editors
 
 ## How To Use
