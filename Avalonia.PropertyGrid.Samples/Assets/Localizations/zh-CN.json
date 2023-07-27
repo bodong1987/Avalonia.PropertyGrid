@@ -42,6 +42,8 @@
     "Undo": "撤销",
     "Redo": "重做",
     "Clear": "清空",
+    "FirstObject": "第一个对象",
+    "SecondObject": "第二个对象",
 
 
     // sample property name

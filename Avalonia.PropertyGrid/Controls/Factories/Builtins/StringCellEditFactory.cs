@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using Avalonia.PropertyGrid.Localization;
 using Avalonia.PropertyGrid.Model.ComponentModel;
 using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
 using Avalonia.PropertyGrid.Model.Extensions;
@@ -57,7 +58,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                 if(watermarkAttr!=null)
                 {
-                    control.Watermark = LocalizationService.Default[watermarkAttr.Watermask];
+                    // control.Watermark = LocalizationService.Default[watermarkAttr.Watermask];
+                    control.SetLocalizeBinding(ButtonEdit.WatermarkProperty, watermarkAttr.Watermask);
                 }
 
                 control.ButtonClick += async (s, e) =>
@@ -95,7 +97,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                 if (watermarkAttr != null)
                 {
-                    control.Watermark = LocalizationService.Default[watermarkAttr.Watermask];
+                    // control.Watermark = LocalizationService.Default[watermarkAttr.Watermask];
+                    control.SetLocalizeBinding(TextBox.WatermarkProperty, watermarkAttr.Watermask);
                 }
 
                 if (propertyDescriptor.GetCustomAttribute<PasswordPropertyTextAttribute>() is PasswordPropertyTextAttribute ppt && ppt.Password)

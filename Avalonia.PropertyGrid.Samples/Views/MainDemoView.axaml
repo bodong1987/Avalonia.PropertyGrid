@@ -65,15 +65,15 @@
                         <GridSplitter Grid.Column="1"></GridSplitter>
                         <GridSplitter Grid.Column="3"></GridSplitter>
                         <StackPanel Orientation="Vertical">
-                            <TextBlock>MultiObjects's Properties</TextBlock>
+                            <TextBlock Text="{ll:Localize MultiObjects}"></TextBlock>
                             <pgc:PropertyGrid x:Name="propertyGrid_MultipleObjects" Margin="2" SelectedObject="{Binding multiObjects}"></pgc:PropertyGrid>
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Grid.Column="2">
-                            <TextBlock>First Object's Properties</TextBlock>
+                            <TextBlock Text="{ll:Localize FirstObject}"></TextBlock>
                             <pgc:PropertyGrid x:Name="propertyGrid_MultipleObjects0" Margin="2" SelectedObject="{Binding multiObject0}"></pgc:PropertyGrid>
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Grid.Column="4">
-                            <TextBlock>Second Object's Properties</TextBlock>
+                            <TextBlock Text="{ll:Localize SecondObject}"></TextBlock>
                             <pgc:PropertyGrid x:Name="propertyGrid_MultipleObjects1" Margin="2" SelectedObject="{Binding multiObject1}"></pgc:PropertyGrid>
                         </StackPanel>
                     </Grid>
@@ -94,11 +94,11 @@
             <TabItem Header="{ll:Localize Extends}">
                 <ScrollViewer>
                     <Grid ColumnDefinitions="1*,2,1*">
-						<Expander IsExpanded="True" Margin="2" Grid.Column="0" Header="Native" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+						<Expander IsExpanded="True" Margin="2" Grid.Column="0" Header="{ll:Localize Native}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
 							<pgc:PropertyGrid SelectedObject="{Binding extendsObject}"></pgc:PropertyGrid>
 						</Expander>
 						<GridSplitter Grid.Column="1"></GridSplitter>
-						<Expander IsExpanded="True" Header="Extends" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+						<Expander IsExpanded="True" Header="{ll:Localize Extends}" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
 							<lv:TestExtendPropertyGrid Margin="2" SelectedObject="{Binding extendsObject}"></lv:TestExtendPropertyGrid>
 						</Expander>
 						
