@@ -246,7 +246,7 @@ The purpose is to let PropertyGrid know that when this property changes, it need
 ### User Localization
 Implement your Avalonia.PropertyGrid.Model.Services.ILocalizationService class, and register its instance by :
 ```C#
-    PropertyGrid.LocalizationService.AddExtraService(new YourLocalizationService());
+    LocalizationService.Default.AddExtraService(new YourLocalizationService());
 ```
 If you want to provide the corresponding language pack for the built-in text, please add the corresponding file to Avalonia.PropertyGrid/Assets/Localizations, and name it with the CultureInfo.Name of the language. for example:  
 ```
@@ -262,7 +262,7 @@ To customize CellEdit, you need to implement a Factory class from AbstractCellEd
     {
         static ToggleSwitchExtensionPropertyGrid()
         {
-            FactoryTemplates.AddFactory(new ToggleSwitchCellEditFactory());
+            CellEditFactoryService.Default.AddFactory(new ToggleSwitchCellEditFactory());
         }
     }
 
