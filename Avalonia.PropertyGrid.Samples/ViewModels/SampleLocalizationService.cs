@@ -7,7 +7,11 @@ using System.Threading.Tasks;
 
 namespace Avalonia.PropertyGrid.Samples.ViewModels
 {
-    internal class SampleLocalizationService : JsonAssetLocalizationService
+    internal class SampleLocalizationService : AssemblyJsonAssetLocalizationService
     {
+        public SampleLocalizationService() :
+            base(typeof(SampleLocalizationService).Assembly)
+        {
+        }
     }
 }

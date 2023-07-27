@@ -6,7 +6,6 @@ using Avalonia.PropertyGrid.Controls.Implements;
 using Avalonia.PropertyGrid.Model.ComponentModel;
 using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
 using Avalonia.PropertyGrid.Model.Extensions;
-using Avalonia.PropertyGrid.Model.Services;
 using Avalonia.PropertyGrid.Model.Utils;
 using Avalonia.PropertyGrid.Services;
 using Avalonia.PropertyGrid.ViewModels;

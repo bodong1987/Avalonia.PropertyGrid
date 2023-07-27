@@ -1,7 +1,8 @@
 ﻿using Avalonia.PropertyGrid.Localization;
-using Avalonia.PropertyGrid.Model.Services;
+using Avalonia.PropertyGrid.Model.Localilzation;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace Avalonia.PropertyGrid.Services
@@ -14,6 +15,10 @@ namespace Avalonia.PropertyGrid.Services
         /// <summary>
         /// The default
         /// </summary>
-        public readonly static ILocalizationService Default = new JsonAssetLocalizationService();
+        public readonly static ILocalizationService Default = new AssemblyJsonAssetLocalizationService(typeof(LocalizationService).Assembly);
+
+        static LocalizationService()
+        {
+        }
     }
 }
