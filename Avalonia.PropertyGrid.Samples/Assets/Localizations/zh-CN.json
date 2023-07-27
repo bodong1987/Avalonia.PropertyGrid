@@ -9,6 +9,9 @@
     "RedoUndo": "撤销&重做",
     "Self_s_Properties": "自身属性",
 
+    "On": "开",
+    "Off": "关",
+
     "Imaging": "图像",
     "String": "字符串",
     "Enum": "枚举",

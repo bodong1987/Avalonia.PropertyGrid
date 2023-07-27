@@ -2,6 +2,7 @@
 using Avalonia.PropertyGrid.Controls;
 using Avalonia.PropertyGrid.Controls.Factories;
 using Avalonia.PropertyGrid.Services;
+using Avalonia.PropertyGrid.Localization;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -38,6 +39,9 @@ namespace Avalonia.PropertyGrid.Samples.Views
             }
 
             ToggleSwitch control = new ToggleSwitch();
+            control.SetLocalizeBinding(ToggleSwitch.OnContentProperty, "On");
+            control.SetLocalizeBinding(ToggleSwitch.OffContentProperty, "Off");
+
             control.IsCheckedChanged += (s, e) =>
             {
                 SetAndRaise(context, control, control.IsChecked);
