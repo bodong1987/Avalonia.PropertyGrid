@@ -188,7 +188,7 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// <returns>System.String.</returns>
         public static string GetCategory(PropertyDescriptor property)
         {
-            string category = string.IsNullOrEmpty(property.Category) ? LocalizationService.Default["Misc"] : LocalizationService.Default[property.Category];
+            string category = string.IsNullOrEmpty(property.Category) ? "Misc" : property.Category;
 
             return category;
         }
@@ -316,7 +316,7 @@ namespace Avalonia.PropertyGrid.ViewModels
                 }
             }
 
-            CategoryFilter = new CheckedMaskModel(categories.OrderBy(x=>x), LocalizationService.Default["All"]);
+            CategoryFilter = new CheckedMaskModel(categories.OrderBy(x=>x), "All");
             CategoryFilter.CheckChanged += OnCategoryFilterChanged;
 
             FilterProperties();

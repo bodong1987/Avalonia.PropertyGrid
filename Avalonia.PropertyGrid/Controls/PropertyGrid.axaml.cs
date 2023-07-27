@@ -3,6 +3,7 @@ using Avalonia.Data;
 using Avalonia.Dialogs.Internal;
 using Avalonia.Interactivity;
 using Avalonia.PropertyGrid.Controls.Implements;
+using Avalonia.PropertyGrid.Localization;
 using Avalonia.PropertyGrid.Model.ComponentModel;
 using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
 using Avalonia.PropertyGrid.Model.Extensions;
@@ -473,14 +474,16 @@ namespace Avalonia.PropertyGrid.Controls
                 propertiesGrid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
 
                 Expander expander = new Expander();
-                expander.ExpandDirection = ExpandDirection.Down;
-                expander.Header = categoryInfo.Key;
+                expander.ExpandDirection = ExpandDirection.Down;                
                 expander.SetValue(Grid.RowProperty, propertiesGrid.RowDefinitions.Count - 1);
                 expander.IsExpanded = true;
                 expander.HorizontalContentAlignment = Layout.HorizontalAlignment.Stretch;
                 expander.HorizontalAlignment = Layout.HorizontalAlignment.Stretch;
                 expander.Margin = new Thickness(2);
                 expander.Padding = new Thickness(2);
+
+                // expander.Header = categoryInfo.Key;
+                expander.SetLocalizeBinding(Expander.HeaderProperty, categoryInfo.Key);
 
                 Grid grid = new Grid();
                 grid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
@@ -581,16 +584,19 @@ namespace Avalonia.PropertyGrid.Controls
 
             grid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
 
-            TextBlock nameBlock = new TextBlock();
-            nameBlock.Text = LocalizationService.Default[property.DisplayName];
+            TextBlock nameBlock = new TextBlock();            
             nameBlock.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
             nameBlock.SetValue(Grid.ColumnProperty, 0);
             nameBlock.VerticalAlignment = Layout.VerticalAlignment.Center;
             nameBlock.Margin = new Thickness(4);
 
+            // nameBlock.Text = LocalizationService.Default[property.DisplayName];
+            nameBlock.SetLocalizeBinding(TextBlock.TextProperty, property.DisplayName);
+
             if (property.GetCustomAttribute<DescriptionAttribute>() is DescriptionAttribute descriptionAttribute && descriptionAttribute.Description.IsNotNullOrEmpty())
             {
-                nameBlock.SetValue(ToolTip.TipProperty, LocalizationService.Default[descriptionAttribute.Description]);
+                // nameBlock.SetValue(ToolTip.TipProperty, LocalizationService.Default[descriptionAttribute.Description]);
+                nameBlock.SetLocalizeBinding(ToolTip.TipProperty, descriptionAttribute.Description);
             }
 
             grid.Children.Add(nameBlock);

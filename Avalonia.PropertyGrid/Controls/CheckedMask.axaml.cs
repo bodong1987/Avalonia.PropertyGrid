@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.PropertyGrid.Localization;
 using Avalonia.PropertyGrid.Model.ComponentModel;
 using System;
 
@@ -95,11 +96,14 @@ namespace Avalonia.PropertyGrid.Controls
             }
 
             ToggleButton allButton = new ToggleButton();
-            allButton.Content = value.All;
+            
             allButton.IsChecked = value.IsAllChecked;
             allButton.Margin = new Thickness(6);
             allButton.MinWidth = ButtonMinWidth;
             allButton.HorizontalContentAlignment = Layout.HorizontalAlignment.Center;
+
+            // allButton.Content = value.All;
+            allButton.SetLocalizeBinding(ToggleButton.ContentProperty, value.All);
 
             allButton.IsCheckedChanged += (s, e) =>
             {
@@ -125,12 +129,14 @@ namespace Avalonia.PropertyGrid.Controls
 
             foreach (var mask in value.Masks)
             {
-                ToggleButton button = new ToggleButton();
-                button.Content = mask.ToString();
+                ToggleButton button = new ToggleButton();                
                 button.IsChecked = value.IsChecked(mask) && !value.IsChecked(value.All);
                 button.Margin = new Thickness(6);
                 button.MinWidth = ButtonMinWidth;
                 button.HorizontalContentAlignment = Layout.HorizontalAlignment.Center;
+
+                //button.Content = mask.ToString();
+                button.SetLocalizeBinding(ToggleButton.ContentProperty, mask);
 
                 button.IsCheckedChanged += (s, e) =>
                 {

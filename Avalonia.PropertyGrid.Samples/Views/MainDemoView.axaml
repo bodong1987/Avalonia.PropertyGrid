@@ -167,6 +167,12 @@
                     <ThemeVariant>Dark</ThemeVariant>
                 </ComboBox.Items>
             </ComboBox>
+            <TextBlock Text="{ll:Localize Language}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="2"></TextBlock>
+            <ComboBox Width="125"
+                      Padding="4"
+                      ItemsSource="{Binding AllCultures}"
+                      SelectedItem="{Binding CurrentCulture}"
+                ></ComboBox>
         </StackPanel>
     </Grid>
 

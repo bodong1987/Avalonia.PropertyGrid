@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using ReactiveUI;
 using System.Globalization;
 using Avalonia.PropertyGrid.Services;
+using Avalonia.PropertyGrid.Model.Localilzation;
 
 namespace Avalonia.PropertyGrid.Samples.ViewModels
 {
@@ -48,6 +49,24 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
         readonly CancelableObject _cancelableObject = new CancelableObject("Cancelable");
 
         public CancelableObject cancelableObject => _cancelableObject;
+
+        readonly List<ICultureData> _AllCultures = new List<ICultureData>();
+
+        public ICultureData[] AllCultures => _AllCultures.ToArray();
+
+        public ICultureData CurrentCulture
+        {
+            get => LocalizationService.Default.CultureData;
+            set
+            {
+                if(value != null)
+                {
+                    LocalizationService.Default.SelectCulture(value.Culture.Name);
+
+                    this.RaisePropertyChanged(nameof(CurrentCulture));
+                }
+            }
+        }
 
         #region View
         PropertyGridShowStyle _ShowStyle = PropertyGridShowStyle.Category;
@@ -115,6 +134,8 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
             LocalizationService.Default.AddExtraService(new SampleLocalizationService());
 
             GenOptions();
+
+            _AllCultures.AddRange(LocalizationService.Default.GetCultures());
         }
 
         #region Gen Custom Object Properties

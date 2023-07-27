@@ -71,5 +71,14 @@ namespace Avalonia.PropertyGrid.Model.Localilzation
         /// </summary>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public abstract bool Reload();
+
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        public override string ToString()
+        {
+            return Culture.DisplayName;
+        }
     }
 }

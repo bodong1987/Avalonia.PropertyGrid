@@ -185,7 +185,12 @@ namespace Avalonia.PropertyGrid.Localization
         }
 
         private void OnSelectionChanged(object sender, EventArgs e)
-        {
+        {            
+            // all bind in xaml can be refreshed
+            RaisePropertyChanged("Item");
+            RaisePropertyChanged("Item[]");
+
+            // all bind in code can be refreshed
             OnCultureChanged?.Invoke(sender, e);
         }
 
