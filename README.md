@@ -68,7 +68,7 @@ Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations.VisibilityPropertyCon
     float  
     double  
     string  
-    enum/[Flags]  
+    enum/[Flags]enum  
     System.ComponentModel.BindingList<>  
     System.DateTime/System.DateTimeOffset/System.DateTime?/System.DateTimeOffset?  
     System.TimeSpan/System.TimeSpan?      
@@ -395,7 +395,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
         {
             List<CountryInfo> list = new List<CountryInfo>();
 
-            var assets = AssetLoader.GetAssets(new Uri($"avares://{GetType().Assembly.GetName().Name}/Assets/contry-flags"), null);
+            var assets = AssetLoader.GetAssets(new Uri($"avares://{GetType().Assembly.GetName().Name}/Assets/country-flags"), null);
             foreach (var asset in assets)
             {
                 list.Add(new CountryInfo(asset));

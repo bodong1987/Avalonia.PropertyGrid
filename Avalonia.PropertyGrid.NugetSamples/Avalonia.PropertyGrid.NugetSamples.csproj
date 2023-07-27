@@ -77,7 +77,7 @@
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.1" />
     <PackageReference Include="Avalonia.Themes.Simple" Version="11.0.1" />
-    <PackageReference Include="bodong.Avalonia.PropertyGrid" Version="11.0.1.1" />
+    <PackageReference Include="bodong.Avalonia.PropertyGrid" Version="11.0.1.2" />
   </ItemGroup>
 
   <ItemGroup>
