@@ -141,18 +141,17 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// Handles the propagate visibility.
         /// </summary>
         /// <param name="target">The target.</param>
-        /// <param name="propertyDescriptor">The property descriptor.</param>
-        /// <param name="control">The control.</param>
+        /// <param name="context">The context.</param>
         /// <param name="filterContext">The filter context.</param>
         /// <returns>System.Nullable&lt;PropertyVisibility&gt;.</returns>
-        public override PropertyVisibility? HandlePropagateVisibility(object target, PropertyDescriptor propertyDescriptor, Control control, IPropertyGridFilterContext filterContext)
+        public override PropertyVisibility? HandlePropagateVisibility(object target, PropertyCellContext context, IPropertyGridFilterContext filterContext)
         {
-            if(!IsExpandableType(propertyDescriptor))
+            if(!IsExpandableType(context.Property))
             {
                 return null;
             }
 
-            if (control is Border border && border.Child is PropertyGrid pg)
+            if (context.CellEdit is Border border && border.Child is PropertyGrid pg)
             {
                 var category = FilterCategory.Default;
                 category &= ~FilterCategory.Category;

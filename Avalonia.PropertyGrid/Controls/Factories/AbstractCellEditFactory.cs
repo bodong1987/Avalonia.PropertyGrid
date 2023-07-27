@@ -224,11 +224,10 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         /// Handles the propagate visibility.
         /// </summary>
         /// <param name="target">The target.</param>
-        /// <param name="propertyDescriptor">The property descriptor.</param>
-        /// <param name="control">The control.</param>
+        /// <param name="context">The context.</param>
         /// <param name="filterContext">The filter context.</param>
         /// <returns>System.Nullable&lt;PropertyVisibility&gt;.</returns>
-        public virtual PropertyVisibility? HandlePropagateVisibility(object target, PropertyDescriptor propertyDescriptor, Control control, IPropertyGridFilterContext filterContext)
+        public virtual PropertyVisibility? HandlePropagateVisibility(object target, PropertyCellContext context, IPropertyGridFilterContext filterContext)
         {
             return null;
         }

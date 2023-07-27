@@ -221,7 +221,7 @@ namespace Avalonia.PropertyGrid.ViewModels
             }
         }
 
-        PropertyVisibility PropagateVisibility(IPropertyGridCellInfo cellInfo, object context, FilterCategory category = FilterCategory.Default)
+        PropertyVisibility PropagateVisibility(IPropertyGridCellInfo cellInfo, object target, FilterCategory category = FilterCategory.Default)
         {
             PropertyVisibility visibility = PropertyVisibility.AlwaysVisible;
 
@@ -237,14 +237,14 @@ namespace Avalonia.PropertyGrid.ViewModels
 
                     if (category.HasFlag(FilterCategory.Factory))
                     {
-                        childrenVisibilty = cellInfo.Context.Factory?.HandlePropagateVisibility(context, cellInfo.Context.Property, cellInfo.Context.CellEdit, this);
+                        childrenVisibilty = cellInfo.Context.Factory?.HandlePropagateVisibility(target, cellInfo.Context, this);
                     }
 
                     if (category.HasFlag(FilterCategory.PropertyCondition))
                     {
                         if (property.GetCustomAttribute<AbstractVisiblityConditionAttribute>() is AbstractVisiblityConditionAttribute attr)
                         {
-                            if (!attr.CheckVisibility(context))
+                            if (!attr.CheckVisibility(target))
                             {
                                 visibility |= PropertyVisibility.HiddenByCondition;
                             }
@@ -253,7 +253,7 @@ namespace Avalonia.PropertyGrid.ViewModels
                     
                     if(category.HasFlag(FilterCategory.Filter))
                     {
-                        if (!FilterPattern.Match(property, context))
+                        if (!FilterPattern.Match(property, target))
                         {
                             if(childrenVisibilty == null || childrenVisibilty != PropertyVisibility.AlwaysVisible)
                             {

@@ -1,6 +1,7 @@
 ﻿using Avalonia.PropertyGrid.Model.ComponentModel;
 using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
 using Avalonia.PropertyGrid.Model.Extensions;
+using Avalonia.PropertyGrid.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -70,7 +71,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
 
         public bool Match(PropertyDescriptor propertyDescriptor, object context)
         {
-            var displayName = propertyDescriptor.DisplayName;
+            var displayName = LocalizationService.Default[propertyDescriptor.DisplayName];
 
             if(UseRegex && _CachedRegex != null)
             {
