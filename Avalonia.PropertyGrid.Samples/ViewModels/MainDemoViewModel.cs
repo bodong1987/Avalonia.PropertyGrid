@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ReactiveUI;
 using System.Globalization;
+using Avalonia.PropertyGrid.Services;
 
 namespace Avalonia.PropertyGrid.Samples.ViewModels
 {
@@ -111,7 +112,7 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
 
         public MainDemoViewModel()
         {
-            Controls.PropertyGrid.LocalizationService.AddExtraService(new SampleLocalizationService());
+            LocalizationService.Default.AddExtraService(new SampleLocalizationService());
 
             GenOptions();
         }

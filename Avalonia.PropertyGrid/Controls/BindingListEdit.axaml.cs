@@ -11,6 +11,7 @@ using System.Xml.Linq;
 using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
 using System.Windows.Input;
 using Avalonia.Interactivity;
+using Avalonia.PropertyGrid.Services;
 
 namespace Avalonia.PropertyGrid.Controls
 {
@@ -384,7 +385,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <value>The title.</value>
         [DependsOnProperty(nameof(List))]
-        public string Title => string.Format(PropertyGrid.LocalizationService["{0} Elements"], _List != null ? _List.Count : 0);
+        public string Title => string.Format(LocalizationService.Default["{0} Elements"], _List != null ? _List.Count : 0);
 
         /// <summary>
         /// Gets the insert command.

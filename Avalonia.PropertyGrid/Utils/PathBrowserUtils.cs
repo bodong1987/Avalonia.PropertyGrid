@@ -1,6 +1,7 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
+using Avalonia.PropertyGrid.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -131,7 +132,7 @@ namespace Avalonia.PropertyGrid.Utils
             if (saveMode)
             {                
                 FilePickerSaveOptions options = new FilePickerSaveOptions();
-                options.Title = title ?? Controls.PropertyGrid.LocalizationService["Please select a file"];
+                options.Title = title ?? LocalizationService.Default["Please select a file"];
                 options.SuggestedFileName = initFileName;
                 options.FileTypeChoices = ConvertToFilterList(filters);
                 var storage = await storageProvider.SaveFilePickerAsync(options);
@@ -144,12 +145,12 @@ namespace Avalonia.PropertyGrid.Utils
 
                 if(type == PathBrowsableType.MultipleDirectories)
                 {
-                    options.Title = title ?? Controls.PropertyGrid.LocalizationService["Please select some folders"];
+                    options.Title = title ?? LocalizationService.Default["Please select some folders"];
                     options.AllowMultiple = true;
                 }
                 else
                 {
-                    options.Title = title ?? Controls.PropertyGrid.LocalizationService["Please select a folder"];
+                    options.Title = title ?? LocalizationService.Default["Please select a folder"];
                     options.AllowMultiple = false;
                 }               
                 
@@ -162,12 +163,12 @@ namespace Avalonia.PropertyGrid.Utils
 
                 if (type == PathBrowsableType.MultipleFiles)
                 {
-                    options.Title = title ?? Controls.PropertyGrid.LocalizationService["Please select some files"];
+                    options.Title = title ?? LocalizationService.Default["Please select some files"];
                     options.AllowMultiple = true;
                 }
                 else
                 {
-                    options.Title = title ?? Controls.PropertyGrid.LocalizationService["Please select a file"];
+                    options.Title = title ?? LocalizationService.Default["Please select a file"];
                     options.AllowMultiple = false;
                 }
 

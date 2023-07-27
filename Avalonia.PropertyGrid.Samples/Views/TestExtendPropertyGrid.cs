@@ -6,6 +6,7 @@ using Avalonia.PropertyGrid.Controls.Factories.Builtins;
 using Avalonia.PropertyGrid.Model.Collections;
 using Avalonia.PropertyGrid.Model.ComponentModel;
 using Avalonia.PropertyGrid.Samples.Models;
+using Avalonia.PropertyGrid.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,8 +20,8 @@ namespace Avalonia.PropertyGrid.Samples.Views
     {
         static TestExtendPropertyGrid()
         {
-            FactoryTemplates.AddFactory(new Vector3CellEditFactory());
-            FactoryTemplates.AddFactory(new CountryInfoCellEditFactory());
+            CellEditFactoryService.Default.AddFactory(new Vector3CellEditFactory());
+            CellEditFactoryService.Default.AddFactory(new CountryInfoCellEditFactory());
         }
     }
 

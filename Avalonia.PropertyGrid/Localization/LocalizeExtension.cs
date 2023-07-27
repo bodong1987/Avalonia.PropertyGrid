@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Avalonia.PropertyGrid.Controls;
+using Avalonia.PropertyGrid.Services;
 
 namespace Avalonia.PropertyGrid.Localization
 {
@@ -54,7 +55,7 @@ namespace Avalonia.PropertyGrid.Localization
             var binding = new ReflectionBindingExtension($"[{keyToUse}]")
             {
                 Mode = BindingMode.OneWay,
-                Source = Controls.PropertyGrid.LocalizationService,
+                Source = LocalizationService.Default,
             };
 
             return binding.ProvideValue(serviceProvider);

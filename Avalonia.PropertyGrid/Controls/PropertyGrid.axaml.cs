@@ -3,12 +3,12 @@ using Avalonia.Data;
 using Avalonia.Dialogs.Internal;
 using Avalonia.Interactivity;
 using Avalonia.PropertyGrid.Controls.Implements;
-using Avalonia.PropertyGrid.Localization;
 using Avalonia.PropertyGrid.Model.ComponentModel;
 using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
 using Avalonia.PropertyGrid.Model.Extensions;
 using Avalonia.PropertyGrid.Model.Services;
 using Avalonia.PropertyGrid.Model.Utils;
+using Avalonia.PropertyGrid.Services;
 using Avalonia.PropertyGrid.ViewModels;
 using Avalonia.Threading;
 using Newtonsoft.Json.Linq;
@@ -29,20 +29,6 @@ namespace Avalonia.PropertyGrid.Controls
     /// <seealso cref="UserControl" />
     public partial class PropertyGrid : UserControl, IPropertyGrid
     {
-        #region Factories
-        /// <summary>
-        /// The factories
-        /// You can use this fields to extend ability of PropertyGrid
-        /// </summary>
-        public readonly static ICellEditFactoryCollection FactoryTemplates = new CellEditFactoryCollection();
-
-        /// <summary>
-        /// Gets or sets the localization service.
-        /// </summary>
-        /// <value>The localization service.</value>
-        public static readonly ILocalizationService LocalizationService = new JsonAssetLocalizationService();
-        #endregion
-
         #region Properties
         /// <summary>
         /// The allow filter property
@@ -218,16 +204,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Initializes static members of the <see cref="PropertyGrid"/> class.
         /// </summary>
         static PropertyGrid()
-        {
-            // register builtin factories
-            foreach(var type in typeof(PropertyGrid).Assembly.GetTypes())
-            {
-                if(type.IsClass && !type.IsAbstract && type.IsImplementFrom<ICellEditFactory>())
-                {
-                    FactoryTemplates.AddFactory(Activator.CreateInstance(type) as ICellEditFactory);
-                }
-            }
-
+        {            
             AllowFilterProperty.Changed.Subscribe(OnAllowFilterChanged);
             AllowQuickFilterProperty.Changed.Subscribe(OnAllowQuickFilterChanged);
             ShowStyleProperty.Changed.Subscribe(OnShowStyleChanged);
@@ -241,7 +218,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         public PropertyGrid()
         {
-            Factories = new CellEditFactoryCollection(FactoryTemplates.CloneFactories(this));
+            Factories = new CellEditFactoryCollection(CellEditFactoryService.Default.CloneFactories(this));
 
             ViewModel.PropertyDescriptorChanged += OnPropertyDescriptorChanged;
             ViewModel.FilterChanged += OnFilterChanged;
@@ -606,7 +583,7 @@ namespace Avalonia.PropertyGrid.Controls
             grid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
 
             TextBlock nameBlock = new TextBlock();
-            nameBlock.Text = LocalizationService[property.DisplayName];
+            nameBlock.Text = LocalizationService.Default[property.DisplayName];
             nameBlock.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
             nameBlock.SetValue(Grid.ColumnProperty, 0);
             nameBlock.VerticalAlignment = Layout.VerticalAlignment.Center;
@@ -614,7 +591,7 @@ namespace Avalonia.PropertyGrid.Controls
 
             if (property.GetCustomAttribute<DescriptionAttribute>() is DescriptionAttribute descriptionAttribute && descriptionAttribute.Description.IsNotNullOrEmpty())
             {
-                nameBlock.SetValue(ToolTip.TipProperty, LocalizationService[descriptionAttribute.Description]);
+                nameBlock.SetValue(ToolTip.TipProperty, LocalizationService.Default[descriptionAttribute.Description]);
             }
 
             grid.Children.Add(nameBlock);

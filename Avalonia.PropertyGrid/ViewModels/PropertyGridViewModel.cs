@@ -4,6 +4,7 @@ using Avalonia.PropertyGrid.Model.ComponentModel;
 using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
 using Avalonia.PropertyGrid.Model.Extensions;
 using Avalonia.PropertyGrid.Model.Utils;
+using Avalonia.PropertyGrid.Services;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -187,7 +188,7 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// <returns>System.String.</returns>
         public static string GetCategory(PropertyDescriptor property)
         {
-            string category = string.IsNullOrEmpty(property.Category) ? Controls.PropertyGrid.LocalizationService["Misc"] : Controls.PropertyGrid.LocalizationService[property.Category];
+            string category = string.IsNullOrEmpty(property.Category) ? LocalizationService.Default["Misc"] : LocalizationService.Default[property.Category];
 
             return category;
         }
@@ -315,7 +316,7 @@ namespace Avalonia.PropertyGrid.ViewModels
                 }
             }
 
-            CategoryFilter = new CheckedMaskModel(categories.OrderBy(x=>x), Controls.PropertyGrid.LocalizationService["All"]);
+            CategoryFilter = new CheckedMaskModel(categories.OrderBy(x=>x), LocalizationService.Default["All"]);
             CategoryFilter.CheckChanged += OnCategoryFilterChanged;
 
             FilterProperties();

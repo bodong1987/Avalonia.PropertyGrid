@@ -10,6 +10,7 @@ using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
 using Avalonia.PropertyGrid.Model.ComponentModel;
 using Avalonia.PropertyGrid.ViewModels;
 using Avalonia.Interactivity;
+using Avalonia.PropertyGrid.Services;
 
 namespace Avalonia.PropertyGrid.Controls.Factories
 {
@@ -78,7 +79,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories
             if(context.Property.IsPropertyChanged(context.Target, value, out var oldValue))
             {
                 GenericCancelableCommand command = new GenericCancelableCommand(
-                    string.Format(PropertyGrid.LocalizationService["Change {0} form {1} to {2}"], context.Property.DisplayName, oldValue != null ? oldValue.ToString() : "null", value != null ? value.ToString() : "null"),
+                    string.Format(LocalizationService.Default["Change {0} form {1} to {2}"], context.Property.DisplayName, oldValue != null ? oldValue.ToString() : "null", value != null ? value.ToString() : "null"),
                     () =>
                     {
                         HandleSetValue(sourceControl, context, value);

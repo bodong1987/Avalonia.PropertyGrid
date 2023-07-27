@@ -1,6 +1,7 @@
 ﻿using Avalonia.Controls;
 using Avalonia.PropertyGrid.Controls;
 using Avalonia.PropertyGrid.Controls.Factories;
+using Avalonia.PropertyGrid.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,7 +15,7 @@ namespace Avalonia.PropertyGrid.Samples.Views
     {
         static ToggleSwitchExtensionPropertyGrid()
         {
-            FactoryTemplates.AddFactory(new ToggleSwitchCellEditFactory());
+            CellEditFactoryService.Default.AddFactory(new ToggleSwitchCellEditFactory());
         }
     }
 

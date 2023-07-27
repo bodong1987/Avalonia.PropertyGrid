@@ -1,6 +1,7 @@
 ﻿using Avalonia.PropertyGrid.Controls;
 using Avalonia.PropertyGrid.Model.ComponentModel;
 using Avalonia.PropertyGrid.Model.Extensions;
+using Avalonia.PropertyGrid.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -29,7 +30,7 @@ namespace Avalonia.PropertyGrid.Utils
             {
                 var wrapper = new EnumValueWrapper(x as Enum);
 
-                wrapper.DisplayName = Controls.PropertyGrid.LocalizationService[wrapper.DisplayName];
+                wrapper.DisplayName = LocalizationService.Default[wrapper.DisplayName];
 
                 return wrapper;
             }).ToArray();

@@ -2,6 +2,7 @@
 using Avalonia.Logging;
 using Avalonia.PropertyGrid.Model.ComponentModel;
 using Avalonia.PropertyGrid.Model.Extensions;
+using Avalonia.PropertyGrid.Services;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
@@ -133,7 +134,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 var oldElement = value[e.Index];
 
                 GenericCancelableCommand command = new GenericCancelableCommand(
-                    string.Format(PropertyGrid.LocalizationService["Remove array element at {0}"], e.Index),
+                    string.Format(LocalizationService.Default["Remove array element at {0}"], e.Index),
                     () =>
                     {
                         if (value != null && e.Index >= 0 && e.Index < value.Count)
@@ -199,7 +200,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 }
 
                 GenericCancelableCommand command = new GenericCancelableCommand(
-                    PropertyGrid.LocalizationService["Clear all elements of the array"],
+                    LocalizationService.Default["Clear all elements of the array"],
                     () =>
                     {
                         value.Clear();
@@ -247,7 +248,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 var NewElement = ObjectCreator.Create(GetElementType(context.Property));
 
                 GenericCancelableCommand command = new GenericCancelableCommand(
-                    string.Format(PropertyGrid.LocalizationService["Insert a new element at {0}"], e.Index),
+                    string.Format(LocalizationService.Default["Insert a new element at {0}"], e.Index),
                     () =>
                     {
                         value.Insert(e.Index, NewElement);
@@ -299,7 +300,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 var NewElement = ObjectCreator.Create(GetElementType(context.Property));
 
                 GenericCancelableCommand command = new GenericCancelableCommand(
-                    PropertyGrid.LocalizationService["Insert a new element at the end of the array"],
+                    LocalizationService.Default["Insert a new element at the end of the array"],
                     () =>
                     {
                         value.Add(NewElement);

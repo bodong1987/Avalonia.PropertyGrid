@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Avalonia.PropertyGrid.Model.Extensions;
 using Avalonia.PropertyGrid.Model.ComponentModel;
+using Avalonia.PropertyGrid.Services;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
@@ -58,7 +59,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     var oldValue = list.SelectedValue;
 
                     GenericCancelableCommand command = new GenericCancelableCommand(
-                        string.Format(PropertyGrid.LocalizationService["Change {0} selection from {1} to {2}"], context.Property.DisplayName, oldValue!=null?oldValue.ToString():"null", item!=null?item.ToString():"null"),
+                        string.Format(LocalizationService.Default["Change {0} selection from {1} to {2}"], context.Property.DisplayName, oldValue!=null?oldValue.ToString():"null", item!=null?item.ToString():"null"),
                         () =>
                         {
                             list.SelectedValue = item;
