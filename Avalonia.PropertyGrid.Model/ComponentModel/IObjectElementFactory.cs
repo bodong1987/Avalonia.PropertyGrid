@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Avalonia.PropertyGrid.Model.Extensions;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Reflection;
 using System.Text;
 
 namespace Avalonia.PropertyGrid.Model.ComponentModel
@@ -195,6 +198,33 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel
         {
             return Activator.CreateInstance(type, @params);
         }
+
+        /// <summary>
+        /// Automatics the collect.
+        /// </summary>
+        /// <param name="assemblies">The assemblies.</param>
+        public void AutoCollect(IEnumerable<Assembly> assemblies)
+        {
+            foreach (var assembly in assemblies)
+            {
+                AutoCollect(assembly);
+            }
+        }
+
+        /// <summary>
+        /// Automatics the collect.
+        /// </summary>
+        /// <param name="assembly">The assembly.</param>
+        public void AutoCollect(Assembly assembly)
+        {
+            foreach (var type in assembly.GetTypes())
+            {
+                if (typeof(T).IsAssignableFrom(type) && !type.IsAbstract)
+                {
+                    AddSupportedType(type);
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -231,10 +261,9 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel
     /// Class ObjectElementFactoryTypeAttribute.
     /// Implements the <see cref="Attribute" />
     /// </summary>
-    /// <typeparam name="T"></typeparam>
     /// <seealso cref="Attribute" />
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class ObjectElementFactoryTypeAttribute<T> : Attribute where T : IObjectElementFactory, new()
+    [AttributeUsage(AttributeTargets.All, AllowMultiple = false)]
+    public class ObjectElementFactoryTypeAttribute : Attribute
     {
         /// <summary>
         /// The factory type
@@ -242,11 +271,61 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel
         public readonly Type FactoryType;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="ObjectElementFactoryTypeAttribute"/> class.
+        /// </summary>
+        /// <param name="factoryType">Type of the factory.</param>
+        public ObjectElementFactoryTypeAttribute(Type factoryType)
+        {
+            if(factoryType.IsAbstract)
+            {
+                Debug.Assert(false, $"{nameof(factoryType)} can't be abstract type.");
+
+                throw new ArgumentException($"{nameof(factoryType)} can't be abstract type.");
+            }
+
+            if(!factoryType.IsImplementFrom<IObjectElementFactory>())
+            {
+                Debug.Assert(false, $"{nameof(factoryType)} must implement IObjectElementFactory.");
+
+                throw new ArgumentException($"{nameof(factoryType)} must implement IObjectElementFactory.");
+            }
+
+            FactoryType = factoryType;
+        }
+
+        /// <summary>
+        /// Creates the factory.
+        /// </summary>
+        /// <returns>IObjectElementFactory.</returns>
+        public IObjectElementFactory CreateFactory()
+        {
+            return Activator.CreateInstance(FactoryType) as IObjectElementFactory;
+        }
+    }
+
+    /// <summary>
+    /// Class ObjectElementFactoryTypeAttribute.
+    /// Implements the <see cref="Attribute" />
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <seealso cref="Attribute" />
+    [AttributeUsage(AttributeTargets.All, AllowMultiple = false)]
+    public class ObjectElementFactoryTypeAttribute<T> : ObjectElementFactoryTypeAttribute where T : IObjectElementFactory, new()
+    {
+        /// <summary>
         /// Initializes a new instance of the <see cref="ObjectElementFactoryTypeAttribute{T}"/> class.
         /// </summary>
-        public ObjectElementFactoryTypeAttribute()
+        public ObjectElementFactoryTypeAttribute() : base(typeof(T))
+        {            
+        }
+
+        /// <summary>
+        /// Creates the factory.
+        /// </summary>
+        /// <returns>T.</returns>
+        public new T CreateFactory()
         {
-            FactoryType = typeof(T);
+            return (T)base.CreateFactory();
         }
     }
 }

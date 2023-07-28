@@ -10,6 +10,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -34,9 +35,19 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// </summary>
         /// <param name="pd">The pd.</param>
         /// <returns><c>true</c> if [is accept type] [the specified pd]; otherwise, <c>false</c>.</returns>
-        private bool IsAcceptType(PropertyDescriptor pd)
+        protected virtual bool IsAcceptType(PropertyDescriptor pd)
         {
             var type = GetElementType(pd);
+
+            if(type == null)
+            {
+                return false;
+            }
+
+            if(pd.IsDefined<ObjectElementFactoryTypeAttribute>() || pd.PropertyType.IsDefined<ObjectElementFactoryTypeAttribute>())
+            {
+                return true;
+            }
 
             return type != null && !type.IsAbstract;
         }
@@ -46,7 +57,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// </summary>
         /// <param name="pd">The pd.</param>
         /// <returns>Type.</returns>
-        private Type GetElementType(PropertyDescriptor pd)
+        protected Type GetElementType(PropertyDescriptor pd)
         {
             if (pd.PropertyType.IsGenericType && pd.PropertyType.GetGenericTypeDefinition() == typeof(BindingList<>))
             {
@@ -68,9 +79,17 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return null;
             }
 
+            ObjectElementFactoryTypeAttribute elementFactoryTypeAttr = context.Property.GetCustomAttribute<ObjectElementFactoryTypeAttribute>();
+
+            if(elementFactoryTypeAttr == null)
+            {
+                elementFactoryTypeAttr = context.Property.PropertyType.GetCustomAttribute<ObjectElementFactoryTypeAttribute>();
+            }
+
             BindingListEdit control = new BindingListEdit();
             control.Model.PropertyContext = context;
-            control.Model.Collection = (this as ICellEditFactory).Collection;            
+            control.Model.Collection = (this as ICellEditFactory).Collection;
+            control.Model.ObjectElementFactory = elementFactoryTypeAttr?.CreateFactory();
 
             var attr = context.Property.GetCustomAttribute<EditableAttribute>();
             

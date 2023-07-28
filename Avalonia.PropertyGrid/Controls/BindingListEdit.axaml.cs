@@ -12,6 +12,7 @@ using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
 using System.Windows.Input;
 using Avalonia.Interactivity;
 using Avalonia.PropertyGrid.Services;
+using Avalonia.PropertyGrid.Controls.Implements;
 
 namespace Avalonia.PropertyGrid.Controls
 {
@@ -349,6 +350,21 @@ namespace Avalonia.PropertyGrid.Controls
         /// <value>The collection.</value>
         public ICellEditFactoryCollection Collection { get; set; }
 
+        IObjectElementFactory _ObjectElementFactory;
+
+        /// <summary>
+        /// Gets or sets the object element factory.
+        /// </summary>
+        /// <value>The object element factory.</value>
+        public IObjectElementFactory ObjectElementFactory
+        {
+            get => _ObjectElementFactory;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _ObjectElementFactory, value);
+            }
+        }
+
         /// <summary>
         /// Gets or sets the property context.
         /// </summary>
@@ -413,6 +429,21 @@ namespace Avalonia.PropertyGrid.Controls
         }
 
         /// <summary>
+        /// Gets a value indicating whether [support custom factory].
+        /// </summary>
+        /// <value><c>true</c> if [support custom factory]; otherwise, <c>false</c>.</value>
+        public bool SupportCustomFactory => ObjectElementFactory != null && ObjectElementFactory.GetSupportedTypes().Length > 0;
+
+        [DependsOnProperty(nameof(IsEditable), nameof(SupportCustomFactory))]
+        public bool IsCommonNewElementVisible => IsEditable && !SupportCustomFactory;
+
+        [DependsOnProperty(nameof(IsEditable), nameof(SupportCustomFactory))]
+        public bool IsComplexNewElementVisible => IsEditable && SupportCustomFactory;
+
+        public Implements.MenuItemViewModel[] ComplexNewElementMenuItems { get; private set; }
+
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="BindingListViewModel"/> class.
         /// </summary>
         /// <param name="insertCommand">The insert command.</param>
@@ -470,6 +501,13 @@ namespace Avalonia.PropertyGrid.Controls
                 }
 
                 RaisePropertyChanged(nameof(Elements));                
+            }
+            else if(e.PropertyName == nameof(ObjectElementFactory))
+            {
+                ComplexNewElementMenuItems = BindingListMenuItemBuilder.BuildListMenu(ObjectElementFactory, () =>
+                {
+                    
+                });
             }
         }
     }

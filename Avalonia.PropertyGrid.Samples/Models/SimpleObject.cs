@@ -172,6 +172,10 @@ namespace Avalonia.PropertyGrid.Samples.Models
         [Category("Array")]
         public BindingList<Vector3> Vec3List { get; set; } = new BindingList<Vector3>() { new Vector3(1024.0f, 2048.0f, 4096.0f) };
 
+        [Category("Array")]
+        [ObjectElementFactoryType<IntVectorElementFactory>]
+        public BindingList<IntVector1> IntVectors { get; set; } = new BindingList<IntVector1>();
+
         [Category("Checked List")]
         public CheckedList<string> CheckedListString { get; set; } = new CheckedList<string>(new string[] { "bodong", "John", "David" }, new string[] { "bodong" });
 

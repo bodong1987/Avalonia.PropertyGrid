@@ -2,6 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="using:Avalonia.PropertyGrid.Controls"
 		xmlns:ll="using:Avalonia.PropertyGrid.Localization"
+        xmlns:cl="using:Avalonia.PropertyGrid.Controls.Implements"
 		>
   <Design.PreviewWith>
     <controls:BindingListEdit />
@@ -28,10 +29,37 @@
 							  HorizontalContentAlignment="Center"
 							  VerticalContentAlignment="Center"
 							  Command="{TemplateBinding NewElementCommand}"
-							  IsVisible="{Binding Model.IsEditable, RelativeSource={RelativeSource TemplatedParent}}"
+							  IsVisible="{Binding Model.IsCommonNewElementVisible, RelativeSource={RelativeSource TemplatedParent}}"
 							  ToolTip.Tip="{ll:Localize AppendNewElement}"
 							  FontSize="18"
 							  >N</Button>
+
+                      <Button x:Name="ComplexNewElement"
+							  Grid.Column="2"
+							  Margin="2"
+							  Padding="2"
+							  Width="32"
+							  Height="32"
+							  HorizontalContentAlignment="Center"
+							  VerticalContentAlignment="Center"							  
+							  IsVisible="{Binding Model.IsComplexNewElementVisible, RelativeSource={RelativeSource TemplatedParent}}"
+							  ToolTip.Tip="{ll:Localize AppendNewElement}"
+							  FontSize="18"
+                              Content="N"
+							  >
+                          <Button.Styles>
+                              <Style Selector="ContextMenu MenuItem" x:DataType="cl:MenuItemViewModel">
+                                  <Setter Property="Header" Value="{Binding Header}"/>
+                                  <Setter Property="ItemsSource" Value="{Binding Items}"/>
+                                  <Setter Property="Command" Value="{Binding Command}"/>
+                                  <Setter Property="CommandParameter" Value="{Binding CommandParameter}"/>
+                              </Style>
+                          </Button.Styles>
+                          <Button.ContextMenu>
+                              <ContextMenu ItemsSource="{Binding Model.ComplexNewElementMenuItems, RelativeSource={RelativeSource TemplatedParent}}" />
+                          </Button.ContextMenu>
+                      </Button>                      
+                      
 					  <Button x:Name="ClearElements" 
 							  Grid.Column="3" 
 							  Margin="2" 
