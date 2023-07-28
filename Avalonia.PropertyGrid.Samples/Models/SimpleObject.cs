@@ -36,19 +36,16 @@ namespace Avalonia.PropertyGrid.Samples.Models
         [Category("Imaging")]
         public Avalonia.Media.IImage AvaloniaBanner { get; set; }
 
+        [Category("Path")]
+        [DisplayName("Target Path")]
+        [PathBrowsable(Filters = "Image Files(*.jpg;*.png;*.bmp;*.tag)|*.jpg;*.png;*.bmp;*.tag")]
+        [Watermark("Image Path")]
+        public string ImagePath { get; set; }
+
         [Category("String")]
         [DisplayName("Target Name")]
         [Watermark("Your Target Name")]
         public string Name { get; set; }
-
-        [Category("String")]
-        [DisplayName("Target Path")]
-        [PathBrowsable(Filters = "Image Files(*.jpg;*.png;*.bmp;*.tag)|*.jpg;*.png;*.bmp;*.tag")]
-        [Watermark("Image Path")]
-        public string Path { get; set; }
-
-        [Category("String")]
-        public string UUID { get; set; } = Guid.NewGuid().ToString();
 
         [Category("String")]
         [PasswordPropertyText(true)]

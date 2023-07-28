@@ -3,31 +3,28 @@ using Avalonia.PropertyGrid.Localization;
 using Avalonia.PropertyGrid.Model.ComponentModel;
 using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
 using Avalonia.PropertyGrid.Model.Extensions;
-using Avalonia.PropertyGrid.Services;
 using Avalonia.PropertyGrid.Utils;
 using Avalonia.VisualTree;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
+using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
     /// <summary>
-    /// Class StringCellEditFactory.
+    /// Class PathCellEditFactory.
     /// Implements the <see cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
     /// </summary>
     /// <seealso cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
-    public class StringCellEditFactory : AbstractCellEditFactory
+    public class PathCellEditFactory : AbstractCellEditFactory
     {
         /// <summary>
         /// Gets the import priority.
         /// The larger the value, the earlier the object will be processed
         /// </summary>
         /// <value>The import priority.</value>
-        public override int ImportPriority => base.ImportPriority - 1000000;
+        public override int ImportPriority => base.ImportPriority - 100000;
 
         /// <summary>
         /// Handles the new property.
@@ -38,47 +35,45 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         {
             var propertyDescriptor = context.Property;
             var target = context.Target;
-            
-            if (propertyDescriptor.PropertyType != typeof(string))
+
+            if (propertyDescriptor.PropertyType != typeof(string) || !propertyDescriptor.IsDefined<PathBrowsableAttribute>())
             {
                 return null;
             }
 
+            PathBrowsableAttribute attribute = propertyDescriptor.GetCustomAttribute<PathBrowsableAttribute>();
             WatermarkAttribute watermarkAttr = propertyDescriptor.GetCustomAttribute<WatermarkAttribute>();
 
-            TextBox control = new TextBox();
+            ButtonEdit control = new ButtonEdit();
             control.Text = propertyDescriptor.GetValue(target) as string;
-            control.VerticalContentAlignment = Avalonia.Layout.VerticalAlignment.Center;
-            control.FontFamily = FontUtils.DefaultFontFamily;
 
             if (watermarkAttr != null)
             {
                 // control.Watermark = LocalizationService.Default[watermarkAttr.Watermask];
-                control.SetLocalizeBinding(TextBox.WatermarkProperty, watermarkAttr.Watermask);
+                control.SetLocalizeBinding(ButtonEdit.WatermarkProperty, watermarkAttr.Watermask);
             }
 
-            if (propertyDescriptor.GetCustomAttribute<PasswordPropertyTextAttribute>() is PasswordPropertyTextAttribute ppt && ppt.Password)
+            control.ButtonClick += async (s, e) =>
             {
-                control.PasswordChar = '*';
-            }
+                var files = await PathBrowserUtils.ShowPathBrowserAsync(control.GetVisualRoot() as Window, attribute);
 
-            MultilineTextAttribute multilineAttr = propertyDescriptor.GetCustomAttribute<MultilineTextAttribute>();
-
-            if (multilineAttr != null && multilineAttr.IsMultiline)
-            {
-                control.TextWrapping = Media.TextWrapping.Wrap;
-                control.AcceptsReturn = true;
-                control.AcceptsTab = true;
-            }
-
-            control.PropertyChanged += (s, e) =>
-            {
-                if (e.Property == TextBox.TextProperty)
+                if (files != null && files.Length > 0)
                 {
-                    if (e.NewValue as string != propertyDescriptor.GetValue(target) as string)
+                    var file = files.FirstOrDefault();
+
+                    if (file != propertyDescriptor.GetValue(target) as string)
                     {
-                        SetAndRaise(context, control, e.NewValue);
+                        SetAndRaise(context, control, file);
+                        control.Text = file;
                     }
+                }
+            };
+
+            control.TextChanged += (s, e) =>
+            {
+                if (control.Text != propertyDescriptor.GetValue(target) as string)
+                {
+                    SetAndRaise(context, control, control.Text);
                 }
             };
 
@@ -96,16 +91,17 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             var target = context.Target;
             var control = context.CellEdit;
 
-            if (propertyDescriptor.PropertyType != typeof(string))
+            if (propertyDescriptor.PropertyType != typeof(string) || !propertyDescriptor.IsDefined<PathBrowsableAttribute>())
             {
                 return false;
             }
 
             ValidateProperty(control, propertyDescriptor, target);
 
-            if (control is TextBox textBox)
+            if (control is ButtonEdit be)
             {
-                textBox.Text = propertyDescriptor.GetValue(target) as string;
+                be.Text = propertyDescriptor.GetValue(target) as string;
+
                 return true;
             }
 
