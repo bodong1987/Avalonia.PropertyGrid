@@ -3,7 +3,7 @@ This is a PropertyGrid implementation for Avalonia, you can use it in Avalonia A
 Its main features are:  
 * Support automatic analysis of class's Properties like DevExpress's PropertyGridControl and display and edit
 * Support simultaneous editing of multiple objects in one PropertyGrid
-* Support custom types that implement the ICustomTypeDescriptor interface
+* Support custom types that implement the ICustomTypeDescriptor interface or TypeDescriptionProvider
 * Support array editing, support for creating, inserting, deleting and clearing in the control
 * Support data verification
 * Support Built-in undo and redo framework

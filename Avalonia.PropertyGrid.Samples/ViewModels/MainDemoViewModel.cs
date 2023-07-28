@@ -64,6 +64,13 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
             }
         }
 
+        TestCustomObject _CustomObject2 = new TestCustomObject();
+        public TestCustomObject customObject
+        {
+            get => _CustomObject2;
+            set => this.RaiseAndSetIfChanged(ref _CustomObject2, value);
+        }
+
         #region View
         PropertyGridShowStyle _ShowStyle = PropertyGridShowStyle.Category;
 
@@ -132,6 +139,41 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
             GenOptions();
 
             _AllCultures.AddRange(LocalizationService.Default.GetCultures());
+
+            DynamicPropertyManager<TestCustomObject> propertyManager = new DynamicPropertyManager<TestCustomObject>();
+            propertyManager.Properties.Add(
+                DynamicPropertyManager<TestCustomObject>.CreateProperty<TestCustomObject, string>(
+                    "StringArray0",
+                    x => x.StringArray[0],
+                    (x, v) => x.StringArray[0] = v,
+                    new Attribute[]
+                    {
+                    }
+                    )
+                );
+
+            propertyManager.Properties.Add(
+                DynamicPropertyManager<TestCustomObject>.CreateProperty<TestCustomObject, string>(
+                    "StringArray1",
+                    x => x.StringArray[1],
+                    (x, v) => x.StringArray[1] = v,
+                    new Attribute[]
+                    {
+                    }
+                    )
+                );
+
+            propertyManager.Properties.Add(
+                DynamicPropertyManager<TestCustomObject>.CreateProperty<TestCustomObject, string>(
+                    "StringArray2",
+                    x => x.StringArray[2],
+                    (x, v) => x.StringArray[2] = v,
+                    new Attribute[]
+                    {
+                        new ReadOnlyAttribute(true)
+                    }
+                    )
+                );
         }
 
         #region Gen Custom Object Properties

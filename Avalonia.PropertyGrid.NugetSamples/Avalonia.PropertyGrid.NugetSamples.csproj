@@ -33,6 +33,7 @@
     <Compile Include="..\Avalonia.PropertyGrid.Samples\Models\ScriptableOptions.cs" Link="Models\ScriptableOptions.cs" />
     <Compile Include="..\Avalonia.PropertyGrid.Samples\Models\SimpleObject.cs" Link="Models\SimpleObject.cs" />
     <Compile Include="..\Avalonia.PropertyGrid.Samples\Models\TestExtendsObject.cs" Link="Models\TestExtendsObject.cs" />
+    <Compile Include="..\Avalonia.PropertyGrid.Samples\Models\TypeDescriptionProvider.cs" Link="Models\TypeDescriptionProvider.cs" />
     <Compile Include="..\Avalonia.PropertyGrid.Samples\Models\Vector3.cs" Link="Models\Vector3.cs" />
     <Compile Include="..\Avalonia.PropertyGrid.Samples\ViewModels\MainDemoViewModel.cs" Link="ViewModels\MainDemoViewModel.cs" />
     <Compile Include="..\Avalonia.PropertyGrid.Samples\ViewModels\SampleLocalizationService.cs" Link="ViewModels\SampleLocalizationService.cs" />

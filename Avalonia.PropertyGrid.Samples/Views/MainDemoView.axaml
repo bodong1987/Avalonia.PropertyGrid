@@ -80,9 +80,19 @@
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="{ll:Localize CustomObject}">
-                <ScrollViewer>
-                    <pgc:PropertyGrid Margin="4" SelectedObject="{Binding customOptions}"></pgc:PropertyGrid>
-                </ScrollViewer>
+                <Grid ColumnDefinitions="1*, 2, 1*">
+                    <Expander IsExpanded="True" Margin="2" Grid.Column="0" Header="ICustomTypeDescriptor" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                        <ScrollViewer>
+                            <pgc:PropertyGrid Margin="4" SelectedObject="{Binding customOptions}"></pgc:PropertyGrid>
+                        </ScrollViewer>
+                    </Expander>                    
+                    <GridSplitter Grid.Column="1"></GridSplitter>
+                    <Expander IsExpanded="True" Margin="2" Grid.Column="2" Header="TypeDescriptionProvider" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                        <ScrollViewer >
+                            <pgc:PropertyGrid Margin="4" SelectedObject="{Binding customObject}"></pgc:PropertyGrid>
+                        </ScrollViewer>
+                    </Expander>
+                </Grid>
             </TabItem>
 
             <TabItem Header="{ll:Localize Extends}">
