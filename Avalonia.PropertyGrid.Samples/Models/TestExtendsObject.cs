@@ -39,6 +39,22 @@ namespace Avalonia.PropertyGrid.Samples.Models
         [Category("SelectableList")]
         public SelectableList<CountryInfo> Countries { get; set; }
 
+        [Category("Boolean")]
+        public bool toggleAble { get; set; } = true;
+
+        [Category("Boolean")]
+        public bool disableAble { get; set; } = false;
+
+        [Category("Boolean")]
+        public bool? threeState { get; set; }
+
+        [Category("Boolean")]
+        [ReadOnly(true)]
+        public bool readonlyBoolean { get; set; }
+
+        [Category("Boolean")]
+        public bool readonlyBoolean2 => true;
+
 
         public TestExtendsObject()
         {

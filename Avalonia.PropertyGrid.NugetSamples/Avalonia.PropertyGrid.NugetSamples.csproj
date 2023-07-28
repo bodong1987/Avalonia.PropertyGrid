@@ -31,7 +31,6 @@
     <Compile Include="..\Avalonia.PropertyGrid.Samples\Models\LoginInfo.cs" Link="Models\LoginInfo.cs" />
     <Compile Include="..\Avalonia.PropertyGrid.Samples\Models\ScriptableObject.cs" Link="Models\ScriptableObject.cs" />
     <Compile Include="..\Avalonia.PropertyGrid.Samples\Models\ScriptableOptions.cs" Link="Models\ScriptableOptions.cs" />
-    <Compile Include="..\Avalonia.PropertyGrid.Samples\Models\SimpleExtendsObject.cs" Link="Models\SimpleExtendsObject.cs" />
     <Compile Include="..\Avalonia.PropertyGrid.Samples\Models\SimpleObject.cs" Link="Models\SimpleObject.cs" />
     <Compile Include="..\Avalonia.PropertyGrid.Samples\Models\TestExtendsObject.cs" Link="Models\TestExtendsObject.cs" />
     <Compile Include="..\Avalonia.PropertyGrid.Samples\Models\Vector3.cs" Link="Models\Vector3.cs" />
@@ -41,7 +40,6 @@
     <Compile Include="..\Avalonia.PropertyGrid.Samples\Views\CountryView.axaml.cs" Link="Views\CountryView.axaml.cs" />
     <Compile Include="..\Avalonia.PropertyGrid.Samples\Views\MainDemoView.axaml.cs" Link="Views\MainDemoView.axaml.cs" />
     <Compile Include="..\Avalonia.PropertyGrid.Samples\Views\TestExtendPropertyGrid.cs" Link="Views\TestExtendPropertyGrid.cs" />
-    <Compile Include="..\Avalonia.PropertyGrid.Samples\Views\ToggleSwitchExtensionPropertyGrid.cs" Link="Views\ToggleSwitchExtensionPropertyGrid.cs" />
     <Compile Include="..\Avalonia.PropertyGrid.Samples\Views\Vector3View.axaml.cs" Link="Views\Vector3View.axaml.cs" />
   </ItemGroup>
 

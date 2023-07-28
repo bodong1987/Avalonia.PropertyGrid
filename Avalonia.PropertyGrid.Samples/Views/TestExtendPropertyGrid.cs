@@ -7,6 +7,7 @@ using Avalonia.PropertyGrid.Model.Collections;
 using Avalonia.PropertyGrid.Model.ComponentModel;
 using Avalonia.PropertyGrid.Samples.Models;
 using Avalonia.PropertyGrid.Services;
+using Avalonia.PropertyGrid.Localization;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,6 +23,7 @@ namespace Avalonia.PropertyGrid.Samples.Views
         {
             CellEditFactoryService.Default.AddFactory(new Vector3CellEditFactory());
             CellEditFactoryService.Default.AddFactory(new CountryInfoCellEditFactory());
+            CellEditFactoryService.Default.AddFactory(new ToggleSwitchCellEditFactory());
         }
     }
 
@@ -152,5 +154,62 @@ namespace Avalonia.PropertyGrid.Samples.Views
             return control;
         }
     }
+    #endregion
+
+    #region Bool
+    class ToggleSwitchCellEditFactory : AbstractCellEditFactory
+    {
+        // make this extend factor only effect on TestExtendPropertyGrid
+        public override bool Accept(object accessToken)
+        {
+            return accessToken is TestExtendPropertyGrid;
+        }
+
+        public override Control HandleNewProperty(PropertyCellContext context)
+        {
+            var propertyDescriptor = context.Property;
+            var target = context.Target;
+
+            if (propertyDescriptor.PropertyType != typeof(bool))
+            {
+                return null;
+            }
+
+            ToggleSwitch control = new ToggleSwitch();
+            control.SetLocalizeBinding(ToggleSwitch.OnContentProperty, "On");
+            control.SetLocalizeBinding(ToggleSwitch.OffContentProperty, "Off");
+
+            control.IsCheckedChanged += (s, e) =>
+            {
+                SetAndRaise(context, control, control.IsChecked);
+            };
+
+            return control;
+        }
+
+        public override bool HandlePropertyChanged(PropertyCellContext context)
+        {
+            var propertyDescriptor = context.Property;
+            var target = context.Target;
+            var control = context.CellEdit;
+
+            if (propertyDescriptor.PropertyType != typeof(bool))
+            {
+                return false;
+            }
+
+            ValidateProperty(control, propertyDescriptor, target);
+
+            if (control is ToggleSwitch ts)
+            {
+                ts.IsChecked = (bool)propertyDescriptor.GetValue(target);
+
+                return true;
+            }
+
+            return false;
+        }
+    }
+
     #endregion
 }

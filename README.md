@@ -256,77 +256,19 @@ If you want to provide the corresponding language pack for the built-in text, pl
 ```
 
 ### Custom Cell Edit
-To customize CellEdit, you need to implement a Factory class from AbstractCellEditFactory, and then append this class instance to PropertyGrid.FactoryTemplates, such as:
+To customize CellEdit, you need to implement a Factory class from AbstractCellEditFactory, and then append this class instance to CellEditFactoryService.Default, such as:
 ```C#
-   public class ToggleSwitchExtensionPropertyGrid : Controls.PropertyGrid
+public class TestExtendPropertyGrid : Controls.PropertyGrid
+{
+    static TestExtendPropertyGrid()
     {
-        static ToggleSwitchExtensionPropertyGrid()
-        {
-            CellEditFactoryService.Default.AddFactory(new ToggleSwitchCellEditFactory());
-        }
+        CellEditFactoryService.Default.AddFactory(new Vector3CellEditFactory());
+        CellEditFactoryService.Default.AddFactory(new CountryInfoCellEditFactory());
+        CellEditFactoryService.Default.AddFactory(new ToggleSwitchCellEditFactory());
     }
-
-    class ToggleSwitchCellEditFactory : AbstractCellEditFactory
-    {
-        // make this extend factor only effect on ToggleSwitchExtensionPropertyGrid
-        public override bool Accept(object accessToken)
-        {
-            return accessToken is ToggleSwitchExtensionPropertyGrid;
-        }
-
-        public override Control HandleNewProperty(PropertyCellContext context)
-        {
-            var propertyDescriptor = context.Property;
-            var target = context.Target;
-            
-            if (propertyDescriptor.PropertyType != typeof(bool))
-            {
-                return null;
-            }
-
-            ToggleSwitch control = new ToggleSwitch();
-            control.IsCheckedChanged += (s, e) =>
-            {
-                SetAndRaise(context, control, control.IsChecked);
-            };
-
-            return control;
-        }
-
-        public override bool HandlePropertyChanged(PropertyCellContext context)
-        {
-            var propertyDescriptor = context.Property;
-            var target = context.Target;
-            var control = context.CellEdit;
-
-            if (propertyDescriptor.PropertyType != typeof(bool))
-            {
-                return false;
-            }
-
-            ValidateProperty(control, propertyDescriptor, target);
-
-            if (control is ToggleSwitch ts)
-            {
-                ts.IsChecked = (bool)propertyDescriptor.GetValue(target);
-
-                return true;
-            }
-
-            return false;
-        }
-    }
+}
 ```
-There are only two methods that must be overridden:   
-HandleNewProperty is used to create the control you want to edit the property, 
-You need to pass the value out through the interface of the framework after the UI edits the data, so as to ensure that other related objects receive the message notification and save the undo redo command.  
-HandleProeprtyChanged method is used to synchronize external data. When the external data changes, the data is reacquired and synchronized to the control.
-AbstractCellEditFactory also has a overrideable property ImportPriority. This value determines the order in which the PropertyGrid triggers these Factories. The larger the value, the earlier the trigger.   
-Overriding the Accept method allows your Factory to only take effect when appropriate.
-
-*** 
-You can also use this method to extend PropertyGrid so that you can edit types that are not supported by the built-in functionality.
-
+Refer to Extends in Samples for more information.
 
 ## Description of Samples
 ![Basic View](./Docs/Images/BasicView.png)
@@ -353,61 +295,65 @@ You can verify the function of multi-object editing here. Note:
 ![CustomObject](./Docs/Images/CustomObject.png)
 Here shows how to create a custom object based on ICustomTypeDescriptor.
 
-### Custom Cell Edit
-![CustomCellEdit](./Docs/Images/CustomCellEdit.png)
-By default, PropertyGrid uses CheckBox to edit Boolean data, here shows how to use ToggleSwitch to edit Boolean data in a simple way, and how to make this function only effective locally without affecting the whole.
-
 ### Extends
 ![Extends](./Docs/Images/extends.png)
-Under normal circumstances, PropertyGrid does not automatically handle structure properties, because structures have certain particularities. To support such internally unsupported types, you need to extend PropertyGrid yourself. This example shows how to support and edit the structure SVector3:
+In custom AbstractCellEditFactory, there are only two methods that must be overridden:  
+* HandleNewProperty is used to create the control you want to edit the property, 
+You need to pass the value out through the interface of the framework after the UI edits the data, so as to ensure that other related objects receive the message notification and save the undo redo command.  
 ```C#
-namespace Avalonia.PropertyGrid.Samples.Models
-{
-    public struct SVector3
+    public override Control HandleNewProperty(PropertyCellContext context)
     {
-        public float x, y, z;
+        var propertyDescriptor = context.Property;
+        var target = context.Target;
 
-        public override string ToString()
+        if (propertyDescriptor.PropertyType != typeof(bool))
         {
-            return string.Format("{0:0.0}, {1:0.0}, {2:0.0}", x, y, z);
+            return null;
         }
-    }
 
-    public class TestExtendsObject : MiniReactiveObject
-    {
-        [Category("Struct")]
-        public Vector3 vec3Object { get; set; } = new Vector3();
+        ToggleSwitch control = new ToggleSwitch();
+        control.SetLocalizeBinding(ToggleSwitch.OnContentProperty, "On");
+        control.SetLocalizeBinding(ToggleSwitch.OffContentProperty, "Off");
 
-        [Category("Struct")]
-        public SVector3 vec3Struct { get; set; }
-
-        [Category("Struct")]
-        public BindingList<SVector3> vec3BindingList { get; set; } = new BindingList<SVector3>()
+        control.IsCheckedChanged += (s, e) =>
         {
-            new SVector3(){ x = 7.8f, y = 3.14f, z = 0.0f }
+            SetAndRaise(context, control, control.IsChecked);
         };
-                
-        [Category("SelectableList")]
-        public SelectableList<CountryInfo> Countries { get; set; }
 
-
-        public TestExtendsObject()
-        {
-            List<CountryInfo> list = new List<CountryInfo>();
-
-            var assets = AssetLoader.GetAssets(new Uri($"avares://{GetType().Assembly.GetName().Name}/Assets/country-flags"), null);
-            foreach (var asset in assets)
-            {
-                list.Add(new CountryInfo(asset));
-            }
-
-            Countries = new SelectableList<CountryInfo>(list, list.Find(x => x.Code == "cn"));
-        }
+        return control;
     }
-
-    // ignore some codes
-}
 ```
+* HandleProeprtyChanged method is used to synchronize external data. When the external data changes, the data is reacquired and synchronized to the control.
+```C#
+    public override bool HandlePropertyChanged(PropertyCellContext context)
+    {
+        var propertyDescriptor = context.Property;
+        var target = context.Target;
+        var control = context.CellEdit;
+
+        if (propertyDescriptor.PropertyType != typeof(bool))
+        {
+            return false;
+        }
+
+        ValidateProperty(control, propertyDescriptor, target);
+
+        if (control is ToggleSwitch ts)
+        {
+            ts.IsChecked = (bool)propertyDescriptor.GetValue(target);
+
+            return true;
+        }
+
+        return false;
+    }
+```
+* AbstractCellEditFactory also has a overrideable property ImportPriority. This value determines the order in which the PropertyGrid triggers these Factories. The larger the value, the earlier the trigger.   
+* Overriding the Accept method allows your Factory to only take effect when appropriate.  
+* Override the HandlePropagateVisibility method to customize the filtering scheme
+
+For example:  
+Under normal circumstances, PropertyGrid does not automatically handle structure properties, because structures have certain particularities. To support such internally unsupported types, you need to extend PropertyGrid yourself. This example shows how to support and edit the structure SVector3.  
 There is also an example of SelectableList customization for reference.  
 More details can be seen in the file TestExtendPropertyGrid.cs.  
 

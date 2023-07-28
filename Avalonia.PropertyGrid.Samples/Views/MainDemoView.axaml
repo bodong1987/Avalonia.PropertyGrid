@@ -85,12 +85,6 @@
                 </ScrollViewer>
             </TabItem>
 
-            <TabItem Header="{ll:Localize CustomCellEdit}">
-                <ScrollViewer>
-                    <lv:ToggleSwitchExtensionPropertyGrid Margin="4" SelectedObject="{Binding simpleExtends}"></lv:ToggleSwitchExtensionPropertyGrid>
-                </ScrollViewer>
-            </TabItem>
-
             <TabItem Header="{ll:Localize Extends}">
                 <ScrollViewer>
                     <Grid ColumnDefinitions="1*,2,1*">
