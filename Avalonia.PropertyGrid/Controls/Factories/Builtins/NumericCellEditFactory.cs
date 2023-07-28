@@ -52,6 +52,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 control.Maximum = (Decimal)(double)Convert.ChangeType(attr.Maximum, typeof(double));
             }
 
+            var formatAttr = propertyDescriptor.GetCustomAttribute<FormatStringAttribute>();
+
             if (propertyDescriptor.PropertyType == typeof(sbyte) ||
                 propertyDescriptor.PropertyType == typeof(byte) ||
                 propertyDescriptor.PropertyType == typeof(short) ||
@@ -65,6 +67,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 var incrementAttr = propertyDescriptor.GetCustomAttribute<IntegerIncrementAttribute>();
 
                 control.Increment = incrementAttr != null ? incrementAttr.Increment : 1;
+
+                if(formatAttr != null)
+                {
+                    control.FormatString = formatAttr.ToString();
+                }
             }
             else
             {
@@ -78,6 +85,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 {
                     control.Increment = (Decimal)0.01;
                     control.FormatString = "{0:0.00}";
+
+                    if (formatAttr != null)
+                    {
+                        control.FormatString = formatAttr.ToString();
+                    }
                 }                
             }
 
