@@ -1,6 +1,6 @@
 ﻿using Avalonia.Platform;
-using Avalonia.PropertyGrid.Model.Collections;
-using Avalonia.PropertyGrid.Model.ComponentModel;
+using PropertyModels.Collections;
+using PropertyModels.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

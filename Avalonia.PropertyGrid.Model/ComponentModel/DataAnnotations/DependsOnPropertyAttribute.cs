@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations
+namespace PropertyModels.ComponentModel.DataAnnotations
 {
     /// <summary>
     /// Class DependsOnPropertyAttribute.

@@ -1,6 +1,6 @@
 ﻿using Avalonia.Platform;
-using Avalonia.PropertyGrid.Model.ComponentModel;
-using Avalonia.PropertyGrid.Model.Utils;
+using PropertyModels.ComponentModel;
+using PropertyModels.Utils;
 using Avalonia.PropertyGrid.Utils;
 
 namespace Avalonia.PropertyGrid.Tests.Model

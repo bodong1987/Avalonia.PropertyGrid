@@ -1,13 +1,13 @@
 ﻿using Avalonia.Controls;
-using Avalonia.PropertyGrid.Model.Collections;
+using PropertyModels.Collections;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Avalonia.PropertyGrid.Model.Extensions;
-using Avalonia.PropertyGrid.Model.ComponentModel;
+using PropertyModels.Extensions;
+using PropertyModels.ComponentModel;
 using Avalonia.PropertyGrid.Services;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins

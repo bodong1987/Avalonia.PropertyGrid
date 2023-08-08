@@ -1,12 +1,12 @@
-﻿using Avalonia.PropertyGrid.Model.ComponentModel;
-using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
+﻿using PropertyModels.ComponentModel;
+using PropertyModels.ComponentModel.DataAnnotations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Avalonia.PropertyGrid.Model.Extensions;
+using PropertyModels.Extensions;
 
 namespace Avalonia.PropertyGrid.Samples.Models
 {

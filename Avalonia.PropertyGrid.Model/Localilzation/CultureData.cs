@@ -3,15 +3,15 @@ using System.IO;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
-using Avalonia.PropertyGrid.Model.Extensions;
+using PropertyModels.Extensions;
 
-namespace Avalonia.PropertyGrid.Model.Localilzation
+namespace PropertyModels.Localilzation
 {
     /// <summary>
     /// Class AbstractCultureData.
-    /// Implements the <see cref="Avalonia.PropertyGrid.Model.Localilzation.ICultureData" />
+    /// Implements the <see cref="PropertyModels.Localilzation.ICultureData" />
     /// </summary>
-    /// <seealso cref="Avalonia.PropertyGrid.Model.Localilzation.ICultureData" />
+    /// <seealso cref="PropertyModels.Localilzation.ICultureData" />
     public abstract class AbstractCultureData : ICultureData
     {
         /// <summary>

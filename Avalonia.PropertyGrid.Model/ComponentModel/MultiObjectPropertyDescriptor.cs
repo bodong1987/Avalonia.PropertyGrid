@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Avalonia.PropertyGrid.Model.ComponentModel
+namespace PropertyModels.ComponentModel
 {
     /// <summary>
     /// Class MultiObjectPropertyDescriptor.

@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace Avalonia.PropertyGrid.Model.ComponentModel
+namespace PropertyModels.ComponentModel
 {
     /// <summary>
     /// Delegate OnCommandCanceledEventHandler

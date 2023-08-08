@@ -6,10 +6,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Avalonia.PropertyGrid.Model.Extensions;
+using PropertyModels.Extensions;
 using Avalonia.Controls.Embedding;
 using Newtonsoft.Json.Linq;
-using Avalonia.PropertyGrid.Model.ComponentModel;
+using PropertyModels.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {

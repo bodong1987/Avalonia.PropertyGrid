@@ -2,8 +2,8 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
-using Avalonia.PropertyGrid.Model.ComponentModel;
-using Avalonia.PropertyGrid.Model.Extensions;
+using PropertyModels.ComponentModel;
+using PropertyModels.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;

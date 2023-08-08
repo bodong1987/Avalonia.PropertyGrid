@@ -1,7 +1,7 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.PropertyGrid.Localization;
-using Avalonia.PropertyGrid.Model.ComponentModel;
+using PropertyModels.ComponentModel;
 using System;
 
 namespace Avalonia.PropertyGrid.Controls

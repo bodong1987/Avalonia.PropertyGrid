@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Avalonia.PropertyGrid.Model.ComponentModel
+namespace PropertyModels.ComponentModel
 {
     /// <summary>
     /// Interface ICheckedMaskModel
-    /// Implements the <see cref="Avalonia.PropertyGrid.Model.ComponentModel.IReactiveObject" />
+    /// Implements the <see cref="PropertyModels.ComponentModel.IReactiveObject" />
     /// </summary>
-    /// <seealso cref="Avalonia.PropertyGrid.Model.ComponentModel.IReactiveObject" />
+    /// <seealso cref="PropertyModels.ComponentModel.IReactiveObject" />
     public interface ICheckedMaskModel : IReactiveObject
     {
         /// <summary>

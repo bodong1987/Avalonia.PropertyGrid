@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 
-namespace Avalonia.PropertyGrid.Model.ComponentModel
+namespace PropertyModels.ComponentModel
 {
     /// <summary>
     /// Interface IFilterPattern
-    /// Implements the <see cref="Avalonia.PropertyGrid.Model.ComponentModel.IReactiveObject" />
+    /// Implements the <see cref="PropertyModels.ComponentModel.IReactiveObject" />
     /// </summary>
-    /// <seealso cref="Avalonia.PropertyGrid.Model.ComponentModel.IReactiveObject" />
+    /// <seealso cref="PropertyModels.ComponentModel.IReactiveObject" />
     public interface IFilterPattern : IReactiveObject
     {
         /// <summary>

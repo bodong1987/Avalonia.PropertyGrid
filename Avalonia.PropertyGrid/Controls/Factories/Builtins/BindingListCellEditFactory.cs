@@ -1,7 +1,7 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Logging;
-using Avalonia.PropertyGrid.Model.ComponentModel;
-using Avalonia.PropertyGrid.Model.Extensions;
+using PropertyModels.ComponentModel;
+using PropertyModels.Extensions;
 using Avalonia.PropertyGrid.Services;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;

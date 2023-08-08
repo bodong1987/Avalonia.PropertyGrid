@@ -1,6 +1,6 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Platform.Storage;
-using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
+using PropertyModels.ComponentModel.DataAnnotations;
 using Avalonia.PropertyGrid.Services;
 using System;
 using System.Collections.Generic;

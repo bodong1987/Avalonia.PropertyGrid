@@ -1,5 +1,5 @@
 ﻿using Avalonia.Controls;
-using Avalonia.PropertyGrid.Model.ComponentModel;
+using PropertyModels.ComponentModel;
 using System.ComponentModel;
 using System;
 using System.Diagnostics;

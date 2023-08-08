@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Avalonia.PropertyGrid.Model\Avalonia.PropertyGrid.Model.csproj" />
+    <ProjectReference Include="..\PropertyModels\PropertyModels.csproj" />
     <ProjectReference Include="..\Avalonia.PropertyGrid\Avalonia.PropertyGrid.csproj" />
   </ItemGroup>
 </Project>

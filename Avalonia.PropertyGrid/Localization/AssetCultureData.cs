@@ -1,5 +1,5 @@
 ﻿using Avalonia.Platform;
-using Avalonia.PropertyGrid.Model.Localilzation;
+using PropertyModels.Localilzation;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

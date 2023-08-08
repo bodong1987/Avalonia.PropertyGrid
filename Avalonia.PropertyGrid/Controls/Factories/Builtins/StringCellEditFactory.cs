@@ -1,8 +1,8 @@
 ﻿using Avalonia.Controls;
 using Avalonia.PropertyGrid.Localization;
-using Avalonia.PropertyGrid.Model.ComponentModel;
-using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
-using Avalonia.PropertyGrid.Model.Extensions;
+using PropertyModels.ComponentModel;
+using PropertyModels.ComponentModel.DataAnnotations;
+using PropertyModels.Extensions;
 using Avalonia.PropertyGrid.Services;
 using Avalonia.PropertyGrid.Utils;
 using Avalonia.VisualTree;

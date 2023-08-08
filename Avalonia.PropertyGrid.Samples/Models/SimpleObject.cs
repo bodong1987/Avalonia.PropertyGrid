@@ -1,5 +1,5 @@
-﻿using Avalonia.PropertyGrid.Model.Collections;
-using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
+﻿using PropertyModels.Collections;
+using PropertyModels.ComponentModel.DataAnnotations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,8 +7,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Avalonia.PropertyGrid.Model.ComponentModel;
-using Avalonia.PropertyGrid.Model.Extensions;
+using PropertyModels.ComponentModel;
+using PropertyModels.Extensions;
 using Avalonia.Media;
 using Avalonia.Platform;
 

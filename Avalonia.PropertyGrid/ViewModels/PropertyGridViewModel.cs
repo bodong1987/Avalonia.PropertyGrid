@@ -1,9 +1,9 @@
 ﻿using Avalonia.PropertyGrid.Controls;
 using Avalonia.PropertyGrid.Controls.Implements;
-using Avalonia.PropertyGrid.Model.ComponentModel;
-using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
-using Avalonia.PropertyGrid.Model.Extensions;
-using Avalonia.PropertyGrid.Model.Utils;
+using PropertyModels.ComponentModel;
+using PropertyModels.ComponentModel.DataAnnotations;
+using PropertyModels.Extensions;
+using PropertyModels.Utils;
 using Avalonia.PropertyGrid.Services;
 using Newtonsoft.Json.Linq;
 using System;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 
-namespace Avalonia.PropertyGrid.Model.ComponentModel
+namespace PropertyModels.ComponentModel
 {
     /// <summary>
     /// Interface INotifyCommandExecuting

@@ -2,7 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
-using Avalonia.PropertyGrid.Model.ComponentModel;
+using PropertyModels.ComponentModel;
 using System;
 using System.Windows.Input;
 

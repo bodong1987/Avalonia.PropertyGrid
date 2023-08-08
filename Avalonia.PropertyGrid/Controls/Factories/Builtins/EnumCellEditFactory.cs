@@ -1,5 +1,5 @@
 ﻿using Avalonia.Controls;
-using Avalonia.PropertyGrid.Model.Extensions;
+using PropertyModels.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Collections;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Avalonia.PropertyGrid.Utils;
-using Avalonia.PropertyGrid.Model.ComponentModel;
+using PropertyModels.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {

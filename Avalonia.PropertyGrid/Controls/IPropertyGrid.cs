@@ -1,5 +1,5 @@
 ﻿using Avalonia.Interactivity;
-using Avalonia.PropertyGrid.Model.ComponentModel;
+using PropertyModels.ComponentModel;
 using Avalonia.PropertyGrid.ViewModels;
 using System;
 using System.Collections.Generic;

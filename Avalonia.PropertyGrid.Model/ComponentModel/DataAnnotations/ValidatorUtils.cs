@@ -5,9 +5,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Avalonia.PropertyGrid.Model.Extensions;
+using PropertyModels.Extensions;
 
-namespace Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations
+namespace PropertyModels.ComponentModel.DataAnnotations
 {
     /// <summary>
     /// Class ValidatorUtils.

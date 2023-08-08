@@ -1,6 +1,6 @@
 ﻿using Avalonia.PropertyGrid.Controls;
 using Avalonia.PropertyGrid.Controls.Implements;
-using Avalonia.PropertyGrid.Model.Extensions;
+using PropertyModels.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Text;

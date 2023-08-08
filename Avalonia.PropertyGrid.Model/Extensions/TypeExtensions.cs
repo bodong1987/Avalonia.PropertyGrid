@@ -8,7 +8,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Avalonia.PropertyGrid.Model.Extensions
+namespace PropertyModels.Extensions
 {
     /// <summary>
     /// Class TypeExtensions.

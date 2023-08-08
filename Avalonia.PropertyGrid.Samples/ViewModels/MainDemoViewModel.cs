@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using ReactiveUI;
 using System.Globalization;
 using Avalonia.PropertyGrid.Services;
-using Avalonia.PropertyGrid.Model.Localilzation;
+using PropertyModels.Localilzation;
 
 namespace Avalonia.PropertyGrid.Samples.ViewModels
 {

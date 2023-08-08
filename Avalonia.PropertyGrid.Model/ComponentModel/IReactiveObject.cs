@@ -1,4 +1,4 @@
-﻿using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
+﻿using PropertyModels.ComponentModel.DataAnnotations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Avalonia.PropertyGrid.Model.ComponentModel
+namespace PropertyModels.ComponentModel
 {
     /// <summary>
     /// Interface IReactiveObject
@@ -20,9 +20,9 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel
     /// <summary>
     /// Class MiniReactiveObject.
     /// can't support property dependency
-    /// Implements the <see cref="Avalonia.PropertyGrid.Model.ComponentModel.IReactiveObject" />
+    /// Implements the <see cref="PropertyModels.ComponentModel.IReactiveObject" />
     /// </summary>
-    /// <seealso cref="Avalonia.PropertyGrid.Model.ComponentModel.IReactiveObject" />
+    /// <seealso cref="PropertyModels.ComponentModel.IReactiveObject" />
     public class MiniReactiveObject : IReactiveObject
     {
         #region Interfaces

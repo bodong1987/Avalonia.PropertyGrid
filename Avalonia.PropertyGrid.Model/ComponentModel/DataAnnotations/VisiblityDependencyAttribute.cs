@@ -1,10 +1,10 @@
-﻿using Avalonia.PropertyGrid.Model.Extensions;
+﻿using PropertyModels.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 
-namespace Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations
+namespace PropertyModels.ComponentModel.DataAnnotations
 {
     /// <summary>
     /// Class ConditionTargetAttribute.
@@ -58,9 +58,9 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations
 
     /// <summary>
     /// Class VisibilityPropertyConditionAttribute.
-    /// Implements the <see cref="Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations.AbstractVisiblityConditionAttribute" />
+    /// Implements the <see cref="PropertyModels.ComponentModel.DataAnnotations.AbstractVisiblityConditionAttribute" />
     /// </summary>
-    /// <seealso cref="Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations.AbstractVisiblityConditionAttribute" />
+    /// <seealso cref="PropertyModels.ComponentModel.DataAnnotations.AbstractVisiblityConditionAttribute" />
     public class VisibilityPropertyConditionAttribute : AbstractVisiblityConditionAttribute
     {
         /// <summary>

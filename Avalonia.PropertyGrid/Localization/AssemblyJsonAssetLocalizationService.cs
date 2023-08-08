@@ -1,9 +1,9 @@
 ﻿using Avalonia;
 using Avalonia.Platform;
-using Avalonia.PropertyGrid.Model.Collections;
-using Avalonia.PropertyGrid.Model.ComponentModel;
-using Avalonia.PropertyGrid.Model.Extensions;
-using Avalonia.PropertyGrid.Model.Localilzation;
+using PropertyModels.Collections;
+using PropertyModels.ComponentModel;
+using PropertyModels.Extensions;
+using PropertyModels.Localilzation;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

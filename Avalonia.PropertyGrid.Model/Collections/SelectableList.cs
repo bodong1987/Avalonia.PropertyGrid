@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Avalonia.PropertyGrid.Model.Collections
+namespace PropertyModels.Collections
 {
     /// <summary>
     /// Interface ISelectableList
@@ -34,11 +34,11 @@ namespace Avalonia.PropertyGrid.Model.Collections
 
     /// <summary>
     /// Interface ISelectableList
-    /// Implements the <see cref="Avalonia.PropertyGrid.Model.Collections.ISelectableList" />
+    /// Implements the <see cref="PropertyModels.Collections.ISelectableList" />
     /// Implements the <see cref="ICollection{T}" />
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <seealso cref="Avalonia.PropertyGrid.Model.Collections.ISelectableList" />
+    /// <seealso cref="PropertyModels.Collections.ISelectableList" />
     /// <seealso cref="ICollection{T}" />
     public interface ISelectableList<T> : ISelectableList, ICollection<T>
     {
@@ -57,10 +57,10 @@ namespace Avalonia.PropertyGrid.Model.Collections
 
     /// <summary>
     /// Class SelectableList.
-    /// Implements the <see cref="Avalonia.PropertyGrid.Model.Collections.ISelectableList{T}" />
+    /// Implements the <see cref="PropertyModels.Collections.ISelectableList{T}" />
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    /// <seealso cref="Avalonia.PropertyGrid.Model.Collections.ISelectableList{T}" />
+    /// <seealso cref="PropertyModels.Collections.ISelectableList{T}" />
     public class SelectableList<T> : ISelectableList<T>
     {
         /// <summary>

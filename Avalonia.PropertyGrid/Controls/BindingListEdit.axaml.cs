@@ -2,13 +2,13 @@
 using Avalonia.Controls;
 using System;
 using Avalonia.Controls.Primitives;
-using Avalonia.PropertyGrid.Model.ComponentModel;
+using PropertyModels.ComponentModel;
 using System.ComponentModel;
 using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics;
 using System.Xml.Linq;
-using Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations;
+using PropertyModels.ComponentModel.DataAnnotations;
 using System.Windows.Input;
 using Avalonia.Interactivity;
 using Avalonia.PropertyGrid.Services;

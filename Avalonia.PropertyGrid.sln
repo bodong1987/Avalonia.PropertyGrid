@@ -5,7 +5,7 @@ VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.PropertyGrid", "Avalonia.PropertyGrid\Avalonia.PropertyGrid.csproj", "{26EA879C-1190-4C16-9FDF-7A63B2FA3A15}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.PropertyGrid.Model", "Avalonia.PropertyGrid.Model\Avalonia.PropertyGrid.Model.csproj", "{75A4BDAD-C971-484B-9C73-F8E65CE7B812}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PropertyModels", "Avalonia.PropertyGrid.Model\PropertyModels.csproj", "{75A4BDAD-C971-484B-9C73-F8E65CE7B812}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PropertyGrid", "PropertyGrid", "{2F4556E9-4CFD-43C3-908B-5D411EE41619}"
 EndProject

@@ -1,4 +1,4 @@
-﻿using Avalonia.PropertyGrid.Model.ComponentModel;
+﻿using PropertyModels.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

@@ -1,5 +1,5 @@
-﻿using Avalonia.PropertyGrid.Model.Collections;
-using Avalonia.PropertyGrid.Model.ComponentModel;
+﻿using PropertyModels.Collections;
+using PropertyModels.ComponentModel;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Avalonia.PropertyGrid.Model.Localilzation
+namespace PropertyModels.Localilzation
 {
     /// <summary>
     /// Interface ICultureData

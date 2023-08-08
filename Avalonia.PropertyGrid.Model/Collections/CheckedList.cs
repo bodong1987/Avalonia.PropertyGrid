@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Avalonia.PropertyGrid.Model.Collections
+namespace PropertyModels.Collections
 {
     /// <summary>
     /// Interface ICheckedList

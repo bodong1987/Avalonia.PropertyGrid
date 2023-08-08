@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Avalonia.PropertyGrid.Model.ComponentModel
+namespace PropertyModels.ComponentModel
 {
     /// <summary>
     /// Interface ICommand
@@ -29,9 +29,9 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel
 
     /// <summary>
     /// Interface ICancelableCommand
-    /// Implements the <see cref="Avalonia.PropertyGrid.Model.ComponentModel.IBaseCommand" />
+    /// Implements the <see cref="PropertyModels.ComponentModel.IBaseCommand" />
     /// </summary>
-    /// <seealso cref="Avalonia.PropertyGrid.Model.ComponentModel.IBaseCommand" />
+    /// <seealso cref="PropertyModels.ComponentModel.IBaseCommand" />
     public interface ICancelableCommand : IBaseCommand
     {
         /// <summary>
@@ -49,9 +49,9 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel
 
     /// <summary>
     /// Class AbstractCommand.
-    /// Implements the <see cref="Avalonia.PropertyGrid.Model.ComponentModel.IBaseCommand" />
+    /// Implements the <see cref="PropertyModels.ComponentModel.IBaseCommand" />
     /// </summary>
-    /// <seealso cref="Avalonia.PropertyGrid.Model.ComponentModel.IBaseCommand" />
+    /// <seealso cref="PropertyModels.ComponentModel.IBaseCommand" />
     public abstract class AbstractBaseCommand : IBaseCommand
     {
         /// <summary>
@@ -104,9 +104,9 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel
 
     /// <summary>
     /// Class GenericCommand.
-    /// Implements the <see cref="Avalonia.PropertyGrid.Model.ComponentModel.AbstractBaseCommand" />
+    /// Implements the <see cref="PropertyModels.ComponentModel.AbstractBaseCommand" />
     /// </summary>
-    /// <seealso cref="Avalonia.PropertyGrid.Model.ComponentModel.AbstractBaseCommand" />
+    /// <seealso cref="PropertyModels.ComponentModel.AbstractBaseCommand" />
     public class GenericCommand : AbstractBaseCommand
     {
         Func<bool> _CanExecuteFunc;
@@ -146,11 +146,11 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel
 
     /// <summary>
     /// Class AbstractCancelableCommand.
-    /// Implements the <see cref="Avalonia.PropertyGrid.Model.ComponentModel.AbstractBaseCommand" />
-    /// Implements the <see cref="Avalonia.PropertyGrid.Model.ComponentModel.ICancelableCommand" />
+    /// Implements the <see cref="PropertyModels.ComponentModel.AbstractBaseCommand" />
+    /// Implements the <see cref="PropertyModels.ComponentModel.ICancelableCommand" />
     /// </summary>
-    /// <seealso cref="Avalonia.PropertyGrid.Model.ComponentModel.AbstractBaseCommand" />
-    /// <seealso cref="Avalonia.PropertyGrid.Model.ComponentModel.ICancelableCommand" />
+    /// <seealso cref="PropertyModels.ComponentModel.AbstractBaseCommand" />
+    /// <seealso cref="PropertyModels.ComponentModel.ICancelableCommand" />
     public abstract class AbstractCancelableCommand : AbstractBaseCommand, ICancelableCommand
     {
         /// <summary>
@@ -180,9 +180,9 @@ namespace Avalonia.PropertyGrid.Model.ComponentModel
 
     /// <summary>
     /// Class GenericCancelableCommand.
-    /// Implements the <see cref="Avalonia.PropertyGrid.Model.ComponentModel.AbstractCancelableCommand" />
+    /// Implements the <see cref="PropertyModels.ComponentModel.AbstractCancelableCommand" />
     /// </summary>
-    /// <seealso cref="Avalonia.PropertyGrid.Model.ComponentModel.AbstractCancelableCommand" />
+    /// <seealso cref="PropertyModels.ComponentModel.AbstractCancelableCommand" />
     public class GenericCancelableCommand : AbstractCancelableCommand
     {
         Func<bool> _CanCancelFunc, _CanExecuteFunc, _CancelFunc, _ExecuteFunc;

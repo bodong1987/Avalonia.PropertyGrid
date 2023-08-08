@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Avalonia.PropertyGrid.Model.Extensions;
+using PropertyModels.Extensions;
 
 namespace Avalonia.PropertyGrid.Samples.Models
 {

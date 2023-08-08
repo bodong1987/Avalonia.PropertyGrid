@@ -44,7 +44,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Avalonia.PropertyGrid.Model\Avalonia.PropertyGrid.Model.csproj" PrivateAssets="All">
+    <ProjectReference Include="..\PropertyModels\PropertyModels.csproj" PrivateAssets="All">
     </ProjectReference>
   </ItemGroup>
 	
