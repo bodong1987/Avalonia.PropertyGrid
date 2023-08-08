@@ -3,7 +3,6 @@ using Avalonia.Media;
 using PropertyModels.ComponentModel;
 using PropertyModels.Extensions;
 using Avalonia.PropertyGrid.ViewModels;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

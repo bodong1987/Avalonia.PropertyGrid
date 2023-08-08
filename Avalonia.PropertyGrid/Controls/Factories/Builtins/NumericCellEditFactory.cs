@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using PropertyModels.Extensions;
 using Avalonia.Controls.Embedding;
-using Newtonsoft.Json.Linq;
 using PropertyModels.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins

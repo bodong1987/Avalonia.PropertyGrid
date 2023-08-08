@@ -1,10 +1,10 @@
 ﻿using Avalonia.Platform;
 using PropertyModels.Localilzation;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Linq;
 
 namespace Avalonia.PropertyGrid.Localization
 {
@@ -27,7 +27,7 @@ namespace Avalonia.PropertyGrid.Localization
                 {
                     using (StreamReader sr = new StreamReader(stream, Encoding.UTF8))
                     {
-                        var tempDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(sr.ReadToEnd());
+                        var tempDict = ReadJsonStringDictionary(sr.ReadToEnd());
 
                         if (tempDict != null)
                         {
@@ -43,5 +43,6 @@ namespace Avalonia.PropertyGrid.Localization
                 return false;
             }            
         }
+
     }
 }

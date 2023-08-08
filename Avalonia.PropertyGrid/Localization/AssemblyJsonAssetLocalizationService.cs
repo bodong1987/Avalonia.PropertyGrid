@@ -4,7 +4,6 @@ using PropertyModels.Collections;
 using PropertyModels.ComponentModel;
 using PropertyModels.Extensions;
 using PropertyModels.Localilzation;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

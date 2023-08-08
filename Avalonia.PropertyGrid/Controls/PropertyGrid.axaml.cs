@@ -11,7 +11,6 @@ using PropertyModels.Utils;
 using Avalonia.PropertyGrid.Services;
 using Avalonia.PropertyGrid.ViewModels;
 using Avalonia.Threading;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
