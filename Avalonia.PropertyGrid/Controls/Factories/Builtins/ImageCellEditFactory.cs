@@ -36,8 +36,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return null;
             }
 
-            if (propertyDescriptor.PropertyType != typeof(Avalonia.Media.IImage) &&
-                propertyDescriptor.PropertyType != typeof(System.Drawing.Image))
+            if (propertyDescriptor.PropertyType != typeof(Avalonia.Media.IImage))
             {
                 return null;
             }
@@ -47,32 +46,6 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             control.HorizontalAlignment = Layout.HorizontalAlignment.Center;            
 
             return control;
-        }
-
-        /// <summary>
-        /// Converts the image to avalonia bitmap.
-        /// </summary>
-        /// <param name="image">The image.</param>
-        /// <returns>Avalonia.Media.Imaging.Bitmap.</returns>
-        protected Avalonia.Media.Imaging.Bitmap ConvertImageToAvaloniaBitmap(System.Drawing.Image image)
-        {
-            if (image == null)
-                return null;
-            using (System.Drawing.Bitmap bitmapTmp = new System.Drawing.Bitmap(image))
-            {
-                var bitmapdata = bitmapTmp.LockBits(new System.Drawing.Rectangle(0, 0, bitmapTmp.Width, bitmapTmp.Height), System.Drawing.Imaging.ImageLockMode.ReadWrite, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-
-                var bitmap1 = new Avalonia.Media.Imaging.Bitmap(Avalonia.Platform.PixelFormat.Bgra8888, Avalonia.Platform.AlphaFormat.Premul,
-                    bitmapdata.Scan0,
-                    new Avalonia.PixelSize(bitmapdata.Width, bitmapdata.Height),
-                    new Avalonia.Vector(96, 96),
-                    bitmapdata.Stride
-                    );
-
-                bitmapTmp.UnlockBits(bitmapdata);
-
-                return bitmap1;
-            }   
         }
 
         /// <summary>
@@ -86,8 +59,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             var target = context.Target;
             var control = context.CellEdit;
 
-            if (propertyDescriptor.PropertyType != typeof(Avalonia.Media.IImage) &&
-                propertyDescriptor.PropertyType != typeof(System.Drawing.Image))
+            if (propertyDescriptor.PropertyType != typeof(Avalonia.Media.IImage))
             {
                 return false;
             }
@@ -107,10 +79,6 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 if(imageData is Media.IImage iImage)
                 {
                     imageControl.Source = iImage;
-                }
-                else if(imageData is System.Drawing.Image iSysImage)
-                {
-                    imageControl.Source = ConvertImageToAvaloniaBitmap(iSysImage);
                 }
             }
 
