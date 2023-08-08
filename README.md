@@ -36,22 +36,22 @@ System.ComponentModel.PasswordPropertyTextAttribute
 System.ComponentModel.DataAnnotations.EditableAttribute
 System.ComponentModel.DataAnnotations.RangeAttribute  
 ```
-In addition, there are other classes that can be supported in Avalonia.PropertyGrid.Model.ComponentModel and Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations, which can assist in describing class properties.  
-If you want to have some associations between your class properties, for example, some properties depend on other properties in implementation, then you can try to mark this dependency with Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations.DependsOnPropertyAttribute  
-but you need to inherit your class from Avalonia.PropertyGrid.Model.ComponentModel.ReactiveObject, otherwise you need to maintain this relationship by yourself, just trigger the PropertyChanged event of the target property when the dependent property changes.  
+In addition, there are other classes that can be supported in PropertyModels.ComponentModel and PropertyModels.ComponentModel.DataAnnotations, which can assist in describing class properties.  
+If you want to have some associations between your class properties, for example, some properties depend on other properties in implementation, then you can try to mark this dependency with PropertyModels.ComponentModel.DataAnnotations.DependsOnPropertyAttribute  
+but you need to inherit your class from PropertyModels.ComponentModel.ReactiveObject, otherwise you need to maintain this relationship by yourself, just trigger the PropertyChanged event of the target property when the dependent property changes.  
 
 ```
-Avalonia.PropertyGrid.Model.ComponentModel.FloatPrecisionAttribute  
-Avalonia.PropertyGrid.Model.ComponentModel.IntegerIncrementAttribute
-Avalonia.PropertyGrid.Model.ComponentModel.WatermarkAttribute
-Avalonia.PropertyGrid.Model.ComponentModel.MultilineTextAttribute
-Avalonia.PropertyGrid.Model.ComponentModel.ProgressAttribute
-Avalonia.PropertyGrid.Model.ComponentModel.TrackableAttribute
-Avalonia.PropertyGrid.Model.ComponentModel.EnumDisplayNameAttribute
-Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations.DependsOnPropertyAttribute
-Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations.FileNameValidationAttribute
-Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations.PathBrowsableAttribute
-Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations.VisibilityPropertyConditionAttribute
+PropertyModels.ComponentModel.FloatPrecisionAttribute  
+PropertyModels.ComponentModel.IntegerIncrementAttribute
+PropertyModels.ComponentModel.WatermarkAttribute
+PropertyModels.ComponentModel.MultilineTextAttribute
+PropertyModels.ComponentModel.ProgressAttribute
+PropertyModels.ComponentModel.TrackableAttribute
+PropertyModels.ComponentModel.EnumDisplayNameAttribute
+PropertyModels.ComponentModel.DataAnnotations.DependsOnPropertyAttribute
+PropertyModels.ComponentModel.DataAnnotations.FileNameValidationAttribute
+PropertyModels.ComponentModel.DataAnnotations.PathBrowsableAttribute
+PropertyModels.ComponentModel.DataAnnotations.VisibilityPropertyConditionAttribute
 ```
 
 ### Supported Builtin Types
@@ -75,22 +75,22 @@ Avalonia.PropertyGrid.Model.ComponentModel.DataAnnotations.VisibilityPropertyCon
     System.Drawing.Color/Avalonia.Media.Color  
     System.Drawing.Image/Avalonia.Media.IImage
     Avalonia.Media.FontFamily      
-    Avalonia.PropertyGrid.Model.Collections.ICheckedList  
-    Avalonia.PropertyGrid.Model.Collections.ISelectableList  
+    PropertyModels.Collections.ICheckedList  
+    PropertyModels.Collections.ISelectableList  
     object which support TypeConverter.CanConvertFrom(typeof(string))  
 
 **Struct properties are not supported.**  
 
 ### Extra Data Structure
-* Avalonia.PropertyGrid.Model.Collections.SelectableList<T>  
+* PropertyModels.Collections.SelectableList<T>  
     You can initialize this list with some objects, and you can only select one object in this list. ProeprtyGrid uses ComboBox by default to edit the properties of this data structure
-* Avalonia.PropertyGrid.Model.Collections.CheckedList<T>
+* PropertyModels.Collections.CheckedList<T>
     like SelectableList<T>, you can initialize it with some objects, but you can select multiple objects in it. ProeprtyGrid uses a set of CheckBoxes by default to edit the properties of this data structure, for example:
     ![CheckList](./Docs/Images/CheckList.png)
 
 ### Data Reloading
 Implement from System.ComponentModel.INotifyPropertyChanged and trigger the PropertyChanged event when the property changes. PropertyGrid will listen to these events and automatically refresh the view data.  
-if you implementing from Avalonia.PropertyGrid.Model.ComponentModel.INotifyPropertyChanged instead of System.ComponentModel.INotifyPropertyChanged will gain the additional ability to automatically fire the PropertyChanged event when an edit occurs in the PropertyGrid without having to handle each property itself.
+if you implementing from PropertyModels.ComponentModel.INotifyPropertyChanged instead of System.ComponentModel.INotifyPropertyChanged will gain the additional ability to automatically fire the PropertyChanged event when an edit occurs in the PropertyGrid without having to handle each property itself.
 
 ### Change Size
 You can change the width of namelabel and cell edit by drag here:
@@ -237,14 +237,14 @@ In this example, you can check IsShowPath first, then set the Platform to Unix, 
 To do this, you only need to mark the property with a custom Attribute. If you need to implement your own rules, just implement your own rules from.  
 
 
-***The implementation behind this depends on IReactiveObject in Avalonia.PropertyGrid.Model, you can implement it yourself, or directly derive your Model from ReactiveObject.***
+***The implementation behind this depends on IReactiveObject in PropertyModels, you can implement it yourself, or directly derive your Model from ReactiveObject.***
 
 **AbstractVisiblityConditionAttribute**.  
 One thing to pay special attention to is **that any property that needs to be used as a visibility condition for other properties needs to be marked with [ConditionTarget].**   
 The purpose is to let PropertyGrid know that when this property changes, it needs to notify the upper layer to refresh the visibility information.
 
 ### User Localization
-Implement your Avalonia.PropertyGrid.Model.Services.ILocalizationService class, and register its instance by :
+Implement your PropertyModels.Services.ILocalizationService class, and register its instance by :
 ```C#
     LocalizationService.Default.AddExtraService(new YourLocalizationService());
 ```
