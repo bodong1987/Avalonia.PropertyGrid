@@ -47,6 +47,11 @@
     "Clear": "清空",
     "FirstObject": "第一个对象",
     "SecondObject": "第二个对象",
+    "First": "第一",
+    "Second": "第二",
+    "StringArray0": "字符串数组0",
+    "StringArray1": "字符串数组1",
+    "StringArray2": "字符串数组2",
 
 
     // sample property name
