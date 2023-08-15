@@ -103,6 +103,10 @@ namespace Avalonia.PropertyGrid.Samples.Models
         }
 
         [Category("DataValidation")]
+        [Required(ErrorMessage ="Can not be null")]
+        public string ValidateString { get; set; }
+
+        [Category("DataValidation")]
         [Description("Select platforms")]
         [ValidatePlatform]
         public CheckedList<PlatformID> Platforms { get; set; } = new CheckedList<PlatformID>(Enum.GetValues(typeof(PlatformID)).Cast<PlatformID>());

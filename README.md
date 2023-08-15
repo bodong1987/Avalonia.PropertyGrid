@@ -73,7 +73,7 @@ PropertyModels.ComponentModel.DataAnnotations.VisibilityPropertyConditionAttribu
     System.DateTime/System.DateTimeOffset/System.DateTime?/System.DateTimeOffset?  
     System.TimeSpan/System.TimeSpan?      
     System.Drawing.Color/Avalonia.Media.Color  
-    System.Drawing.Image/Avalonia.Media.IImage
+    Avalonia.Media.IImage
     Avalonia.Media.FontFamily      
     PropertyModels.Collections.ICheckedList  
     PropertyModels.Collections.ISelectableList  

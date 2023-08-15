@@ -62,7 +62,10 @@ namespace PropertyModels.ComponentModel.DataAnnotations
             {
                 List<ValidationResult> Results = new List<ValidationResult>();
                 var value = property.GetValue(component);
-                if (!Validator.TryValidateValue(
+
+                if(value != null)
+                {
+                    if (!Validator.TryValidateValue(
                     value,
                     new ValidationContext(value)
                     {
@@ -72,10 +75,31 @@ namespace PropertyModels.ComponentModel.DataAnnotations
                     Results,
                     property.GetCustomAttributes<ValidationAttribute>()
                     ))
-                {
-                    message = string.Join(Environment.NewLine, Results.Select(x => x.GetDisplayMessage()));
-                    return false;
+                    {
+                        message = string.Join(Environment.NewLine, Results.Select(x => x.GetDisplayMessage()));
+                        return false;
+                    }
                 }
+                else
+                {
+                    StringBuilder builder = new StringBuilder();
+                    bool HasError = false;
+
+                    foreach(var attr in property.GetCustomAttributes<ValidationAttribute>())
+                    {
+                        if (!attr.IsValid(value))
+                        {
+                            HasError = true;
+                            builder.AppendLine(attr.FormatErrorMessage(property.DisplayName) ?? "Unknown Error.");
+                        }
+                    }
+
+                    if(HasError)
+                    {
+                        message = builder.ToString().Trim();
+                        return false;
+                    }
+                }                
             }
 
             message = string.Empty;

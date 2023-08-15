@@ -212,7 +212,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         {
             if (!ValidatorUtils.TryValidateProperty(component, propertyDescriptor, out var message))
             {
-                DataValidationErrors.SetErrors(sourceControl, new object[] { message });
+                DataValidationErrors.SetErrors(sourceControl, new object[] { LocalizationService.Default[message] });
             }
             else
             {
