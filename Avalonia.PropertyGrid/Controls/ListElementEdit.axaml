@@ -4,10 +4,10 @@
 		xmlns:ll="using:Avalonia.PropertyGrid.Localization"
 		>
   <Design.PreviewWith>
-    <controls:BindingListElementEdit />
+    <controls:ListElementEdit />
   </Design.PreviewWith>
 
-  <Style Selector="controls|BindingListElementEdit">
+  <Style Selector="controls|ListElementEdit">
     <!-- Set Defaults -->
     <Setter Property="Template">
       <ControlTemplate>
@@ -17,10 +17,10 @@
 							 Margin="10,0,2,0"
 							 VerticalAlignment="Center"
 							 ></TextBlock>
-				  <controls:BindingListElementPlaceholderEdit 
+				  <controls:ListElementPlaceholderEdit 
 					  Grid.Column="1"
 					  >					  
-				  </controls:BindingListElementPlaceholderEdit>
+				  </controls:ListElementPlaceholderEdit>
 				  <Button x:Name="InsertButton"
 						  Grid.Column="2"
 						  Margin="2"

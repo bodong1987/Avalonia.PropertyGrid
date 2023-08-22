@@ -86,7 +86,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
                             for (int i = 0; i < list.Count; ++i)
                             {
-                                (ValueCore as IBindingList).Add(list[i]);
+                                (ValueCore as IList).Add(list[i]);
                             }
 
                             ValueType = ValueCore.GetType();

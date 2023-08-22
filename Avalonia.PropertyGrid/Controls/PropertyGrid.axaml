@@ -13,8 +13,8 @@
 	<UserControl.Styles>
 		<StyleInclude Source="/Controls/ButtonEdit.axaml"></StyleInclude>
 		<StyleInclude Source="/Controls/CheckedListEdit.axaml"></StyleInclude>
-		<StyleInclude Source="/Controls/BindingListElementEdit.axaml"></StyleInclude>
-		<StyleInclude Source="/Controls/BindingListEdit.axaml"></StyleInclude>
+		<StyleInclude Source="/Controls/ListElementEdit.axaml"></StyleInclude>
+		<StyleInclude Source="/Controls/ListEdit.axaml"></StyleInclude>
 		<StyleInclude Source="/Controls/TrackableEdit.axaml"></StyleInclude>
         <StyleInclude Source="avares://Avalonia.Controls.ColorPicker/Themes/Fluent/Fluent.xaml"/>
 		<StyleInclude Source="avares://Avalonia.Controls.ColorPicker/Themes/Simple/Simple.xaml"/>

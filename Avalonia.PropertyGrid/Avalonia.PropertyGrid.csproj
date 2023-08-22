@@ -45,6 +45,18 @@
     <ProjectReference Include="..\PropertyModels\PropertyModels.csproj" PrivateAssets="All">
     </ProjectReference>
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Controls\ListEdit.axaml.cs">
+      <DependentUpon>ListEdit.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\ListElementEdit.axaml.cs">
+      <DependentUpon>ListElementEdit.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\ListElementPlaceholderEdit.axaml.cs">
+      <DependentUpon>ListElementPlaceholderEdit.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 	
 	<PropertyGroup>
 		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>

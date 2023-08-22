@@ -8,17 +8,17 @@ using System.Windows.Input;
 namespace Avalonia.PropertyGrid.Controls
 {
     /// <summary>
-    /// Class BindingListElementEdit.
+    /// Class ListElementEdit.
     /// Implements the <see cref="TemplatedControl" />
     /// </summary>
     /// <seealso cref="TemplatedControl" />
-    public class BindingListElementEdit : TemplatedControl
+    public class ListElementEdit : TemplatedControl
     {
         /// <summary>
         /// The insert command property
         /// </summary>
-        public static readonly DirectProperty<BindingListElementEdit, ICommand> InsertCommandProperty =
-            AvaloniaProperty.RegisterDirect<BindingListElementEdit, ICommand>(
+        public static readonly DirectProperty<ListElementEdit, ICommand> InsertCommandProperty =
+            AvaloniaProperty.RegisterDirect<ListElementEdit, ICommand>(
                 nameof(InsertCommand),
                 o => o.InsertCommand,
                 (o, v) => o.InsertCommand = v);
@@ -37,8 +37,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The remove command property
         /// </summary>
-        public static readonly DirectProperty<BindingListElementEdit, ICommand> RemoveCommandProperty =
-            AvaloniaProperty.RegisterDirect<BindingListElementEdit, ICommand>(
+        public static readonly DirectProperty<ListElementEdit, ICommand> RemoveCommandProperty =
+            AvaloniaProperty.RegisterDirect<ListElementEdit, ICommand>(
                 nameof(RemoveCommand),
                 o => o.RemoveCommand,
                 (o, v) => o.RemoveCommand = v);
@@ -55,9 +55,9 @@ namespace Avalonia.PropertyGrid.Controls
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BindingListElementEdit"/> class.
+        /// Initializes a new instance of the <see cref="ListElementEdit"/> class.
         /// </summary>
-        public BindingListElementEdit()
+        public ListElementEdit()
         {
         }
     }

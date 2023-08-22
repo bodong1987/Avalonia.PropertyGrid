@@ -7,18 +7,18 @@ using System.Diagnostics;
 namespace Avalonia.PropertyGrid.Controls
 {
     /// <summary>
-    /// Class BindingListElementPlaceholderEdit.
+    /// Class ListElementPlaceholderEdit.
     /// Implements the <see cref="UserControl" />
     /// </summary>
     /// <seealso cref="UserControl" />
-    public partial class BindingListElementPlaceholderEdit : UserControl
+    public partial class ListElementPlaceholderEdit : UserControl
     {
         PropertyCellContext Context;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BindingListElementPlaceholderEdit"/> class.
+        /// Initializes a new instance of the <see cref="ListElementPlaceholderEdit"/> class.
         /// </summary>
-        public BindingListElementPlaceholderEdit()
+        public ListElementPlaceholderEdit()
         {
             InitializeComponent();
         }
@@ -33,7 +33,7 @@ namespace Avalonia.PropertyGrid.Controls
 
             if(change.Property == DataContextProperty)
             {
-                OnDataDescPropertyChanged(change.OldValue as BindingListElementDataDesc, change.NewValue as BindingListElementDataDesc);
+                OnDataDescPropertyChanged(change.OldValue as ListElementDataDesc, change.NewValue as ListElementDataDesc);
             }
         }
 
@@ -46,7 +46,7 @@ namespace Avalonia.PropertyGrid.Controls
             base.OnDataContextChanged(e);
         }
      
-        private void OnDataDescPropertyChanged(BindingListElementDataDesc oldValue, BindingListElementDataDesc value)
+        private void OnDataDescPropertyChanged(ListElementDataDesc oldValue, ListElementDataDesc value)
         {
             if(oldValue != null)
             {
@@ -82,7 +82,7 @@ namespace Avalonia.PropertyGrid.Controls
 
         private void OnElementValueChanged(object sender, EventArgs e)
         {
-            var value = DataContext as BindingListElementDataDesc;
+            var value = DataContext as ListElementDataDesc;
 
             if(value == null)
             {
