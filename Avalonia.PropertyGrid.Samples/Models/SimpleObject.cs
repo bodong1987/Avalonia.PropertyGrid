@@ -154,27 +154,42 @@ namespace Avalonia.PropertyGrid.Samples.Models
         [Trackable(-1000, 1000, Increment = 1, FormatString = "{0:0}")]
         public int trackableIntValue { get; set; } = 10;
 
-        [Category("Array")]
+        [Category("BindingList")]
         public BindingList<string> stringList { get; set; } = new BindingList<string>() { "bodong", "china" };
 
-        [Category("Array")]
+        [Category("BindingList")]
         [DisplayName("Not Editable")]
         [Editable(false)]
         public BindingList<string> stringListNotEditable { get; set; } = new BindingList<string>() { "bodong", "china" };
 
-        [Category("Array")]
+        [Category("BindingList")]
         [DisplayName("Readonly List")]
         [ReadOnly(true)]
         public BindingList<string> stringListReadonly { get; set; } = new BindingList<string>() { "bodong", "china" };
 
-        [Category("Array")]
+        [Category("BindingList")]
         public BindingList<Boolean> boolList { get; set; } = new BindingList<bool> { true, false };
 
-        [Category("Array")]
+        [Category("BindingList")]
         public BindingList<PlatformID> enumList { get; set; } = new BindingList<PlatformID>() { PlatformID.Win32NT, PlatformID.Unix };
 
-        [Category("Array")]
+        [Category("BindingList")]
         public BindingList<Vector3> Vec3List { get; set; } = new BindingList<Vector3>() { new Vector3(1024.0f, 2048.0f, 4096.0f) };
+
+        [Category("Array")]
+        public string[] StringArray { get; set; } = new string[] { "bodong", "china", "Asia" };
+
+        [Category("Array")]
+        public PlatformID[] EnumArray { get; set; } = new PlatformID[] { PlatformID.Win32NT, PlatformID.Unix, PlatformID.Other };
+
+        [Category("List")]
+        public List<string> StringList { get; set; } = new List<string>() { "bodong", "china", "Asia" };
+
+        [Category("List")]
+        public List<PlatformID> EnumList { get; set; } = new List<PlatformID>() { PlatformID.Win32NT, PlatformID.Unix, PlatformID.Other };
+
+        [Category("List")]
+        public List<bool?> BoolList { get; set; } = new List<bool?>() { true, false, null };
 
         [Category("Checked List")]
         public CheckedList<string> CheckedListString { get; set; } = new CheckedList<string>(new string[] { "bodong", "John", "David" }, new string[] { "bodong" });

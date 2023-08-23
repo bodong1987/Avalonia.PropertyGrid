@@ -8,6 +8,8 @@
     "Dynamic_Visibility": "动态可见性",
     "RedoUndo": "撤销&重做",
     "Self_s_Properties": "自身属性",
+    "List": "可变数组",
+    "BindingList": "绑定数组",
 
     "On": "开",
     "Off": "关",
