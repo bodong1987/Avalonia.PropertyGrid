@@ -173,6 +173,14 @@ namespace Avalonia.PropertyGrid.Controls.Factories
                 context.Property.SetAndRaiseEvent(context.Target, value);
 
                 ValidateProperty(sourceControl, context.Property, context.Target);
+
+                var ParentContext = context.ParentContext;
+                while(ParentContext != null)
+                {
+                    ParentContext.Property?.RaiseEvent(ParentContext.Target);
+
+                    ParentContext = ParentContext.ParentContext;
+                }
             }
             catch (Exception e)
             {

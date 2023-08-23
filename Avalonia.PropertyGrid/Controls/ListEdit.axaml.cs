@@ -457,7 +457,7 @@ namespace Avalonia.PropertyGrid.Controls
                     var list = List;
                     foreach (var index in Enumerable.Range(0, list.Count))
                     {
-                        var pd = new ListElementPropertyDescriptor(index.ToString(), index, list[index]?.GetType() ?? list.GetType().GetGenericArguments()[0]);
+                        var pd = new ListElementPropertyDescriptor(PropertyContext.Property, index.ToString(), index, list[index]?.GetType() ?? list.GetType().GetGenericArguments()[0]);
                         ListElementDataDesc desc = new ListElementDataDesc(
                             this, 
                             list, 
