@@ -164,20 +164,20 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         /// <param name="sourceControl">The source control.</param>
         /// <param name="context">The context.</param>
         /// <param name="value">The value.</param>
-        protected virtual void HandleSetValue(Control sourceControl, PropertyCellContext context, object value)
+        protected virtual void HandleSetValue(Control sourceControl, PropertyCellContext context, object value, PropertyChangedEventArgs e)
         {
             DataValidationErrors.ClearErrors(sourceControl);
 
             try
             {
-                context.Property.SetAndRaiseEvent(context.Target, value);
+                context.Property.SetAndRaiseEvent(context.Target, value, sourceControl, e);
 
                 ValidateProperty(sourceControl, context.Property, context.Target);
 
                 var ParentContext = context.ParentContext;
                 while(ParentContext != null)
                 {
-                    ParentContext.Property?.RaiseEvent(ParentContext.Target);
+                    ParentContext.Property?.RaiseEvent(ParentContext.Target, sourceControl, e);
 
                     ParentContext = ParentContext.ParentContext;
                 }

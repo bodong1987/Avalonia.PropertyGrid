@@ -18,5 +18,12 @@ namespace PropertyModels.ComponentModel
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
         void RaisePropertyChanged(string propertyName);
+
+        /// <summary>
+        /// Raises the property changed.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.ComponentModel.PropertyChangedEventArgs"/> instance containing the event data.</param>
+        void RaisePropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e);
     }
 }

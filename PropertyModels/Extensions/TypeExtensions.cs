@@ -531,9 +531,11 @@ namespace PropertyModels.Extensions
         /// <param name="property">The property.</param>
         /// <param name="component">The component.</param>
         /// <param name="value">The value.</param>
-        public static void SetAndRaiseEvent(this PropertyDescriptor property, object component, object value)
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="PropertyChangedEventArgs"/> instance containing the event data.</param>
+        public static void SetAndRaiseEvent(this PropertyDescriptor property, object component, object value, object sender, PropertyChangedEventArgs e)
         {
-            SetAndRaiseEvent(property, component, value, out _);
+            SetAndRaiseEvent(property, component, value, sender, e, out _);
         }
 
         /// <summary>
@@ -542,9 +544,11 @@ namespace PropertyModels.Extensions
         /// <param name="property">The property.</param>
         /// <param name="component">The component.</param>
         /// <param name="value">The value.</param>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="PropertyChangedEventArgs" /> instance containing the event data.</param>
         /// <param name="oldValue">The old value.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
-        public static bool SetAndRaiseEvent(this PropertyDescriptor property, object component, object value, out object oldValue)
+        public static bool SetAndRaiseEvent(this PropertyDescriptor property, object component, object value, object sender, PropertyChangedEventArgs e, out object oldValue)
         {
             if(!IsPropertyChanged(property, component, value, out oldValue))
             {
@@ -553,19 +557,19 @@ namespace PropertyModels.Extensions
 
             if (component is ComponentModel.INotifyPropertyChanging npcp)
             {
-                npcp.RaisePropertyChanging(property.Name);
+                npcp.RaisePropertyChanging(sender, new PropertyChangingEventArgs(e.PropertyName));
             }
             else if (component is IEnumerable<ComponentModel.INotifyPropertyChanging> enpcps)
             {
-                foreach (ComponentModel.INotifyPropertyChanging e in enpcps)
+                foreach (ComponentModel.INotifyPropertyChanging p in enpcps)
                 {
-                    e.RaisePropertyChanging(property.Name);
+                    p.RaisePropertyChanging(sender, new PropertyChangingEventArgs(e.PropertyName));
                 }
             }
 
             property.SetValue(component, value);
 
-            RaiseEvent(property, component);
+            RaiseEvent(property, component, sender, e);
 
             return true;
         }
@@ -600,17 +604,19 @@ namespace PropertyModels.Extensions
         /// </summary>
         /// <param name="property">The property.</param>
         /// <param name="component">The component.</param>
-        public static void RaiseEvent(this PropertyDescriptor property, object component)
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="PropertyChangedEventArgs"/> instance containing the event data.</param>
+        public static void RaiseEvent(this PropertyDescriptor property, object component, object sender, PropertyChangedEventArgs e)
         {
             if (component is ComponentModel.INotifyPropertyChanged npc)
             {
-                npc.RaisePropertyChanged(property.Name);
+                npc.RaisePropertyChanged(sender, e);
             }
             else if (component is IEnumerable<ComponentModel.INotifyPropertyChanged> enpcps)
             {
-                foreach (ComponentModel.INotifyPropertyChanged e in enpcps)
+                foreach (ComponentModel.INotifyPropertyChanged p in enpcps)
                 {
-                    e.RaisePropertyChanged(property.Name);
+                    p.RaisePropertyChanged(sender, e);
                 }
             }
         }

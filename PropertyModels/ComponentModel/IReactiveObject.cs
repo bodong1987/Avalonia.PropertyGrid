@@ -38,9 +38,18 @@ namespace PropertyModels.ComponentModel
         /// <param name="propertyName">Name of the property.</param>
         public void RaisePropertyChanged(string propertyName)
         {
-            PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            RaisePropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        /// <summary>
+        /// Raises the property changed.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.ComponentModel.PropertyChangedEventArgs"/> instance containing the event data.</param>
+        public void RaisePropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            PropertyChanged?.Invoke(sender, e);
+        }
         #endregion
     }
 
