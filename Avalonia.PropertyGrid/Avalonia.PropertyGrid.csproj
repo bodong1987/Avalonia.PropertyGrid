@@ -45,6 +45,12 @@
     <ProjectReference Include="..\PropertyModels\PropertyModels.csproj" PrivateAssets="All">
     </ProjectReference>
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Controls\BindiListElementPlaceholderEdit.axaml.cs">
+      <DependentUpon>BindiListElementPlaceholderEdit.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 	
 	<PropertyGroup>
 		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>

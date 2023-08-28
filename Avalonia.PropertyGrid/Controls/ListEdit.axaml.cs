@@ -16,18 +16,18 @@ using Avalonia.PropertyGrid.Services;
 namespace Avalonia.PropertyGrid.Controls
 {
     /// <summary>
-    /// Class BindingListEdit.
+    /// Class ListEdit.
     /// Implements the <see cref="TemplatedControl" />
     /// </summary>
     /// <seealso cref="TemplatedControl" />
-    public class BindingListEdit : TemplatedControl
+    public class ListEdit : TemplatedControl
     {
         #region Data Properties
         /// <summary>
         /// The data list property
         /// </summary>
-        public static readonly DirectProperty<BindingListEdit, IBindingList> DataListProperty =
-            AvaloniaProperty.RegisterDirect<BindingListEdit, IBindingList>(
+        public static readonly DirectProperty<ListEdit, IBindingList> DataListProperty =
+            AvaloniaProperty.RegisterDirect<ListEdit, IBindingList>(
                 nameof(DataList),
                 o => o.DataList,
                 (o, v) => o.DataList = v
@@ -52,8 +52,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Creates new elementcommandproperty.
         /// </summary>
-        public static readonly DirectProperty<BindingListEdit, ICommand> NewElementCommandProperty =
-            AvaloniaProperty.RegisterDirect<BindingListEdit, ICommand>(
+        public static readonly DirectProperty<ListEdit, ICommand> NewElementCommandProperty =
+            AvaloniaProperty.RegisterDirect<ListEdit, ICommand>(
                 nameof(NewElementCommand),
                 o => o.NewElementCommand,
                 (o, v) => o.NewElementCommand = v
@@ -76,8 +76,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The clear elements command property
         /// </summary>
-        public static readonly DirectProperty<BindingListEdit, ICommand> ClearElementsCommandProperty =
-            AvaloniaProperty.RegisterDirect<BindingListEdit, ICommand>(
+        public static readonly DirectProperty<ListEdit, ICommand> ClearElementsCommandProperty =
+            AvaloniaProperty.RegisterDirect<ListEdit, ICommand>(
                 nameof(ClearElementsCommand),
                 o => o.ClearElementsCommand,
                 (o, v) => o.ClearElementsCommand = v
@@ -103,7 +103,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// The selected items changed event
         /// </summary>
         public static readonly RoutedEvent<BindingListRoutedEventArgs> NewElementEvent =
-            RoutedEvent.Register<BindingListEdit, BindingListRoutedEventArgs>(nameof(NewElement), RoutingStrategies.Bubble);
+            RoutedEvent.Register<ListEdit, BindingListRoutedEventArgs>(nameof(NewElement), RoutingStrategies.Bubble);
 
         /// <summary>
         /// Creates new element.
@@ -118,7 +118,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// The clear elements event
         /// </summary>
         public static readonly RoutedEvent<BindingListRoutedEventArgs> ClearElementsEvent =
-           RoutedEvent.Register<BindingListEdit, BindingListRoutedEventArgs>(nameof(ClearElements), RoutingStrategies.Bubble);
+           RoutedEvent.Register<ListEdit, BindingListRoutedEventArgs>(nameof(ClearElements), RoutingStrategies.Bubble);
 
         /// <summary>
         /// Occurs when [clear elements].
@@ -133,7 +133,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// The insert element event
         /// </summary>
         public static readonly RoutedEvent<BindingListRoutedEventArgs> InsertElementEvent =
-            RoutedEvent.Register<BindingListEdit, BindingListRoutedEventArgs>(nameof(InsertElement), RoutingStrategies.Bubble);
+            RoutedEvent.Register<ListEdit, BindingListRoutedEventArgs>(nameof(InsertElement), RoutingStrategies.Bubble);
 
         /// <summary>
         /// Occurs when [insert element].
@@ -148,7 +148,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// The remove elements event
         /// </summary>
         public static readonly RoutedEvent<BindingListRoutedEventArgs> RemoveElementsEvent =
-           RoutedEvent.Register<BindingListEdit, BindingListRoutedEventArgs>(nameof(RemoveElement), RoutingStrategies.Bubble);
+           RoutedEvent.Register<ListEdit, BindingListRoutedEventArgs>(nameof(RemoveElement), RoutingStrategies.Bubble);
 
         /// <summary>
         /// Occurs when [remove element].
@@ -163,7 +163,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// The element value changed event
         /// </summary>
         public static readonly RoutedEvent<BindingListRoutedEventArgs> ElementValueChangedEvent =
-            RoutedEvent.Register<BindingListEdit, BindingListRoutedEventArgs>(nameof(ElementValueChanged), RoutingStrategies.Bubble);
+            RoutedEvent.Register<ListEdit, BindingListRoutedEventArgs>(nameof(ElementValueChanged), RoutingStrategies.Bubble);
 
         /// <summary>
         /// Occurs when [element value changed].
@@ -182,17 +182,17 @@ namespace Avalonia.PropertyGrid.Controls
         internal BindingListViewModel Model { get; private set; }
 
         /// <summary>
-        /// Initializes static members of the <see cref="BindingListEdit"/> class.
+        /// Initializes static members of the <see cref="ListEdit"/> class.
         /// </summary>
-        static BindingListEdit()
+        static ListEdit()
         {
             DataListProperty.Changed.Subscribe(OnDataListChanged);
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BindingListEdit"/> class.
+        /// Initializes a new instance of the <see cref="ListEdit"/> class.
         /// </summary>
-        public BindingListEdit()
+        public ListEdit()
         {
             NewElementCommand = ReactiveCommand.Create(HandleNewElement);
             ClearElementsCommand = ReactiveCommand.Create(HandleClearElements);
@@ -206,7 +206,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="e">The e.</param>
         private static void OnDataListChanged(AvaloniaPropertyChangedEventArgs<IBindingList> e)
         {
-            if(e.Sender is BindingListEdit ble)
+            if(e.Sender is ListEdit ble)
             {
                 ble.OnDataListChanged(e.OldValue.Value, e.NewValue.Value);
             }
@@ -455,7 +455,7 @@ namespace Avalonia.PropertyGrid.Controls
                     var list = List;
                     foreach (var index in Enumerable.Range(0, list.Count))
                     {
-                        var pd = new BindingListElementPropertyDescriptor(index.ToString(), index, list[index]?.GetType() ?? list.GetType().GetGenericArguments()[0]);
+                        var pd = new ListElementPropertyDescriptor(index.ToString(), index, list[index]?.GetType() ?? list.GetType().GetGenericArguments()[0]);
                         BindingListElementDataDesc desc = new BindingListElementDataDesc(
                             this, 
                             list, 
@@ -487,7 +487,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The property
         /// </summary>
-        public readonly BindingListElementPropertyDescriptor Property;
+        public readonly ListElementPropertyDescriptor Property;
 
         /// <summary>
         /// The root property grid
@@ -540,7 +540,7 @@ namespace Avalonia.PropertyGrid.Controls
         public BindingListElementDataDesc(
             BindingListViewModel model, 
             IBindingList list,
-            BindingListElementPropertyDescriptor property,
+            ListElementPropertyDescriptor property,
             PropertyCellContext context,
             ICommand insertCommand,
             ICommand removeCommand

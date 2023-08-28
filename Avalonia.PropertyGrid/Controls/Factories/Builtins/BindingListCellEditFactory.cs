@@ -68,7 +68,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return null;
             }
 
-            BindingListEdit control = new BindingListEdit();
+            ListEdit control = new ListEdit();
             control.Model.PropertyContext = context;
             control.Model.Collection = (this as ICellEditFactory).Collection;            
 
@@ -102,7 +102,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return false;
             }
 
-            if (context.CellEdit is BindingListEdit ae)
+            if (context.CellEdit is ListEdit ae)
             {
                 var value = context.GetValue() as IBindingList;
 
@@ -121,7 +121,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <param name="e">The <see cref="BindingListRoutedEventArgs"/> instance containing the event data.</param>
         /// <param name="context">The context.</param>
         /// <param name="control">The control.</param>
-        protected virtual void HandleRemoveElement(object s, BindingListRoutedEventArgs e, PropertyCellContext context, BindingListEdit control)
+        protected virtual void HandleRemoveElement(object s, BindingListRoutedEventArgs e, PropertyCellContext context, ListEdit control)
         {
             Debug.Assert(e.Index != -1);
 
@@ -185,7 +185,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <param name="e">The <see cref="BindingListRoutedEventArgs"/> instance containing the event data.</param>
         /// <param name="context">The context.</param>
         /// <param name="control">The control.</param>
-        protected virtual void HandleClearElements(object s, BindingListRoutedEventArgs e, PropertyCellContext context, BindingListEdit control)
+        protected virtual void HandleClearElements(object s, BindingListRoutedEventArgs e, PropertyCellContext context, ListEdit control)
         {
             var value = context.GetValue() as IBindingList;
 
@@ -235,7 +235,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <param name="e">The <see cref="BindingListRoutedEventArgs"/> instance containing the event data.</param>
         /// <param name="context">The context.</param>
         /// <param name="control">The control.</param>
-        protected virtual void HandleInsertElement(object s, BindingListRoutedEventArgs e, PropertyCellContext context, BindingListEdit control)
+        protected virtual void HandleInsertElement(object s, BindingListRoutedEventArgs e, PropertyCellContext context, ListEdit control)
         {
             Debug.Assert(e.Index != -1);
 
@@ -289,7 +289,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <param name="e">The <see cref="BindingListRoutedEventArgs"/> instance containing the event data.</param>
         /// <param name="context">The context.</param>
         /// <param name="control">The control.</param>
-        protected virtual void HandleNewElement(object s, BindingListRoutedEventArgs e, PropertyCellContext context, BindingListEdit control)
+        protected virtual void HandleNewElement(object s, BindingListRoutedEventArgs e, PropertyCellContext context, ListEdit control)
         {
             var value = context.GetValue() as IBindingList;
 
@@ -335,7 +335,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <param name="e">The <see cref="BindingListRoutedEventArgs"/> instance containing the event data.</param>
         /// <param name="context">The context.</param>
         /// <param name="control">The control.</param>
-        protected virtual void HandleElementValueChanged(object s, BindingListRoutedEventArgs e, PropertyCellContext context, BindingListEdit control)
+        protected virtual void HandleElementValueChanged(object s, BindingListRoutedEventArgs e, PropertyCellContext context, ListEdit control)
         {
             // element has been changed
             // we just raise event, so property grid can refresh ui...

@@ -7,18 +7,18 @@ using System.Diagnostics;
 namespace Avalonia.PropertyGrid.Controls
 {
     /// <summary>
-    /// Class BindingListElementPlaceholderEdit.
+    /// Class ListElementPlaceholderEdit.
     /// Implements the <see cref="UserControl" />
     /// </summary>
     /// <seealso cref="UserControl" />
-    public partial class BindingListElementPlaceholderEdit : UserControl
+    public partial class ListElementPlaceholderEdit : UserControl
     {
         PropertyCellContext Context;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BindingListElementPlaceholderEdit"/> class.
+        /// Initializes a new instance of the <see cref="ListElementPlaceholderEdit"/> class.
         /// </summary>
-        public BindingListElementPlaceholderEdit()
+        public ListElementPlaceholderEdit()
         {
             InitializeComponent();
         }

@@ -4,10 +4,10 @@
 		xmlns:ll="using:Avalonia.PropertyGrid.Localization"
 		>
   <Design.PreviewWith>
-    <controls:BindingListEdit />
+    <controls:ListEdit />
   </Design.PreviewWith>
 
-  <Style Selector="controls|BindingListEdit">
+  <Style Selector="controls|ListEdit">
     <!-- Set Defaults -->
     <Setter Property="Template">
       <ControlTemplate>
@@ -58,11 +58,11 @@
 						  </ItemsControl.ItemsPanel>
 						  <ItemsControl.ItemTemplate>
 							  <DataTemplate>
-								  <controls:BindingListElementEdit
+								  <controls:ListElementEdit
 									  InsertCommand="{Binding InsertCommand}"
 									  RemoveCommand="{Binding RemoveCommand}"
 									  >
-								  </controls:BindingListElementEdit>
+								  </controls:ListElementEdit>
 							  </DataTemplate>
 						  </ItemsControl.ItemTemplate>
 					  </ItemsControl>  

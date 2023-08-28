@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +14,7 @@ namespace PropertyModels.ComponentModel
     /// Implements the <see cref="PropertyDescriptor" />
     /// </summary>
     /// <seealso cref="PropertyDescriptor" />
-    public class BindingListElementPropertyDescriptor : PropertyDescriptor
+    public class ListElementPropertyDescriptor : PropertyDescriptor
     {
         /// <summary>
         /// When overridden in a derived class, gets the type of the component this property is bound to.
@@ -41,12 +43,12 @@ namespace PropertyModels.ComponentModel
         readonly Type ElementType;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BindingListElementPropertyDescriptor" /> class.
+        /// Initializes a new instance of the <see cref="ListElementPropertyDescriptor" /> class.
         /// </summary>
         /// <param name="name">The name.</param>
         /// <param name="index">The index.</param>
         /// <param name="elementType">Type of the element.</param>
-        public BindingListElementPropertyDescriptor(string name, int index, Type elementType) :
+        public ListElementPropertyDescriptor(string name, int index, Type elementType) :
             base(name, null)
         {
             Index = index;
@@ -70,7 +72,9 @@ namespace PropertyModels.ComponentModel
         /// <returns>The value of a property for a given component.</returns>
         public override object GetValue(object component)
         {
-            return (component as IBindingList)[Index];
+            Debug.Assert(component is IList);
+
+            return (component as IList)[Index];
         }
 
         /// <summary>
@@ -90,7 +94,9 @@ namespace PropertyModels.ComponentModel
         /// <param name="value">The new value.</param>
         public override void SetValue(object component, object value)
         {
-            (component as IBindingList)[Index] = value;
+            Debug.Assert(component is IList);
+
+            (component as IList)[Index] = value;
         }
 
         /// <summary>
