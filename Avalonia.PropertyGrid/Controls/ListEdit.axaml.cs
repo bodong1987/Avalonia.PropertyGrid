@@ -12,6 +12,8 @@ using PropertyModels.ComponentModel.DataAnnotations;
 using System.Windows.Input;
 using Avalonia.Interactivity;
 using Avalonia.PropertyGrid.Services;
+using System.Collections;
+using Avalonia.Platform;
 
 namespace Avalonia.PropertyGrid.Controls
 {
@@ -26,8 +28,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The data list property
         /// </summary>
-        public static readonly DirectProperty<ListEdit, IBindingList> DataListProperty =
-            AvaloniaProperty.RegisterDirect<ListEdit, IBindingList>(
+        public static readonly DirectProperty<ListEdit, IList> DataListProperty =
+            AvaloniaProperty.RegisterDirect<ListEdit, IList>(
                 nameof(DataList),
                 o => o.DataList,
                 (o, v) => o.DataList = v
@@ -36,12 +38,12 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The data list
         /// </summary>
-        IBindingList _DataList;
+        IList _DataList;
         /// <summary>
         /// Gets or sets the data list.
         /// </summary>
         /// <value>The data list.</value>
-        public IBindingList DataList
+        public IList DataList
         {
             get => _DataList;
             set => SetAndRaise(DataListProperty, ref _DataList, value);
@@ -204,7 +206,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Called when [data list changed].
         /// </summary>
         /// <param name="e">The e.</param>
-        private static void OnDataListChanged(AvaloniaPropertyChangedEventArgs<IBindingList> e)
+        private static void OnDataListChanged(AvaloniaPropertyChangedEventArgs<IList> e)
         {
             if(e.Sender is ListEdit ble)
             {
@@ -217,18 +219,18 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <param name="previousValue">The previous value.</param>
         /// <param name="value">The value.</param>
-        private void OnDataListChanged(IBindingList previousValue, IBindingList value)
+        private void OnDataListChanged(IList previousValue, IList value)
         {
-            if(previousValue!=null)
+            if(previousValue is IBindingList pblist)
             {
-                previousValue.ListChanged -= OnListChanged;
+                pblist.ListChanged -= OnListChanged;
             }
 
             Model.List = value;
 
-            if(value != null)
+            if(value is IBindingList blist)
             {
-                value.ListChanged += OnListChanged;
+                blist.ListChanged += OnListChanged;
             }
         }
 
@@ -319,7 +321,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Gets the array.
         /// </summary>
         /// <value>The array.</value>
-        public IBindingList List { get; internal set; }
+        public IList List { get; internal set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BindingListRoutedEventArgs" /> class.
@@ -327,7 +329,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="routedEvent">The routed event.</param>
         /// <param name="list">The list.</param>
         /// <param name="index">The index.</param>
-        public BindingListRoutedEventArgs(RoutedEvent routedEvent, IBindingList list, int index) :
+        public BindingListRoutedEventArgs(RoutedEvent routedEvent, IList list, int index) :
             base(routedEvent)
         {
             List = list;
@@ -358,12 +360,12 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The list
         /// </summary>
-        IBindingList _List;
+        IList _List;
         /// <summary>
         /// Gets or sets the list.
         /// </summary>
         /// <value>The list.</value>
-        public IBindingList List
+        public IList List
         {
             get => _List;
             set => this.RaiseAndSetIfChanged(ref _List, value);
@@ -428,7 +430,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="list">The list.</param>
         /// <param name="insertCommand">The insert command.</param>
         /// <param name="removeCommand">The remove command.</param>
-        public BindingListViewModel(IBindingList list, ICommand insertCommand, ICommand removeCommand)
+        public BindingListViewModel(IList list, ICommand insertCommand, ICommand removeCommand)
         {            
             InsertCommand = insertCommand;
             RemoveCommand = removeCommand;
@@ -483,7 +485,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The list
         /// </summary>
-        public readonly IBindingList List;
+        public readonly IList List;
         /// <summary>
         /// The property
         /// </summary>
@@ -539,7 +541,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="removeCommand">The remove command.</param>
         public BindingListElementDataDesc(
             BindingListViewModel model, 
-            IBindingList list,
+            IList list,
             ListElementPropertyDescriptor property,
             PropertyCellContext context,
             ICommand insertCommand,
@@ -554,7 +556,10 @@ namespace Avalonia.PropertyGrid.Controls
             InsertCommand = ReactiveCommand.Create(() => insertCommand.Execute(this));
             RemoveCommand = ReactiveCommand.Create(() => removeCommand.Execute(this));
 
-            list.ListChanged += OnListChanged;
+            if(list is IBindingList blist)
+            {
+                blist.ListChanged += OnListChanged;
+            }            
 
             model.PropertyChanged += OnPropertyChanged;
         }
