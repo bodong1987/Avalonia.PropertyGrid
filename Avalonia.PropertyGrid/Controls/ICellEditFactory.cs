@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace Avalonia.PropertyGrid.Controls
 {
@@ -110,6 +111,11 @@ namespace Avalonia.PropertyGrid.Controls
         public ICellEditFactory Factory { get; set; }
 
         /// <summary>
+        /// The parent
+        /// </summary>
+        public readonly PropertyCellContext ParentContext;
+
+        /// <summary>
         /// Gets the value.
         /// </summary>
         /// <returns>System.Object.</returns>
@@ -128,15 +134,17 @@ namespace Avalonia.PropertyGrid.Controls
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyCellContext"/> class.
+        /// Initializes a new instance of the <see cref="PropertyCellContext" /> class.
         /// </summary>
+        /// <param name="parentContext">The parent context.</param>
         /// <param name="root">The root.</param>
         /// <param name="owner">The owner.</param>
         /// <param name="target">The target.</param>
         /// <param name="property">The property.</param>
         /// <param name="cellEdit">The cell edit.</param>
-        public PropertyCellContext(IPropertyGrid root, IPropertyGrid owner, object target, PropertyDescriptor property, Control cellEdit = null) 
+        public PropertyCellContext(PropertyCellContext parentContext, IPropertyGrid root, IPropertyGrid owner, object target, PropertyDescriptor property, Control cellEdit = null) 
         {
+            ParentContext = parentContext;
             Root = root;
             Owner = owner;
             Target = target;
@@ -146,15 +154,18 @@ namespace Avalonia.PropertyGrid.Controls
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyCellContext"/> class.
+        /// Initializes a new instance of the <see cref="PropertyCellContext" /> class.
         /// </summary>
-        /// <param name="context">The context.</param>
+        /// <param name="parentContext">The parent context.</param>        
         /// <param name="target">The target.</param>
         /// <param name="property">The property.</param>
-        public PropertyCellContext(PropertyCellContext context, object target, PropertyDescriptor property)
+        public PropertyCellContext(PropertyCellContext parentContext, object target, PropertyDescriptor property)
         {
-            Root = context.Root;
-            Owner = context.Owner;
+            Debug.Assert(parentContext != null);
+
+            ParentContext = parentContext;
+            Root = parentContext.Root;
+            Owner = parentContext.Owner;
             Target = target;
             Property = property;
         }

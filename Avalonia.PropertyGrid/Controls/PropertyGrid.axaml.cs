@@ -563,7 +563,7 @@ namespace Avalonia.PropertyGrid.Controls
         {
             var property = propertyDescriptor;
                         
-            PropertyCellContext context = new PropertyCellContext(RootPropertyGrid ?? this, this, target, propertyDescriptor);
+            PropertyCellContext context = new PropertyCellContext(null, RootPropertyGrid ?? this, this, target, propertyDescriptor);
 
             var control = Factories.BuildPropertyControl(context);
 
