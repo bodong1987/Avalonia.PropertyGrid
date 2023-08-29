@@ -33,7 +33,7 @@ namespace Avalonia.PropertyGrid.Controls
 
             if(change.Property == DataContextProperty)
             {
-                OnDataDescPropertyChanged(change.OldValue as BindingListElementDataDesc, change.NewValue as BindingListElementDataDesc);
+                OnDataDescPropertyChanged(change.OldValue as ListElementDataDesc, change.NewValue as ListElementDataDesc);
             }
         }
 
@@ -46,7 +46,7 @@ namespace Avalonia.PropertyGrid.Controls
             base.OnDataContextChanged(e);
         }
      
-        private void OnDataDescPropertyChanged(BindingListElementDataDesc oldValue, BindingListElementDataDesc value)
+        private void OnDataDescPropertyChanged(ListElementDataDesc oldValue, ListElementDataDesc value)
         {
             if(oldValue != null)
             {
@@ -82,7 +82,7 @@ namespace Avalonia.PropertyGrid.Controls
 
         private void OnElementValueChanged(object sender, EventArgs e)
         {
-            var value = DataContext as BindingListElementDataDesc;
+            var value = DataContext as ListElementDataDesc;
 
             if(value == null)
             {

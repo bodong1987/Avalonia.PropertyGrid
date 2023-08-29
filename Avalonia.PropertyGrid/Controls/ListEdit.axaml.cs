@@ -104,13 +104,13 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The selected items changed event
         /// </summary>
-        public static readonly RoutedEvent<BindingListRoutedEventArgs> NewElementEvent =
-            RoutedEvent.Register<ListEdit, BindingListRoutedEventArgs>(nameof(NewElement), RoutingStrategies.Bubble);
+        public static readonly RoutedEvent<ListRoutedEventArgs> NewElementEvent =
+            RoutedEvent.Register<ListEdit, ListRoutedEventArgs>(nameof(NewElement), RoutingStrategies.Bubble);
 
         /// <summary>
         /// Creates new element.
         /// </summary>
-        public event EventHandler<BindingListRoutedEventArgs> NewElement
+        public event EventHandler<ListRoutedEventArgs> NewElement
         {
             add => AddHandler(NewElementEvent, value);
             remove => RemoveHandler(NewElementEvent, value);
@@ -119,13 +119,13 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The clear elements event
         /// </summary>
-        public static readonly RoutedEvent<BindingListRoutedEventArgs> ClearElementsEvent =
-           RoutedEvent.Register<ListEdit, BindingListRoutedEventArgs>(nameof(ClearElements), RoutingStrategies.Bubble);
+        public static readonly RoutedEvent<ListRoutedEventArgs> ClearElementsEvent =
+           RoutedEvent.Register<ListEdit, ListRoutedEventArgs>(nameof(ClearElements), RoutingStrategies.Bubble);
 
         /// <summary>
         /// Occurs when [clear elements].
         /// </summary>
-        public event EventHandler<BindingListRoutedEventArgs> ClearElements
+        public event EventHandler<ListRoutedEventArgs> ClearElements
         {
             add => AddHandler(ClearElementsEvent, value);
             remove => RemoveHandler(ClearElementsEvent, value);
@@ -134,13 +134,13 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The insert element event
         /// </summary>
-        public static readonly RoutedEvent<BindingListRoutedEventArgs> InsertElementEvent =
-            RoutedEvent.Register<ListEdit, BindingListRoutedEventArgs>(nameof(InsertElement), RoutingStrategies.Bubble);
+        public static readonly RoutedEvent<ListRoutedEventArgs> InsertElementEvent =
+            RoutedEvent.Register<ListEdit, ListRoutedEventArgs>(nameof(InsertElement), RoutingStrategies.Bubble);
 
         /// <summary>
         /// Occurs when [insert element].
         /// </summary>
-        public event EventHandler<BindingListRoutedEventArgs> InsertElement
+        public event EventHandler<ListRoutedEventArgs> InsertElement
         {
             add => AddHandler(InsertElementEvent, value);
             remove => RemoveHandler(InsertElementEvent, value);
@@ -149,13 +149,13 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The remove elements event
         /// </summary>
-        public static readonly RoutedEvent<BindingListRoutedEventArgs> RemoveElementsEvent =
-           RoutedEvent.Register<ListEdit, BindingListRoutedEventArgs>(nameof(RemoveElement), RoutingStrategies.Bubble);
+        public static readonly RoutedEvent<ListRoutedEventArgs> RemoveElementsEvent =
+           RoutedEvent.Register<ListEdit, ListRoutedEventArgs>(nameof(RemoveElement), RoutingStrategies.Bubble);
 
         /// <summary>
         /// Occurs when [remove element].
         /// </summary>
-        public event EventHandler<BindingListRoutedEventArgs> RemoveElement
+        public event EventHandler<ListRoutedEventArgs> RemoveElement
         {
             add => AddHandler(RemoveElementsEvent, value);
             remove => RemoveHandler(RemoveElementsEvent, value);
@@ -164,13 +164,13 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The element value changed event
         /// </summary>
-        public static readonly RoutedEvent<BindingListRoutedEventArgs> ElementValueChangedEvent =
-            RoutedEvent.Register<ListEdit, BindingListRoutedEventArgs>(nameof(ElementValueChanged), RoutingStrategies.Bubble);
+        public static readonly RoutedEvent<ListRoutedEventArgs> ElementValueChangedEvent =
+            RoutedEvent.Register<ListEdit, ListRoutedEventArgs>(nameof(ElementValueChanged), RoutingStrategies.Bubble);
 
         /// <summary>
         /// Occurs when [element value changed].
         /// </summary>
-        public event EventHandler<BindingListRoutedEventArgs> ElementValueChanged
+        public event EventHandler<ListRoutedEventArgs> ElementValueChanged
         {
             add => AddHandler(ElementValueChangedEvent, value);
             remove => RemoveHandler(ElementValueChangedEvent, value);
@@ -181,7 +181,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Gets the model.
         /// </summary>
         /// <value>The model.</value>
-        internal BindingListViewModel Model { get; private set; }
+        internal ListViewModel Model { get; private set; }
 
         /// <summary>
         /// Initializes static members of the <see cref="ListEdit"/> class.
@@ -199,7 +199,7 @@ namespace Avalonia.PropertyGrid.Controls
             NewElementCommand = ReactiveCommand.Create(HandleNewElement);
             ClearElementsCommand = ReactiveCommand.Create(HandleClearElements);
             
-            Model = new BindingListViewModel(ReactiveCommand.Create(HandleInsertElement), ReactiveCommand.Create(HandleRemoveElement));
+            Model = new ListViewModel(ReactiveCommand.Create(HandleInsertElement), ReactiveCommand.Create(HandleRemoveElement));
         }
 
         /// <summary>
@@ -240,7 +240,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="parameter">The parameter.</param>
         private void HandleNewElement(object parameter)
         {
-            var et = new BindingListRoutedEventArgs(NewElementEvent, _DataList, -1);
+            var et = new ListRoutedEventArgs(NewElementEvent, _DataList, -1);
             RaiseEvent(et);
         }
 
@@ -250,7 +250,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="parameter">The parameter.</param>
         private void HandleClearElements(object parameter)
         {
-            var et = new BindingListRoutedEventArgs(ClearElementsEvent, _DataList, -1);
+            var et = new ListRoutedEventArgs(ClearElementsEvent, _DataList, -1);
             RaiseEvent(et);
         }
 
@@ -260,9 +260,9 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="parameter">The parameter.</param>
         private void HandleInsertElement(object parameter)
         {
-            if(parameter is BindingListElementDataDesc desc)
+            if(parameter is ListElementDataDesc desc)
             {
-                BindingListRoutedEventArgs et = new BindingListRoutedEventArgs(InsertElementEvent, desc.List, desc.Property.Index);
+                ListRoutedEventArgs et = new ListRoutedEventArgs(InsertElementEvent, desc.List, desc.Property.Index);
                 RaiseEvent(et);
             }            
         }
@@ -273,9 +273,9 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="parameter">The parameter.</param>
         private void HandleRemoveElement(object parameter)
         {
-            if (parameter is BindingListElementDataDesc desc)
+            if (parameter is ListElementDataDesc desc)
             {
-                BindingListRoutedEventArgs et = new BindingListRoutedEventArgs(RemoveElementsEvent, desc.List, desc.Property.Index);
+                ListRoutedEventArgs et = new ListRoutedEventArgs(RemoveElementsEvent, desc.List, desc.Property.Index);
                 RaiseEvent(et);
             }                
         }
@@ -298,18 +298,18 @@ namespace Avalonia.PropertyGrid.Controls
             }
             else if (e.ListChangedType == ListChangedType.ItemChanged)
             {
-                var et = new BindingListRoutedEventArgs(ElementValueChangedEvent, Model.List, e.NewIndex);
+                var et = new ListRoutedEventArgs(ElementValueChangedEvent, Model.List, e.NewIndex);
                 RaiseEvent(et);
             }
         }
     }
 
     /// <summary>
-    /// Class BindingListRoutedEventArgs.
+    /// Class ListRoutedEventArgs.
     /// Implements the <see cref="RoutedEventArgs" />
     /// </summary>
     /// <seealso cref="RoutedEventArgs" />
-    public class BindingListRoutedEventArgs : RoutedEventArgs
+    public class ListRoutedEventArgs : RoutedEventArgs
     {
         /// <summary>
         /// Gets the index.
@@ -324,12 +324,12 @@ namespace Avalonia.PropertyGrid.Controls
         public IList List { get; internal set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BindingListRoutedEventArgs" /> class.
+        /// Initializes a new instance of the <see cref="ListRoutedEventArgs" /> class.
         /// </summary>
         /// <param name="routedEvent">The routed event.</param>
         /// <param name="list">The list.</param>
         /// <param name="index">The index.</param>
-        public BindingListRoutedEventArgs(RoutedEvent routedEvent, IList list, int index) :
+        public ListRoutedEventArgs(RoutedEvent routedEvent, IList list, int index) :
             base(routedEvent)
         {
             List = list;
@@ -339,11 +339,11 @@ namespace Avalonia.PropertyGrid.Controls
 
     #region Models
     /// <summary>
-    /// Class BindingListViewModel.
+    /// Class ListViewModel.
     /// Implements the <see cref="ReactiveObject" />
     /// </summary>
     /// <seealso cref="ReactiveObject" />
-    internal class BindingListViewModel : ReactiveObject
+    internal class ListViewModel : ReactiveObject
     {
         /// <summary>
         /// Gets or sets the collection.
@@ -374,13 +374,13 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The elements
         /// </summary>
-        readonly List<BindingListElementDataDesc> _Elements = new List<BindingListElementDataDesc>();
+        readonly List<ListElementDataDesc> _Elements = new List<ListElementDataDesc>();
 
         /// <summary>
         /// Gets the elements.
         /// </summary>
         /// <value>The elements.</value>
-        public BindingListElementDataDesc[] Elements => _Elements.ToArray();
+        public ListElementDataDesc[] Elements => _Elements.ToArray();
 
         /// <summary>
         /// Gets the title.
@@ -415,22 +415,22 @@ namespace Avalonia.PropertyGrid.Controls
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BindingListViewModel"/> class.
+        /// Initializes a new instance of the <see cref="ListViewModel"/> class.
         /// </summary>
         /// <param name="insertCommand">The insert command.</param>
         /// <param name="removeCommand">The remove command.</param>
-        public BindingListViewModel(ICommand insertCommand, ICommand removeCommand) :
+        public ListViewModel(ICommand insertCommand, ICommand removeCommand) :
             this(null, insertCommand, removeCommand)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BindingListViewModel"/> class.
+        /// Initializes a new instance of the <see cref="ListViewModel"/> class.
         /// </summary>
         /// <param name="list">The list.</param>
         /// <param name="insertCommand">The insert command.</param>
         /// <param name="removeCommand">The remove command.</param>
-        public BindingListViewModel(IList list, ICommand insertCommand, ICommand removeCommand)
+        public ListViewModel(IList list, ICommand insertCommand, ICommand removeCommand)
         {            
             InsertCommand = insertCommand;
             RemoveCommand = removeCommand;
@@ -458,7 +458,7 @@ namespace Avalonia.PropertyGrid.Controls
                     foreach (var index in Enumerable.Range(0, list.Count))
                     {
                         var pd = new ListElementPropertyDescriptor(index.ToString(), index, list[index]?.GetType() ?? list.GetType().GetGenericArguments()[0]);
-                        BindingListElementDataDesc desc = new BindingListElementDataDesc(
+                        ListElementDataDesc desc = new ListElementDataDesc(
                             this, 
                             list, 
                             pd, 
@@ -476,11 +476,11 @@ namespace Avalonia.PropertyGrid.Controls
         }
     }
     /// <summary>
-    /// Class BindingListElementDataDesc.
+    /// Class ListElementDataDesc.
     /// Implements the <see cref="MiniReactiveObject" />
     /// </summary>
     /// <seealso cref="MiniReactiveObject" />
-    internal class BindingListElementDataDesc : MiniReactiveObject
+    internal class ListElementDataDesc : MiniReactiveObject
     {
         /// <summary>
         /// The list
@@ -511,7 +511,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Gets or sets the model.
         /// </summary>
         /// <value>The model.</value>
-        public BindingListViewModel Model { get; set; }
+        public ListViewModel Model { get; set; }
 
         /// <summary>
         /// Gets the display name.
@@ -531,7 +531,7 @@ namespace Avalonia.PropertyGrid.Controls
         public bool IsEditable => Model.IsEditable;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BindingListElementDataDesc" /> class.
+        /// Initializes a new instance of the <see cref="ListElementDataDesc" /> class.
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="list">The list.</param>
@@ -539,8 +539,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="context">The context.</param>
         /// <param name="insertCommand">The insert command.</param>
         /// <param name="removeCommand">The remove command.</param>
-        public BindingListElementDataDesc(
-            BindingListViewModel model, 
+        public ListElementDataDesc(
+            ListViewModel model, 
             IList list,
             ListElementPropertyDescriptor property,
             PropertyCellContext context,
