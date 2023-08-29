@@ -43,6 +43,11 @@ namespace PropertyModels.ComponentModel
         readonly Type ElementType;
 
         /// <summary>
+        /// Occurs when [on set value].
+        /// </summary>
+        public event EventHandler<object> OnSetValue;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ListElementPropertyDescriptor" /> class.
         /// </summary>
         /// <param name="name">The name.</param>
@@ -97,6 +102,8 @@ namespace PropertyModels.ComponentModel
             Debug.Assert(component is IList);
 
             (component as IList)[Index] = value;
+
+            OnSetValue?.Invoke(this, value);
         }
 
         /// <summary>
@@ -109,5 +116,4 @@ namespace PropertyModels.ComponentModel
             return false;
         }
     }
-
 }

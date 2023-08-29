@@ -200,6 +200,7 @@ namespace Avalonia.PropertyGrid.Controls
             ClearElementsCommand = ReactiveCommand.Create(HandleClearElements);
             
             Model = new ListViewModel(ReactiveCommand.Create(HandleInsertElement), ReactiveCommand.Create(HandleRemoveElement));
+            Model.OnElementValueChanged = HandleListElementChanged;
         }
 
         /// <summary>
@@ -298,9 +299,15 @@ namespace Avalonia.PropertyGrid.Controls
             }
             else if (e.ListChangedType == ListChangedType.ItemChanged)
             {
-                var et = new ListRoutedEventArgs(ElementValueChangedEvent, Model.List, e.NewIndex);
-                RaiseEvent(et);
+               // var et = new ListRoutedEventArgs(ElementValueChangedEvent, Model.List, e.NewIndex);
+               // RaiseEvent(et);
             }
+        }
+
+        private void HandleListElementChanged(ListElementPropertyDescriptor property, object value)
+        {
+            var et = new ListRoutedEventArgs(ElementValueChangedEvent, Model.List, property.Index);
+            RaiseEvent(et);
         }
     }
 
@@ -414,6 +421,10 @@ namespace Avalonia.PropertyGrid.Controls
             set => this.RaiseAndSetIfChanged(ref _IsEditable, value);
         }
 
+        internal delegate void OnElementValueChangedDelegateType(ListElementPropertyDescriptor propertyDescriptor, object value);
+
+        internal OnElementValueChangedDelegateType OnElementValueChanged;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ListViewModel"/> class.
         /// </summary>
@@ -458,6 +469,9 @@ namespace Avalonia.PropertyGrid.Controls
                     foreach (var index in Enumerable.Range(0, list.Count))
                     {
                         var pd = new ListElementPropertyDescriptor(index.ToString(), index, list[index]?.GetType() ?? list.GetType().GetGenericArguments()[0]);
+
+                        pd.OnSetValue += (s, ee) => { OnElementValueChanged?.Invoke(pd, ee); };
+
                         ListElementDataDesc desc = new ListElementDataDesc(
                             this, 
                             list, 

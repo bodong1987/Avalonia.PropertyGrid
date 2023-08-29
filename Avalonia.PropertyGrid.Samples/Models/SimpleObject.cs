@@ -103,7 +103,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
         }
 
         [Category("DataValidation")]
-        [Required(ErrorMessage ="Can not be null")]
+        [Required(ErrorMessage = "Can not be null")]
         public string ValidateString { get; set; }
 
         [Category("DataValidation")]
@@ -142,7 +142,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
             get => progressValue;
             set
             {
-                if(progressValue != value)
+                if (progressValue != value)
                 {
                     progressValue = value;
                     RaisePropertyChanged(nameof(progressValue));
