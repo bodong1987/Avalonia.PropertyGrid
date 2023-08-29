@@ -570,10 +570,10 @@ namespace Avalonia.PropertyGrid.Controls
             InsertCommand = ReactiveCommand.Create(() => insertCommand.Execute(this));
             RemoveCommand = ReactiveCommand.Create(() => removeCommand.Execute(this));
 
-            if(list is IBindingList blist)
+            if (list is IBindingList blist)
             {
                 blist.ListChanged += OnListChanged;
-            }            
+            }
 
             model.PropertyChanged += OnPropertyChanged;
         }

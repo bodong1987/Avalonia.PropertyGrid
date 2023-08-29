@@ -12,15 +12,16 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
     /// <summary>
-    /// Class BindingListCellEditFactory.
+    /// Class ListCellEditFactory.
     /// Implements the <see cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
     /// </summary>
     /// <seealso cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
-    public class BindingListCellEditFactory : AbstractCellEditFactory
+    public class ListCellEditFactory : AbstractCellEditFactory
     {
         /// <summary>
         /// Gets the import priority.
@@ -48,9 +49,10 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <returns>Type.</returns>
         private Type GetElementType(PropertyDescriptor pd)
         {
-            if (pd.PropertyType.IsGenericType && pd.PropertyType.GetGenericTypeDefinition() == typeof(BindingList<>))
+            var IListInterfaceType = pd.PropertyType.GetInterfaces().ToList().Find(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IList<>));
+            if (IListInterfaceType != null)
             {
-                return pd.PropertyType.GetGenericArguments()[0];
+                return IListInterfaceType.GetGenericArguments()[0];
             }
 
             return null;
@@ -70,11 +72,14 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             ListEdit control = new ListEdit();
             control.Model.PropertyContext = context;
-            control.Model.Collection = (this as ICellEditFactory).Collection;            
+            control.Model.Collection = (this as ICellEditFactory).Collection;
 
             var attr = context.Property.GetCustomAttribute<EditableAttribute>();
-            
-            if((attr != null && !attr.AllowEdit) || context.Property.IsReadOnly)
+
+            if ((attr != null && !attr.AllowEdit) ||
+                context.Property.IsReadOnly ||
+                context.Property.PropertyType.IsArray /*don't allow insert/remove/clear on Array*/
+                )
             {
                 control.Model.IsEditable = false;
             }
@@ -104,7 +109,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (context.CellEdit is ListEdit ae)
             {
-                var value = context.GetValue() as IBindingList;
+                var value = context.GetValue() as IList;
 
                 ae.DataList = value;
 
@@ -125,7 +130,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         {
             Debug.Assert(e.Index != -1);
 
-            var value = context.GetValue() as IBindingList;
+            var value = context.GetValue() as IList;
 
             Debug.Assert(value != null);
 
@@ -170,12 +175,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                         return e.Index >= 0 && e.Index < value.Count;
                     }
                 )
-                { 
+                {
                     Tag = "Remove"
                 };
 
-                ExecuteCommand(command, context, value, value, oldElement);                
-            }            
+                ExecuteCommand(command, context, value, value, oldElement);
+            }
         }
 
         /// <summary>
@@ -187,14 +192,14 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <param name="control">The control.</param>
         protected virtual void HandleClearElements(object s, ListRoutedEventArgs e, PropertyCellContext context, ListEdit control)
         {
-            var value = context.GetValue() as IBindingList;
+            var value = context.GetValue() as IList;
 
             Debug.Assert(value != null);
 
             if (value != null)
             {
                 List<object> list = new List<object>();
-                foreach(var obj in value)
+                foreach (var obj in value)
                 {
                     list.Add(obj);
                 }
@@ -239,7 +244,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         {
             Debug.Assert(e.Index != -1);
 
-            var value = context.GetValue() as IBindingList;
+            var value = context.GetValue() as IList;
 
             Debug.Assert(value != null);
 
@@ -278,7 +283,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     Tag = "Insert"
                 };
 
-                ExecuteCommand(command, context, value, value, NewElement);                
+                ExecuteCommand(command, context, value, value, NewElement);
             }
         }
 
@@ -291,7 +296,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <param name="control">The control.</param>
         protected virtual void HandleNewElement(object s, ListRoutedEventArgs e, PropertyCellContext context, ListEdit control)
         {
-            var value = context.GetValue() as IBindingList;
+            var value = context.GetValue() as IList;
 
             Debug.Assert(value != null);
 
@@ -324,7 +329,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     Tag = "NewElement"
                 };
 
-                ExecuteCommand(command, context, value, value, NewElement);                
+                ExecuteCommand(command, context, value, value, NewElement);
             }
         }
 
