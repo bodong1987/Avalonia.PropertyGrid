@@ -17,5 +17,5 @@ Its main features are:
 * Support adjust the width of the property name and property value by drag the title
 * Support localization and realtime change language without restart
 * Support custom property cell editors
-
+* Depend on https://www.nuget.org/packages/bodong.PropertyModels  
 Check more information here: https://github.com/bodong1987/Avalonia.PropertyGrid

@@ -19,7 +19,13 @@ Its main features are:
 * Support custom property cell editors
 
 ## How To Use
-Use the source code of this project directly or add packages from nuget(https://www.nuget.org/packages/bodong.Avalonia.PropertyGrid).  
+Use the source code of this project directly or use NUGet Packages:  
+
+before 11.0.4.0, you need one pacakage:  
+    https://www.nuget.org/packages/bodong.Avalonia.PropertyGrid   
+after 11.0.4.1, you need add two packages :
+    https://www.nuget.org/packages/bodong.PropertyModels  
+    https://www.nuget.org/packages/bodong.Avalonia.PropertyGrid   
 Then add PropertyGrid to your project, and bind the object to be displayed and edited to the SelectObject property. If you want to bind multiple objects, just bind IEnumerable<T> directly
 
 ## Detail Description

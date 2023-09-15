@@ -5,7 +5,7 @@
 	  <LangVersion>preview</LangVersion>
 	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	  <Title>bodong.Avalonia.PropertyGrid</Title>
-	  <Version>11.0.4.0</Version>
+	  <Version>11.0.4.1</Version>
 	  <Authors>bodong</Authors>
 	  <Description>A  PropertyGrid control implementation for Avalonia</Description>
 	  <PackageProjectUrl>https://github.com/bodong1987/Avalonia.PropertyGrid</PackageProjectUrl>
@@ -52,8 +52,7 @@
     </Compile>
   </ItemGroup>
 	
-	<PropertyGroup>
-		<TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
+	<PropertyGroup>		
 		<PackageId>bodong.Avalonia.PropertyGrid</PackageId>
 		<Product>bodong.Avalonia.PropertyGrid</Product>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -63,19 +62,6 @@
 		<Nullable>disable</Nullable>
 	</PropertyGroup>
 
-	<Target Name="CopyProjectReferencesToPackage" DependsOnTargets="BuildOnlySettings;ResolveReferences">
-		<ItemGroup>
-			<!-- Filter out unnecessary files -->
-			<_ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference')-&gt;WithMetadataValue('PrivateAssets', 'All'))" />
-		</ItemGroup>
-
-		<!-- Print batches for debug purposes -->
-		<Message Text="Batch for .nupkg: ReferenceCopyLocalPaths = @(_ReferenceCopyLocalPaths), ReferenceCopyLocalPaths.DestinationSubDirectory = %(_ReferenceCopyLocalPaths.DestinationSubDirectory) Filename = %(_ReferenceCopyLocalPaths.Filename) Extension = %(_ReferenceCopyLocalPaths.Extension)" Importance="High" Condition="'@(_ReferenceCopyLocalPaths)' != ''" />
-
-		<ItemGroup>
-			<!-- Add file to package with consideration of sub folder. If empty, the root folder is chosen. -->
-			<BuildOutputInPackage Include="@(_ReferenceCopyLocalPaths)" TargetPath="%(_ReferenceCopyLocalPaths.DestinationSubDirectory)" />
-		</ItemGroup>
-	</Target>
+	
 
 </Project>

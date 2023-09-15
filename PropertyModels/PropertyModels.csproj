@@ -4,11 +4,27 @@
       <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
 	  <LangVersion>preview</LangVersion>
 	  <Authors>bodong</Authors>
-	  <Version>11.0.4.0</Version>
+	  <Version>11.0.4.1</Version>
 	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
 	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
 	  <Nullable>disable</Nullable>
+	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	  <PackageId>bodong.$(AssemblyName)</PackageId>
+	  <Title>bodong.$(AssemblyName)</Title>
+	  <Description>Some simple object model class libraries, originally used in the Avalonia.PropertyGrid project, were later split into an independent package in order to achieve the separation of data and presentation.</Description>
+	  <PackageProjectUrl>https://github.com/bodong1987/Avalonia.PropertyGrid</PackageProjectUrl>
+	  <RepositoryUrl>https://github.com/bodong1987/Avalonia.PropertyGrid.git</RepositoryUrl>
+	  <RepositoryType>git</RepositoryType>
+	  <PackageTags>Avalonia;PropertyGrid;AvaloniaControls;ObjectModel;ComponentModel</PackageTags>
+	  <PackageReadmeFile>README_PropertyModels.md</PackageReadmeFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README_PropertyModels.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
