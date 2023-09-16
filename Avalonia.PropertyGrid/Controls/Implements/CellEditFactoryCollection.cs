@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using PropertyModels.ComponentModel;
+using PropertyModels.Extensions;
 
 namespace Avalonia.PropertyGrid.Controls.Implements
 {
@@ -95,7 +97,12 @@ namespace Avalonia.PropertyGrid.Controls.Implements
             foreach (var Factory in _Factories)
             {
                 var control = Factory.HandleNewProperty(context);
-
+                ControlClassesAttribute[] classesAttributes = context.Property.GetCustomAttributes<ControlClassesAttribute>();
+                if (classesAttributes?.Length > 0)
+                {
+                    var classes = classesAttributes.SelectMany(a => a.Classes).Distinct();
+                    control?.Classes.AddRange(classes);
+                }
                 if (control != null)
                 {
                     context.CellEdit = control;

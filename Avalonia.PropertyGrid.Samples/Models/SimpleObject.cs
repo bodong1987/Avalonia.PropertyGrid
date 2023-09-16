@@ -45,6 +45,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
         [Category("String")]
         [DisplayName("Target Name")]
         [Watermark("Your Target Name")]
+        [ControlClasses("clearButton")]
         public string Name { get; set; }
 
         [Category("String")]
