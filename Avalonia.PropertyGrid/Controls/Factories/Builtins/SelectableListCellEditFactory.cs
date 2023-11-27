@@ -54,7 +54,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             {
                 var item = control.SelectedItem;
 
-                if (list != null && !list.SelectedValue.Equals(item))
+                if (list != null && list.SelectedValue == null || !list.SelectedValue.Equals(item))
                 {
                     var oldValue = list.SelectedValue;
 
