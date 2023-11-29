@@ -4,7 +4,7 @@
       <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
 	  <LangVersion>preview</LangVersion>
 	  <Authors>bodong</Authors>
-	  <Version>11.0.4.1</Version>
+	  <Version>11.0.5.1</Version>
 	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
 	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
 	  <Nullable>disable</Nullable>
