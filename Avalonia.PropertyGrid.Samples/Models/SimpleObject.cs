@@ -78,6 +78,9 @@ namespace Avalonia.PropertyGrid.Samples.Models
         public SelectableList<string> LoginName { get; set; } = new SelectableList<string>(new string[] { "John", "David", "bodong" }, "bodong");
 
         [Category("Selectable List")]
+        public SelectableList<string> LoginName2 { get; set; } = new SelectableList<string>(new string[] { "John", "David", "bodong" });
+
+        [Category("Selectable List")]
         public SelectableList<int> IdList { get; set; } = new SelectableList<int>(new int[] { 100, 1000, 1024 }, 1000);
 
         string _SourceImagePath;
