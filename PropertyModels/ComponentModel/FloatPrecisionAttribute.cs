@@ -50,5 +50,15 @@ namespace PropertyModels.ComponentModel
             Increment = increment;
             FormatString = formatString;
         }
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="FloatPrecisionAttribute"/> class.
+		/// </summary>
+		/// <param name="increment">The increment.</param>
+		/// <param name="formatString">The format string.</param>
+		public FloatPrecisionAttribute(double increment, string formatString) :
+            this((Decimal)increment, formatString)
+        {
+        }
     }
 }
