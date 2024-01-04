@@ -312,9 +312,17 @@ namespace Avalonia.PropertyGrid.Controls
 		{
 			if(e.Sender is PropertyGrid pg)
             {
-                pg.OnSelectedObjectChanged(e.OldValue.Value, e.NewValue.Value);
+                pg.OnDataContextPropertyChanged(e.OldValue.Value, e.NewValue.Value);
             }
 		}
+        
+        private void OnDataContextPropertyChanged(object oldValue, object newValue)
+		{
+#pragma warning disable 0618
+			this.SelectedObject = newValue;
+#pragma warning restore 0618
+		}
+
 
 		/// <summary>
 		/// Gets the cell edit factory collection.
