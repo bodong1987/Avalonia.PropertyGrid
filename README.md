@@ -23,7 +23,7 @@ Use the source code of this project directly or use NUGet Packages:
 
 before 11.0.4.0, you need one pacakage:  
     https://www.nuget.org/packages/bodong.Avalonia.PropertyGrid   
-after 11.0.4.1, you need add two packages :
+after 11.0.4.1, you need add two packages :   
     https://www.nuget.org/packages/bodong.PropertyModels  
     https://www.nuget.org/packages/bodong.Avalonia.PropertyGrid   
 Then add PropertyGrid to your project, and bind the object to be displayed and edited to the SelectObject property. If you want to bind multiple objects, just bind IEnumerable<T> directly
@@ -369,7 +369,7 @@ Show Dynamic Visibility
 If you check 'IsShowPath', the Path can be edited.  
 If you select Unix in Platform and input anything in UnixVersion, you can edit the extra properties.
 
-### RodoUndo
+### UndoRedo
 ![RedoUndo](./Docs/Images/undoredo.png)
 This example shows how to implement undo and redo functions based on the built-in undo-redo framework.
 
