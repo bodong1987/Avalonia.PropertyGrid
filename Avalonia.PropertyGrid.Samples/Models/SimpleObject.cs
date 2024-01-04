@@ -11,6 +11,7 @@ using PropertyModels.ComponentModel;
 using PropertyModels.Extensions;
 using Avalonia.Media;
 using Avalonia.Platform;
+using System.Runtime.Serialization;
 
 namespace Avalonia.PropertyGrid.Samples.Models
 {
@@ -62,7 +63,16 @@ namespace Avalonia.PropertyGrid.Samples.Models
         [Category("Boolean")]
         public bool? ThreeStates { get; set; } = null;
 
-        [Category("Enum")]
+        // This property will be shown by Custom filter
+		[Category("Boolean")]
+		[IgnoreDataMember]
+		public bool? ThreeStates2 { get; set; } = null;
+
+		[IgnoreDataMember]
+		[Category("Boolean")]
+		public bool AlwaysHiddenBoolean { get; set; }
+
+		[Category("Enum")]
         public PhoneService Service { get; set; } = PhoneService.None;
 
         [Category("Enum")]

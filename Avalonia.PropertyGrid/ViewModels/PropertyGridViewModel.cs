@@ -13,6 +13,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Runtime.Serialization;
 
 namespace Avalonia.PropertyGrid.ViewModels
 {
@@ -144,6 +145,11 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// it means we need show or hide some property
         /// </summary>
         public event EventHandler FilterChanged;
+
+		/// <summary>
+		/// Occurs when [custom property descriptor filter].
+		/// </summary>
+		public event EventHandler<CustomPropertyDescriptorFilterEventArgs> CustomPropertyDescriptorFilter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyGridViewModel" /> class.
@@ -302,7 +308,25 @@ namespace Avalonia.PropertyGrid.ViewModels
             }
 
             PropertyDescriptorBuilder builder = new PropertyDescriptorBuilder(_SelectedObject);
-            AllProperties.AddRange(builder.GetProperties().Cast<PropertyDescriptor>().ToList().FindAll(x => x.IsBrowsable));
+            AllProperties.AddRange(builder.GetProperties().Cast<PropertyDescriptor>().ToList().FindAll(
+                x =>
+                {
+                    if(CustomPropertyDescriptorFilter != null)
+                    {
+                        CustomPropertyDescriptorFilterEventArgs args = new CustomPropertyDescriptorFilterEventArgs(PropertyGrid.Controls.PropertyGrid.CustomPropertyDescriptorFilterEvent, _SelectedObject, x);
+
+                        CustomPropertyDescriptorFilter(this, args);
+
+                        if(args.Handled)
+                        {
+                            return args.IsVisible;
+                        }
+					}
+
+                    return x.IsBrowsable && !x.IsDefined<IgnoreDataMemberAttribute>()/* compatible with ReactiveUI */;
+				}
+                )
+            );
 
             HashSet<string> categories = new HashSet<string>();
             foreach(var property in AllProperties)

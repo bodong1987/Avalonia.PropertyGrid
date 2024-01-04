@@ -1,6 +1,8 @@
 ﻿using Avalonia.Controls;
 using Avalonia.PropertyGrid.Controls;
+using Avalonia.PropertyGrid.Samples.Models;
 using Avalonia.PropertyGrid.Samples.ViewModels;
+using Avalonia.PropertyGrid.ViewModels;
 using Avalonia.Styling;
 using Avalonia.Themes.Fluent;
 using Avalonia.Themes.Simple;
@@ -16,7 +18,7 @@ namespace Avalonia.PropertyGrid.Samples.Views
 
             InitializeComponent();
 
-            propertyGrid_ShowControlProperties.SelectedObject = propertyGrid_ShowControlProperties;
+            propertyGrid_ShowControlProperties.DataContext = propertyGrid_ShowControlProperties;
 
             ThemeBox.SelectedItem = AppThemeUtils.CurrentTheme;
             ThemeBox.SelectionChanged += (sender, e) =>
@@ -36,9 +38,19 @@ namespace Avalonia.PropertyGrid.Samples.Views
             };
 
             proeprtyGrid_RedoUndo.CommandExecuted += OnCommandExecuted;
-        }
+            
+		}
 
-        private void OnCommandExecuted(object sender, RoutedCommandExecutedEventArgs e)
+		private void OnCustomPropertyDescriptorFilter(object sender, CustomPropertyDescriptorFilterEventArgs e)
+		{
+			if(e.SelectedObject is SimpleObject simpleObject&& e.PropertyDescriptor.Name == "ThreeStates2")
+            {
+                e.IsVisible = true;
+                e.Handled = true;
+            }
+		}
+
+		private void OnCommandExecuted(object sender, RoutedCommandExecutedEventArgs e)
         {
             (DataContext as MainDemoViewModel).cancelableObject.OnCommandExecuted(sender, e);
         }

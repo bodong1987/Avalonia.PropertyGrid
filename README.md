@@ -30,34 +30,35 @@ Then add PropertyGrid to your project, and bind the object to be displayed and e
 
 ## Detail Description
 ### Data Modeling
-If you want to edit an object in PropertyGrid, you only need to directly set this object to the SelectedObject property of PropertyGrid, PropertyGrid will automatically analyze the properties that can support editing, and edit it with the corresponding CellEdit. At the same time, you can also use Attributes in System.ComponentModel and System.ComponentModel.DataAnnotations to mark these properties, so that these properties have some special characteristics.  
+If you want to edit an object in PropertyGrid, you only need to directly set this object to the DataContext or SelectedObject property of PropertyGrid, PropertyGrid will automatically analyze the properties that can support editing, and edit it with the corresponding CellEdit. At the same time, you can also use Attributes in System.ComponentModel and System.ComponentModel.DataAnnotations to mark these properties, so that these properties have some special characteristics.  
 Support but not limited to these:
 ```
-System.ComponentModel.CategoryAttribute
-System.ComponentModel.BrowsableAttribute
-System.ComponentModel.ReadOnlyAttribute
-System.ComponentModel.DisplayNameAttribute
-System.ComponentModel.DescriptionAttribute
-System.ComponentModel.PasswordPropertyTextAttribute
-System.ComponentModel.DataAnnotations.EditableAttribute
-System.ComponentModel.DataAnnotations.RangeAttribute  
+System.ComponentModel.CategoryAttribute                     /* set property category */  
+System.ComponentModel.BrowsableAttribute                    /* used to hide a property */    
+System.ComponentModel.ReadOnlyAttribute                     /* make property readonly */  
+System.ComponentModel.DisplayNameAttribute                  /* set friendly name */  
+System.ComponentModel.DescriptionAttribute                  /* set long description text */  
+System.ComponentModel.PasswordPropertyTextAttribute         /* mark text property is password */  
+System.ComponentModel.DataAnnotations.EditableAttribute     /* mark list property can add/remove/clear elements */  
+System.ComponentModel.DataAnnotations.RangeAttribute        /* set numeric range */  
+System.Runtime.Serialization.IgnoreDataMemberAttribute      /* used to hide a property */  
 ```
 In addition, there are other classes that can be supported in PropertyModels.ComponentModel and PropertyModels.ComponentModel.DataAnnotations, which can assist in describing class properties.  
 If you want to have some associations between your class properties, for example, some properties depend on other properties in implementation, then you can try to mark this dependency with PropertyModels.ComponentModel.DataAnnotations.DependsOnPropertyAttribute  
 but you need to inherit your class from PropertyModels.ComponentModel.ReactiveObject, otherwise you need to maintain this relationship by yourself, just trigger the PropertyChanged event of the target property when the dependent property changes.  
 
 ```
-PropertyModels.ComponentModel.FloatPrecisionAttribute  
-PropertyModels.ComponentModel.IntegerIncrementAttribute
-PropertyModels.ComponentModel.WatermarkAttribute
-PropertyModels.ComponentModel.MultilineTextAttribute
-PropertyModels.ComponentModel.ProgressAttribute
-PropertyModels.ComponentModel.TrackableAttribute
-PropertyModels.ComponentModel.EnumDisplayNameAttribute
-PropertyModels.ComponentModel.DataAnnotations.DependsOnPropertyAttribute
-PropertyModels.ComponentModel.DataAnnotations.FileNameValidationAttribute
-PropertyModels.ComponentModel.DataAnnotations.PathBrowsableAttribute
-PropertyModels.ComponentModel.DataAnnotations.VisibilityPropertyConditionAttribute
+PropertyModels.ComponentModel.FloatPrecisionAttribute                               /* set float percision */  
+PropertyModels.ComponentModel.IntegerIncrementAttribute                             /* set integer increment by button*/  
+PropertyModels.ComponentModel.WatermarkAttribute                                    /* set water mark, it is text hint*/  
+PropertyModels.ComponentModel.MultilineTextAttribute                                /* make text edit can edit multi line text */  
+PropertyModels.ComponentModel.ProgressAttribute                                     /* use progress bar to dipslay numeric value property, readonly */   
+PropertyModels.ComponentModel.TrackableAttribute                                    /* use trackbar to edit numeric value property */  
+PropertyModels.ComponentModel.EnumDisplayNameAttribute                              /* set friendly name for each enum vlaues */
+PropertyModels.ComponentModel.DataAnnotations.DependsOnPropertyAttribute            /* mark this property is depends on the other property */  
+PropertyModels.ComponentModel.DataAnnotations.FileNameValidationAttribute           /* mark this property is filename, so control will validate the string directly */  
+PropertyModels.ComponentModel.DataAnnotations.PathBrowsableAttribute                /* mark string property is path, so it will provide a button to show path browser*/  
+PropertyModels.ComponentModel.DataAnnotations.VisibilityPropertyConditionAttribute  /* set this property will auto refresh all visiblity when this proeprty value changed. */  
 ```
 
 ### Supported Builtin Types
@@ -85,7 +86,7 @@ PropertyModels.ComponentModel.DataAnnotations.VisibilityPropertyConditionAttribu
     PropertyModels.Collections.ISelectableList  
     object which support TypeConverter.CanConvertFrom(typeof(string))  
 
-**Struct properties are not supported.**  
+**By default, structure properties are not supported. All structure properties need to be customized before they can be displayed.**  
 
 ### Extra Data Structure
 * PropertyModels.Collections.SelectableList<T>  
@@ -96,7 +97,32 @@ PropertyModels.ComponentModel.DataAnnotations.VisibilityPropertyConditionAttribu
 
 ### Data Reloading
 Implement from System.ComponentModel.INotifyPropertyChanged and trigger the PropertyChanged event when the property changes. PropertyGrid will listen to these events and automatically refresh the view data.  
-if you implementing from PropertyModels.ComponentModel.INotifyPropertyChanged instead of System.ComponentModel.INotifyPropertyChanged will gain the additional ability to automatically fire the PropertyChanged event when an edit occurs in the PropertyGrid without having to handle each property itself.
+if you implementing from PropertyModels.ComponentModel.INotifyPropertyChanged instead of System.ComponentModel.INotifyPropertyChanged will gain the additional ability to automatically fire the PropertyChanged event when an edit occurs in the PropertyGrid without having to handle each property itself.  
+You can also directly inherit PropertyModel.ComponentModel.MiniReactiveObject, PropertyModel.ComponentModel.ReactiveObject. The former only has data change notification capabilities, while the latter also has data dynamic visibility refresh support. If you use ReactiveUI.ReactiveObject directly, then you will not have dynamic visibility support. At this time, you need to monitor the relevant properties yourself, rather than using the RaisePropertyChanged method to throw the corresponding property change event.
+
+### Custom Property Filter
+```xml
+<pgc:PropertyGrid 
+    x:Name="propertyGrid_Basic" 
+    Margin="4" 
+    CustomPropertyDescriptorFilter="OnCustomPropertyDescriptorFilter"
+    DataContext="{Binding simpleObject}"
+    >
+</pgc:PropertyGrid>
+```  
+set CustomPropertyDescriptorFilter, and add your custom process.  
+```C#
+private void OnCustomPropertyDescriptorFilter(object sender, CustomPropertyDescriptorFilterEventArgs e)
+{
+	if(e.SelectedObject is SimpleObject simpleObject&& e.PropertyDescriptor.Name == "ThreeStates2")
+    {
+        e.IsVisible = true;
+        e.Handled = true;
+    }
+}
+```  
+check MainDemoView.axaml.cs for more information.
+
 
 ### Change Size
 You can change the width of namelabel and cell edit by drag here:
@@ -105,13 +131,13 @@ Or set the NameWidth property of PropertyGrid directly.
 
 ### Multiple Objects Edit
 
-If you want to edit multiple objects at the same time, you only need to set the object to SelectedObject as IEnumerable, for example:
+If you want to edit multiple objects at the same time, you only need to set the object to DataContext or SelectedObject as IEnumerable, for example:
 
 ```C#
 public IEnumerable<SimpleObject> multiObjects => new SimpleObject[] { multiObject0, multiObject1 };
 ```
 ```xml
-<pgc:PropertyGrid x:Name="propertyGrid_MultipleObjects" Margin="2" SelectedObject="{Binding multiObjects}"></pgc:PropertyGrid>
+<pgc:PropertyGrid x:Name="propertyGrid_MultipleObjects" Margin="2" DataContext="{Binding multiObjects}"></pgc:PropertyGrid>
 ```
 **Due to complexity considerations, there are many complex types of multi-object editing that are not supported!!!**
 
@@ -379,4 +405,14 @@ Show PropertyGrid's properties.
 
 ## Avalonia.PropertyGrid.NugetSamples
 This example shows how to use PropertyGrid through the Nuget package. 
+
+### Major changes  
+v11.0.4.1  
+``The data modeling module has been extracted into an independent project (PropertyModels) to facilitate the implementation of a project organization structure that separates data and performance. Therefore, after this version, you need to install two NUGET packages.``  
+v11.0.6.2  
+``
+Set the SelectedObject property to obsolete. It is recommended to use the DataContext mechanism directly to provide data to the PropertyGrid;
+add custom property visibility filter support.
+``
+
 

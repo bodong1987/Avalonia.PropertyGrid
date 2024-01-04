@@ -128,7 +128,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             {
                 var value = propertyDescriptor.GetValue(target);
 
-                pg.SelectedObject = value;
+                pg.DataContext = value;
 
                 return true;
             }

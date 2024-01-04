@@ -127,10 +127,11 @@ namespace Avalonia.PropertyGrid.Controls
         /// The selected object
         /// </summary>
         private object _SelectedObject;
-        /// <summary>
-        /// The selected object property
-        /// </summary>
-        public static readonly DirectProperty<PropertyGrid, object> SelectedObjectProperty = AvaloniaProperty.RegisterDirect<PropertyGrid, object>(
+		/// <summary>
+		/// The selected object property
+		/// </summary>
+		[Obsolete("SelectedObjectProperty is deprecated, use DataContext directly")]
+		public static readonly DirectProperty<PropertyGrid, object> SelectedObjectProperty = AvaloniaProperty.RegisterDirect<PropertyGrid, object>(
             nameof(SelectedObject),
             o => o._SelectedObject,
             (o,v)=> o.SetAndRaise(SelectedObjectProperty, ref o._SelectedObject, v)
@@ -140,6 +141,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <value>The selected object.</value>
         [Browsable(false)]
+        [Obsolete("SelectedObject is deprecated, use DataContext directly")]
         public object SelectedObject
         {
             get => _SelectedObject;
@@ -165,13 +167,27 @@ namespace Avalonia.PropertyGrid.Controls
         /// <value>The root property grid.</value>
         public IPropertyGrid RootPropertyGrid { get; set; }
 
-        #endregion
+		/// <summary>
+		/// The custom property descriptor filter event
+		/// </summary>
+		public static readonly RoutedEvent<CustomPropertyDescriptorFilterEventArgs> CustomPropertyDescriptorFilterEvent = 
+            RoutedEvent.Register<PropertyGrid, CustomPropertyDescriptorFilterEventArgs>(nameof(CustomPropertyDescriptorFilter), RoutingStrategies.Bubble);
 
-        #region Events
-        /// <summary>
-        /// The command executing event
-        /// </summary>
-        public static readonly RoutedEvent<RoutedCommandExecutingEventArgs> CommandExecutingEvent =
+		/// <summary>
+		/// Occurs when [custom property descriptor filter].
+		/// </summary>
+		public event EventHandler<CustomPropertyDescriptorFilterEventArgs> CustomPropertyDescriptorFilter
+		{
+			add => AddHandler(CustomPropertyDescriptorFilterEvent, value);
+			remove => RemoveHandler(CustomPropertyDescriptorFilterEvent, value);
+		}
+		#endregion
+
+		#region Events
+		/// <summary>
+		/// The command executing event
+		/// </summary>
+		public static readonly RoutedEvent<RoutedCommandExecutingEventArgs> CommandExecutingEvent =
             RoutedEvent.Register<PropertyGrid, RoutedCommandExecutingEventArgs>(nameof(CommandExecuting), RoutingStrategies.Bubble);
 
         /// <summary>
@@ -208,32 +224,56 @@ namespace Avalonia.PropertyGrid.Controls
             AllowQuickFilterProperty.Changed.Subscribe(OnAllowQuickFilterChanged);
             ShowStyleProperty.Changed.Subscribe(OnShowStyleChanged);
             ShowTitleProperty.Changed.Subscribe(OnShowTitleChanged);
-            SelectedObjectProperty.Changed.Subscribe(OnSelectedObjectChanged);
-            NameWidthProperty.Changed.Subscribe(OnNameWidthChanged);
+
+#pragma warning disable 0618
+			SelectedObjectProperty.Changed.Subscribe(OnSelectedObjectChanged);
+#pragma warning restore 0618
+
+			NameWidthProperty.Changed.Subscribe(OnNameWidthChanged);
+            DataContextProperty.Changed.Subscribe(OnDataContextPropertyChanged);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyGrid" /> class.
-        /// </summary>
-        public PropertyGrid()
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="PropertyGrid" /> class.
+		/// </summary>
+		public PropertyGrid()
         {
             Factories = new CellEditFactoryCollection(CellEditFactoryService.Default.CloneFactories(this));
 
             ViewModel.PropertyDescriptorChanged += OnPropertyDescriptorChanged;
             ViewModel.FilterChanged += OnFilterChanged;
             ViewModel.PropertyChanged += OnViewModelPropertyChanged;
+            ViewModel.CustomPropertyDescriptorFilter += OnCustomPropertyDescriptorFilter;
 
             InitializeComponent();
 
             column_name.PropertyChanged += OnColumnNamePropertyChanged;
         }
 
-        /// <summary>
-        /// Handles the <see cref="E:ViewModelPropertyChanged" /> event.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="PropertyChangedEventArgs"/> instance containing the event data.</param>
-        private void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
+		private void OnCustomPropertyDescriptorFilter(object sender, CustomPropertyDescriptorFilterEventArgs e)
+		{
+			if(RootPropertyGrid is PropertyGrid pg)
+            {
+                pg.BroadcastCustomPropertyDescriptorFilterEvent(sender, e);
+            }
+            else
+            {
+                BroadcastCustomPropertyDescriptorFilterEvent(sender, e);
+            }
+		}
+
+        private void BroadcastCustomPropertyDescriptorFilterEvent(object sender, CustomPropertyDescriptorFilterEventArgs e)
+        {
+            RaiseEvent(e);
+		}
+
+		/// <summary>
+		/// Handles the <see cref="E:ViewModelPropertyChanged" /> event.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="PropertyChangedEventArgs"/> instance containing the event data.</param>
+		private void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if(e.PropertyName == nameof(ViewModel.ShowCategory))
             {
@@ -263,12 +303,24 @@ namespace Avalonia.PropertyGrid.Controls
         {
             ViewModel.SelectedObject = newValue;
         }
-        
-        /// <summary>
-        /// Gets the cell edit factory collection.
-        /// </summary>
-        /// <returns>ICellEditFactoryCollection.</returns>
-        public ICellEditFactoryCollection GetCellEditFactoryCollection()
+
+		/// <summary>
+		/// Called when [data context property changed].
+		/// </summary>
+		/// <param name="e">The e.</param>
+		private static void OnDataContextPropertyChanged(AvaloniaPropertyChangedEventArgs<object> e)
+		{
+			if(e.Sender is PropertyGrid pg)
+            {
+                pg.OnSelectedObjectChanged(e.OldValue.Value, e.NewValue.Value);
+            }
+		}
+
+		/// <summary>
+		/// Gets the cell edit factory collection.
+		/// </summary>
+		/// <returns>ICellEditFactoryCollection.</returns>
+		public ICellEditFactoryCollection GetCellEditFactoryCollection()
         {
             return Factories;
         }
@@ -749,4 +801,41 @@ namespace Avalonia.PropertyGrid.Controls
 
         #endregion
     }
+
+	/// <summary>
+	/// Class CustomPropertyDescriptorFilterEventArgs.
+	/// Implements the <see cref="RoutedEventArgs" />
+	/// </summary>
+	/// <seealso cref="RoutedEventArgs" />
+	public class CustomPropertyDescriptorFilterEventArgs : RoutedEventArgs
+	{
+		/// <summary>
+		/// The selected object
+		/// </summary>
+		public readonly object SelectedObject;
+
+		/// <summary>
+		/// The property descriptor
+		/// </summary>
+		public readonly PropertyDescriptor PropertyDescriptor;
+
+		/// <summary>
+		/// Gets or sets the is visible.
+		/// </summary>
+		/// <value>The is visible.</value>
+		public bool IsVisible { get; set; } = false;
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="CustomPropertyDescriptorFilterEventArgs" /> class.
+		/// </summary>
+		/// <param name="routedEvent">The routed event.</param>
+		/// <param name="selectedObject">The selected object.</param>
+		/// <param name="propertyDescriptor">The property descriptor.</param>
+		public CustomPropertyDescriptorFilterEventArgs(RoutedEvent routedEvent, object selectedObject, PropertyDescriptor propertyDescriptor) :
+            base(routedEvent)
+		{
+			SelectedObject = selectedObject;
+			PropertyDescriptor = propertyDescriptor;
+		}
+	}
 }
