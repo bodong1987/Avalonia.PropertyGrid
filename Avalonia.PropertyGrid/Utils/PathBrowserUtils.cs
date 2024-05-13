@@ -1,12 +1,10 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Platform.Storage;
-using PropertyModels.ComponentModel.DataAnnotations;
 using Avalonia.PropertyGrid.Services;
-using System;
+using PropertyModels.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Avalonia.PropertyGrid.Utils
@@ -124,13 +122,13 @@ namespace Avalonia.PropertyGrid.Utils
             IStorageProvider storageProvider = GetStorageProvider(parentWindow);
 
             Debug.Assert(storageProvider != null);
-            if(storageProvider == null)
+            if (storageProvider == null)
             {
                 return null;
             }
 
             if (saveMode)
-            {                
+            {
                 FilePickerSaveOptions options = new FilePickerSaveOptions();
                 options.Title = title ?? LocalizationService.Default["Please select a file"];
                 options.SuggestedFileName = initFileName;
@@ -143,7 +141,7 @@ namespace Avalonia.PropertyGrid.Utils
             {
                 FolderPickerOpenOptions options = new FolderPickerOpenOptions();
 
-                if(type == PathBrowsableType.MultipleDirectories)
+                if (type == PathBrowsableType.MultipleDirectories)
                 {
                     options.Title = title ?? LocalizationService.Default["Please select some folders"];
                     options.AllowMultiple = true;
@@ -152,8 +150,8 @@ namespace Avalonia.PropertyGrid.Utils
                 {
                     options.Title = title ?? LocalizationService.Default["Please select a folder"];
                     options.AllowMultiple = false;
-                }               
-                
+                }
+
                 var storage = await storageProvider.OpenFolderPickerAsync(options);
                 return storage != null ? storage.Select(x => x.Path.LocalPath).ToArray() : null;
             }
@@ -199,10 +197,10 @@ namespace Avalonia.PropertyGrid.Utils
                 string exts = results[i * 2 + 1];
 
                 FilePickerFileType filter = new FilePickerFileType(name.Trim());
-                
+
                 filter.Patterns = exts.Split(';').Select(x =>
                 {
-                    var y = x.Trim();                    
+                    var y = x.Trim();
                     return y;
                 }).ToList();
 
@@ -230,5 +228,4 @@ namespace Avalonia.PropertyGrid.Utils
                 );
         }
     }
-
 }
