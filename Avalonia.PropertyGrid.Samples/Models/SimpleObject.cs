@@ -49,6 +49,11 @@ namespace Avalonia.PropertyGrid.Samples.Models
         [Watermark("Select Home")]
         public string UserHome { get; set; }
 
+        [Category("Path")]
+        [DisplayName("My Pictures")]
+        [PathBrowsable(PathBrowsableType.Directory)]
+        public string MyPicturesDirectory { get; set; } = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+
         [Category("String")]
         [DisplayName("Target Name")]
         [Watermark("Your Target Name")]

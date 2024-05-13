@@ -55,6 +55,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             control.ButtonClick += async (s, e) =>
             {
+                if (attribute.IsDirectorySelection && string.IsNullOrEmpty(attribute.InitialFileName))
+                {
+                    attribute.InitialFileName = control.Text;
+                }
+
                 var files = await PathBrowserUtils.ShowPathBrowserAsync(control.GetVisualRoot() as Window, attribute);
 
                 if (files != null && files.Length > 0)
