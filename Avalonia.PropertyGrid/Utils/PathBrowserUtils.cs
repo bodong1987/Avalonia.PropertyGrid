@@ -141,6 +141,13 @@ namespace Avalonia.PropertyGrid.Utils
             {
                 FolderPickerOpenOptions options = new FolderPickerOpenOptions();
 
+                // If an InitFileName is specified, make that location available for opening.
+                if (!string.IsNullOrEmpty(initFileName))
+                {
+                    IStorageFolder startFolder = await storageProvider.TryGetFolderFromPathAsync(initFileName);
+                    options.SuggestedStartLocation = startFolder;
+                }
+
                 if (type == PathBrowsableType.MultipleDirectories)
                 {
                     options.Title = title ?? LocalizationService.Default["Please select some folders"];

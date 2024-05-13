@@ -43,6 +43,12 @@ namespace Avalonia.PropertyGrid.Samples.Models
         [Watermark("Image Path")]
         public string ImagePath { get; set; }
 
+        [Category("Path")]
+        [DisplayName("User Home")]
+        [PathBrowsable(PathBrowsableType.Directory, InitialFileName = "C:\\Users")]
+        [Watermark("Select Home")]
+        public string UserHome { get; set; }
+
         [Category("String")]
         [DisplayName("Target Name")]
         [Watermark("Your Target Name")]
