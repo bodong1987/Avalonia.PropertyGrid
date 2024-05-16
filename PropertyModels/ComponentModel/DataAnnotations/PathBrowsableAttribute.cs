@@ -52,7 +52,7 @@ namespace PropertyModels.ComponentModel.DataAnnotations
         public bool SaveMode { get; set; }
 
         /// <summary>
-        /// Gets or sets the initial name of the file.
+        /// Gets or sets the initial name of the file or directory (When PathBrowsableType is Directory).
         /// </summary>
         /// <value>The initial name of the file.</value>
         public string InitialFileName { get; set; }
@@ -100,5 +100,4 @@ namespace PropertyModels.ComponentModel.DataAnnotations
             SaveMode = saveMode;
         }
     }
-
 }
