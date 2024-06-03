@@ -9,7 +9,7 @@ Its main features are:
 * Support Built-in undo and redo framework
 * Support for automatically adjusting the visibility of properties based on conditions
 * Support path picking
-* Support two display modes: category-based and alphabetical sorting  
+* Support three display modes: category-based, alphabetical sorting, builtin sorting  
 * Support text filtering, regular expression filtering, and supports ignoring case settings  
 * Support fast filtering by Category
 * Support data automatic reloading

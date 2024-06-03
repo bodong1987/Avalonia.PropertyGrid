@@ -9,7 +9,7 @@ Its main features are:
 * Support Built-in undo and redo framework
 * Support for automatically adjusting the visibility of properties based on conditions
 * Support path picking
-* Support two display modes: category-based and alphabetical sorting  
+* Support three display modes: category-based, alphabetical sorting and builtin sorting  
 * Support text filtering, regular expression filtering, and supports ignoring case settings  
 * Support fast filtering by Category
 * Support data automatic reloading
@@ -413,6 +413,10 @@ v11.0.6.2
 ``
 Set the SelectedObject property to obsolete. It is recommended to use the DataContext mechanism directly to provide data to the PropertyGrid;
 add custom property visibility filter support.
+``  
+v11.0.10.1  
+``
+SelectedObject property is deleted, please use DataContext directly.
 ``
 
 
