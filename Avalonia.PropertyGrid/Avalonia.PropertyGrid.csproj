@@ -5,13 +5,13 @@
 	  <LangVersion>preview</LangVersion>
 	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	  <Title>bodong.Avalonia.PropertyGrid</Title>
-	  <Version>11.0.6.3</Version>
+	  <Version>11.0.10.1</Version>
 	  <Authors>bodong</Authors>
-	  <Description>A  PropertyGrid control implementation for Avalonia</Description>
+	  <Description>A PropertyGrid control implementation for Avalonia</Description>
 	  <PackageProjectUrl>https://github.com/bodong1987/Avalonia.PropertyGrid</PackageProjectUrl>
 	  <RepositoryUrl>https://github.com/bodong1987/Avalonia.PropertyGrid.git</RepositoryUrl>
 	  <RepositoryType>git</RepositoryType>
-	  <PackageTags>Avalonia;PropertyGrid;AvaloniaControls</PackageTags>
+	  <PackageTags>Avalonia;PropertyGrid;AvaloniaControls;AvaloniaSamples</PackageTags>
 	  <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
   </PropertyGroup>
 
