@@ -26,10 +26,16 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// The category
         /// </summary>
         Category,
+
         /// <summary>
         /// The alphabetic
         /// </summary>
-        Alphabetic
+        Alphabetic,
+
+        /// <summary>
+        /// use internal order
+        /// </summary>
+        Builtin
     }
 
     /// <summary>

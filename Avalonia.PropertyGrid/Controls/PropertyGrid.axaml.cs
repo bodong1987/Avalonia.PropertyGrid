@@ -503,6 +503,10 @@ namespace Avalonia.PropertyGrid.Controls
                 {
                     BuildAlphabeticPropertiesView(target, referencePath);
                 }
+                else if(propertyGridShowStyle == PropertyGridShowStyle.Builtin)
+                {
+                    BuildBuiltinPropertiesView(target, referencePath);
+                }
             }
             finally
             {
@@ -691,6 +695,20 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="target">The target.</param>
         /// <param name="referencePath">The reference path.</param>
         protected virtual void BuildAlphabeticPropertiesView(object target, ReferencePath referencePath)
+        {
+            propertiesGrid.ColumnDefinitions.Clear();
+            propertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
+            propertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
+
+            BuildPropertiesCellEdit(target, referencePath, ViewModel.AllProperties.OrderBy(x=>x.DisplayName), null, propertiesGrid, CellInfoCache);
+        }
+
+        /// <summary>
+        /// Builds the builtin properties view.
+        /// </summary>
+        /// <param name="target">The target.</param>
+        /// <param name="referencePath">The reference path.</param>
+        protected virtual void BuildBuiltinPropertiesView(object target, ReferencePath referencePath)
         {
             propertiesGrid.ColumnDefinitions.Clear();
             propertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
