@@ -93,6 +93,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             propertyGrid.AllowFilter = false;
             propertyGrid.AllowQuickFilter = false;
             propertyGrid.ShowTitle = false;
+            propertyGrid.DataContext = null;
 
             border.Child = propertyGrid;
 

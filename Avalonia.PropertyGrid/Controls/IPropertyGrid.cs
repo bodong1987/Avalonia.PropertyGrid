@@ -56,12 +56,6 @@ namespace Avalonia.PropertyGrid.Controls
         PropertyGridShowStyle ShowStyle { get; set; }
 
         /// <summary>
-        /// Gets or sets the selected object.
-        /// </summary>
-        /// <value>The selected object.</value>
-        object SelectedObject { get; set; }
-
-        /// <summary>
         /// Gets or sets the root property grid.
         /// </summary>
         /// <value>The root property grid.</value>

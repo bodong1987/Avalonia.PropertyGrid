@@ -122,32 +122,7 @@ namespace Avalonia.PropertyGrid.Controls
             get => GetValue(NameWidthProperty);
             set => SetValue(NameWidthProperty, value);
         }
-
-        /// <summary>
-        /// The selected object
-        /// </summary>
-        private object _SelectedObject;
-		/// <summary>
-		/// The selected object property
-		/// </summary>
-		[Obsolete("SelectedObjectProperty is deprecated, use DataContext directly")]
-		public static readonly DirectProperty<PropertyGrid, object> SelectedObjectProperty = AvaloniaProperty.RegisterDirect<PropertyGrid, object>(
-            nameof(SelectedObject),
-            o => o._SelectedObject,
-            (o,v)=> o.SetAndRaise(SelectedObjectProperty, ref o._SelectedObject, v)
-            );
-        /// <summary>
-        /// Gets or sets the selected object.
-        /// </summary>
-        /// <value>The selected object.</value>
-        [Browsable(false)]
-        [Obsolete("SelectedObject is deprecated, use DataContext directly")]
-        public object SelectedObject
-        {
-            get => _SelectedObject;
-            set => SetAndRaise(SelectedObjectProperty, ref _SelectedObject, value);
-        }
-
+               
         /// <summary>
         /// The view model
         /// </summary>
@@ -224,13 +199,7 @@ namespace Avalonia.PropertyGrid.Controls
             AllowQuickFilterProperty.Changed.Subscribe(OnAllowQuickFilterChanged);
             ShowStyleProperty.Changed.Subscribe(OnShowStyleChanged);
             ShowTitleProperty.Changed.Subscribe(OnShowTitleChanged);
-
-#pragma warning disable 0618
-			SelectedObjectProperty.Changed.Subscribe(OnSelectedObjectChanged);
-#pragma warning restore 0618
-
 			NameWidthProperty.Changed.Subscribe(OnNameWidthChanged);
-            DataContextProperty.Changed.Subscribe(OnDataContextPropertyChanged);
         }
 
 
@@ -268,67 +237,49 @@ namespace Avalonia.PropertyGrid.Controls
             RaiseEvent(e);
 		}
 
-		/// <summary>
-		/// Handles the <see cref="E:ViewModelPropertyChanged" /> event.
-		/// </summary>
-		/// <param name="sender">The sender.</param>
-		/// <param name="e">The <see cref="PropertyChangedEventArgs"/> instance containing the event data.</param>
-		private void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
+#if DEBUG
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        public override string ToString()
         {
-            if(e.PropertyName == nameof(ViewModel.ShowCategory))
+            return $"[{GetHashCode()}]{base.ToString()}";
+        }
+#endif
+
+        /// <summary>
+        /// Handles the <see cref="E:ViewModelPropertyChanged" /> event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="PropertyChangedEventArgs"/> instance containing the event data.</param>
+        private void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName == nameof(ViewModel.ShowStyle))
             {
-                ShowStyle = ViewModel.ShowCategory ? PropertyGridShowStyle.Category : PropertyGridShowStyle.Alphabetic;
-                BuildPropertiesView(ViewModel.SelectedObject, ViewModel.ShowCategory ? PropertyGridShowStyle.Category : PropertyGridShowStyle.Alphabetic);
+                ShowStyle = ViewModel.ShowStyle;
+                BuildPropertiesView(ViewModel.Context, ViewModel.ShowStyle);
             }
         }
 
         /// <summary>
-        /// Called when [selected object changed].
+        /// Called when the <see cref="P:Avalonia.StyledElement.DataContext" /> finishes updating.
         /// </summary>
-        /// <param name="e">The e.</param>
-        private static void OnSelectedObjectChanged(AvaloniaPropertyChangedEventArgs<object> e)
+        protected override void OnDataContextEndUpdate()
         {
-            if(e.Sender is PropertyGrid pg)
+            base.OnDataContextEndUpdate();
+
+            if(ViewModel.Context != DataContext)
             {
-                pg.OnSelectedObjectChanged(e.OldValue.Value, e.NewValue.Value);
+                ViewModel.Context = DataContext;
             }
         }
 
         /// <summary>
-        /// Called when [selected object changed].
+        /// Gets the cell edit factory collection.
         /// </summary>
-        /// <param name="oldValue">The old value.</param>
-        /// <param name="newValue">The new value.</param>
-        private void OnSelectedObjectChanged(object oldValue, object newValue)
-        {
-            ViewModel.SelectedObject = newValue;
-        }
-
-		/// <summary>
-		/// Called when [data context property changed].
-		/// </summary>
-		/// <param name="e">The e.</param>
-		private static void OnDataContextPropertyChanged(AvaloniaPropertyChangedEventArgs<object> e)
-		{
-			if(e.Sender is PropertyGrid pg)
-            {
-                pg.OnDataContextPropertyChanged(e.OldValue.Value, e.NewValue.Value);
-            }
-		}
-        
-        private void OnDataContextPropertyChanged(object oldValue, object newValue)
-		{
-#pragma warning disable 0618
-			this.SelectedObject = newValue;
-#pragma warning restore 0618
-		}
-
-
-		/// <summary>
-		/// Gets the cell edit factory collection.
-		/// </summary>
-		/// <returns>ICellEditFactoryCollection.</returns>
-		public ICellEditFactoryCollection GetCellEditFactoryCollection()
+        /// <returns>ICellEditFactoryCollection.</returns>
+        public ICellEditFactoryCollection GetCellEditFactoryCollection()
         {
             return Factories;
         }
@@ -415,7 +366,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="newValue">The new value.</param>
         private void OnShowStyleChanged(Optional<PropertyGridShowStyle> oldValue, BindingValue<PropertyGridShowStyle> newValue)
         {
-            ViewModel.ShowCategory = newValue.Value == PropertyGridShowStyle.Category;
+            ViewModel.ShowStyle = newValue.Value;
         }
 
         private static void OnShowTitleChanged(AvaloniaPropertyChangedEventArgs<bool> e)
@@ -454,7 +405,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void OnPropertyDescriptorChanged(object sender, EventArgs e)
         {
-            BuildPropertiesView(ViewModel.SelectedObject, ViewModel.ShowCategory ? PropertyGridShowStyle.Category : PropertyGridShowStyle.Alphabetic);
+            BuildPropertiesView(ViewModel.Context, ViewModel.ShowStyle);
         }
 
 

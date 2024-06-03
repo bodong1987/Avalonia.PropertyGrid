@@ -78,34 +78,90 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// </summary>
         /// <value>The filter pattern.</value>
         public IFilterPattern FilterPattern { get; set; } = new PropertyGridFilterPattern();
+                
+        object _Context;
 
         /// <summary>
-        /// The selected object
+        /// Gets or sets the context.
         /// </summary>
-        object _SelectedObject;
-        /// <summary>
-        /// Gets or sets the selected object.
-        /// </summary>
-        /// <value>The selected object.</value>
-        public object SelectedObject
+        /// <value>The context.</value>
+        public object Context
         {
-            get => _SelectedObject;
-            set => this.RaiseAndSetIfChanged(ref _SelectedObject, value);
+            get => _Context;
+            set => this.RaiseAndSetIfChanged(ref _Context, value);
+        }
+
+        PropertyGridShowStyle _ShowStyle = PropertyGridShowStyle.Category;
+
+        /// <summary>
+        /// Gets or sets the show style.
+        /// </summary>
+        /// <value>The show style.</value>
+        public PropertyGridShowStyle ShowStyle
+        {
+            get => _ShowStyle;
+            set
+            {
+                if(_ShowStyle != value)
+                {
+                    this.RaiseAndSetIfChanged(ref _ShowStyle, value);
+
+                    this.RaisePropertyChanged(nameof(ShowStyleType));
+                    this.RaisePropertyChanged(nameof(ShowStyleText));
+                }                
+            }
         }
 
         /// <summary>
-        /// The show category
+        /// Gets a value indicating whether [show style type].
         /// </summary>
-        bool _ShowCategory = true;
+        /// <value><c>null</c> if [show style type] contains no value, <c>true</c> if [show style type]; otherwise, <c>false</c>.</value>
+        public bool? ShowStyleType
+        {
+            get
+            {
+                switch (ShowStyle)
+                {
+                    case PropertyGridShowStyle.Category:
+                        return true;
+                    case PropertyGridShowStyle.Alphabetic:
+                        return false;
+
+                    default:
+                        return null;
+                }
+            }
+            set
+            {
+                if(value == null)
+                {
+                    ShowStyle = PropertyGridShowStyle.Builtin;
+                    return;
+                }
+
+                ShowStyle = (bool)value ? PropertyGridShowStyle.Category : PropertyGridShowStyle.Alphabetic;
+            }
+        }
 
         /// <summary>
-        /// Gets or sets a value indicating whether [show category].
+        /// Gets the show style text.
         /// </summary>
-        /// <value><c>true</c> if [show category]; otherwise, <c>false</c>.</value>
-        public bool ShowCategory
+        /// <value>The show style text.</value>
+        public string ShowStyleText
         {
-            get => _ShowCategory;
-            set => this.RaiseAndSetIfChanged(ref _ShowCategory, value);
+            get
+            {
+                switch (ShowStyle)
+                {
+                    case PropertyGridShowStyle.Category:
+                        return "C";
+                    case PropertyGridShowStyle.Alphabetic:
+                        return "A";
+
+                    default:
+                        return "B";
+                }
+            }
         }
 
         /// <summary>
@@ -182,7 +238,7 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// <param name="e">The <see cref="PropertyChangedEventArgs" /> instance containing the event data.</param>
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(SelectedObject))
+            if (e.PropertyName == nameof(Context))
             {
                 RefreshProperties();
             }
@@ -308,18 +364,18 @@ namespace Avalonia.PropertyGrid.ViewModels
         {
             Clear();
 
-            if(_SelectedObject == null)
+            if(_Context == null)
             {
                 return;
             }
 
-            PropertyDescriptorBuilder builder = new PropertyDescriptorBuilder(_SelectedObject);
+            PropertyDescriptorBuilder builder = new PropertyDescriptorBuilder(_Context);
             AllProperties.AddRange(builder.GetProperties().Cast<PropertyDescriptor>().ToList().FindAll(
                 x =>
                 {
                     if(CustomPropertyDescriptorFilter != null)
                     {
-                        CustomPropertyDescriptorFilterEventArgs args = new CustomPropertyDescriptorFilterEventArgs(PropertyGrid.Controls.PropertyGrid.CustomPropertyDescriptorFilterEvent, _SelectedObject, x);
+                        CustomPropertyDescriptorFilterEventArgs args = new CustomPropertyDescriptorFilterEventArgs(PropertyGrid.Controls.PropertyGrid.CustomPropertyDescriptorFilterEvent, _Context, x);
 
                         CustomPropertyDescriptorFilter(this, args);
 

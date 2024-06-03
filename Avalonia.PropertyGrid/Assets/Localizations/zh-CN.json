@@ -1,5 +1,6 @@
 ﻿{
     "ShowGroup": "显示分类",
+    "ShowStyle": "显示风格",
     "IgnoreCase": "忽略大小写",
     "UseRegex": "使用正则表达式",
     "Search": "搜索",
