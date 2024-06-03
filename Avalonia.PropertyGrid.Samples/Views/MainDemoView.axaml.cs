@@ -7,14 +7,18 @@ using Avalonia.Styling;
 using Avalonia.Themes.Fluent;
 using Avalonia.Themes.Simple;
 using System;
+using System.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Samples.Views
 {
     public partial class MainDemoView : UserControl
     {
+        MainDemoViewModel MainVM;
+
         public MainDemoView()
         {
-            DataContext = new MainDemoViewModel();
+            MainVM = new MainDemoViewModel();
+            DataContext = MainVM;
 
             InitializeComponent();
 
@@ -39,9 +43,11 @@ namespace Avalonia.PropertyGrid.Samples.Views
 
             proeprtyGrid_RedoUndo.CommandExecuted += OnCommandExecuted;
 
+            ((MainDemoViewModel)DataContext).PropertyChanged += OnPropertyChanged;
+
             ShowStyleComboBox.SelectionChanged += (sender, e) =>
             {
-                if(ShowStyleComboBox.SelectedItem is PropertyGridShowStyle showStyle)
+                if (ShowStyleComboBox.SelectedItem is PropertyGridShowStyle showStyle)
                 {
                     propertyGrid_Styles.ShowStyle = showStyle;
                 }
@@ -49,7 +55,31 @@ namespace Avalonia.PropertyGrid.Samples.Views
 
         }
 
-		private void OnCustomPropertyDescriptorFilter(object sender, CustomPropertyDescriptorFilterEventArgs e)
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName == nameof(MainVM.ShowStyle))
+            {
+                propertyGrid_Styles.ShowStyle = MainVM.ShowStyle;
+            }
+            else if(e.PropertyName == nameof(MainVM.IsShowTitle))
+            {
+                propertyGrid_Styles.ShowTitle = MainVM.IsShowTitle;
+            }
+            else if(e.PropertyName ==nameof(MainVM.AllowFilter))
+            {
+                propertyGrid_Styles.AllowFilter = MainVM.AllowFilter;
+            }
+            else if(e.PropertyName == nameof(MainVM.AllowQuickFilter))
+            {
+                propertyGrid_Styles.AllowQuickFilter = MainVM.AllowQuickFilter;
+            }
+            else if(e.PropertyName == nameof(MainVM.DefaultNameWidth))
+            {
+                propertyGrid_Styles.NameWidth = MainVM.DefaultNameWidth;
+            }
+        }
+
+        private void OnCustomPropertyDescriptorFilter(object sender, CustomPropertyDescriptorFilterEventArgs e)
 		{
 			if(e.SelectedObject is SimpleObject simpleObject&& e.PropertyDescriptor.Name == "ThreeStates2")
             {
