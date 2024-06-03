@@ -38,8 +38,16 @@ namespace Avalonia.PropertyGrid.Samples.Views
             };
 
             proeprtyGrid_RedoUndo.CommandExecuted += OnCommandExecuted;
-            
-		}
+
+            ShowStyleComboBox.SelectionChanged += (sender, e) =>
+            {
+                if(ShowStyleComboBox.SelectedItem is PropertyGridShowStyle showStyle)
+                {
+                    propertyGrid_Styles.ShowStyle = showStyle;
+                }
+            };
+
+        }
 
 		private void OnCustomPropertyDescriptorFilter(object sender, CustomPropertyDescriptorFilterEventArgs e)
 		{

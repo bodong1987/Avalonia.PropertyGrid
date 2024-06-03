@@ -5,6 +5,7 @@
              mc:Ignorable="d" d:DesignWidth="1400" d:DesignHeight="900"
              x:Class="Avalonia.PropertyGrid.Samples.Views.MainDemoView"
              xmlns:pgc="clr-namespace:Avalonia.PropertyGrid.Controls;assembly=Avalonia.PropertyGrid"
+             xmlns:apv="clr-namespace:Avalonia.PropertyGrid.ViewModels;assembly=Avalonia.PropertyGrid"
 		     xmlns:lv="clr-namespace:Avalonia.PropertyGrid.Samples.Views"
 			 xmlns:ll="clr-namespace:Avalonia.PropertyGrid.Localization;assembly=Avalonia.PropertyGrid"
              >
@@ -31,6 +32,7 @@
                 <Grid RowDefinitions="*,Auto">
                     <ScrollViewer>
                         <pgc:PropertyGrid
+                            x:Name="propertyGrid_Styles"
                             Margin="2"
                             DataContext="{Binding simpleObject}"
                             AllowFilter="{Binding AllowFilter}"
@@ -42,8 +44,14 @@
                         </pgc:PropertyGrid>
                     </ScrollViewer>
                     <StackPanel Orientation="Horizontal" Grid.Row="1">
-                        <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Show_Category}"></TextBlock>
-                        <ToggleSwitch IsChecked="{Binding IsShowCategory}" Margin="4"></ToggleSwitch>
+                        <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Show_Style}"></TextBlock>                        
+                        <ComboBox x:Name="ShowStyleComboBox" Margin="4" VerticalAlignment="Center" SelectedIndex="0">
+                            <ComboBox.Items>
+                                <apv:PropertyGridShowStyle>Category</apv:PropertyGridShowStyle>
+                                <apv:PropertyGridShowStyle>Alphabetic</apv:PropertyGridShowStyle>
+                                <apv:PropertyGridShowStyle>Builtin</apv:PropertyGridShowStyle>
+                            </ComboBox.Items>
+                        </ComboBox>
                         <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Allow_Filter}"></TextBlock>
                         <ToggleSwitch IsChecked="{Binding AllowFilter}" Margin="4"></ToggleSwitch>
                         <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Allow_Quick_Filter}"></TextBlock>

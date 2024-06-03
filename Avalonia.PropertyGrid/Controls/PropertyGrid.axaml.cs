@@ -475,52 +475,52 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="propertyGridShowStyle">The property grid show style.</param>
         private void BuildPropertiesView(object target, PropertyGridShowStyle propertyGridShowStyle)
         {
-            propertiesGrid.RowDefinitions.Clear();
+                propertiesGrid.RowDefinitions.Clear();
             propertiesGrid.Children.Clear();              
-            ExpandableObjectCache.Clear();
+                ExpandableObjectCache.Clear();
 
-            ClearPropertyChangedObservers(CellInfoCache.Children);
-            CellInfoCache.Clear();
+                ClearPropertyChangedObservers(CellInfoCache.Children);
+                CellInfoCache.Clear();
 
-            if (target == null)
-            {
-                return;
-            }
+                if (target == null)
+                {
+                    return;
+                }
 
-            ReferencePath referencePath = new ReferencePath();
+                ReferencePath referencePath = new ReferencePath();
             
-            try
-            {
-                ExpandableObjectCache.Add(target);
+                try
+                {
+                    ExpandableObjectCache.Add(target);
 
-                referencePath.BeginScope(target.GetType().Name);
+                    referencePath.BeginScope(target.GetType().Name);
 
-                if (propertyGridShowStyle == PropertyGridShowStyle.Category)
-                {
-                    BuildCategoryPropertiesView(target, referencePath);
+                    if (propertyGridShowStyle == PropertyGridShowStyle.Category)
+                    {
+                        BuildCategoryPropertiesView(target, referencePath);
+                    }
+                    else if (propertyGridShowStyle == PropertyGridShowStyle.Alphabetic)
+                    {
+                        BuildAlphabeticPropertiesView(target, referencePath);
+                    }
+                    else if (propertyGridShowStyle == PropertyGridShowStyle.Builtin)
+                    {
+                        BuildBuiltinPropertiesView(target, referencePath);
+                    }
                 }
-                else if (propertyGridShowStyle == PropertyGridShowStyle.Alphabetic)
+                finally
                 {
-                    BuildAlphabeticPropertiesView(target, referencePath);
+                    referencePath.EndScope();
                 }
-                else if(propertyGridShowStyle == PropertyGridShowStyle.Builtin)
-                {
-                    BuildBuiltinPropertiesView(target, referencePath);
-                }
+
+                AddPropertyChangedObservers(CellInfoCache.Children);
+
+                RefreshVisibilities();
+
+                double width = column_name.Bounds.Width;
+
+                SyncNameWidth(width, false);
             }
-            finally
-            {
-                referencePath.EndScope();
-            }
-
-            AddPropertyChangedObservers(CellInfoCache.Children);
-
-            RefreshVisibilities();
-
-            double width = column_name.Bounds.Width;
-
-            SyncNameWidth(width, false);
-        }
 
         #region Categories
         /// <summary>

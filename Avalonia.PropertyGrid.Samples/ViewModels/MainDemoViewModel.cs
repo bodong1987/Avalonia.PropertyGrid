@@ -82,8 +82,6 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
                 if (_ShowStyle != value)
                 {
                     this.RaiseAndSetIfChanged(ref _ShowStyle, value);
-
-                    this.RaisePropertyChanged(nameof(IsShowCategory));
                 }
             }
         }
@@ -100,21 +98,6 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
         {
             get => _AllowQuickFilter;
             set => this.RaiseAndSetIfChanged(ref _AllowQuickFilter, value);
-        }
-
-        public bool IsShowCategory
-        {
-            get => ShowStyle == PropertyGridShowStyle.Category;
-            set
-            {
-                PropertyGridShowStyle newStyle = value ? PropertyGridShowStyle.Category : PropertyGridShowStyle.Alphabetic;
-
-                if (ShowStyle != newStyle)
-                {
-                    ShowStyle = newStyle;
-                    this.RaisePropertyChanged(nameof(IsShowCategory));
-                }
-            }
         }
 
         bool _IsShowTitle = true;
