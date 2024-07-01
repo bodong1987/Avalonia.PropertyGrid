@@ -1,7 +1,7 @@
 ﻿{
-  "ShowGroup": "Показывать Категорию",
-  "IgnoreCase": "Игноривать регистр",
-  "UseRegex": "Использовать RegEx",
+  "ShowGroup": "Показывать категорию",
+  "IgnoreCase": "Игнорировать регистр",
+  "UseRegex": "Использовать Regex",
   "Search": "Поиск",
   "All": "Все",
   "Name": "Название",
@@ -11,5 +11,5 @@
   "InsertNewElement": "Вставить элемент перед этим элементом",
   "RemoveElement": "Удалить элемент",
   "AppendNewElement": "Добавить новый элемент",
-  "ClearAllElements": "Отчистить список"
+  "ClearAllElements": "Очистить список"
 }
