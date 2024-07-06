@@ -40,7 +40,7 @@ public static class StringExtensions
             throw new ArgumentOutOfRangeException(nameof(length), length, "Length is less than zero");
         }
 
-        return (length <= value.Length) ? value.Substring(0, length) : value;
+        return length <= value.Length ? value.Substring(0, length) : value;
     }
 
     /// <summary>
@@ -64,7 +64,7 @@ public static class StringExtensions
             throw new ArgumentOutOfRangeException(nameof(length), length, "Length is less than zero");
         }
 
-        return (length < value.Length) ? value.Substring(value.Length - length) : value;
+        return length < value.Length ? value.Substring(value.Length - length) : value;
     }
 
 
@@ -104,7 +104,8 @@ public static class StringExtensions
         {
             return true;
         }
-        else if (value == null || other == null)
+
+        if (value == null || other == null)
         {
             return false;
         }
@@ -125,12 +126,8 @@ public static class StringExtensions
         {
             return true;
         }
-        else if (value == null || other == null)
-        {
-            return false;
-        }
 
-        return value.StartsWith(other, StringComparison.CurrentCultureIgnoreCase);
+        return value != null && other != null && value.StartsWith(other, StringComparison.CurrentCultureIgnoreCase);
     }
 
     /// <summary>
@@ -146,12 +143,8 @@ public static class StringExtensions
         {
             return true;
         }
-        else if (value == null || other == null)
-        {
-            return false;
-        }
 
-        return value.EndsWith(other, StringComparison.CurrentCultureIgnoreCase);
+        return value != null && other != null && value.EndsWith(other, StringComparison.CurrentCultureIgnoreCase);
     }
 
     /// <summary>

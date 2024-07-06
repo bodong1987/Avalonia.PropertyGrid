@@ -10,9 +10,7 @@ namespace PropertyModels.ComponentModel.DataAnnotations;
 /// </summary>
 /// <seealso cref="Attribute" />
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
-public class ConditionTargetAttribute : Attribute
-{
-}
+public class ConditionTargetAttribute : Attribute;
 
 /// <summary>
 /// base class for property, used to set property's visibility in PropertyGrid
@@ -20,7 +18,7 @@ public class ConditionTargetAttribute : Attribute
 /// </summary>
 /// <seealso cref="Attribute" />
 [AttributeUsage(AttributeTargets.Property)]
-public abstract class AbstractVisiblityConditionAttribute : Attribute
+public abstract class AbstractVisibilityConditionAttribute : Attribute
 {
     /// <summary>
     /// Checks the visibility.
@@ -44,11 +42,11 @@ public enum ConditionLogicType
     /// </summary>
     Not,
     /// <summary>
-    /// The and
+    /// and
     /// </summary>
     And,
     /// <summary>
-    /// The or
+    /// or
     /// </summary>
     Or
 }
@@ -56,10 +54,10 @@ public enum ConditionLogicType
 
 /// <summary>
 /// Class VisibilityPropertyConditionAttribute.
-/// Implements the <see cref="PropertyModels.ComponentModel.DataAnnotations.AbstractVisiblityConditionAttribute" />
+/// Implements the <see cref="AbstractVisibilityConditionAttribute" />
 /// </summary>
-/// <seealso cref="PropertyModels.ComponentModel.DataAnnotations.AbstractVisiblityConditionAttribute" />
-public class VisibilityPropertyConditionAttribute : AbstractVisiblityConditionAttribute
+/// <seealso cref="AbstractVisibilityConditionAttribute" />
+public class VisibilityPropertyConditionAttribute : AbstractVisibilityConditionAttribute
 {
     /// <summary>
     /// The property name
@@ -95,28 +93,28 @@ public class VisibilityPropertyConditionAttribute : AbstractVisiblityConditionAt
     /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
     public override bool CheckVisibility(object component)
     {
-        if(component == null)
+        switch (component)
         {
-            return false;
-        }
+            case null:
+                return false;
+            case ICustomTypeDescriptor ctd:
+            {
+                var pd = ctd.GetProperties().Find(PropertyName, true);
 
-        if(component is ICustomTypeDescriptor ctd)
-        {
-            var pd = ctd.GetProperties().Find(PropertyName, true);
+                return IsVisible(pd?.GetValue(component));
+            }
+            default:
+            {
+                var property = component.GetType().GetProperty(PropertyName);
 
-            return IsVisible(pd?.GetValue(component));
-        }
-        else
-        {
-            var property = component.GetType().GetProperty(PropertyName);
-
-            return IsVisible(property?.GetValue(component));
+                return IsVisible(property?.GetValue(component));
+            }
         }
     }
 
     private bool IsVisible(object value)
     {
-        bool isEqual = EqualityComparer<object>.Default.Equals(VisibleValue, value);
+        var isEqual = EqualityComparer<object>.Default.Equals(VisibleValue, value);
 
         return LogicType == ConditionLogicType.Default ? isEqual : !isEqual;
     }

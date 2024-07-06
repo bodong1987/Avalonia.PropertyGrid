@@ -138,10 +138,7 @@ public class CheckedList<T> : ICollection<T>, ICheckedList
         get
         {
             List<object> list = [];
-            foreach (var item in _itemsCore)
-            {
-                list.Add(item);
-            }
+            list.AddRange(_itemsCore.Cast<object>());
 
             return list.ToArray();
         }
@@ -156,10 +153,7 @@ public class CheckedList<T> : ICollection<T>, ICheckedList
         get
         {
             List<object> list = [];
-            foreach (var item in _sourceItemsCore)
-            {
-                list.Add(item);
-            }
+            list.AddRange(_sourceItemsCore.Cast<object>());
 
             return list.ToArray();
         }

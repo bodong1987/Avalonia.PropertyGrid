@@ -10,9 +10,7 @@ namespace PropertyModels.ComponentModel;
 /// <summary>
 /// Interface IReactiveObject
 /// </summary>
-public interface IReactiveObject : INotifyPropertyChanged
-{
-}
+public interface IReactiveObject : INotifyPropertyChanged;
 
 /// <summary>
 /// Class MiniReactiveObject.
@@ -87,7 +85,7 @@ public class ReactiveObject : MiniReactiveObject
                 {
                     if (!cache.TryGetValue(name, out var relevance))
                     {
-                        relevance = new List<string>();
+                        relevance = [];
                         cache.Add(name, relevance);
                     }
 

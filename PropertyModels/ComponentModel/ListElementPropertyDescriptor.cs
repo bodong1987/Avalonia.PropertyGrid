@@ -28,6 +28,8 @@ public class ListElementPropertyDescriptor : PropertyDescriptor
     /// When overridden in a derived class, gets the type of the property.
     /// </summary>
     /// <value>The type of the property.</value>
+    // ReSharper disable once FunctionRecursiveOnAllPaths
+    // ReSharper disable once ConvertToAutoProperty
     public override Type PropertyType => _elementType;
 
     /// <summary>

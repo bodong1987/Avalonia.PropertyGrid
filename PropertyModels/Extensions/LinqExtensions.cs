@@ -108,15 +108,7 @@ public static class LinqExtensions
     /// <returns><c>true</c> if [contains] [the specified match]; otherwise, <c>false</c>.</returns>
     public static bool Contains<T>(this IEnumerable<T> list, Predicate<T> match)
     {
-        foreach (var v in list)
-        {
-            if (match(v))
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return list.Any(v => match(v));
     }
 
     /// <summary>
@@ -181,6 +173,7 @@ public static class LinqExtensions
     /// <returns>IEnumerable&lt;TRet&gt;.</returns>
     public static IEnumerable<TRet> Select<TRet>(this IEnumerable enumerable, Func<object, TRet> selector)
     {
+        // ReSharper disable once LoopCanBeConvertedToQuery
         foreach (var item in enumerable)
         {
             yield return selector(item);

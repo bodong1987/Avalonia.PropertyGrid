@@ -48,10 +48,10 @@ public class MultiObjectPropertyDescriptor : PropertyDescriptor, IEnumerable<Pro
             {
                 if (_parentAttributes == null)
                 {
-                    _parentAttributes = new AttributeCollection[_owner._descriptors.Length];
+                    _parentAttributes = new AttributeCollection[_owner.Descriptors.Length];
                     for (var i = 0; i < _parentAttributes.Length; i++)
                     {
-                        _parentAttributes[i] = _owner._descriptors[i].Attributes;
+                        _parentAttributes[i] = _owner.Descriptors[i].Attributes;
                     }                            
                 }
 
@@ -110,12 +110,11 @@ public class MultiObjectPropertyDescriptor : PropertyDescriptor, IEnumerable<Pro
     }
     #endregion
 
-    private readonly PropertyDescriptor[] _descriptors;
     /// <summary>
     /// Gets the descriptors.
     /// </summary>
     /// <value>The descriptors.</value>
-    internal PropertyDescriptor[] Descriptors => _descriptors;
+    internal PropertyDescriptor[] Descriptors { get; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MultiObjectPropertyDescriptor"/> class.
@@ -124,7 +123,7 @@ public class MultiObjectPropertyDescriptor : PropertyDescriptor, IEnumerable<Pro
     public MultiObjectPropertyDescriptor(PropertyDescriptor[] descriptors)
         : base(descriptors[0].Name, null)
     {
-        _descriptors = descriptors;
+        Descriptors = descriptors;
     }
 
     /// <summary>
@@ -136,8 +135,7 @@ public class MultiObjectPropertyDescriptor : PropertyDescriptor, IEnumerable<Pro
     private object GetOwner(object[] list, int index)
     {
         var res = list[index];
-        var custom = res as ICustomTypeDescriptor;
-        return custom == null ? res : custom.GetPropertyOwner(_descriptors[index]);
+        return res is not ICustomTypeDescriptor custom ? res : custom.GetPropertyOwner(Descriptors[index]);
     }
 
     /// <summary>
@@ -156,7 +154,7 @@ public class MultiObjectPropertyDescriptor : PropertyDescriptor, IEnumerable<Pro
     /// <returns>An instance of the requested editor type, or <see langword="null" /> if an editor cannot be found.</returns>
     public override object GetEditor(Type editorBaseType)
     {
-        return _descriptors[0].GetEditor(editorBaseType);
+        return Descriptors[0].GetEditor(editorBaseType);
     }
 
     /// <summary>
@@ -167,22 +165,15 @@ public class MultiObjectPropertyDescriptor : PropertyDescriptor, IEnumerable<Pro
     public override bool CanResetValue(object component)
     {
         var list = (object[])component;
-        for (var i = 0; i < _descriptors.Length; i++)
-        {
-            if (!_descriptors[i].CanResetValue(GetOwner(list, i)))
-            {
-                return false;
-            }                    
-        }
-                
-        return true;
+        
+        return !Descriptors.Where((t, i) => !t.CanResetValue(GetOwner(list, i))).Any();
     }
 
     /// <summary>
     /// Gets a value indicating whether value change notifications for this property may originate from outside the property descriptor.
     /// </summary>
     /// <value><c>true</c> if [supports change events]; otherwise, <c>false</c>.</value>
-    public override bool SupportsChangeEvents { get { return _descriptors.Any(p => p.SupportsChangeEvents); } }
+    public override bool SupportsChangeEvents { get { return Descriptors.Any(p => p.SupportsChangeEvents); } }
 
     /// <summary>
     /// Enables other objects to be notified when this property changes.
@@ -192,14 +183,14 @@ public class MultiObjectPropertyDescriptor : PropertyDescriptor, IEnumerable<Pro
     public override void AddValueChanged(object component, EventHandler handler)
     {
         var list = (object[])component;
-        for (var i = 0; i < _descriptors.Length; i++)
+        for (var i = 0; i < Descriptors.Length; i++)
         {
-            if (!_descriptors[i].SupportsChangeEvents)
+            if (!Descriptors[i].SupportsChangeEvents)
             {
                 continue;
             }
                     
-            _descriptors[i].AddValueChanged(GetOwner(list, i), handler);
+            Descriptors[i].AddValueChanged(GetOwner(list, i), handler);
         }
     }
 
@@ -211,14 +202,14 @@ public class MultiObjectPropertyDescriptor : PropertyDescriptor, IEnumerable<Pro
     public override void RemoveValueChanged(object component, EventHandler handler)
     {
         var list = (object[])component;
-        for (var i = 0; i < _descriptors.Length; i++)
+        for (var i = 0; i < Descriptors.Length; i++)
         {
-            if (!_descriptors[i].SupportsChangeEvents)
+            if (!Descriptors[i].SupportsChangeEvents)
             {
                 continue;
             }
 
-            _descriptors[i].RemoveValueChanged(GetOwner(list, i), handler);
+            Descriptors[i].RemoveValueChanged(GetOwner(list, i), handler);
         }
     }
 
@@ -226,7 +217,7 @@ public class MultiObjectPropertyDescriptor : PropertyDescriptor, IEnumerable<Pro
     /// When overridden in a derived class, gets the type of the component this property is bound to.
     /// </summary>
     /// <value>The type of the component.</value>
-    public override Type ComponentType => _descriptors[0].ComponentType;
+    public override Type ComponentType => Descriptors[0].ComponentType;
 
     /// <summary>
     /// When overridden in a derived class, gets the current value of the property on a component.
@@ -236,10 +227,12 @@ public class MultiObjectPropertyDescriptor : PropertyDescriptor, IEnumerable<Pro
     public override object GetValue(object component)
     {
         var list = (object[])component;
-        var res = GetValue(_descriptors[0], GetOwner(list, 0));
-        for (var i = 0; i < _descriptors.Length; i++)
+        var res = GetValue(Descriptors[0], GetOwner(list, 0));
+        
+        // ReSharper disable once LoopCanBeConvertedToQuery
+        for (var i = 0; i < Descriptors.Length; i++)
         {
-            var temp = GetValue(_descriptors[i], GetOwner(list, i));
+            var temp = GetValue(Descriptors[i], GetOwner(list, i));
             if (res != temp && res != null && !res.Equals(temp))
             {
                 return null;
@@ -257,7 +250,7 @@ public class MultiObjectPropertyDescriptor : PropertyDescriptor, IEnumerable<Pro
     {
         get
         {
-            return _descriptors.Any(t => t.IsReadOnly);
+            return Descriptors.Any(t => t.IsReadOnly);
         }
     }
 
@@ -265,19 +258,19 @@ public class MultiObjectPropertyDescriptor : PropertyDescriptor, IEnumerable<Pro
     /// When overridden in a derived class, gets the type of the property.
     /// </summary>
     /// <value>The type of the property.</value>
-    public override Type PropertyType => _descriptors[0].PropertyType;
+    public override Type PropertyType => Descriptors[0].PropertyType;
 
     /// <summary>
     /// Gets the type converter for this property.
     /// </summary>
     /// <value>The converter.</value>
-    public override TypeConverter Converter => _descriptors[0].Converter;
+    public override TypeConverter Converter => Descriptors[0].Converter;
 
     /// <summary>
     /// Gets the name that can be displayed in a window, such as a Properties window.
     /// </summary>
     /// <value>The display name.</value>
-    public override string DisplayName => _descriptors[0].DisplayName;
+    public override string DisplayName => Descriptors[0].DisplayName;
 
     /// <summary>
     /// When overridden in a derived class, resets the value for this property of the component to the default value.
@@ -286,9 +279,9 @@ public class MultiObjectPropertyDescriptor : PropertyDescriptor, IEnumerable<Pro
     public override void ResetValue(object component)
     {
         var list = (object[])component;
-        for (var i = 0; i < _descriptors.Length; i++)
+        for (var i = 0; i < Descriptors.Length; i++)
         {
-            _descriptors[i].ResetValue(GetOwner(list, i));
+            Descriptors[i].ResetValue(GetOwner(list, i));
         }                
     }
 
@@ -300,9 +293,9 @@ public class MultiObjectPropertyDescriptor : PropertyDescriptor, IEnumerable<Pro
     public object[] GetValues(object[] components)
     {
         var list = new object[components.Length];
-        for (var i = 0; i < _descriptors.Length; i++)
+        for (var i = 0; i < Descriptors.Length; i++)
         {
-            list[i] = GetValue(_descriptors[i], GetOwner(components, i));
+            list[i] = GetValue(Descriptors[i], GetOwner(components, i));
         }
                 
         return list;
@@ -316,7 +309,7 @@ public class MultiObjectPropertyDescriptor : PropertyDescriptor, IEnumerable<Pro
     public override void SetValue(object component, object value)
     {
         var list = (object[])component;
-        for (var i = 0; i < _descriptors.Length; i++)
+        for (var i = 0; i < Descriptors.Length; i++)
         {
             object clonedVal = null;
             if (value is ICloneable cloneable)
@@ -324,7 +317,7 @@ public class MultiObjectPropertyDescriptor : PropertyDescriptor, IEnumerable<Pro
                 clonedVal = cloneable.Clone();
             }
                     
-            _descriptors[i].SetValue(GetOwner(list, i), clonedVal ?? value);
+            Descriptors[i].SetValue(GetOwner(list, i), clonedVal ?? value);
         }
     }
 
@@ -382,7 +375,7 @@ public class MultiObjectPropertyDescriptor : PropertyDescriptor, IEnumerable<Pro
     public override bool ShouldSerializeValue(object component)
     {
         var list = (object[])component;
-        return _descriptors.Where((t, i) => t.ShouldSerializeValue(GetOwner(list, i))).Any();
+        return Descriptors.Where((t, i) => t.ShouldSerializeValue(GetOwner(list, i))).Any();
     }
 
     /// <summary>
@@ -390,7 +383,7 @@ public class MultiObjectPropertyDescriptor : PropertyDescriptor, IEnumerable<Pro
     /// </summary>
     /// <param name="index">The index.</param>
     /// <returns>PropertyDescriptor.</returns>
-    public PropertyDescriptor this[int index] => _descriptors[index];
+    public PropertyDescriptor this[int index] => Descriptors[index];
 
     /// <summary>
     /// Sets the values.
@@ -403,12 +396,12 @@ public class MultiObjectPropertyDescriptor : PropertyDescriptor, IEnumerable<Pro
         var valuesArray = (object[])values;
         var componentsArray = (object[])components;
 
-        if (valuesArray.Length != _descriptors.Length || valuesArray.Length != componentsArray.Length)
+        if (valuesArray.Length != Descriptors.Length || valuesArray.Length != componentsArray.Length)
             throw new ArgumentOutOfRangeException();
 
-        for (var i = 0; i < _descriptors.Length; i++)
+        for (var i = 0; i < Descriptors.Length; i++)
         {
-            _descriptors[i].SetValue(componentsArray[i], valuesArray[i]);
+            Descriptors[i].SetValue(componentsArray[i], valuesArray[i]);
         }                
     }
 
@@ -416,7 +409,7 @@ public class MultiObjectPropertyDescriptor : PropertyDescriptor, IEnumerable<Pro
     /// Gets the name of the category to which the member belongs, as specified in the <see cref="T:System.ComponentModel.CategoryAttribute" />.
     /// </summary>
     /// <value>The category.</value>
-    public override string Category => _descriptors[0].Category;
+    public override string Category => Descriptors[0].Category;
 
     #region IEnumerable
     /// <summary>
@@ -426,7 +419,7 @@ public class MultiObjectPropertyDescriptor : PropertyDescriptor, IEnumerable<Pro
     public IEnumerator<PropertyDescriptor> GetEnumerator()
     {
         // ReSharper disable once LoopCanBeConvertedToQuery
-        foreach (var descriptor in _descriptors)
+        foreach (var descriptor in Descriptors)
         {
             yield return descriptor;
         }

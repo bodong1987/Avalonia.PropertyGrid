@@ -64,22 +64,16 @@ public static class TypeExtensions
     /// <exception cref="System.ArgumentException">Input MemberInfo must be if type EventInfo, FieldInfo, MethodInfo, or PropertyInfo</exception>
     public static Type GetUnderlyingType(this MemberInfo memberInfo)
     {
-        switch (memberInfo.MemberType)
+        // ReSharper disable once SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault
+        return memberInfo.MemberType switch
         {
-            case MemberTypes.Event:
-                return ((EventInfo)memberInfo).EventHandlerType;
-            case MemberTypes.Field:
-                return ((FieldInfo)memberInfo).FieldType;
-            case MemberTypes.Method:
-                return ((MethodInfo)memberInfo).ReturnType;
-            case MemberTypes.Property:
-                return ((PropertyInfo)memberInfo).PropertyType;
-            default:
-                throw new ArgumentException
-                (
-                    "Input MemberInfo must be if type EventInfo, FieldInfo, MethodInfo, or PropertyInfo"
-                );
-        }
+            MemberTypes.Event => ((EventInfo)memberInfo).EventHandlerType,
+            MemberTypes.Field => ((FieldInfo)memberInfo).FieldType,
+            MemberTypes.Method => ((MethodInfo)memberInfo).ReturnType,
+            MemberTypes.Property => ((PropertyInfo)memberInfo).PropertyType,
+            _ => throw new ArgumentException(
+                "Input MemberInfo must be if type EventInfo, FieldInfo, MethodInfo, or PropertyInfo")
+        };
     }
 
     /// <summary>
@@ -91,18 +85,13 @@ public static class TypeExtensions
     /// <exception cref="System.ArgumentException">Input MemberInfo must be if type FieldInfo, or PropertyInfo</exception>
     public static object GetUnderlyingValue(this MemberInfo memberInfo, object target)
     {
-        switch (memberInfo.MemberType)
+        // ReSharper disable once SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault
+        return memberInfo.MemberType switch
         {
-            case MemberTypes.Field:
-                return ((FieldInfo)memberInfo).GetValue(target);
-            case MemberTypes.Property:
-                return ((PropertyInfo)memberInfo).GetValue(target, null);
-            default:
-                throw new ArgumentException
-                (
-                    "Input MemberInfo must be if type FieldInfo, or PropertyInfo"
-                );
-        }
+            MemberTypes.Field => ((FieldInfo)memberInfo).GetValue(target),
+            MemberTypes.Property => ((PropertyInfo)memberInfo).GetValue(target, null),
+            _ => throw new ArgumentException("Input MemberInfo must be if type FieldInfo, or PropertyInfo")
+        };
     }
 
     /// <summary>
@@ -288,20 +277,15 @@ public static class TypeExtensions
         if (type == null
             && typeName.Contains("`"))
         {
-            var match = Regex.Match(typeName, "(?<MainType>.+`(?<ParamCount>[0-9]+))\\[(?<Types>.*)\\]");
+            var match = Regex.Match(typeName, @"(?<MainType>.+`(?<ParamCount>[0-9]+))\[(?<Types>.*)\]");
 
             if (match.Success)
             {
                 var genericParameterCount = int.Parse(match.Groups["ParamCount"].Value);
                 var genericDef = match.Groups["Types"].Value;
                 var typeArgs = new List<string>(genericParameterCount);
-                foreach (Match typeArgMatch in Regex.Matches(genericDef, "\\[(?<Type>.*?)\\],?"))
-                {
-                    if (typeArgMatch.Success)
-                    {
-                        typeArgs.Add(typeArgMatch.Groups["Type"].Value.Trim());
-                    }
-                }
+                
+                typeArgs.AddRange(from Match typeArgMatch in Regex.Matches(genericDef, @"\[(?<Type>.*?)\],?") where typeArgMatch.Success select typeArgMatch.Groups["Type"].Value.Trim());
 
                 var genericArgumentTypes = new Type[typeArgs.Count];
                 for (var genTypeIndex = 0; genTypeIndex < typeArgs.Count; genTypeIndex++)
@@ -394,6 +378,8 @@ public static class TypeExtensions
     /// <returns><c>true</c> if [is numeric type] [the specified type]; otherwise, <c>false</c>.</returns>
     public static bool IsNumericType(this Type type)
     {
+        // ReSharper disable once ConvertSwitchStatementToSwitchExpression
+        // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
         switch (Type.GetTypeCode(type))
         {
             case TypeCode.Byte:
@@ -422,6 +408,7 @@ public static class TypeExtensions
     public static IEnumerable<T> GetUniqueFlags<T>(this T flags)
         where T : Enum
     {
+        // ReSharper disable once LoopCanBeConvertedToQuery
         foreach (Enum value in Enum.GetValues(flags.GetType()))
         {
             if (flags.HasFlag(value))
@@ -476,15 +463,7 @@ public static class TypeExtensions
     /// <returns><c>true</c> if the specified property descriptor is defined; otherwise, <c>false</c>.</returns>
     public static bool IsDefined<T>(this PropertyDescriptor propertyDescriptor) where T : Attribute
     {
-        foreach (var attr in propertyDescriptor.Attributes)
-        {
-            if (attr is T)
-            {
-                return true;
-            }
-        }
-
-        return false;
+        return propertyDescriptor.Attributes.OfType<T>().Any();
     }
 
     /// <summary>
@@ -592,12 +571,8 @@ public static class TypeExtensions
         {
             return false;
         }
-        else if (obj != null && value != null && obj.Equals(value))
-        {
-            return false;
-        }
 
-        return true;
+        return obj == null || value == null || !obj.Equals(value);
     }
 
     /// <summary>

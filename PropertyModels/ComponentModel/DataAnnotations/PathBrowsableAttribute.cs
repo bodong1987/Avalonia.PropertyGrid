@@ -26,7 +26,7 @@ public enum PathBrowsableType
     /// The multiple directories
     /// </summary>
     MultipleDirectories
-};
+}
 
 /// <summary>
 /// Class PathBrowsableAttribute.
@@ -71,7 +71,7 @@ public class PathBrowsableAttribute : Attribute
     /// Gets a value indicating whether this instance is file selection.
     /// </summary>
     /// <value><c>true</c> if this instance is file selection; otherwise, <c>false</c>.</value>
-    public bool IsFileSelection => Type == PathBrowsableType.File || Type == PathBrowsableType.MultipleFiles;
+    public bool IsFileSelection => Type is PathBrowsableType.File or PathBrowsableType.MultipleFiles;
 
     /// <summary>
     /// Gets a value indicating whether this instance is directory selection.

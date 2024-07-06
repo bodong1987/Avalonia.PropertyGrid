@@ -57,7 +57,7 @@ public class PropertyDescriptorBuilder
     /// </summary>
     /// <param name="target">The target.</param>
     /// <returns>PropertyDescriptorCollection.</returns>
-    private PropertyDescriptorCollection GetProperties(object target)
+    private static PropertyDescriptorCollection GetProperties(object target)
     {
         if(target is ICustomTypeDescriptor ctd)
         {
@@ -72,6 +72,7 @@ public class PropertyDescriptorBuilder
     /// </summary>
     /// <param name="targets">The targets.</param>
     /// <returns>PropertyDescriptorCollection.</returns>
+    // ReSharper disable once MemberCanBeMadeStatic.Local
     private PropertyDescriptorCollection GetMultipleProperties(IEnumerable targets)
     {
         var collections = (from object target in targets select GetProperties(target)).ToList();

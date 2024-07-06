@@ -61,7 +61,7 @@ public abstract class AbstractBaseCommand : IBaseCommand
     /// <summary>
     /// Initializes a new instance of the <see cref="AbstractBaseCommand"/> class.
     /// </summary>
-    public AbstractBaseCommand()
+    protected AbstractBaseCommand()
     {
         Name = GetType().Name;
     }
@@ -70,7 +70,7 @@ public abstract class AbstractBaseCommand : IBaseCommand
     /// Initializes a new instance of the <see cref="AbstractBaseCommand"/> class.
     /// </summary>
     /// <param name="name">The name.</param>
-    public AbstractBaseCommand(string name)
+    protected AbstractBaseCommand(string name)
     {
         Name = name;
     }
@@ -129,7 +129,7 @@ public class GenericCommand : AbstractBaseCommand
     /// <returns><c>true</c> if this instance can execute; otherwise, <c>false</c>.</returns>
     public override bool CanExecute()
     {
-        return _canExecuteFunc != null ? _canExecuteFunc() : base.CanExecute();
+        return _canExecuteFunc?.Invoke() ?? base.CanExecute();
     }
 
     /// <summary>
@@ -155,7 +155,7 @@ public abstract class AbstractCancelableCommand : AbstractBaseCommand, ICancelab
     /// Initializes a new instance of the <see cref="AbstractCancelableCommand"/> class.
     /// </summary>
     /// <param name="name">The name.</param>
-    public AbstractCancelableCommand(string name) :
+    protected AbstractCancelableCommand(string name) :
         base(name)
     {
     }
@@ -241,7 +241,7 @@ public class GenericCancelableCommand : AbstractCancelableCommand
     /// <returns><c>true</c> if this instance can cancel; otherwise, <c>false</c>.</returns>
     public override bool CanCancel()
     {
-        return _canCancelFunc != null ? _canCancelFunc() : base.CanCancel();
+        return _canCancelFunc?.Invoke() ?? base.CanCancel();
     }
 
     /// <summary>
@@ -250,6 +250,6 @@ public class GenericCancelableCommand : AbstractCancelableCommand
     /// <returns><c>true</c> if this instance can execute; otherwise, <c>false</c>.</returns>
     public override bool CanExecute()
     {
-        return _canExecuteFunc != null ? _canExecuteFunc() : base.CanExecute();
+        return _canExecuteFunc?.Invoke() ?? base.CanExecute();
     }
 }

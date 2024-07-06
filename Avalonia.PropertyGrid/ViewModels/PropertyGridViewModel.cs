@@ -309,7 +309,7 @@ namespace Avalonia.PropertyGrid.ViewModels
 
                     if (category.HasFlag(FilterCategory.PropertyCondition))
                     {
-                        if (property.GetCustomAttribute<AbstractVisiblityConditionAttribute>() is AbstractVisiblityConditionAttribute attr)
+                        if (property.GetCustomAttribute<AbstractVisibilityConditionAttribute>() is AbstractVisibilityConditionAttribute attr)
                         {
                             if (!attr.CheckVisibility(target))
                             {

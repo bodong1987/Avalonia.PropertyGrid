@@ -145,18 +145,7 @@ public class CancelableCommandRecorder
     /// Gets the undo command description.
     /// </summary>
     /// <value>The undo command description.</value>
-    public virtual string UndoCommandDescription
-    {
-        get
-        {
-            if (CommandQueue.Count > 0)
-            {
-                return CommandQueue.Last().Name;
-            }
-
-            return "No Command";
-        }
-    }
+    public virtual string UndoCommandDescription => CommandQueue.Count > 0 ? CommandQueue.Last().Name : "No Command";
 
     /// <summary>
     /// Redoes this instance.
@@ -189,18 +178,7 @@ public class CancelableCommandRecorder
     /// Gets the redo command description.
     /// </summary>
     /// <value>The redo command description.</value>
-    public virtual string RedoCommandDescription
-    {
-        get
-        {
-            if (CanceledQueue.Count > 0)
-            {
-                return CanceledQueue.Last().Name;
-            }
-
-            return "No Command";
-        }
-    }
+    public virtual string RedoCommandDescription => CanceledQueue.Count > 0 ? CanceledQueue.Last().Name : "No Command";
 
     /// <summary>
     /// Gets a value indicating whether this <see cref="CancelableCommandRecorder"/> is redo able.

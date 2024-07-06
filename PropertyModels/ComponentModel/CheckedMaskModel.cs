@@ -68,12 +68,7 @@ public class CheckedMaskModel : MiniReactiveObject, ICheckedMaskModel
     /// <returns><c>true</c> if the specified mask is checked; otherwise, <c>false</c>.</returns>
     public bool IsChecked(string mask)
     {
-        if(IsAllChecked)
-        {
-            return true;
-        }
-
-        return CheckedValues.Contains(mask);
+        return IsAllChecked || CheckedValues.Contains(mask);
     }
 
     /// <summary>

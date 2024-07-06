@@ -21,6 +21,7 @@ public static class ValidatorUtils
     /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
     public static bool TryValidateObject(object target, out string message)
     {
+        // ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
         foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(target))
         {
             if (property.IsDefined<ValidationAttribute>())

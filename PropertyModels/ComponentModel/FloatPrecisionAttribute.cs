@@ -28,7 +28,7 @@ public class FloatPrecisionAttribute : Attribute
     public FloatPrecisionAttribute(int precision = 2)
     {
             decimal v = 1;
-            for(int i=0; i < precision; ++i)
+            for(var i=0; i < precision; ++i)
             {
                 v *= (decimal)0.1;
             }

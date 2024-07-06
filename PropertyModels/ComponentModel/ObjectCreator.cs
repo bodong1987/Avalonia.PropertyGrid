@@ -31,11 +31,6 @@ public static class ObjectCreator
             return "";
         }
 
-        if (type.IsAbstract)
-        {
-            return null;
-        }
-
-        return Activator.CreateInstance(type, args);
+        return type.IsAbstract ? null : Activator.CreateInstance(type, args);
     }
 }
