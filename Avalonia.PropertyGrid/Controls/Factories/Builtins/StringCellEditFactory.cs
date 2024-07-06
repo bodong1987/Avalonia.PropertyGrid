@@ -54,7 +54,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             if (watermarkAttr != null)
             {
                 // control.Watermark = LocalizationService.Default[watermarkAttr.Watermask];
-                control.SetLocalizeBinding(TextBox.WatermarkProperty, watermarkAttr.Watermask);
+                control.SetLocalizeBinding(TextBox.WatermarkProperty, watermarkAttr.Watermark);
             }
 
             if (propertyDescriptor.GetCustomAttribute<PasswordPropertyTextAttribute>() is PasswordPropertyTextAttribute ppt && ppt.Password)

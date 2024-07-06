@@ -4,226 +4,225 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 
-namespace PropertyModels.ComponentModel
+namespace PropertyModels.ComponentModel;
+
+/// <summary>
+/// Delegate OnCommandCanceledEventHandler
+/// </summary>
+/// <param name="sender">The sender.</param>
+/// <param name="command">The in command.</param>
+public delegate void CommandCanceledEventHandler(object sender, ICancelableCommand command);
+/// <summary>
+/// Delegate OnCommandRedoEventHandler
+/// </summary>
+/// <param name="sender">The sender.</param>
+/// <param name="command">The in command.</param>
+public delegate void CommandRedoEventHandler(object sender, ICancelableCommand command);
+/// <summary>
+/// Delegate OnNewCommandAddedEventHandler
+/// </summary>
+/// <param name="sender">The sender.</param>
+/// <param name="command">The in command.</param>
+public delegate void NewCommandAddedEventHandler(object sender, ICancelableCommand command);
+
+
+/// <summary>
+/// Class CancelableCommandRecorder.
+/// </summary>
+public class CancelableCommandRecorder
 {
     /// <summary>
-    /// Delegate OnCommandCanceledEventHandler
+    /// Gets or sets the maximum command.
     /// </summary>
-    /// <param name="sender">The sender.</param>
-    /// <param name="command">The in command.</param>
-    public delegate void CommandCanceledEventHandler(object sender, ICancelableCommand command);
-    /// <summary>
-    /// Delegate OnCommandRedoEventHandler
-    /// </summary>
-    /// <param name="sender">The sender.</param>
-    /// <param name="command">The in command.</param>
-    public delegate void CommandRedoEventHandler(object sender, ICancelableCommand command);
-    /// <summary>
-    /// Delegate OnNewCommandAddedEventHandler
-    /// </summary>
-    /// <param name="sender">The sender.</param>
-    /// <param name="command">The in command.</param>
-    public delegate void NewCommandAddedEventHandler(object sender, ICancelableCommand command);
-
+    /// <value>The maximum command.</value>
+    public int MaxCommand { get; set; } = 20;
 
     /// <summary>
-    /// Class CancelableCommandRecorder.
+    /// The command queue
     /// </summary>
-    public class CancelableCommandRecorder
-    {
-        /// <summary>
-        /// Gets or sets the maximum command.
-        /// </summary>
-        /// <value>The maximum command.</value>
-        public int MaxCommand { get; set; } = 20;
-
-        /// <summary>
-        /// The command queue
-        /// </summary>
-        protected readonly List<ICancelableCommand> CommandQueue = [];
+    protected readonly List<ICancelableCommand> CommandQueue = [];
         
-        /// <summary>
-        /// The canceled queue
-        /// </summary>
-        protected readonly List<ICancelableCommand> CanceledQueue = [];
+    /// <summary>
+    /// The canceled queue
+    /// </summary>
+    protected readonly List<ICancelableCommand> CanceledQueue = [];
 
-        /// <summary>
-        /// Occurs when [on command canceled].
-        /// </summary>
-        [Browsable(true)]
-        public event CommandCanceledEventHandler OnCommandCanceled;
+    /// <summary>
+    /// Occurs when [on command canceled].
+    /// </summary>
+    [Browsable(true)]
+    public event CommandCanceledEventHandler OnCommandCanceled;
 
-        /// <summary>
-        /// Occurs when [on command redo].
-        /// </summary>
-        [Browsable(true)]
-        public event CommandRedoEventHandler OnCommandRedo;
+    /// <summary>
+    /// Occurs when [on command redo].
+    /// </summary>
+    [Browsable(true)]
+    public event CommandRedoEventHandler OnCommandRedo;
 
-        /// <summary>
-        /// Occurs when [on new command added].
-        /// </summary>
-        [Browsable(true)]
-        public event NewCommandAddedEventHandler OnNewCommandAdded;
+    /// <summary>
+    /// Occurs when [on new command added].
+    /// </summary>
+    [Browsable(true)]
+    public event NewCommandAddedEventHandler OnNewCommandAdded;
 
-        /// <summary>
-        /// Occurs when [on command cleared].
-        /// </summary>
-        [Browsable(true)]
-        public event EventHandler OnCommandCleared;
+    /// <summary>
+    /// Occurs when [on command cleared].
+    /// </summary>
+    [Browsable(true)]
+    public event EventHandler OnCommandCleared;
 
-        // just push
-        /// <summary>
-        /// Pushes the command.
-        /// </summary>
-        /// <param name="command">The in command.</param>
-        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
-        public virtual bool PushCommand(ICancelableCommand command)
+    // just push
+    /// <summary>
+    /// Pushes the command.
+    /// </summary>
+    /// <param name="command">The in command.</param>
+    /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
+    public virtual bool PushCommand(ICancelableCommand command)
+    {
+        Debug.Assert(command != null);
+
+        CommandQueue.Add(command);
+
+        // clear redo queue
+        CanceledQueue.Clear();
+
+        OnNewCommandAdded?.Invoke(this, command);
+
+        return true;
+    }
+
+    // push and execute
+    /// <summary>
+    /// Executes the command.
+    /// </summary>
+    /// <param name="command">The in command.</param>
+    /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
+    public virtual bool ExecuteCommand(ICancelableCommand command)
+    {
+        Debug.Assert(command != null);
+
+        if (!command.Execute())
         {
-            Debug.Assert(command != null);
-
-            CommandQueue.Add(command);
-
-            // clear redo queue
-            CanceledQueue.Clear();
-
-            OnNewCommandAdded?.Invoke(this, command);
-
-            return true;
+            return false;
         }
 
-        // push and execute
-        /// <summary>
-        /// Executes the command.
-        /// </summary>
-        /// <param name="command">The in command.</param>
-        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
-        public virtual bool ExecuteCommand(ICancelableCommand command)
-        {
-            Debug.Assert(command != null);
+        CommandQueue.Add(command);
 
-            if (!command.Execute())
+        // clear redo queue
+        CanceledQueue.Clear();
+
+        OnNewCommandAdded?.Invoke(this, command);
+
+        return true;
+    }
+
+    /// <summary>
+    /// Undoes this instance.
+    /// </summary>
+    /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
+    public virtual bool Undo()
+    {
+        if (!Undoable)
+        {
+            return false;
+        }
+
+        var command = CommandQueue.Last();
+
+        command.Cancel();
+
+        // remove last one...
+        CommandQueue.RemoveAt(CommandQueue.Count - 1);
+
+        CanceledQueue.Add(command);
+
+        OnCommandCanceled?.Invoke(this, command);
+
+        return true;
+    }
+
+    /// <summary>
+    /// Gets the undo command description.
+    /// </summary>
+    /// <value>The undo command description.</value>
+    public virtual string UndoCommandDescription
+    {
+        get
+        {
+            if (CommandQueue.Count > 0)
             {
-                return false;
+                return CommandQueue.Last().Name;
             }
 
-            CommandQueue.Add(command);
+            return "No Command";
+        }
+    }
 
-            // clear redo queue
-            CanceledQueue.Clear();
-
-            OnNewCommandAdded?.Invoke(this, command);
-
-            return true;
+    /// <summary>
+    /// Redoes this instance.
+    /// </summary>
+    /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
+    public virtual bool Redo()
+    {
+        if (!Redoable)
+        {
+            return false;
         }
 
-        /// <summary>
-        /// Undoes this instance.
-        /// </summary>
-        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
-        public virtual bool Undo()
+        var command = CanceledQueue.Last();
+
+        CanceledQueue.RemoveAt(CanceledQueue.Count - 1);
+
+        if (!command.Execute())
         {
-            if (!Undoable)
+            return false;
+        }
+
+        CommandQueue.Add(command);
+
+        OnCommandRedo?.Invoke(this, command);
+
+        return true;
+    }
+
+    /// <summary>
+    /// Gets the redo command description.
+    /// </summary>
+    /// <value>The redo command description.</value>
+    public virtual string RedoCommandDescription
+    {
+        get
+        {
+            if (CanceledQueue.Count > 0)
             {
-                return false;
+                return CanceledQueue.Last().Name;
             }
 
-            var command = CommandQueue.Last();
-
-            command.Cancel();
-
-            // remove last one...
-            CommandQueue.RemoveAt(CommandQueue.Count - 1);
-
-            CanceledQueue.Add(command);
-
-            OnCommandCanceled?.Invoke(this, command);
-
-            return true;
+            return "No Command";
         }
+    }
 
-        /// <summary>
-        /// Gets the undo command description.
-        /// </summary>
-        /// <value>The undo command description.</value>
-        public virtual string UndoCommandDescription
-        {
-            get
-            {
-                if (CommandQueue.Count > 0)
-                {
-                    return CommandQueue.Last().Name;
-                }
+    /// <summary>
+    /// Gets a value indicating whether this <see cref="CancelableCommandRecorder"/> is redo able.
+    /// </summary>
+    /// <value><c>true</c> if redo able; otherwise, <c>false</c>.</value>
+    // ReSharper disable once IdentifierTypo
+    public bool Redoable => CanceledQueue.Count > 0 && CanceledQueue.Last().CanExecute();
 
-                return "No Command";
-            }
-        }
+    /// <summary>
+    /// Gets a value indicating whether this <see cref="CancelableCommandRecorder"/> is undoable.
+    /// </summary>
+    /// <value><c>true</c> if undoable; otherwise, <c>false</c>.</value>
+    public bool Undoable => CommandQueue.Count > 0 && CommandQueue.Last().CanCancel();
 
-        /// <summary>
-        /// Redoes this instance.
-        /// </summary>
-        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
-        public virtual bool Redo()
-        {
-            if (!Redoable)
-            {
-                return false;
-            }
+    /// <summary>
+    /// Clears this instance.
+    /// </summary>
+    public virtual void Clear()
+    {
+        CommandQueue.Clear();
+        CanceledQueue.Clear();
 
-            var command = CanceledQueue.Last();
-
-            CanceledQueue.RemoveAt(CanceledQueue.Count - 1);
-
-            if (!command.Execute())
-            {
-                return false;
-            }
-
-            CommandQueue.Add(command);
-
-            OnCommandRedo?.Invoke(this, command);
-
-            return true;
-        }
-
-        /// <summary>
-        /// Gets the redo command description.
-        /// </summary>
-        /// <value>The redo command description.</value>
-        public virtual string RedoCommandDescription
-        {
-            get
-            {
-                if (CanceledQueue.Count > 0)
-                {
-                    return CanceledQueue.Last().Name;
-                }
-
-                return "No Command";
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether this <see cref="CancelableCommandRecorder"/> is redo able.
-        /// </summary>
-        /// <value><c>true</c> if redo able; otherwise, <c>false</c>.</value>
-        // ReSharper disable once IdentifierTypo
-        public bool Redoable => CanceledQueue.Count > 0 && CanceledQueue.Last().CanExecute();
-
-        /// <summary>
-        /// Gets a value indicating whether this <see cref="CancelableCommandRecorder"/> is undoable.
-        /// </summary>
-        /// <value><c>true</c> if undoable; otherwise, <c>false</c>.</value>
-        public bool Undoable => CommandQueue.Count > 0 && CommandQueue.Last().CanCancel();
-
-        /// <summary>
-        /// Clears this instance.
-        /// </summary>
-        public virtual void Clear()
-        {
-            CommandQueue.Clear();
-            CanceledQueue.Clear();
-
-            OnCommandCleared?.Invoke(this, EventArgs.Empty);
-        }
+        OnCommandCleared?.Invoke(this, EventArgs.Empty);
     }
 }

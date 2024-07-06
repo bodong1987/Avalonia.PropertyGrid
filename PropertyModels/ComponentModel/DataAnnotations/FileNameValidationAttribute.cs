@@ -1,45 +1,44 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 
-namespace PropertyModels.ComponentModel.DataAnnotations
+namespace PropertyModels.ComponentModel.DataAnnotations;
+
+/// <summary>
+/// Class FileNameValidationAttribute.
+/// Implements the <see cref="ValidationAttribute" />
+/// </summary>
+/// <seealso cref="ValidationAttribute" />
+public class FileNameValidationAttribute : ValidationAttribute
 {
     /// <summary>
-    /// Class FileNameValidationAttribute.
-    /// Implements the <see cref="ValidationAttribute" />
+    /// Validates the specified value with respect to the current validation attribute.
     /// </summary>
-    /// <seealso cref="ValidationAttribute" />
-    public class FileNameValidationAttribute : ValidationAttribute
+    /// <param name="value">The value to validate.</param>
+    /// <param name="validationContext">The context information about the validation operation.</param>
+    /// <returns>An instance of the <see cref="T:System.ComponentModel.DataAnnotations.ValidationResult" /> class.</returns>
+    protected override ValidationResult IsValid(object value, ValidationContext validationContext)
     {
-        /// <summary>
-        /// Validates the specified value with respect to the current validation attribute.
-        /// </summary>
-        /// <param name="value">The value to validate.</param>
-        /// <param name="validationContext">The context information about the validation operation.</param>
-        /// <returns>An instance of the <see cref="T:System.ComponentModel.DataAnnotations.ValidationResult" /> class.</returns>
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        if (value is string name)
         {
-            if (value is string name)
+            if (IsValidFileName(name))
             {
-                if (IsValidFileName(name))
-                {
-                    return ValidationResult.Success;
-                }
-
-                return new ValidationResult($"[{validationContext.DisplayName}]{name} is not an valid file name.");
+                return ValidationResult.Success;
             }
 
-            return new ValidationResult($"{validationContext.DisplayName} is not an valid file name.");
+            return new ValidationResult($"[{validationContext.DisplayName}]{name} is not an valid file name.");
         }
 
-        /// <summary>
-        /// Determines whether [is valid file name] [the specified filename].
-        /// </summary>
-        /// <param name="filename">The filename.</param>
-        /// <returns><c>true</c> if [is valid file name] [the specified filename]; otherwise, <c>false</c>.</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsValidFileName(string filename)
-        {
-            return !(filename.IndexOfAny(System.IO.Path.GetInvalidFileNameChars()) >= 0);
-        }
+        return new ValidationResult($"{validationContext.DisplayName} is not an valid file name.");
+    }
+
+    /// <summary>
+    /// Determines whether [is valid file name] [the specified filename].
+    /// </summary>
+    /// <param name="filename">The filename.</param>
+    /// <returns><c>true</c> if [is valid file name] [the specified filename]; otherwise, <c>false</c>.</returns>
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool IsValidFileName(string filename)
+    {
+        return !(filename.IndexOfAny(System.IO.Path.GetInvalidFileNameChars()) >= 0);
     }
 }
