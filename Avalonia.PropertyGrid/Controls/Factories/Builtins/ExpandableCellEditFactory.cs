@@ -3,12 +3,9 @@ using Avalonia.Media;
 using PropertyModels.ComponentModel;
 using PropertyModels.Extensions;
 using Avalonia.PropertyGrid.ViewModels;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection;
-using System.Text;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
@@ -77,17 +74,19 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return null;
             }
 
-            Border border = new Border();
-            border.BorderBrush = Brushes.Gray;
-            border.BorderThickness = new Thickness(0.5);
-            border.CornerRadius = new CornerRadius(0, 0, 5, 5);
-            border.Margin = new Thickness(0);
-                        
-            PropertyGrid propertyGrid = context.Root.ClonePropertyGrid() as PropertyGrid;
-            propertyGrid.RootPropertyGrid = context.Root;
+            var border = new Border
+            {
+                BorderBrush = Brushes.Gray,
+                BorderThickness = new Thickness(0.5),
+                CornerRadius = new CornerRadius(0, 0, 5, 5),
+                Margin = new Thickness(0)
+            };
+
+            var propertyGrid = context.Root.ClonePropertyGrid() as PropertyGrid;
+            propertyGrid!.RootPropertyGrid = context.Root;
 
             Debug.Assert(propertyGrid.RootPropertyGrid != null);
-            Debug.Assert(propertyGrid.RootPropertyGrid != propertyGrid);
+            Debug.Assert(!Equals(propertyGrid.RootPropertyGrid, propertyGrid));
 
             propertyGrid.ShowStyle = context.Root.ShowStyle;
             propertyGrid.AllowFilter = false;
@@ -125,7 +124,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return false;
             }
 
-            if(control is Border border && border.Child is PropertyGrid pg)
+            if(control is Border { Child: PropertyGrid pg })
             {
                 var value = propertyDescriptor.GetValue(target);
 
@@ -151,7 +150,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return null;
             }
 
-            if (context.CellEdit is Border border && border.Child is PropertyGrid pg)
+            if (context.CellEdit is Border { Child: PropertyGrid pg })
             {
                 var category = FilterCategory.Default;
                 category &= ~FilterCategory.Category;

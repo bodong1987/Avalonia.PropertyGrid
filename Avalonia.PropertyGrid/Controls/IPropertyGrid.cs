@@ -2,9 +2,7 @@
 using PropertyModels.ComponentModel;
 using Avalonia.PropertyGrid.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 
 namespace Avalonia.PropertyGrid.Controls
 {
@@ -95,10 +93,10 @@ namespace Avalonia.PropertyGrid.Controls
         void Clear();
 
         /// <summary>
-        /// Determines whether the specified target is exists.
+        /// Determines whether the specified target exists.
         /// </summary>
         /// <param name="target">The target.</param>
-        /// <returns><c>true</c> if the specified target is exists; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the specified target exists; otherwise, <c>false</c>.</returns>
         bool IsExists(object target);
 
         /// <summary>

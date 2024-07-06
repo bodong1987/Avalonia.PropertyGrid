@@ -1,9 +1,6 @@
 ﻿using Avalonia.Controls;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Text;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
@@ -32,8 +29,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             return type == typeof(Color) ||
                 type == typeof(Avalonia.Media.Color) ||
-                type == typeof(Avalonia.Media.HslColor) ||
-                type == typeof(Avalonia.Media.HsvColor);
+                type == typeof(Media.HslColor) ||
+                type == typeof(Media.HsvColor);
         }
 
         /// <summary>
@@ -44,7 +41,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         public override Control HandleNewProperty(PropertyCellContext context)
         {
             var propertyDescriptor = context.Property;
-            var target = context.Target;
+            // var target = context.Target;
             
             if (!IsAvailableColorType(propertyDescriptor))
             {
@@ -53,28 +50,28 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             var type = propertyDescriptor.PropertyType;
 
-            ColorPicker colorPicker = new ColorPicker()
+            var colorPicker = new ColorPicker()
             {
                 Palette = new MaterialHalfColorPalette(),
                 HorizontalAlignment = Layout.HorizontalAlignment.Left
             };
 
-            colorPicker.ColorChanged += (s, e) =>
+            colorPicker.ColorChanged += (_, e) =>
             {
                 if(type == typeof(Color))
                 {
-                    Color c = Color.FromArgb(e.NewColor.A, e.NewColor.R, e.NewColor.G, e.NewColor.B);
+                    var c = Color.FromArgb(e.NewColor.A, e.NewColor.R, e.NewColor.G, e.NewColor.B);
                     SetAndRaise(context, colorPicker, c);
                 }
                 else if(type == typeof(Avalonia.Media.Color))
                 {
                     SetAndRaise(context, colorPicker, e.NewColor);
                 }
-                else if(type == typeof(Avalonia.Media.HslColor))
+                else if(type == typeof(Media.HslColor))
                 {
                     SetAndRaise(context, colorPicker, e.NewColor.ToHsl());
                 }
-                else if(type == typeof(Avalonia.Media.HsvColor))
+                else if(type == typeof(Media.HsvColor))
                 {
                     SetAndRaise(context, colorPicker, e.NewColor.ToHsv());
                 }
@@ -107,24 +104,24 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             {
                 if (type == typeof(Color))
                 {
-                    Color color = (Color)propertyDescriptor.GetValue(target);
+                    var color = (Color)propertyDescriptor.GetValue(target)!;
                     colorPicker.Color = Media.Color.FromArgb(color.A, color.R, color.G, color.B);
                 }
                 else if (type == typeof(Avalonia.Media.Color))
                 {
-                    Media.Color color = (Media.Color)propertyDescriptor.GetValue(target);
+                    var color = (Media.Color)propertyDescriptor.GetValue(target)!;
 
                     colorPicker.Color = color;
                 }
-                else if (type == typeof(Avalonia.Media.HslColor))
+                else if (type == typeof(Media.HslColor))
                 {
-                    Media.HslColor color = (Media.HslColor)propertyDescriptor.GetValue(target);
+                    var color = (Media.HslColor)propertyDescriptor.GetValue(target)!;
 
                     colorPicker.Color = color.ToRgb();
                 }
-                else if (type == typeof(Avalonia.Media.HsvColor))
+                else if (type == typeof(Media.HsvColor))
                 {
-                    Media.HsvColor color = (Media.HsvColor)propertyDescriptor.GetValue(target);
+                    var color = (Media.HsvColor)propertyDescriptor.GetValue(target)!;
 
                     colorPicker.Color = color.ToRgb();
                 }

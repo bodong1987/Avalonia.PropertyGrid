@@ -2,11 +2,7 @@
 using Avalonia.Controls.Templates;
 using Avalonia.Data;
 using Avalonia.Media;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
@@ -39,18 +35,20 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return null;
             }
 
-            ComboBox control = new ComboBox();
-            control.ItemsSource = FontManager.Current.SystemFonts.ToArray();
-            control.HorizontalAlignment = Layout.HorizontalAlignment.Stretch;
-            control.ItemTemplate = new FuncDataTemplate<FontFamily>((value, namescope) =>            
-                new TextBlock
-                {
-                    [!TextBlock.TextProperty] = new Binding("Name"),
-                    [!TextBlock.FontFamilyProperty] = new Binding()
-                }
-            );
+            var control = new ComboBox
+            {
+                ItemsSource = FontManager.Current.SystemFonts.ToArray(),
+                HorizontalAlignment = Layout.HorizontalAlignment.Stretch,
+                ItemTemplate = new FuncDataTemplate<FontFamily>((_, _) =>            
+                    new TextBlock
+                    {
+                        [!TextBlock.TextProperty] = new Binding("Name"),
+                        [!TextBlock.FontFamilyProperty] = new Binding()
+                    }
+                )
+            };
 
-            control.SelectionChanged += (s, e) =>
+            control.SelectionChanged += (_, _) =>
             {
                 var item = control.SelectedItem;
 
@@ -86,7 +84,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (control is ComboBox cb)
             {
-                FontFamily value = propertyDescriptor.GetValue(target) as FontFamily;
+                var value = propertyDescriptor.GetValue(target) as FontFamily;
                 cb.SelectedItem = value;
                 return true;
             }

@@ -16,7 +16,7 @@
 						<TextBox x:Name="TextEdit"
 								 Grid.Column="0"
 								 VerticalContentAlignment="Center"
-								 FontFamily="{x:Static lu:FontUtils.DefaultFontFamily}"
+								 FontFamily="Microsoft YaHei,Simsun,苹方-简,宋体-简"
 								 Text="{TemplateBinding Text, Mode=TwoWay}"
                                  Watermark="{TemplateBinding Watermark, Mode=TwoWay}"
 						   ></TextBox>

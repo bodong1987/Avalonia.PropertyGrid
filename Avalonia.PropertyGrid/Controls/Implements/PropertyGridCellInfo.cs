@@ -2,21 +2,20 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 
 namespace Avalonia.PropertyGrid.Controls.Implements
 {
     internal class PropertyGridCellInfoContainer : IPropertyGridCellInfoContainer
     {
-        readonly List<IPropertyGridCellInfo> _Children = new List<IPropertyGridCellInfo>();
+        private readonly List<IPropertyGridCellInfo> _children = new();
 
-        public IPropertyGridCellInfo[] Children => _Children.ToArray();
+        public IPropertyGridCellInfo[] Children => _children.ToArray();
 
         public virtual void Add(IPropertyGridCellInfo cellInfo)
         {
-            if(!_Children.Contains(cellInfo))
+            if(!_children.Contains(cellInfo))
             {
-                _Children.Add(cellInfo);
+                _children.Add(cellInfo);
 
                 cellInfo.AddPropertyChangedObserver();
             }            
@@ -24,22 +23,22 @@ namespace Avalonia.PropertyGrid.Controls.Implements
 
         public virtual void Clear()
         {
-            foreach(var child in _Children)
+            foreach(var child in _children)
             {
                 child.Clear();
             }
 
-            _Children.Clear();
+            _children.Clear();
         }
 
         public virtual void Remove(IPropertyGridCellInfo cellInfo)
         {
             cellInfo.RemovePropertyChangedObserver();
 
-            _Children.Remove(cellInfo);
+            _children.Remove(cellInfo);
         }
 
-        public int Count => _Children.Count;
+        public int Count => _children.Count;
     }
 
     internal class PropertyGridCellInfo : PropertyGridCellInfoContainer, IPropertyGridCellInfo
@@ -76,16 +75,13 @@ namespace Avalonia.PropertyGrid.Controls.Implements
             return ReferencePath;
         }
 
-        bool _IsVisible = true;
+        private bool _isVisible = true;
         public bool IsVisible
         {
-            get
-            {
-                return _IsVisible;
-            }
+            get => _isVisible;
             set
             {
-                if (_IsVisible != value)
+                if (_isVisible != value)
                 {
                     if(NameControl != null)
                     {
@@ -102,12 +98,13 @@ namespace Avalonia.PropertyGrid.Controls.Implements
                         Container.IsVisible = value;
                     }
 
-                    _IsVisible = value;
+                    _isVisible = value;
 
                 }
             }
         }
 
+        // ReSharper disable once ConvertToPrimaryConstructor
         public PropertyGridCellInfo(PropertyCellContext context)
         {
             Context = context;
@@ -123,30 +120,38 @@ namespace Avalonia.PropertyGrid.Controls.Implements
 
         public void AddPropertyChangedObserver()
         {
-            if (Target is System.ComponentModel.INotifyPropertyChanged npc2)
+            switch (Target)
             {
-                npc2.PropertyChanged += OnPropertyChanged;
-            }
-            else if (Target is IEnumerable<System.ComponentModel.INotifyPropertyChanged> npcs2)
-            {
-                foreach (var n in npcs2)
+                case INotifyPropertyChanged npc2:
+                    npc2.PropertyChanged += OnPropertyChanged;
+                    break;
+                case IEnumerable<INotifyPropertyChanged> propertyChangedTargetList:
                 {
-                    n.PropertyChanged += OnPropertyChanged;
+                    foreach (var n in propertyChangedTargetList)
+                    {
+                        n.PropertyChanged += OnPropertyChanged;
+                    }
+
+                    break;
                 }
             }
         }
 
         public void RemovePropertyChangedObserver()
         {
-            if (Target is System.ComponentModel.INotifyPropertyChanged npc)
+            switch (Target)
             {
-                npc.PropertyChanged -= OnPropertyChanged;
-            }
-            else if (Target is IEnumerable<System.ComponentModel.INotifyPropertyChanged> npcs)
-            {
-                foreach (var n in npcs)
+                case INotifyPropertyChanged npc:
+                    npc.PropertyChanged -= OnPropertyChanged;
+                    break;
+                case IEnumerable<INotifyPropertyChanged> propertyChangedTargetList:
                 {
-                    n.PropertyChanged -= OnPropertyChanged;
+                    foreach (var n in propertyChangedTargetList)
+                    {
+                        n.PropertyChanged -= OnPropertyChanged;
+                    }
+
+                    break;
                 }
             }
         }

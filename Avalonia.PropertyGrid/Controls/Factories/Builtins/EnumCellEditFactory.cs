@@ -1,12 +1,8 @@
 ﻿using Avalonia.Controls;
 using PropertyModels.Extensions;
 using System;
-using System.Collections.Generic;
-using System.Collections;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Avalonia.PropertyGrid.Utils;
 using PropertyModels.ComponentModel;
 
@@ -41,17 +37,20 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return null;
             }
 
-            bool IsFlags = propertyDescriptor.PropertyType.IsDefined<FlagsAttribute>();
+            var isFlags = propertyDescriptor.PropertyType.IsDefined<FlagsAttribute>();
             //Enum value = propertyDescriptor.GetValue(target) as Enum;
 
-            if (IsFlags)
+            if (isFlags)
             {
-                var control = new CheckedListEdit();
-                control.Items = EnumUtils.GetEnumValues(propertyDescriptor.PropertyType);
-
-                control.SelectedItemsChanged += (s, e) =>
+                var control = new CheckedListEdit
                 {
-                    Enum selectedValue = ConvertSelectedItemToEnum(propertyDescriptor.PropertyType, control.SelectedItems);
+                    // ReSharper disable once CoVariantArrayConversion
+                    Items = EnumUtils.GetEnumValues(propertyDescriptor.PropertyType)
+                };
+
+                control.SelectedItemsChanged += (_, _) =>
+                {
+                    var selectedValue = ConvertSelectedItemToEnum(propertyDescriptor.PropertyType, control.SelectedItems);
 
                     if ((propertyDescriptor.GetValue(target) as Enum)?.ToString() != selectedValue?.ToString())
                     {
@@ -63,20 +62,21 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             }
             else
             {
-                var control = new ComboBox();
+                var control = new ComboBox
+                {
+                    ItemsSource = EnumUtils.GetEnumValues(propertyDescriptor.PropertyType),
+                    HorizontalAlignment = Layout.HorizontalAlignment.Stretch
+                };
 
-                control.ItemsSource = EnumUtils.GetEnumValues(propertyDescriptor.PropertyType);
-                control.HorizontalAlignment = Layout.HorizontalAlignment.Stretch;
-
-                control.SelectionChanged += (s, e) =>
+                control.SelectionChanged += (_, _) =>
                 {
                     var item = control.SelectedItem;
 
                     if (item != null)
                     {
-                        var v = (item as EnumValueWrapper).Value;
+                        var v = (item as EnumValueWrapper)?.Value;
 
-                        if (v != propertyDescriptor.GetValue(target) as Enum)
+                        if (!Equals(v, propertyDescriptor.GetValue(target) as Enum))
                         {
                             SetAndRaise(context, control, v);
                         }
@@ -107,8 +107,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (control is CheckedListEdit c)
             {
-                Enum value = propertyDescriptor.GetValue(target) as Enum;
-                Enum selectedValue = ConvertSelectedItemToEnum(propertyDescriptor.PropertyType, c.SelectedItems);
+                var value = propertyDescriptor.GetValue(target) as Enum;
+                var selectedValue = ConvertSelectedItemToEnum(propertyDescriptor.PropertyType, c.SelectedItems);
 
                 if (value?.ToString() != selectedValue?.ToString())
                 {
@@ -117,7 +117,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                     try
                     {
-                        c.SelectedItems = value.GetUniqueFlags().Select(x => new EnumValueWrapper(x as Enum)).ToArray();
+                        // ReSharper disable once CoVariantArrayConversion
+                        c.SelectedItems = value.GetUniqueFlags().Select(x => new EnumValueWrapper(x)).ToArray();
                     }
                     finally
                     {
@@ -127,9 +128,10 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                 return true;
             }
-            else if (control is ComboBox cb)
+
+            if (control is ComboBox cb)
             {
-                Enum value = propertyDescriptor.GetValue(target) as Enum;
+                var value = propertyDescriptor.GetValue(target) as Enum;
                 cb.SelectedItem = new EnumValueWrapper(value);
                 return true;
             }
@@ -155,13 +157,13 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             }
             else
             {
-                StringBuilder sb = new StringBuilder();
-                sb.Append((items[0] as EnumValueWrapper)?.Value?.ToString());
+                var sb = new StringBuilder();
+                sb.Append((items[0] as EnumValueWrapper)?.Value);
 
                 foreach (var i in items.Skip(1))
                 {
                     sb.Append(", ");
-                    sb.Append((i as EnumValueWrapper)?.Value?.ToString());
+                    sb.Append((i as EnumValueWrapper)?.Value);
                 }
 
                 return (Enum)Enum.Parse(enumType, sb.ToString());

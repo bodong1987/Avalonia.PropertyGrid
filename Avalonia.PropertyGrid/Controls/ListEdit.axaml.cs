@@ -1,19 +1,15 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using System;
+﻿using System;
 using Avalonia.Controls.Primitives;
 using PropertyModels.ComponentModel;
 using System.ComponentModel;
 using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics;
-using System.Xml.Linq;
 using PropertyModels.ComponentModel.DataAnnotations;
 using System.Windows.Input;
 using Avalonia.Interactivity;
 using Avalonia.PropertyGrid.Services;
 using System.Collections;
-using Avalonia.Platform;
 
 namespace Avalonia.PropertyGrid.Controls
 {
@@ -38,15 +34,15 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The data list
         /// </summary>
-        IList _DataList;
+        private IList _dataList;
         /// <summary>
         /// Gets or sets the data list.
         /// </summary>
         /// <value>The data list.</value>
         public IList DataList
         {
-            get => _DataList;
-            set => SetAndRaise(DataListProperty, ref _DataList, value);
+            get => _dataList;
+            set => SetAndRaise(DataListProperty, ref _dataList, value);
         }
         #endregion
 
@@ -64,15 +60,15 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The new element command
         /// </summary>
-        ICommand _NewElementCommand;
+        private ICommand _newElementCommand;
         /// <summary>
         /// Creates new elementcommand.
         /// </summary>
         /// <value>The new element command.</value>
         public ICommand NewElementCommand
         {
-            get => _NewElementCommand;
-            set => SetAndRaise(NewElementCommandProperty, ref _NewElementCommand, value);
+            get => _newElementCommand;
+            set => SetAndRaise(NewElementCommandProperty, ref _newElementCommand, value);
         }
 
         /// <summary>
@@ -88,15 +84,15 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The clear elements command
         /// </summary>
-        ICommand _ClearElementsCommand;
+        private ICommand _clearElementsCommand;
         /// <summary>
         /// Gets or sets the clear elements command.
         /// </summary>
         /// <value>The clear elements command.</value>
         public ICommand ClearElementsCommand
         {
-            get => _ClearElementsCommand;
-            set => SetAndRaise(ClearElementsCommandProperty, ref _ClearElementsCommand, value);
+            get => _clearElementsCommand;
+            set => SetAndRaise(ClearElementsCommandProperty, ref _clearElementsCommand, value);
         }
         #endregion
 
@@ -240,7 +236,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="parameter">The parameter.</param>
         private void HandleNewElement(object parameter)
         {
-            var et = new ListRoutedEventArgs(NewElementEvent, _DataList, -1);
+            var et = new ListRoutedEventArgs(NewElementEvent, _dataList, -1);
             RaiseEvent(et);
         }
 
@@ -250,7 +246,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="parameter">The parameter.</param>
         private void HandleClearElements(object parameter)
         {
-            var et = new ListRoutedEventArgs(ClearElementsEvent, _DataList, -1);
+            var et = new ListRoutedEventArgs(ClearElementsEvent, _dataList, -1);
             RaiseEvent(et);
         }
 
@@ -262,7 +258,7 @@ namespace Avalonia.PropertyGrid.Controls
         {
             if(parameter is ListElementDataDesc desc)
             {
-                ListRoutedEventArgs et = new ListRoutedEventArgs(InsertElementEvent, desc.List, desc.Property.Index);
+                var et = new ListRoutedEventArgs(InsertElementEvent, desc.List, desc.Property.Index);
                 RaiseEvent(et);
             }            
         }
@@ -275,7 +271,7 @@ namespace Avalonia.PropertyGrid.Controls
         {
             if (parameter is ListElementDataDesc desc)
             {
-                ListRoutedEventArgs et = new ListRoutedEventArgs(RemoveElementsEvent, desc.List, desc.Property.Index);
+                var et = new ListRoutedEventArgs(RemoveElementsEvent, desc.List, desc.Property.Index);
                 RaiseEvent(et);
             }                
         }
@@ -360,34 +356,34 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The list
         /// </summary>
-        IList _List;
+        private IList _list;
         /// <summary>
         /// Gets or sets the list.
         /// </summary>
         /// <value>The list.</value>
         public IList List
         {
-            get => _List;
-            set => this.RaiseAndSetIfChanged(ref _List, value);
+            get => _list;
+            set => this.RaiseAndSetIfChanged(ref _list, value);
         }
 
         /// <summary>
         /// The elements
         /// </summary>
-        readonly List<ListElementDataDesc> _Elements = new List<ListElementDataDesc>();
+        private readonly List<ListElementDataDesc> _elements = new();
 
         /// <summary>
         /// Gets the elements.
         /// </summary>
         /// <value>The elements.</value>
-        public ListElementDataDesc[] Elements => _Elements.ToArray();
+        public ListElementDataDesc[] Elements => _elements.ToArray();
 
         /// <summary>
         /// Gets the title.
         /// </summary>
         /// <value>The title.</value>
         [DependsOnProperty(nameof(List))]
-        public string Title => string.Format(LocalizationService.Default["{0} Elements"], _List != null ? _List.Count : 0);
+        public string Title => string.Format(LocalizationService.Default["{0} Elements"], _list != null ? _list.Count : 0);
 
         /// <summary>
         /// Gets the insert command.
@@ -403,15 +399,15 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The is editable
         /// </summary>
-        bool _IsEditable = true;
+        private bool _isEditable = true;
         /// <summary>
         /// Gets or sets a value indicating whether this instance is editable.
         /// </summary>
         /// <value><c>true</c> if this instance is editable; otherwise, <c>false</c>.</value>
         public bool IsEditable
         {
-            get => _IsEditable;
-            set => this.RaiseAndSetIfChanged(ref _IsEditable, value);
+            get => _isEditable;
+            set => this.RaiseAndSetIfChanged(ref _isEditable, value);
         }
 
         /// <summary>
@@ -450,7 +446,7 @@ namespace Avalonia.PropertyGrid.Controls
             {
                 Debug.Assert(Collection != null);
 
-                _Elements.Clear();
+                _elements.Clear();
 
                 if(List != null)
                 {
@@ -458,7 +454,7 @@ namespace Avalonia.PropertyGrid.Controls
                     foreach (var index in Enumerable.Range(0, list.Count))
                     {
                         var pd = new ListElementPropertyDescriptor(index.ToString(), index, list[index]?.GetType() ?? list.GetType().GetGenericArguments()[0]);
-                        ListElementDataDesc desc = new ListElementDataDesc(
+                        var desc = new ListElementDataDesc(
                             this, 
                             list, 
                             pd, 
@@ -467,7 +463,7 @@ namespace Avalonia.PropertyGrid.Controls
                             RemoveCommand
                             );
 
-                        _Elements.Add(desc);
+                        _elements.Add(desc);
                     }
                 }
 
@@ -549,9 +545,9 @@ namespace Avalonia.PropertyGrid.Controls
             )
         {
             Model = model;
-            this.List = list;
-            this.Property = property;
-            this.Context = context;
+            List = list;
+            Property = property;
+            Context = context;
 
             InsertCommand = ReactiveCommand.Create(() => insertCommand.Execute(this));
             RemoveCommand = ReactiveCommand.Create(() => removeCommand.Execute(this));

@@ -1,8 +1,5 @@
 ﻿using Avalonia.Controls;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
@@ -28,7 +25,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         public override Control HandleNewProperty(PropertyCellContext context)
         {
             var propertyDescriptor = context.Property;
-            var target = context.Target;
+            //var target = context.Target;
             
             var propertyType = propertyDescriptor.PropertyType;
 
@@ -37,16 +34,18 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return null;
             }
 
-            TimePicker control = new TimePicker();
-            control.ClockIdentifier = "24HourClock";
+            var control = new TimePicker
+            {
+                ClockIdentifier = "24HourClock"
+            };
 
-            control.SelectedTimeChanged += (s, e) =>
+            control.SelectedTimeChanged += (_, _) =>
             {
                 if (propertyType == typeof(TimeSpan?))
                 {
                     SetAndRaise(context, control, control.SelectedTime);
                 }
-                else if (propertyType == typeof(TimeSpan) && control.SelectedTime != null && control.SelectedTime.HasValue)
+                else if (propertyType == typeof(TimeSpan) && control.SelectedTime is not null)
                 {
                     SetAndRaise(context, control, control.SelectedTime.Value);
                 }

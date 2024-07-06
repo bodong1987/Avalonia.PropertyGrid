@@ -1,9 +1,5 @@
 ﻿using Avalonia.Controls;
 using PropertyModels.ComponentModel;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
@@ -29,21 +25,23 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         public override Control HandleNewProperty(PropertyCellContext context)
         {
             var propertyDescriptor = context.Property;
-            var target = context.Target;
+            // var target = context.Target;
 
             if (propertyDescriptor is MultiObjectPropertyDescriptor)
             {
                 return null;
             }
 
-            if (propertyDescriptor.PropertyType != typeof(Avalonia.Media.IImage))
+            if (propertyDescriptor.PropertyType != typeof(Media.IImage))
             {
                 return null;
             }
 
-            Image control = new Image();
-            control.VerticalAlignment = Layout.VerticalAlignment.Center;
-            control.HorizontalAlignment = Layout.HorizontalAlignment.Center;            
+            var control = new Image
+            {
+                VerticalAlignment = Layout.VerticalAlignment.Center,
+                HorizontalAlignment = Layout.HorizontalAlignment.Center
+            };
 
             return control;
         }
@@ -59,7 +57,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             var target = context.Target;
             var control = context.CellEdit;
 
-            if (propertyDescriptor.PropertyType != typeof(Avalonia.Media.IImage))
+            if (propertyDescriptor.PropertyType != typeof(Media.IImage))
             {
                 return false;
             }
@@ -68,7 +66,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (control is Image imageControl)
             {
-                object imageData = propertyDescriptor.GetValue(target);
+                var imageData = propertyDescriptor.GetValue(target);
 
                 if (imageData == null)
                 {

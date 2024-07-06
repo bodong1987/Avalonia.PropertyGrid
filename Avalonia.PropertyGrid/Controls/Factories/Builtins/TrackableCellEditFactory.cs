@@ -2,9 +2,6 @@
 using PropertyModels.ComponentModel;
 using PropertyModels.Extensions;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
@@ -34,9 +31,9 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return null;
             }
 
-            TrackableEdit control = new TrackableEdit();
+            var control = new TrackableEdit();
 
-            TrackableAttribute attr = context.Property.GetCustomAttribute<TrackableAttribute>();
+            var attr = context.Property.GetCustomAttribute<TrackableAttribute>();
             control.Minimum = attr.Minimum;
             control.Maximum = attr.Maximum;
 
@@ -55,7 +52,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                 if(incrementAttr != null)
                 {
-                    control.Increment = (int)incrementAttr.Increment;
+                    control.Increment = incrementAttr.Increment;
                 }
                 else
                 {
@@ -86,16 +83,16 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 }
             }
 
-            control.ValueChanged += (s, e) =>
+            control.ValueChanged += (_, e) =>
             {
                 try
                 {                    
-                    object value = Convert.ChangeType(e.NewValue, context.Property.PropertyType);
+                    var value = Convert.ChangeType(e.NewValue, context.Property.PropertyType);
                     SetAndRaise(context, control, value);
                 }
                 catch (Exception ex)
                 {
-                    DataValidationErrors.SetErrors(control, new string[] { ex.Message });
+                    DataValidationErrors.SetErrors(control, new[] { ex.Message });
                 }
             };
 
@@ -116,7 +113,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if(context.CellEdit is TrackableEdit te)
             {
-                if(double.TryParse(context.GetValue().ToString(), out double d))
+                if(double.TryParse(context.GetValue().ToString(), out var d))
                 {
                     te.Value = d;
                 }

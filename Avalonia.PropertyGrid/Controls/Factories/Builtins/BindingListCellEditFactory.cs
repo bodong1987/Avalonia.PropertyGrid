@@ -1,17 +1,12 @@
 ﻿using Avalonia.Controls;
-using Avalonia.Logging;
 using PropertyModels.ComponentModel;
 using PropertyModels.Extensions;
 using Avalonia.PropertyGrid.Services;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
@@ -30,15 +25,15 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         public override int ImportPriority => base.ImportPriority - 1000000;
 
         /// <summary>
-        /// Determines whether [is accept type] [the specified pd].
+        /// Determines whether [is acceptable type] [the specified pd].
         /// </summary>
         /// <param name="pd">The pd.</param>
-        /// <returns><c>true</c> if [is accept type] [the specified pd]; otherwise, <c>false</c>.</returns>
-        private bool IsAcceptType(PropertyDescriptor pd)
+        /// <returns><c>true</c> if [is acceptable type] [the specified pd]; otherwise, <c>false</c>.</returns>
+        private bool IsAcceptableType(PropertyDescriptor pd)
         {
             var type = GetElementType(pd);
 
-            return type != null && !type.IsAbstract;
+            return type is { IsAbstract: false };
         }
 
         /// <summary>
@@ -46,7 +41,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// </summary>
         /// <param name="pd">The pd.</param>
         /// <returns>Type.</returns>
-        private Type GetElementType(PropertyDescriptor pd)
+        private static Type GetElementType(PropertyDescriptor pd)
         {
             if (pd.PropertyType.IsGenericType && pd.PropertyType.GetGenericTypeDefinition() == typeof(BindingList<>))
             {
@@ -63,18 +58,23 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <returns>Control.</returns>
         public override Control HandleNewProperty(PropertyCellContext context)
         {
-            if (!IsAcceptType(context.Property) || context.Property.GetValue(context.Target) == null)
+            if (!IsAcceptableType(context.Property) || context.Property.GetValue(context.Target) == null)
             {
                 return null;
             }
 
-            ListEdit control = new ListEdit();
-            control.Model.PropertyContext = context;
-            control.Model.Collection = (this as ICellEditFactory).Collection;            
+            var control = new ListEdit
+            {
+                Model =
+                {
+                    PropertyContext = context,
+                    Collection = (this as ICellEditFactory).Collection
+                }
+            };
 
             var attr = context.Property.GetCustomAttribute<EditableAttribute>();
             
-            if((attr != null && !attr.AllowEdit) || context.Property.IsReadOnly)
+            if(attr is { AllowEdit: false } || context.Property.IsReadOnly)
             {
                 control.Model.IsEditable = false;
             }
@@ -97,7 +97,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         public override bool HandlePropertyChanged(PropertyCellContext context)
         {
-            if (!IsAcceptType(context.Property))
+            if (!IsAcceptableType(context.Property))
             {
                 return false;
             }
@@ -125,19 +125,17 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         {
             Debug.Assert(e.Index != -1);
 
-            var value = context.GetValue() as IBindingList;
+            // Debug.Assert(value != null);
 
-            Debug.Assert(value != null);
-
-            if (value != null && e.Index >= 0 && e.Index < value.Count)
+            if (context.GetValue() is IBindingList value && e.Index >= 0 && e.Index < value.Count)
             {
                 var oldElement = value[e.Index];
 
-                GenericCancelableCommand command = new GenericCancelableCommand(
+                var command = new GenericCancelableCommand(
                     string.Format(LocalizationService.Default["Remove array element at {0}"], e.Index),
                     () =>
                     {
-                        if (value != null && e.Index >= 0 && e.Index < value.Count)
+                        if (e.Index >= 0 && e.Index < value.Count)
                         {
                             value.RemoveAt(e.Index);
 
@@ -161,15 +159,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                         return false;
                     },
-                    () =>
-                    {
-                        return value != null && e.Index >= 0 && e.Index < value.Count;
-                    },
-                    () =>
-                    {
-                        return e.Index >= 0 && e.Index < value.Count;
-                    }
-                )
+                    () => e.Index >= 0 && e.Index < value.Count,
+                    () => e.Index >= 0 && e.Index < value.Count)
                 { 
                     Tag = "Remove"
                 };
@@ -187,19 +178,17 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <param name="control">The control.</param>
         protected virtual void HandleClearElements(object s, ListRoutedEventArgs e, PropertyCellContext context, ListEdit control)
         {
-            var value = context.GetValue() as IBindingList;
+            // Debug.Assert(value != null);
 
-            Debug.Assert(value != null);
-
-            if (value != null)
+            if (context.GetValue() is IBindingList value)
             {
-                List<object> list = new List<object>();
+                var list = new List<object>();
                 foreach(var obj in value)
                 {
                     list.Add(obj);
                 }
 
-                GenericCancelableCommand command = new GenericCancelableCommand(
+                var command = new GenericCancelableCommand(
                     LocalizationService.Default["Clear all elements of the array"],
                     () =>
                     {
@@ -239,19 +228,17 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         {
             Debug.Assert(e.Index != -1);
 
-            var value = context.GetValue() as IBindingList;
+            // Debug.Assert(value != null);
 
-            Debug.Assert(value != null);
-
-            if (value != null)
+            if (context.GetValue() is IBindingList value)
             {
-                var NewElement = ObjectCreator.Create(GetElementType(context.Property));
+                var newElement = ObjectCreator.Create(GetElementType(context.Property));
 
-                GenericCancelableCommand command = new GenericCancelableCommand(
+                var command = new GenericCancelableCommand(
                     string.Format(LocalizationService.Default["Insert a new element at {0}"], e.Index),
                     () =>
                     {
-                        value.Insert(e.Index, NewElement);
+                        value.Insert(e.Index, newElement);
 
                         HandleRaiseEvent(context.CellEdit, context);
 
@@ -265,20 +252,13 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                         return true;
                     },
-                    () =>
-                    {
-                        return e.Index >= 0 && e.Index <= value.Count;
-                    },
-                    () =>
-                    {
-                        return e.Index >= 0 && e.Index < value.Count;
-                    }
-                    )
+                    () => e.Index >= 0 && e.Index <= value.Count,
+                    () => e.Index >= 0 && e.Index < value.Count)
                 {
                     Tag = "Insert"
                 };
 
-                ExecuteCommand(command, context, value, value, NewElement);                
+                ExecuteCommand(command, context, value, value, newElement);                
             }
         }
 
@@ -291,19 +271,17 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <param name="control">The control.</param>
         protected virtual void HandleNewElement(object s, ListRoutedEventArgs e, PropertyCellContext context, ListEdit control)
         {
-            var value = context.GetValue() as IBindingList;
+            // Debug.Assert(value != null);
 
-            Debug.Assert(value != null);
-
-            if (value != null)
+            if (context.GetValue() is IBindingList value)
             {
-                var NewElement = ObjectCreator.Create(GetElementType(context.Property));
+                var newElement = ObjectCreator.Create(GetElementType(context.Property));
 
-                GenericCancelableCommand command = new GenericCancelableCommand(
+                var command = new GenericCancelableCommand(
                     LocalizationService.Default["Insert a new element at the end of the array"],
                     () =>
                     {
-                        value.Add(NewElement);
+                        value.Add(newElement);
 
                         HandleRaiseEvent(context.CellEdit, context);
 
@@ -324,7 +302,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     Tag = "NewElement"
                 };
 
-                ExecuteCommand(command, context, value, value, NewElement);                
+                ExecuteCommand(command, context, value, value, newElement);                
             }
         }
 

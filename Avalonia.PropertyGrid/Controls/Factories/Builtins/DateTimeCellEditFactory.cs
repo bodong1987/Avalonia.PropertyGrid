@@ -1,8 +1,5 @@
 ﻿using Avalonia.Controls;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
@@ -28,7 +25,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         public override Control HandleNewProperty(PropertyCellContext context)
         {
             var propertyDescriptor = context.Property;
-            var target = context.Target;
+            // var target = context.Target;
 
             var propertyType = propertyDescriptor.PropertyType;
             if(propertyType != typeof(DateTime) &&
@@ -39,19 +36,19 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return null;
             }
 
-            DatePicker control = new DatePicker();
-            control.SelectedDateChanged += (s, e) =>
+            var control = new DatePicker();
+            control.SelectedDateChanged += (_, _) =>
             {
                 if(propertyType ==  typeof(DateTime))
                 {
-                    if(control.SelectedDate !=null && control.SelectedDate.HasValue)
+                    if(control.SelectedDate is not null)
                     {
                         SetAndRaise(context, control, control.SelectedDate.Value.DateTime);
                     }                    
                 }
                 else if(propertyType == typeof(DateTimeOffset))
                 {
-                    if (control.SelectedDate != null && control.SelectedDate.HasValue)
+                    if (control.SelectedDate is not null)
                     {
                         SetAndRaise(context, control, control.SelectedDate.Value);
                     }                        
@@ -99,16 +96,15 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 else if(propertyType == typeof(DateTimeOffset))
                 {
                     var value = propertyDescriptor.GetValue(target);
-                    dp.SelectedDate = value != null ?(DateTimeOffset)value : null;
+                    dp.SelectedDate = (DateTimeOffset?)value;
                 }
                 else if (propertyType == typeof(DateTime?))
                 {
-                    DateTime? dt = propertyDescriptor.GetValue(target) as DateTime?;
-                    dp.SelectedDate = dt != null?new DateTimeOffset(dt.Value):null;
+                    dp.SelectedDate = propertyDescriptor.GetValue(target) is DateTime dt?new DateTimeOffset(dt):null;
                 }
                 else if (propertyType == typeof(DateTimeOffset?))
                 {
-                    DateTimeOffset? dt = propertyDescriptor.GetValue(target) as DateTimeOffset?;
+                    var dt = propertyDescriptor.GetValue(target) as DateTimeOffset?;
                     dp.SelectedDate = dt;
                 }
 

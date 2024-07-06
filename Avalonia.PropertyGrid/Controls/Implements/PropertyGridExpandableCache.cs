@@ -1,36 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Avalonia.PropertyGrid.Controls.Implements
 {
     internal class PropertyGridExpandableCache : IExpandableObjectCache
     {
-        readonly List<object> Targets = new List<object>();
+        private readonly List<object> _targets = [];
 
         public void Add(object target)
         {
-            if(!Targets.Contains(target))
+            if(!_targets.Contains(target))
             {
-                Targets.Add(target);
+                _targets.Add(target);
             }            
         }
 
         public void Clear()
         {
-            Targets.Clear();
+            _targets.Clear();
         }
 
         public bool IsExists(object target)
         {
-            return Targets.Contains(target);
+            return _targets.Contains(target);
         }
 
         public void Merge(IExpandableObjectCache cache)
         {
             if(cache is PropertyGridExpandableCache c)
             {
-                foreach(object target in c.Targets)
+                foreach(var target in c._targets)
                 {
                     Add(target);
                 }
@@ -39,7 +37,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
 
         public void Remove(object target)
         {
-            Targets.Remove(target);
+            _targets.Remove(target);
         }
 
     }

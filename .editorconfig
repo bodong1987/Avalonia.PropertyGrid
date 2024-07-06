@@ -17,3 +17,6 @@ resharper_out_parameter_value_is_always_discarded_global_highlighting = none
 resharper_event_never_subscribed_to_global_highlighting = none
 resharper_unused_type_global_highlighting = none
 resharper_unused_parameter_global_highlighting = none
+resharper_built_in_type_reference_style_highlighting = none
+resharper_unused_parameter_local_highlighting = none
+resharper_redundant_argument_default_value_highlighting = none

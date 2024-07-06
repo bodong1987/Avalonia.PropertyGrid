@@ -1,13 +1,8 @@
 ﻿using Avalonia.Controls;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Globalization;
 using PropertyModels.Extensions;
-using Avalonia.Controls.Embedding;
 using PropertyModels.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
@@ -34,7 +29,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         public override Control HandleNewProperty(PropertyCellContext context)
         {
             var propertyDescriptor = context.Property;
-            var target = context.Target;
+            // var target = context.Target;
             
             if (!propertyDescriptor.PropertyType.IsNumericType())
             {
@@ -65,7 +60,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             {
                 var incrementAttr = propertyDescriptor.GetCustomAttribute<IntegerIncrementAttribute>();
 
-                control.Increment = incrementAttr != null ? incrementAttr.Increment : 1;
+                control.Increment = incrementAttr?.Increment ?? 1;
 
                 if(formatAttr != null)
                 {
@@ -92,16 +87,16 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 }                
             }
 
-            control.ValueChanged += (s, e) =>
+            control.ValueChanged += (_, _) =>
             {
                 try
                 {
-                    object value = Convert.ChangeType(control.Value, propertyDescriptor.PropertyType);
+                    var value = Convert.ChangeType(control.Value, propertyDescriptor.PropertyType);
                     SetAndRaise(context, control, value);
                 }
                 catch(Exception ex)
                 {
-                    DataValidationErrors.SetErrors(control, new string[] { ex.Message });
+                    DataValidationErrors.SetErrors(control, new[] { ex.Message });
                 }
             };
 
@@ -128,7 +123,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (control is NumericUpDown nup)
             {
-                if(Decimal.TryParse(((double)Convert.ChangeType(propertyDescriptor.GetValue(target), typeof(double))).ToString(), out var d))
+                if(Decimal.TryParse(((double)Convert.ChangeType(propertyDescriptor.GetValue(target), typeof(double))).ToString(CultureInfo.InvariantCulture), out var d))
                 {
                     nup.Value = d;
                 }

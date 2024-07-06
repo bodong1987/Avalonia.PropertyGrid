@@ -1,10 +1,8 @@
 ﻿using Avalonia.Platform;
 using PropertyModels.Localization;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Linq;
 
 namespace Avalonia.PropertyGrid.Localization
 {
@@ -19,13 +17,13 @@ namespace Avalonia.PropertyGrid.Localization
             }
         }
 
-        public override bool Reload()        
+        public sealed override bool Reload()        
         {
             try
             {
                 using (var stream = AssetLoader.Open(Path))
                 {
-                    using (StreamReader sr = new StreamReader(stream, Encoding.UTF8))
+                    using (var sr = new StreamReader(stream, Encoding.UTF8))
                     {
                         var tempDict = ReadJsonStringDictionary(sr.ReadToEnd());
 

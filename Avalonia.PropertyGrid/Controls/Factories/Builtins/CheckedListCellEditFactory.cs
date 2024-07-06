@@ -1,11 +1,5 @@
 ﻿using Avalonia.Controls;
 using PropertyModels.Collections;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using PropertyModels.Extensions;
 using PropertyModels.ComponentModel;
 using Avalonia.PropertyGrid.Services;
@@ -41,24 +35,26 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return null;
             }
 
-            ICheckedList list = propertyDescriptor.GetValue(target) as ICheckedList;
+            var list = propertyDescriptor.GetValue(target) as ICheckedList;
 
             if (list == null)
             {
                 return null;
             }
 
-            var control = new CheckedListEdit();
-            control.Items = list.SourceItems;
+            var control = new CheckedListEdit
+            {
+                Items = list.SourceItems
+            };
 
-            control.SelectedItemsChanged += (s, e) =>
+            control.SelectedItemsChanged += (_, _) =>
             {
                 var items = control.SelectedItems;
                 var oldItems = list.Items;
 
                 if(!CheckEquals(oldItems, items))
                 {
-                    GenericCancelableCommand command = new GenericCancelableCommand(
+                    var command = new GenericCancelableCommand(
                         string.Format(LocalizationService.Default["Change {0} selection from {1} to {2}"], context.Property.DisplayName, ArrayToString(oldItems), ArrayToString(items)),
                         () =>
                         {
@@ -80,7 +76,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 }
             };
 
-            list.SelectionChanged += (s, e) =>
+            list.SelectionChanged += (_, _) =>
             {
                 var cItems = control.Items;
                 var lItems = list.Items;
@@ -127,16 +123,14 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (control is CheckedListEdit c)
             {
-                ICheckedList list = propertyDescriptor.GetValue(target) as ICheckedList;
-
-                if (list != null)
+                if (propertyDescriptor.GetValue(target) is ICheckedList list)
                 {
                     var old = c.EnableRaiseSelectedItemsChangedEvent;
                     c.EnableRaiseSelectedItemsChangedEvent = false;
 
                     try
                     {
-                        c.SelectedItems = new object[] { };
+                        c.SelectedItems = [];
                         c.Items = list.SourceItems;
                         c.SelectedItems = list.Items;
                     }

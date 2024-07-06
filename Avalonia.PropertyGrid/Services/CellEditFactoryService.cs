@@ -2,8 +2,6 @@
 using Avalonia.PropertyGrid.Controls.Implements;
 using PropertyModels.Extensions;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Avalonia.PropertyGrid.Services
 {
@@ -15,7 +13,7 @@ namespace Avalonia.PropertyGrid.Services
         /// <summary>
         /// The default
         /// </summary>
-        public readonly static ICellEditFactoryCollection Default = new CellEditFactoryCollection();
+        public static readonly ICellEditFactoryCollection Default = new CellEditFactoryCollection();
 
         /// <summary>
         /// Initializes static members of the <see cref="CellEditFactoryService"/> class.

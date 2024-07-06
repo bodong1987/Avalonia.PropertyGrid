@@ -1,11 +1,8 @@
 ﻿using Avalonia.Controls;
 using PropertyModels.ComponentModel;
-using PropertyModels.Extensions;
 using Avalonia.PropertyGrid.Utils;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
@@ -31,7 +28,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         public override Control HandleNewProperty(PropertyCellContext context)
         {
             var propertyDescriptor = context.Property;
-            var target = context.Target;
+            // var target = context.Target;
 
             if (propertyDescriptor is MultiObjectPropertyDescriptor)
             {
@@ -40,22 +37,22 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             var converter = TypeDescriptor.GetConverter(propertyDescriptor.PropertyType);
 
-            TextBox control = new TextBox();
-
-            control.VerticalContentAlignment = Avalonia.Layout.VerticalAlignment.Center;
-            control.FontFamily = FontUtils.DefaultFontFamily;
-            control.IsEnabled = converter != null && 
-                converter.CanConvertFrom(typeof(string)) && 
-                converter.CanConvertTo(typeof(string));
+            var control = new TextBox
+            {
+                VerticalContentAlignment = Layout.VerticalAlignment.Center,
+                FontFamily = FontUtils.DefaultFontFamily,
+                IsEnabled = converter.CanConvertFrom(typeof(string)) && 
+                            converter.CanConvertTo(typeof(string))
+            };
 
             // set first ...
             // HandlePropertyChanged(target, propertyDescriptor, control);
 
             if (control.IsEnabled)
             {
-                control.LostFocus += (s, e) =>
+                control.LostFocus += (_, _) =>
                 {
-                    string value = control.Text;
+                    var value = control.Text;
 
                     try
                     {
@@ -65,15 +62,15 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     }
                     catch (Exception ee)
                     {
-                        DataValidationErrors.SetErrors(control, new string[] { ee.Message });
+                        DataValidationErrors.SetErrors(control, new[] { ee.Message });
                     }
                 };
 
-                control.KeyUp += (s, e) =>
+                control.KeyUp += (_, e) =>
                 {
                     if (e.Key == Input.Key.Enter)
                     {
-                        string value = control.Text;
+                        var value = control.Text;
 
                         try
                         {
@@ -83,7 +80,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                         }
                         catch (Exception ee)
                         {
-                            DataValidationErrors.SetErrors(control, new string[] { ee.Message });
+                            DataValidationErrors.SetErrors(control, new[] { ee.Message });
                         }
                     }
                 };
@@ -116,7 +113,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 {
                     var converter = TypeDescriptor.GetConverter(propertyDescriptor.PropertyType);
 
-                    if(converter != null && converter.CanConvertFrom(typeof(string)) && converter.CanConvertTo(typeof(string)))
+                    if(converter.CanConvertFrom(typeof(string)) && converter.CanConvertTo(typeof(string)))
                     {
                         try
                         {
@@ -125,7 +122,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                         }
                         catch (Exception ee)
                         {
-                            DataValidationErrors.SetErrors(control, new string[] { ee.Message });
+                            DataValidationErrors.SetErrors(control, new[] { ee.Message });
                         }
                     }
                     else

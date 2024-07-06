@@ -1,7 +1,6 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="using:Avalonia.PropertyGrid.Controls"
-		xmlns:lu="using:Avalonia.PropertyGrid.Utils"
 		>
   <Design.PreviewWith>
     <controls:TrackableEdit />
@@ -28,7 +27,7 @@
 								 x:Name="numericUpDown"
 								 Padding="2" 
 								 Margin="1"
-								 FontFamily="{x:Static lu:FontUtils.DefaultFontFamily}"
+								 FontFamily="Microsoft YaHei,Simsun,苹方-简,宋体-简"
 								 VerticalContentAlignment="Center"
 								 Minimum="{Binding Minimum, Converter={StaticResource Double2Decimal}, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
 								 Maximum="{Binding Maximum, Converter={StaticResource Double2Decimal}, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"

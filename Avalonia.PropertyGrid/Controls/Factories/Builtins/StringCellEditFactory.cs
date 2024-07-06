@@ -1,17 +1,9 @@
 ﻿using Avalonia.Controls;
 using Avalonia.PropertyGrid.Localization;
 using PropertyModels.ComponentModel;
-using PropertyModels.ComponentModel.DataAnnotations;
 using PropertyModels.Extensions;
-using Avalonia.PropertyGrid.Services;
 using Avalonia.PropertyGrid.Utils;
-using Avalonia.VisualTree;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
@@ -44,34 +36,36 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return null;
             }
 
-            WatermarkAttribute watermarkAttr = propertyDescriptor.GetCustomAttribute<WatermarkAttribute>();
+            var watermarkAttr = propertyDescriptor.GetCustomAttribute<WatermarkAttribute>();
 
-            TextBox control = new TextBox();
-            control.Text = propertyDescriptor.GetValue(target) as string;
-            control.VerticalContentAlignment = Avalonia.Layout.VerticalAlignment.Center;
-            control.FontFamily = FontUtils.DefaultFontFamily;
+            var control = new TextBox
+            {
+                Text = propertyDescriptor.GetValue(target) as string,
+                VerticalContentAlignment = Layout.VerticalAlignment.Center,
+                FontFamily = FontUtils.DefaultFontFamily
+            };
 
             if (watermarkAttr != null)
             {
-                // control.Watermark = LocalizationService.Default[watermarkAttr.Watermask];
+                // control.Watermark = LocalizationService.Default[watermarkAttr.Watermark];
                 control.SetLocalizeBinding(TextBox.WatermarkProperty, watermarkAttr.Watermark);
             }
 
-            if (propertyDescriptor.GetCustomAttribute<PasswordPropertyTextAttribute>() is PasswordPropertyTextAttribute ppt && ppt.Password)
+            if (propertyDescriptor.GetCustomAttribute<PasswordPropertyTextAttribute>() is { Password: true })
             {
                 control.PasswordChar = '*';
             }
 
-            MultilineTextAttribute multilineAttr = propertyDescriptor.GetCustomAttribute<MultilineTextAttribute>();
+            var multilineAttr = propertyDescriptor.GetCustomAttribute<MultilineTextAttribute>();
 
-            if (multilineAttr != null && multilineAttr.IsMultiline)
+            if (multilineAttr is { IsMultiline: true })
             {
                 control.TextWrapping = Media.TextWrapping.Wrap;
                 control.AcceptsReturn = true;
                 control.AcceptsTab = true;
             }
 
-            control.PropertyChanged += (s, e) =>
+            control.PropertyChanged += (_, e) =>
             {
                 if (e.Property == TextBox.TextProperty)
                 {

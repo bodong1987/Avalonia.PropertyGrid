@@ -1,42 +1,37 @@
 ﻿using PropertyModels.ComponentModel;
-using PropertyModels.ComponentModel.DataAnnotations;
 using PropertyModels.Extensions;
 using Avalonia.PropertyGrid.Services;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Avalonia.PropertyGrid.Controls.Implements
 {
     internal class PropertyGridFilterPattern : MiniReactiveObject, IFilterPattern
     {
-        string _FilterText;
-        Regex _CachedRegex;
-        ICheckedMaskModel _QuickFilter;
+        private string _filterText;
+        private Regex _cachedRegex;
+        private ICheckedMaskModel _quickFilter;
 
         public string FilterText
         {
-            get => _FilterText;
-            set => this.RaiseAndSetIfChanged(ref _FilterText, value);
+            get => _filterText;
+            set => this.RaiseAndSetIfChanged(ref _filterText, value);
         }
 
-        bool _UseRegex = false;
+        private bool _useRegex;
 
         public bool UseRegex
         {
-            get => _UseRegex;
-            set => this.RaiseAndSetIfChanged(ref _UseRegex, value);
+            get => _useRegex;
+            set => this.RaiseAndSetIfChanged(ref _useRegex, value);
         }
 
-        bool _IgnoreCase = true;
+        private bool _ignoreCase = true;
         public bool IgnoreCase
         {
-            get => _IgnoreCase;
-            set => this.RaiseAndSetIfChanged( ref _IgnoreCase, value);
+            get => _ignoreCase;
+            set => this.RaiseAndSetIfChanged( ref _ignoreCase, value);
         }
 
         /// <summary>
@@ -45,26 +40,27 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         /// <value>The quick filter.</value>
         public ICheckedMaskModel QuickFilter
         {
-            get => this._QuickFilter;
-            set => this.RaiseAndSetIfChanged(ref _QuickFilter, value);
+            get => _quickFilter;
+            set => this.RaiseAndSetIfChanged(ref _quickFilter, value);
         }
 
         public PropertyGridFilterPattern()
         {
-            this.PropertyChanged += OnPropertyChanged;
+            PropertyChanged += OnPropertyChanged;
         }
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if(e.PropertyName == nameof(FilterText) && _UseRegex)
+            if(e.PropertyName == nameof(FilterText) && _useRegex)
             {
-                _CachedRegex = null;
+                _cachedRegex = null;
                 try
                 {
-                    _CachedRegex = new Regex(FilterText.Trim());
-                }                
+                    _cachedRegex = new Regex(FilterText.Trim());
+                }
                 catch
                 {
+                    // ignored
                 }
             }
         }
@@ -73,9 +69,9 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         {
             var displayName = LocalizationService.Default[propertyDescriptor.DisplayName];
 
-            if(UseRegex && _CachedRegex != null)
+            if(UseRegex && _cachedRegex != null)
             {
-                return _CachedRegex.IsMatch(displayName);
+                return _cachedRegex.IsMatch(displayName);
             }
 
             if(FilterText.IsNullOrEmpty())

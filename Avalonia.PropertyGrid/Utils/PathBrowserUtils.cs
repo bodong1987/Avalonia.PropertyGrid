@@ -3,7 +3,6 @@ using Avalonia.Platform.Storage;
 using Avalonia.PropertyGrid.Services;
 using PropertyModels.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -104,7 +103,7 @@ namespace Avalonia.PropertyGrid.Utils
 
         private static IStorageProvider GetStorageProvider(Window parentWindow)
         {
-            return TopLevel.GetTopLevel(parentWindow).StorageProvider;
+            return TopLevel.GetTopLevel(parentWindow)!.StorageProvider;
         }
 
         /// <summary>
@@ -119,9 +118,8 @@ namespace Avalonia.PropertyGrid.Utils
         /// <returns>A Task&lt;System.String[]&gt; representing the asynchronous operation.</returns>
         public static async Task<string[]> ShowDialogAsync(Window parentWindow, PathBrowsableType type, bool saveMode, string title, string filters, string initFileName)
         {
-            IStorageProvider storageProvider = GetStorageProvider(parentWindow);
+            var storageProvider = GetStorageProvider(parentWindow);
 
-            Debug.Assert(storageProvider != null);
             if (storageProvider == null)
             {
                 return null;
@@ -129,59 +127,66 @@ namespace Avalonia.PropertyGrid.Utils
 
             if (saveMode)
             {
-                FilePickerSaveOptions options = new FilePickerSaveOptions();
-                options.Title = title ?? LocalizationService.Default["Please select a file"];
-                options.SuggestedFileName = initFileName;
-                options.FileTypeChoices = ConvertToFilterList(filters);
+                var options = new FilePickerSaveOptions
+                {
+                    Title = title ?? LocalizationService.Default["Please select a file"],
+                    SuggestedFileName = initFileName,
+                    FileTypeChoices = ConvertToFilterList(filters)
+                };
                 var storage = await storageProvider.SaveFilePickerAsync(options);
 
-                return storage != null ? new string[] { storage.Path.LocalPath } : null;
+                return storage != null ? [storage.Path.LocalPath] : null;
             }
-            else if (type == PathBrowsableType.Directory || type == PathBrowsableType.MultipleDirectories)
+            else
             {
-                FolderPickerOpenOptions options = new FolderPickerOpenOptions();
-
-                // If an InitFileName is specified, make that location available for opening.
-                if (!string.IsNullOrEmpty(initFileName))
+                // ReSharper disable once ConvertIfStatementToSwitchStatement
+                if (type is PathBrowsableType.Directory or PathBrowsableType.MultipleDirectories)
                 {
-                    IStorageFolder startFolder = await storageProvider.TryGetFolderFromPathAsync(initFileName);
-                    options.SuggestedStartLocation = startFolder;
-                }
+                    var options = new FolderPickerOpenOptions();
 
-                if (type == PathBrowsableType.MultipleDirectories)
+                    // If an InitFileName is specified, make that location available for opening.
+                    if (!string.IsNullOrEmpty(initFileName))
+                    {
+                        var startFolder = await storageProvider.TryGetFolderFromPathAsync(initFileName);
+                        options.SuggestedStartLocation = startFolder;
+                    }
+
+                    if (type == PathBrowsableType.MultipleDirectories)
+                    {
+                        options.Title = title ?? LocalizationService.Default["Please select some folders"];
+                        options.AllowMultiple = true;
+                    }
+                    else
+                    {
+                        options.Title = title ?? LocalizationService.Default["Please select a folder"];
+                        options.AllowMultiple = false;
+                    }
+
+                    var storage = await storageProvider.OpenFolderPickerAsync(options);
+                    return storage.Select(x => x.Path.LocalPath).ToArray();
+                }
+                
+                if (type is PathBrowsableType.File or PathBrowsableType.MultipleFiles)
                 {
-                    options.Title = title ?? LocalizationService.Default["Please select some folders"];
-                    options.AllowMultiple = true;
+                    var options = new FilePickerOpenOptions();
+
+                    if (type == PathBrowsableType.MultipleFiles)
+                    {
+                        options.Title = title ?? LocalizationService.Default["Please select some files"];
+                        options.AllowMultiple = true;
+                    }
+                    else
+                    {
+                        options.Title = title ?? LocalizationService.Default["Please select a file"];
+                        options.AllowMultiple = false;
+                    }
+
+                    options.FileTypeFilter = ConvertToFilterList(filters);
+
+                    var storage = await storageProvider.OpenFilePickerAsync(options);
+
+                    return storage.Select(x => x.Path.LocalPath).ToArray();
                 }
-                else
-                {
-                    options.Title = title ?? LocalizationService.Default["Please select a folder"];
-                    options.AllowMultiple = false;
-                }
-
-                var storage = await storageProvider.OpenFolderPickerAsync(options);
-                return storage != null ? storage.Select(x => x.Path.LocalPath).ToArray() : null;
-            }
-            else if (type == PathBrowsableType.File || type == PathBrowsableType.MultipleFiles)
-            {
-                FilePickerOpenOptions options = new FilePickerOpenOptions();
-
-                if (type == PathBrowsableType.MultipleFiles)
-                {
-                    options.Title = title ?? LocalizationService.Default["Please select some files"];
-                    options.AllowMultiple = true;
-                }
-                else
-                {
-                    options.Title = title ?? LocalizationService.Default["Please select a file"];
-                    options.AllowMultiple = false;
-                }
-
-                options.FileTypeFilter = ConvertToFilterList(filters);
-
-                var storage = await storageProvider.OpenFilePickerAsync(options);
-
-                return storage != null ? storage.Select(x => x.Path.LocalPath).ToArray() : null;
             }
 
             return null;
@@ -194,22 +199,23 @@ namespace Avalonia.PropertyGrid.Utils
         /// <returns>List&lt;FileDialogFilter&gt;.</returns>
         public static List<FilePickerFileType> ConvertToFilterList(string filters)
         {
-            List<FilePickerFileType> list = new List<FilePickerFileType>();
+            var list = new List<FilePickerFileType>();
 
             var results = filters.Split('|');
 
-            for (int i = 0; i < results.Length / 2; ++i)
+            for (var i = 0; i < results.Length / 2; ++i)
             {
-                string name = results[i * 2 + 0];
-                string exts = results[i * 2 + 1];
+                var name = results[i * 2 + 0];
+                var extends = results[i * 2 + 1];
 
-                FilePickerFileType filter = new FilePickerFileType(name.Trim());
-
-                filter.Patterns = exts.Split(';').Select(x =>
+                var filter = new FilePickerFileType(name.Trim())
                 {
-                    var y = x.Trim();
-                    return y;
-                }).ToList();
+                    Patterns = extends.Split(';').Select(x =>
+                    {
+                        var y = x.Trim();
+                        return y;
+                    }).ToList()
+                };
 
                 list.Add(filter);
             }

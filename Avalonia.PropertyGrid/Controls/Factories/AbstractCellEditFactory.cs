@@ -1,10 +1,7 @@
 ﻿using Avalonia.Controls;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using PropertyModels.Extensions;
 using PropertyModels.ComponentModel.DataAnnotations;
 using PropertyModels.ComponentModel;
@@ -69,7 +66,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         public abstract bool HandlePropertyChanged(PropertyCellContext context);
 
         /// <summary>
-        /// Sets the and raise.
+        /// Sets property and raise.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="sourceControl">The source control.</param>
@@ -78,7 +75,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         {
             if(context.Property.IsPropertyChanged(context.Target, value, out var oldValue))
             {
-                GenericCancelableCommand command = new GenericCancelableCommand(
+                var command = new GenericCancelableCommand(
                     string.Format(LocalizationService.Default["Change {0} form {1} to {2}"], context.Property.DisplayName, oldValue != null ? oldValue.ToString() : "null", value != null ? value.ToString() : "null"),
                     () =>
                     {
@@ -110,7 +107,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         protected virtual bool ExecuteCommand(ICancelableCommand command, PropertyCellContext propertyContext, object oldValue, object value, object context)
         {
-            RoutedCommandExecutingEventArgs evt = new RoutedCommandExecutingEventArgs(
+            var evt = new RoutedCommandExecutingEventArgs(
                     PropertyGrid.CommandExecutingEvent,
                     command,
                     propertyContext.Target,
@@ -129,7 +126,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories
 
             if (propertyContext.Target is INotifyCommandExecuting nce)
             {
-                CommandExecutingEventArgs args = new CommandExecutingEventArgs(command, propertyContext.Target, propertyContext.Property, oldValue, value, context);
+                var args = new CommandExecutingEventArgs(command, propertyContext.Target, propertyContext.Property, oldValue, value, context);
 
                 nce.RaiseCommandExecuting(args);
 
@@ -144,7 +141,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories
                 return false;
             }
 
-            RoutedCommandExecutedEventArgs evt2 = new RoutedCommandExecutedEventArgs(
+            var evt2 = new RoutedCommandExecutedEventArgs(
                 PropertyGrid.CommandExecutedEvent,
                 command,
                 propertyContext.Target,
@@ -273,7 +270,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories
 
             if (first.Length == second.Length)
             {
-                for (int i = 0; i < first.Length; i++)
+                for (var i = 0; i < first.Length; i++)
                 {
                     if (!first[i].Equals(second[i]))
                     {

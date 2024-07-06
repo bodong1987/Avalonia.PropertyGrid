@@ -1,9 +1,6 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
+﻿using Avalonia.Controls.Primitives;
 using Avalonia.Data.Converters;
 using System;
-using System.ComponentModel;
 using System.Globalization;
 
 namespace Avalonia.PropertyGrid.Controls
@@ -70,7 +67,7 @@ namespace Avalonia.PropertyGrid.Controls
         {
             if((targetType == typeof(Decimal) || targetType == typeof(Decimal?)) && value != null)
             {
-                if(decimal.TryParse(value.ToString(), out decimal result))
+                if(decimal.TryParse(value.ToString(), out var result))
                 {
                     return result;
                 }
@@ -105,6 +102,7 @@ namespace Avalonia.PropertyGrid.Controls
                 }
                 catch
                 {
+                    // ignored
                 }
             }
 

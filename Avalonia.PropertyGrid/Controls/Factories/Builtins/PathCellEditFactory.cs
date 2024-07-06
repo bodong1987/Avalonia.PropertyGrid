@@ -5,10 +5,7 @@ using PropertyModels.ComponentModel.DataAnnotations;
 using PropertyModels.Extensions;
 using Avalonia.PropertyGrid.Utils;
 using Avalonia.VisualTree;
-using System;
 using System.Linq;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
@@ -41,11 +38,13 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return null;
             }
 
-            PathBrowsableAttribute attribute = propertyDescriptor.GetCustomAttribute<PathBrowsableAttribute>();
-            WatermarkAttribute watermarkAttr = propertyDescriptor.GetCustomAttribute<WatermarkAttribute>();
+            var attribute = propertyDescriptor.GetCustomAttribute<PathBrowsableAttribute>();
+            var watermarkAttr = propertyDescriptor.GetCustomAttribute<WatermarkAttribute>();
 
-            ButtonEdit control = new ButtonEdit();
-            control.Text = propertyDescriptor.GetValue(target) as string;
+            var control = new ButtonEdit
+            {
+                Text = propertyDescriptor.GetValue(target) as string
+            };
 
             if (watermarkAttr != null)
             {
@@ -53,7 +52,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 control.SetLocalizeBinding(ButtonEdit.WatermarkProperty, watermarkAttr.Watermark);
             }
 
-            control.ButtonClick += async (s, e) =>
+            control.ButtonClick += async (_, _) =>
             {
                 if (attribute.IsDirectorySelection && string.IsNullOrEmpty(attribute.InitialFileName))
                 {
@@ -62,7 +61,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                 var files = await PathBrowserUtils.ShowPathBrowserAsync(control.GetVisualRoot() as Window, attribute);
 
-                if (files != null && files.Length > 0)
+                if (files is { Length: > 0 })
                 {
                     var file = files.FirstOrDefault();
 
@@ -74,7 +73,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 }
             };
 
-            control.TextChanged += (s, e) =>
+            control.TextChanged += (_, _) =>
             {
                 if (control.Text != propertyDescriptor.GetValue(target) as string)
                 {

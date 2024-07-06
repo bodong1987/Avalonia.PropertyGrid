@@ -1,10 +1,6 @@
 ﻿using Avalonia.Controls;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using PropertyModels.ComponentModel;
 using PropertyModels.Extensions;
 
@@ -20,13 +16,13 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         /// <summary>
         /// The factories
         /// </summary>
-        readonly List<ICellEditFactory> _Factories = new List<ICellEditFactory>();
+        private readonly List<ICellEditFactory> _factories = [];
 
         /// <summary>
         /// Gets the factories.
         /// </summary>
         /// <value>The factories.</value>
-        public IEnumerable<ICellEditFactory> Factories => _Factories.ToArray();
+        public IEnumerable<ICellEditFactory> Factories => _factories.ToArray();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CellEditFactoryCollection"/> class.
@@ -41,13 +37,10 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         /// <param name="factories">The factories.</param>
         public CellEditFactoryCollection(IEnumerable<ICellEditFactory> factories)
         {            
-            _Factories.AddRange(factories);
-            _Factories.Sort((x, y) =>
-            {
-                return Comparer<int>.Default.Compare(y.ImportPriority, x.ImportPriority);
-            });
+            _factories.AddRange(factories);
+            _factories.Sort((x, y) => Comparer<int>.Default.Compare(y.ImportPriority, x.ImportPriority));
 
-            foreach (var factory in _Factories)
+            foreach (var factory in _factories)
             {
                 factory.Collection = this;
             }
@@ -61,7 +54,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         /// <returns>IEnumerable&lt;ICellEditFactory&gt;.</returns>
         public IEnumerable<ICellEditFactory> CloneFactories(object accessToken)
         {
-            return _Factories.FindAll(x=>x.Accept(accessToken)).Select(x=>x.Clone());
+            return _factories.FindAll(x=>x.Accept(accessToken)).Select(x=>x.Clone());
         }
 
         /// <summary>
@@ -71,11 +64,8 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         public void AddFactory(ICellEditFactory factory)
         {
             factory.Collection = this;
-            _Factories.Add(factory);
-            _Factories.Sort((x, y) =>
-            {
-                return Comparer<int>.Default.Compare(y.ImportPriority, x.ImportPriority);
-            });
+            _factories.Add(factory);
+            _factories.Sort((x, y) => Comparer<int>.Default.Compare(y.ImportPriority, x.ImportPriority));
         }
 
         /// <summary>
@@ -84,7 +74,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         /// <param name="factory">The factory.</param>
         public void RemoveFactory(ICellEditFactory factory)
         {            
-            _Factories.Remove(factory);
+            _factories.Remove(factory);
         }
 
         /// <summary>
@@ -94,10 +84,10 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         /// <returns>Control.</returns>
         public Control BuildPropertyControl(PropertyCellContext context)
         {
-            foreach (var Factory in _Factories)
+            foreach (var factory in _factories)
             {
-                var control = Factory.HandleNewProperty(context);
-                ControlClassesAttribute[] classesAttributes = context.Property.GetCustomAttributes<ControlClassesAttribute>();
+                var control = factory.HandleNewProperty(context);
+                var classesAttributes = context.Property.GetCustomAttributes<ControlClassesAttribute>();
                 if (classesAttributes?.Length > 0)
                 {
                     var classes = classesAttributes.SelectMany(a => a.Classes).Distinct();
@@ -106,7 +96,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
                 if (control != null)
                 {
                     context.CellEdit = control;
-                    context.Factory = Factory;
+                    context.Factory = factory;
 
                     return control;
                 }

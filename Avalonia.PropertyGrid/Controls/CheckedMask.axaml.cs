@@ -16,15 +16,15 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The model
         /// </summary>
-        CheckedMaskModel _Model;
+        private CheckedMaskModel _model;
         /// <summary>
         /// The model property
         /// </summary>
         public static readonly DirectProperty<CheckedMask, CheckedMaskModel> ModelProperty =
             AvaloniaProperty.RegisterDirect<CheckedMask, CheckedMaskModel>(
                 nameof(Model),
-                o => o._Model,
-                (o, v) => o.SetAndRaise(ModelProperty, ref o._Model, v)
+                o => o._model,
+                (o, v) => o.SetAndRaise(ModelProperty, ref o._model, v)
                 );
 
         /// <summary>
@@ -33,8 +33,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// <value>The model.</value>
         public CheckedMaskModel Model
         {
-            get => _Model;
-            set => SetAndRaise(ModelProperty, ref _Model, value);
+            get => _model;
+            set => SetAndRaise(ModelProperty, ref _model, value);
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace Avalonia.PropertyGrid.Controls
                 return;
             }
 
-            ToggleButton allButton = new ToggleButton();
+            var allButton = new ToggleButton();
             
             allButton.IsChecked = value.IsAllChecked;
             allButton.Margin = new Thickness(6);
@@ -103,9 +103,9 @@ namespace Avalonia.PropertyGrid.Controls
             allButton.HorizontalContentAlignment = Layout.HorizontalAlignment.Center;
 
             // allButton.Content = value.All;
-            allButton.SetLocalizeBinding(ToggleButton.ContentProperty, value.All);
+            allButton.SetLocalizeBinding(ContentProperty, value.All);
 
-            allButton.IsCheckedChanged += (s, e) =>
+            allButton.IsCheckedChanged += (_, _) =>
             {
                 if ((bool)allButton.IsChecked)
                 {
@@ -129,16 +129,16 @@ namespace Avalonia.PropertyGrid.Controls
 
             foreach (var mask in value.Masks)
             {
-                ToggleButton button = new ToggleButton();                
+                var button = new ToggleButton();                
                 button.IsChecked = value.IsChecked(mask) && !value.IsChecked(value.All);
                 button.Margin = new Thickness(6);
                 button.MinWidth = ButtonMinWidth;
                 button.HorizontalContentAlignment = Layout.HorizontalAlignment.Center;
 
                 //button.Content = mask.ToString();
-                button.SetLocalizeBinding(ToggleButton.ContentProperty, mask);
+                button.SetLocalizeBinding(ContentProperty, mask);
 
-                button.IsCheckedChanged += (s, e) =>
+                button.IsCheckedChanged += (_, _) =>
                 {
                     if ((bool)button.IsChecked)
                     {
