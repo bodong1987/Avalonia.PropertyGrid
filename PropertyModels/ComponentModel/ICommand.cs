@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace PropertyModels.ComponentModel
 {
@@ -23,7 +21,7 @@ namespace PropertyModels.ComponentModel
         /// <summary>
         /// Executes this instance.
         /// </summary>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         bool Execute();
     }
 
@@ -43,7 +41,7 @@ namespace PropertyModels.ComponentModel
         /// <summary>
         /// Cancels this instance.
         /// </summary>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         bool Cancel();
     }
 
@@ -89,7 +87,7 @@ namespace PropertyModels.ComponentModel
         /// <summary>
         /// Executes this instance.
         /// </summary>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         public abstract bool Execute();
 
         /// <summary>
@@ -109,8 +107,8 @@ namespace PropertyModels.ComponentModel
     /// <seealso cref="PropertyModels.ComponentModel.AbstractBaseCommand" />
     public class GenericCommand : AbstractBaseCommand
     {
-        Func<bool> _CanExecuteFunc;
-        Func<bool> _ExecuteFunc;
+        private Func<bool> _CanExecuteFunc;
+        private Func<bool> _ExecuteFunc;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GenericCommand" /> class.
@@ -137,7 +135,7 @@ namespace PropertyModels.ComponentModel
         /// <summary>
         /// Executes this instance.
         /// </summary>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         public override bool Execute()
         {
             return _ExecuteFunc != null && _ExecuteFunc();
@@ -174,7 +172,7 @@ namespace PropertyModels.ComponentModel
         /// <summary>
         /// Cancels this instance.
         /// </summary>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         public abstract bool Cancel();
     }
 
@@ -185,7 +183,7 @@ namespace PropertyModels.ComponentModel
     /// <seealso cref="PropertyModels.ComponentModel.AbstractCancelableCommand" />
     public class GenericCancelableCommand : AbstractCancelableCommand
     {
-        Func<bool> _CanCancelFunc, _CanExecuteFunc, _CancelFunc, _ExecuteFunc;
+        private Func<bool> _CanCancelFunc, _CanExecuteFunc, _CancelFunc, _ExecuteFunc;
 
         /// <summary>
         /// Gets or sets the tag.
@@ -219,7 +217,7 @@ namespace PropertyModels.ComponentModel
         /// <summary>
         /// Cancels this instance.
         /// </summary>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         public override bool Cancel()
         {
             return _CancelFunc != null && _CancelFunc();
@@ -228,7 +226,7 @@ namespace PropertyModels.ComponentModel
         /// <summary>
         /// Executes this instance.
         /// </summary>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         public override bool Execute()
         {
             return _ExecuteFunc != null && _ExecuteFunc();

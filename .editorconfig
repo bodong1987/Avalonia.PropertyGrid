@@ -1,0 +1,5 @@
+[*.cs]
+resharper_member_can_be_private_global_highlighting = none
+resharper_unused_member_global_highlighting = none
+resharper_use_string_interpolation_highlighting = none
+resharper_class_never_instantiated_global_highlighting = none

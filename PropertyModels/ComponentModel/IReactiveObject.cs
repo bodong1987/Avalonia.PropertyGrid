@@ -2,11 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PropertyModels.ComponentModel
 {
@@ -30,7 +27,7 @@ namespace PropertyModels.ComponentModel
         /// Occurs when a property value changes.
         /// </summary>
         [Browsable(false)]
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
         /// Raises the property changed.
@@ -38,7 +35,7 @@ namespace PropertyModels.ComponentModel
         /// <param name="propertyName">Name of the property.</param>
         public void RaisePropertyChanged(string propertyName)
         {
-            PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion
@@ -52,27 +49,27 @@ namespace PropertyModels.ComponentModel
     {
         #region Properties        
         [NonSerialized]
-        private Stack<string> ProcessStack = new Stack<string>();
+        private readonly Stack<string> _processStack = new();
         #endregion
 
         #region Constructor
         /// <summary>
         /// Initializes a new instance of the <see cref="ReactiveObject"/> class.
         /// </summary>
-        public ReactiveObject()
+        protected ReactiveObject()
         {
             PropertyChanged += ProcessPropertyChanged;
 
-            AutoCollectDependsInfo();
+            AutoCollectDependencyInfo();
         }
 
         [NonSerialized]
-        private static Dictionary<System.Type, Dictionary<string, List<string>>> MetaCaches = new Dictionary<Type, Dictionary<string, List<string>>>();
+        private static readonly Dictionary<Type, Dictionary<string, List<string>>> MetaCaches = new();
 
         /// <summary>
-        /// Automatics the collect depends information.
+        /// Automatics the collect dependency information.
         /// </summary>
-        private void AutoCollectDependsInfo()
+        private void AutoCollectDependencyInfo()
         {
             var type = GetType();
             if (MetaCaches.TryGetValue(type, out var cache))
@@ -82,7 +79,7 @@ namespace PropertyModels.ComponentModel
 
             cache = new Dictionary<string, List<string>>();
 
-            foreach (var property in type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
+            foreach (var property in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
                 foreach (var attr in property.GetCustomAttributes<DependsOnPropertyAttribute>())
                 {
@@ -127,30 +124,33 @@ namespace PropertyModels.ComponentModel
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="System.ComponentModel.PropertyChangedEventArgs"/> instance containing the event data.</param>
-        protected virtual void ProcessPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        protected virtual void ProcessPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (ProcessStack.Contains(e.PropertyName))
+            if (_processStack.Contains(e.PropertyName))
             {
                 return;
             }
 
-            var RelativeProperties = GetCache(GetType());
+            var relativeProperties = GetCache(GetType());
 
-            if (RelativeProperties != null && RelativeProperties.TryGetValue(e.PropertyName, out var relevance))
+            if (relativeProperties == null ||
+                !relativeProperties.TryGetValue(e.PropertyName, out var relevance))
             {
-                try
-                {
-                    ProcessStack.Push(e.PropertyName);
+                return;
+            }
+            
+            try
+            {
+                _processStack.Push(e.PropertyName);
 
-                    foreach (var r in relevance)
-                    {
-                        RaisePropertyChanged(r);
-                    }
-                }
-                finally
+                foreach (var r in relevance)
                 {
-                    ProcessStack.Pop();
+                    RaisePropertyChanged(r);
                 }
+            }
+            finally
+            {
+                _processStack.Pop();
             }
         }
 
@@ -163,7 +163,7 @@ namespace PropertyModels.ComponentModel
     public static class ReactiveObjectExtensions
     {
         /// <summary>
-        /// Raises the and set if changed.
+        /// Raises the event and set property if changed.
         /// </summary>
         /// <typeparam name="TObj">The type of the t object.</typeparam>
         /// <typeparam name="TRet">The type of the t ret.</typeparam>

@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PropertyModels.Extensions
 {
@@ -22,9 +20,9 @@ namespace PropertyModels.Extensions
         /// <returns>System.Int32.</returns>
         public static int IndexOf<TSource>(this IEnumerable<TSource> source, Predicate<TSource> predicate)
         {
-            int i = 0;
+            var i = 0;
 
-            foreach (TSource element in source)
+            foreach (var element in source)
             {
                 if (predicate(element))
                     return i;
@@ -45,10 +43,10 @@ namespace PropertyModels.Extensions
         /// <returns>System.Int32.</returns>
         public static int IndexOf<TSource>(this IEnumerable<TSource> source, int startIndex, Predicate<TSource> predicate)
         {
-            int i = 0;
-            int c = 0;
+            var i = 0;
+            var c = 0;
 
-            foreach (TSource element in source)
+            foreach (var element in source)
             {
                 if (c < startIndex)
                 {
@@ -76,17 +74,21 @@ namespace PropertyModels.Extensions
         /// <exception cref="InvalidOperationException">Empty List</exception>
         public static T MaxElement<T>(this IEnumerable<T> list, Converter<T, int> projection)
         {
-            if (list.Count() == 0)
+            var enumerable = list as T[] ?? list.ToArray();
+            
+            if (!enumerable.Any())
             {
                 throw new InvalidOperationException("Empty List");
             }
 
-            int maxValue = int.MinValue;
-            T result = default(T);
+            var maxValue = int.MinValue;
+            var result = default(T);
 
-            foreach (T item in list)
+            foreach (var item in enumerable)
             {
-                int value = projection(item);
+                var value = projection(item);
+                
+                // ReSharper disable once InvertIf
                 if (value > maxValue)
                 {
                     maxValue = value;
@@ -123,23 +125,24 @@ namespace PropertyModels.Extensions
         /// <typeparam name="T"></typeparam>
         /// <param name="list">The list.</param>
         /// <param name="match">The match.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if remove success, <c>false</c> otherwise.</returns>
         public static bool Remove<T>(this IList<T> list, Predicate<T> match)
         {
-            int Index = list.IndexOf(match);
+            var index = list.IndexOf(match);
 
-            if (Index != -1)
+            if (index == -1)
             {
-                list.RemoveAt(Index);
-                return true;
+                return false;
             }
+            
+            list.RemoveAt(index);
+            return true;
 
-            return false;
         }
 
 
         /// <summary>
-        /// Distincts the by.
+        /// Distinct the by predicate.
         /// </summary>
         /// <typeparam name="TSource">The type of the t source.</typeparam>
         /// <typeparam name="TKey">The type of the t key.</typeparam>
@@ -151,7 +154,7 @@ namespace PropertyModels.Extensions
         public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> predicate)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
 
             return source
                 .GroupBy(predicate)
@@ -159,7 +162,7 @@ namespace PropertyModels.Extensions
         }
 
         /// <summary>
-        /// Converts to bindinglist.
+        /// Converts to binding list.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="source">The source.</param>
@@ -178,7 +181,7 @@ namespace PropertyModels.Extensions
         /// <returns>IEnumerable&lt;TRet&gt;.</returns>
         public static IEnumerable<TRet> Select<TRet>(this IEnumerable enumerable, Func<object, TRet> selector)
         {
-            foreach (object item in enumerable)
+            foreach (var item in enumerable)
             {
                 yield return selector(item);
             }

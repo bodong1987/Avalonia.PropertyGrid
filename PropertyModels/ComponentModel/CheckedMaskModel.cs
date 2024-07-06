@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PropertyModels.ComponentModel
 {
@@ -16,13 +13,13 @@ namespace PropertyModels.ComponentModel
         /// <summary>
         /// The masks
         /// </summary>
-        private HashSet<string> _Masks = new HashSet<string>();
+        private readonly HashSet<string> _masks = [];
 
         /// <summary>
         /// Gets the masks.
         /// </summary>
         /// <value>The masks.</value>
-        public string[] Masks => _Masks.OrderBy(x=>x).ToArray();
+        public string[] Masks => _masks.OrderBy(x=>x).ToArray();
 
         /// <summary>
         /// Gets all.
@@ -39,15 +36,15 @@ namespace PropertyModels.ComponentModel
         /// <summary>
         /// The checked values
         /// </summary>
-        public HashSet<string> CheckedValues = new HashSet<string>();
+        public readonly HashSet<string> CheckedValues = [];
 
         /// <summary>
         /// Occurs when [check changed].
         /// </summary>
         public event EventHandler CheckChanged;
 
-        bool _IsUpdating = false;
-        bool _IsDirty = false;
+        private bool _isUpdating;
+        private bool _isDirty;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CheckedMaskModel"/> class.
@@ -58,12 +55,9 @@ namespace PropertyModels.ComponentModel
         {
             All = all;
             
-            foreach(string mask in masks)
+            foreach(var mask in masks)
             {
-                if(!_Masks.Contains(mask))
-                {
-                    _Masks.Add(mask);
-                }
+                _masks.Add(mask);
             }
         }
 
@@ -87,10 +81,10 @@ namespace PropertyModels.ComponentModel
         /// </summary>
         public void BeginUpdate()
         {
-            Debug.Assert(!_IsUpdating);
+            Debug.Assert(!_isUpdating);
 
-            _IsUpdating = true;
-            _IsDirty = false;
+            _isUpdating = true;
+            _isDirty = false;
         }
 
         /// <summary>
@@ -98,26 +92,26 @@ namespace PropertyModels.ComponentModel
         /// </summary>
         public void EndUpdate()
         {
-            Debug.Assert(_IsUpdating);
+            Debug.Assert(_isUpdating);
 
-            _IsUpdating = false;
+            _isUpdating = false;
 
-            if(_IsDirty)
+            if(_isDirty)
             {
                 CheckChanged?.Invoke(this, EventArgs.Empty);
-                _IsDirty = false;
+                _isDirty = false;
             }
         }
 
         private void RaiseChangedEvent()
         {
-            if(!_IsUpdating)
+            if(!_isUpdating)
             {
                 CheckChanged?.Invoke(this, EventArgs.Empty);
             }
             else
             {
-                _IsDirty = true;
+                _isDirty = true;
             }
         }
 
@@ -138,10 +132,8 @@ namespace PropertyModels.ComponentModel
                 return;
             }
 
-            if (!CheckedValues.Contains(mask))
+            if (CheckedValues.Add(mask))
             {
-                CheckedValues.Add(mask);
-
                 RaiseChangedEvent();
             }
         }

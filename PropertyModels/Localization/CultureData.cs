@@ -1,18 +1,15 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
-using PropertyModels.Extensions;
-using System.Text.RegularExpressions;
+// ReSharper disable MemberCanBeProtected.Global
 
-namespace PropertyModels.Localilzation
+namespace PropertyModels.Localization
 {
     /// <summary>
     /// Class AbstractCultureData.
-    /// Implements the <see cref="PropertyModels.Localilzation.ICultureData" />
+    /// Implements the <see cref="PropertyModels.Localization.ICultureData" />
     /// </summary>
-    /// <seealso cref="PropertyModels.Localilzation.ICultureData" />
+    /// <seealso cref="PropertyModels.Localization.ICultureData" />
     public abstract class AbstractCultureData : ICultureData
     {
         /// <summary>
@@ -42,9 +39,9 @@ namespace PropertyModels.Localilzation
         /// Initializes a new instance of the <see cref="AbstractCultureData"/> class.
         /// </summary>
         /// <param name="uri">The URI.</param>
-        public AbstractCultureData(Uri uri)
+        protected AbstractCultureData(Uri uri)
         {
-            string localPath = uri.LocalPath;
+            var localPath = uri.LocalPath;
             Culture = new CultureInfo(System.IO.Path.GetFileNameWithoutExtension(localPath));
             Path = uri;
         }
@@ -70,7 +67,7 @@ namespace PropertyModels.Localilzation
         /// <summary>
         /// Reloads this instance.
         /// </summary>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if reload success, <c>false</c> otherwise.</returns>
         public abstract bool Reload();
 
         /// <summary>
@@ -90,9 +87,9 @@ namespace PropertyModels.Localilzation
         /// <returns>Dictionary&lt;System.String, System.String&gt;.</returns>
         public static Dictionary<string, string> ReadJsonStringDictionary(string json)
         {
-            Dictionary<string, string> dict = new Dictionary<string, string>();
+            var dict = new Dictionary<string, string>();
 
-            string[] configs = json.Split('\r', '\n');
+            var configs = json.Split('\r', '\n');
 
             foreach(var line in configs)
             {
@@ -103,15 +100,14 @@ namespace PropertyModels.Localilzation
                     continue;
                 }
 
-                int endPos = 0;
-                string key = PickStringToken(configLine, 0, out endPos);
+                var key = PickStringToken(configLine, 0, out var endPos);
 
                 if(key == null)
                 {
                     continue;
                 }
 
-                string value = PickStringToken(configLine, endPos + 1, out _);
+                var value = PickStringToken(configLine, endPos + 1, out _);
 
                 if(value == null)
                 {
@@ -126,35 +122,29 @@ namespace PropertyModels.Localilzation
 
         private static string PickStringToken(string line, int startPos, out int endPos)
         {
-            int Begin = -1;
-            int Escape = -1;
+            var begin = -1;
+            var escape = -1;
             endPos = -1;
 
-            for(int i=startPos; i < line.Length; ++i)
+            for(var i=startPos; i < line.Length; ++i)
             {
-                char ch = line[i];
+                var ch = line[i];
 
-                if(ch == '"')
+                switch (ch)
                 {
-                    if(Escape == i-1 && Escape != -1)
-                    {
-                        Escape = -1;
-                        continue;
-                    }
-                    else if(Begin == -1)
-                    {
-                        Begin = i;
-                    }
-                    else if(Begin != -1)
-                    {
+                    case '"' when escape == i-1 && escape != -1:
+                        escape = -1;
+                        break;
+                    case '"' when begin == -1:
+                        begin = i;
+                        break;
+                    case '"':
                         endPos = i;
 
-                        return line.Substring(Begin + 1, endPos - Begin - 1);
-                    }
-                }
-                else if(ch == '\\')
-                {
-                    Escape = i;
+                        return line.Substring(begin + 1, endPos - begin - 1);
+                    case '\\':
+                        escape = i;
+                        break;
                 }
             }
 

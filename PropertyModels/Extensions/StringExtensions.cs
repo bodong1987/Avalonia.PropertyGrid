@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PropertyModels.Extensions
 {
@@ -36,11 +32,12 @@ namespace PropertyModels.Extensions
         {
             if (value == null)
             {
-                throw new ArgumentNullException("value");
+                throw new ArgumentNullException(nameof(value));
             }
+            
             if (length < 0)
             {
-                throw new ArgumentOutOfRangeException("length", length, "Length is less than zero");
+                throw new ArgumentOutOfRangeException(nameof(length), length, "Length is less than zero");
             }
 
             return (length <= value.Length) ? value.Substring(0, length) : value;
@@ -60,11 +57,11 @@ namespace PropertyModels.Extensions
         {
             if (value == null)
             {
-                throw new ArgumentNullException("value");
+                throw new ArgumentNullException(nameof(value));
             }
             if (length < 0)
             {
-                throw new ArgumentOutOfRangeException("length", length, "Length is less than zero");
+                throw new ArgumentOutOfRangeException(nameof(length), length, "Length is less than zero");
             }
 
             return (length < value.Length) ? value.Substring(value.Length - length) : value;
@@ -99,7 +96,8 @@ namespace PropertyModels.Extensions
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="other">The other.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if equals ignore case, <c>false</c> otherwise.</returns>
+        // ReSharper disable once InconsistentNaming
         public static bool iEquals(this string value, string other)
         {
             if (value == null && other == null)
@@ -119,7 +117,8 @@ namespace PropertyModels.Extensions
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="other">The other.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if start with other ignore case, <c>false</c> otherwise.</returns>
+        // ReSharper disable once InconsistentNaming
         public static bool iStartsWith(this string value, string other)
         {
             if (value == null && other == null)
@@ -139,7 +138,8 @@ namespace PropertyModels.Extensions
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="other">The other.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if end with other ignore case, <c>false</c> otherwise.</returns>
+        // ReSharper disable once InconsistentNaming
         public static bool iEndsWith(this string value, string other)
         {
             if (value == null && other == null)
@@ -155,7 +155,7 @@ namespace PropertyModels.Extensions
         }
 
         /// <summary>
-        /// Replaces the case insensitive.
+        /// Replaces the target string ignore case.
         /// </summary>
         /// <param name="input">The input.</param>
         /// <param name="search">The search.</param>
@@ -163,19 +163,20 @@ namespace PropertyModels.Extensions
         /// <returns>System.String.</returns>
         public static string ReplaceCaseInsensitive(this string input, string search, string value)
         {
-            if (input.IsNotNullOrEmpty())
+            if (!input.IsNotNullOrEmpty())
             {
-                string result = System.Text.RegularExpressions.Regex.Replace(
-                    input,
-                    System.Text.RegularExpressions.Regex.Escape(search),
-                    value.Replace("$", "$$"),
-                    System.Text.RegularExpressions.RegexOptions.IgnoreCase
-                    );
-
-                return result;
+                return input;
             }
+            
+            var result = System.Text.RegularExpressions.Regex.Replace(
+                input,
+                System.Text.RegularExpressions.Regex.Escape(search),
+                value.Replace("$", "$$"),
+                System.Text.RegularExpressions.RegexOptions.IgnoreCase
+            );
 
-            return input;
+            return result;
+
         }
 
         /// <summary>
@@ -190,20 +191,22 @@ namespace PropertyModels.Extensions
         public static uint GetDeterministicHashCode(this string s, bool ignoreCase = false)
         {
             uint h = 0;
-            int len = s.Length;
-            if (len > 0)
+            var len = s.Length;
+            if (len <= 0)
             {
-                int off = 0;
+                return h;
+            }
+            
+            var off = 0;
 
-                for (int i = 0; i < len; i++)
+            for (var i = 0; i < len; i++)
+            {
+                var c = s[off++];
+                if (ignoreCase && c is >= 'A' and <= 'Z')
                 {
-                    char c = s[off++];
-                    if (ignoreCase && c >= 'A' && c <= 'Z')
-                    {
-                        c += (char)('a' - 'A');
-                    }
-                    h = 31 * h + c;
+                    c += (char)('a' - 'A');
                 }
+                h = 31 * h + c;
             }
             return h;
         }
@@ -220,15 +223,15 @@ namespace PropertyModels.Extensions
         public static ulong GetDeterministicHashCode64(this string s, bool ignoreCase = false)
         {
             ulong h = 0;
-            int len = s.Length;
+            var len = s.Length;
             if (len > 0)
             {
-                int off = 0;
+                var off = 0;
 
-                for (int i = 0; i < len; i++)
+                for (var i = 0; i < len; i++)
                 {
-                    char c = s[off++];
-                    if (ignoreCase && c >= 'A' && c <= 'Z')
+                    var c = s[off++];
+                    if (ignoreCase && c is >= 'A' and <= 'Z')
                     {
                         c += (char)('a' - 'A');
                     }
@@ -251,9 +254,9 @@ namespace PropertyModels.Extensions
                 return -1;
             }
 
-            for (int i = s.Length - 1; i >= 0; --i)
+            for (var i = s.Length - 1; i >= 0; --i)
             {
-                char c = s[i];
+                var c = s[i];
                 if (predicate(c))
                 {
                     return i;
@@ -288,9 +291,9 @@ namespace PropertyModels.Extensions
                 return -1;
             }
 
-            for (int i = startIndex; i < s.Length; ++i)
+            for (var i = startIndex; i < s.Length; ++i)
             {
-                char c = s[i];
+                var c = s[i];
                 if (predicate(c))
                 {
                     return i;

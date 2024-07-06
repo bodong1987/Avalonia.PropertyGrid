@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PropertyModels.Collections
 {
@@ -66,12 +63,12 @@ namespace PropertyModels.Collections
         /// <summary>
         /// The values core
         /// </summary>
-        readonly List<T> ValuesCore = new List<T>();
+        private readonly List<T> ValuesCore = new List<T>();
 
         /// <summary>
         /// The selected value core
         /// </summary>
-        T SelectedValueCore;
+        private T SelectedValueCore;
 
         /// <summary>
         /// Occurs when [selection changed].

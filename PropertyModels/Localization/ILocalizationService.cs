@@ -1,13 +1,9 @@
-﻿using PropertyModels.Collections;
-using PropertyModels.ComponentModel;
+﻿using PropertyModels.ComponentModel;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+// ReSharper disable UnusedMethodReturnValue.Global
 
-namespace PropertyModels.Localilzation
+namespace PropertyModels.Localization
 {
     /// <summary>
     /// Interface ICultureData
@@ -42,7 +38,7 @@ namespace PropertyModels.Localilzation
         /// <summary>
         /// Reloads this instance.
         /// </summary>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if reload success, <c>false</c> otherwise.</returns>
         bool Reload();
     }
 

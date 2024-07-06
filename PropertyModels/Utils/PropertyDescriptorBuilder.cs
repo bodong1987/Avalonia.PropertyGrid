@@ -4,8 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PropertyModels.Utils
 {
@@ -140,7 +138,7 @@ namespace PropertyModels.Utils
         /// Allows the merge.
         /// </summary>
         /// <param name="descriptor">The descriptor.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         public static bool AllowMerge(PropertyDescriptor descriptor)
         {
             if (descriptor == null)

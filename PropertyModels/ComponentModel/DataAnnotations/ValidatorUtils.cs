@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using PropertyModels.Extensions;
 
 namespace PropertyModels.ComponentModel.DataAnnotations
@@ -19,7 +18,7 @@ namespace PropertyModels.ComponentModel.DataAnnotations
         /// </summary>
         /// <param name="target">The target.</param>
         /// <param name="message">The message.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         public static bool TryValidateObject(object target, out string message)
         {
             foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(target))
@@ -55,7 +54,7 @@ namespace PropertyModels.ComponentModel.DataAnnotations
         /// <param name="component">The component.</param>
         /// <param name="property">The property.</param>
         /// <param name="message">The message.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         public static bool TryValidateProperty(object component, PropertyDescriptor property, out string message)
         {
             if (property.IsDefined<ValidationAttribute>())

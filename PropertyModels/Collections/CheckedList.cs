@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PropertyModels.Collections
 {
@@ -86,12 +84,12 @@ namespace PropertyModels.Collections
         /// <summary>
         /// The source items core
         /// </summary>
-        List<T> SourceItemsCore = new List<T>();
+        private List<T> SourceItemsCore = new List<T>();
 
         /// <summary>
         /// The selected items
         /// </summary>
-        List<T> ItemsCore = new List<T>();
+        private List<T> ItemsCore = new List<T>();
 
         /// <summary>
         /// Gets the items.
@@ -129,7 +127,7 @@ namespace PropertyModels.Collections
         /// <value>The synchronize root.</value>
         public object SyncRoot => ((ICollection)ItemsCore).SyncRoot;
 
-        private bool IsUpdating = false;
+        private bool IsUpdating;
 
         /// <summary>
         /// Gets the selected items.

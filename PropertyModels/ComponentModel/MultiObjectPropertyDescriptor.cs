@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PropertyModels.ComponentModel
 {
@@ -21,12 +19,12 @@ namespace PropertyModels.ComponentModel
         /// Implements the <see cref="AttributeCollection" />
         /// </summary>
         /// <seealso cref="AttributeCollection" />
-        class MultiObjectAttributes : AttributeCollection
+        private class MultiObjectAttributes : AttributeCollection
         {
-            MultiObjectPropertyDescriptor _Owner;
-            AttributeCollection[] _ParentAttributes;
-            Lazy<Attribute[]> _Attributes;
-            Hashtable _AttributesTable;
+            private MultiObjectPropertyDescriptor _Owner;
+            private AttributeCollection[] _ParentAttributes;
+            private Lazy<Attribute[]> _Attributes;
+            private Hashtable _AttributesTable;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="MultiObjectAttributes"/> class.
@@ -35,8 +33,8 @@ namespace PropertyModels.ComponentModel
             public MultiObjectAttributes(MultiObjectPropertyDescriptor owner)
                 : base(null)
             {
-                this._Owner = owner;
-                this._Attributes = new Lazy<Attribute[]>(() => GetAttributes());
+                _Owner = owner;
+                _Attributes = new Lazy<Attribute[]>(() => GetAttributes());
             }
 
             /// <summary>
@@ -109,7 +107,7 @@ namespace PropertyModels.ComponentModel
             /// Gets the attributes.
             /// </summary>
             /// <returns>Attribute[].</returns>
-            Attribute[] GetAttributes()
+            private Attribute[] GetAttributes()
             {
                 return _Owner.Descriptors.First().Attributes.Cast<Attribute>()
                     .Select(x => this[x.GetType()])
@@ -118,7 +116,7 @@ namespace PropertyModels.ComponentModel
         }
         #endregion
 
-        PropertyDescriptor[] _Descriptors;
+        private PropertyDescriptor[] _Descriptors;
         /// <summary>
         /// Gets the descriptors.
         /// </summary>
@@ -132,7 +130,7 @@ namespace PropertyModels.ComponentModel
         public MultiObjectPropertyDescriptor(PropertyDescriptor[] descriptors)
             : base(descriptors[0].Name, null)
         {
-            this._Descriptors = descriptors;
+            _Descriptors = descriptors;
         }
 
         /// <summary>
@@ -141,7 +139,7 @@ namespace PropertyModels.ComponentModel
         /// <param name="list">The list.</param>
         /// <param name="index">The index.</param>
         /// <returns>System.Object.</returns>
-        object GetOwner(object[] list, int index)
+        private object GetOwner(object[] list, int index)
         {
             object res = list[index];
             ICustomTypeDescriptor custom = res as ICustomTypeDescriptor;
@@ -362,7 +360,7 @@ namespace PropertyModels.ComponentModel
             }
         }
 
-        static object GetValue(PropertyDescriptor pd, object component)
+        private static object GetValue(PropertyDescriptor pd, object component)
         {
             object value = null;
             if (component == null || pd == null)
@@ -383,7 +381,7 @@ namespace PropertyModels.ComponentModel
             return value;
         }
 
-        static Exception GetUnwindedException(Exception e)
+        private static Exception GetUnwindedException(Exception e)
         {
             Exception result = e;
             if (e is System.Reflection.TargetInvocationException)
@@ -401,7 +399,7 @@ namespace PropertyModels.ComponentModel
             return result;
         }
 
-        static object GetPropertyOwner(PropertyDescriptor pd, object component)
+        private static object GetPropertyOwner(PropertyDescriptor pd, object component)
         {
             ICustomTypeDescriptor typeDescriptor = component as ICustomTypeDescriptor;
             if (typeDescriptor == null)
@@ -465,7 +463,7 @@ namespace PropertyModels.ComponentModel
         /// Gets the name of the category to which the member belongs, as specified in the <see cref="T:System.ComponentModel.CategoryAttribute" />.
         /// </summary>
         /// <value>The category.</value>
-        public override string Category { get { return this._Descriptors[0].Category; } }
+        public override string Category { get { return _Descriptors[0].Category; } }
 
         #region IEnumerable
         /// <summary>

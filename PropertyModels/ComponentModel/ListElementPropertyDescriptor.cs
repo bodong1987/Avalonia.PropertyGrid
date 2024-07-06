@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PropertyModels.ComponentModel
 {
@@ -40,7 +36,7 @@ namespace PropertyModels.ComponentModel
         /// <value>The index.</value>
         public int Index { get; private set; }
 
-        readonly Type ElementType;
+        private readonly Type ElementType;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ListElementPropertyDescriptor" /> class.

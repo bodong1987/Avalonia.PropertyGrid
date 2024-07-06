@@ -35,7 +35,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Check available for target
         /// </summary>
         /// <param name="accessToken">The access token.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         bool Accept(object accessToken);
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Handles the property changed.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         bool HandlePropertyChanged(PropertyCellContext context);
 
         /// <summary>

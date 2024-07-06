@@ -39,7 +39,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         /// Check available for target
         /// </summary>
         /// <param name="accessToken">The access token.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         public virtual bool Accept(object accessToken)
         {
             return accessToken is PropertyGrid;
@@ -65,7 +65,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         /// Handles the property changed.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         public abstract bool HandlePropertyChanged(PropertyCellContext context);
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         /// <param name="oldValue">The old value.</param>
         /// <param name="value">The value.</param>
         /// <param name="context">The context.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         protected virtual bool ExecuteCommand(ICancelableCommand command, PropertyCellContext propertyContext, object oldValue, object value, object context)
         {
             RoutedCommandExecutingEventArgs evt = new RoutedCommandExecutingEventArgs(
@@ -237,7 +237,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         /// </summary>
         /// <param name="first">The first.</param>
         /// <param name="second">The second.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         protected virtual bool CheckEqual(object first, object second)
         {
             if (first == null && second == null)
@@ -258,7 +258,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         /// </summary>
         /// <param name="first">The first.</param>
         /// <param name="second">The second.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         protected virtual bool CheckEquals(object[] first, object[] second)
         {
             if (first == null && second == null)
