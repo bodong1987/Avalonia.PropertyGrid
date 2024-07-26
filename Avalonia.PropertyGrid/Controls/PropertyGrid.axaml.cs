@@ -18,6 +18,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using Avalonia.Reactive;
 
 namespace Avalonia.PropertyGrid.Controls
 {
@@ -195,11 +196,11 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         static PropertyGrid()
         {            
-            AllowFilterProperty.Changed.Subscribe(OnAllowFilterChanged);
-            AllowQuickFilterProperty.Changed.Subscribe(OnAllowQuickFilterChanged);
-            ShowStyleProperty.Changed.Subscribe(OnShowStyleChanged);
-            ShowTitleProperty.Changed.Subscribe(OnShowTitleChanged);
-			NameWidthProperty.Changed.Subscribe(OnNameWidthChanged);
+            AllowFilterProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnAllowFilterChanged));
+            AllowQuickFilterProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnAllowQuickFilterChanged));
+            ShowStyleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<PropertyGridShowStyle>>(OnShowStyleChanged));
+            ShowTitleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnShowTitleChanged));
+			NameWidthProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<double>>(OnNameWidthChanged));
         }
 
 
