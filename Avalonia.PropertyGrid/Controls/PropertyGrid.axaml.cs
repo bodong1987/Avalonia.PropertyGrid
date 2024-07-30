@@ -790,7 +790,7 @@ namespace Avalonia.PropertyGrid.Controls
 		/// <summary>
 		/// The selected object
 		/// </summary>
-		public readonly object SelectedObject;
+		public readonly object TargetObject;
 
 		/// <summary>
 		/// The property descriptor
@@ -803,16 +803,16 @@ namespace Avalonia.PropertyGrid.Controls
 		/// <value>The is visible.</value>
 		public bool IsVisible { get; set; } = false;
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="CustomPropertyDescriptorFilterEventArgs" /> class.
-		/// </summary>
-		/// <param name="routedEvent">The routed event.</param>
-		/// <param name="selectedObject">The selected object.</param>
-		/// <param name="propertyDescriptor">The property descriptor.</param>
-		public CustomPropertyDescriptorFilterEventArgs(RoutedEvent routedEvent, object selectedObject, PropertyDescriptor propertyDescriptor) :
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CustomPropertyDescriptorFilterEventArgs" /> class.
+        /// </summary>
+        /// <param name="routedEvent">The routed event.</param>
+        /// <param name="targetObject">The target object.</param>
+        /// <param name="propertyDescriptor">The property descriptor.</param>
+        public CustomPropertyDescriptorFilterEventArgs(RoutedEvent routedEvent, object targetObject, PropertyDescriptor propertyDescriptor) :
             base(routedEvent)
 		{
-			SelectedObject = selectedObject;
+			TargetObject = targetObject;
 			PropertyDescriptor = propertyDescriptor;
 		}
 	}

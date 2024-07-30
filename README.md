@@ -20,17 +20,12 @@ Its main features are:
 
 ## How To Use
 Use the source code of this project directly or use NUGet Packages:  
-
-before 11.0.4.0, you need one pacakage:  
     https://www.nuget.org/packages/bodong.Avalonia.PropertyGrid   
-after 11.0.4.1, you need add two packages :   
-    https://www.nuget.org/packages/bodong.PropertyModels  
-    https://www.nuget.org/packages/bodong.Avalonia.PropertyGrid   
-Then add PropertyGrid to your project, and bind the object to be displayed and edited to the SelectObject property. If you want to bind multiple objects, just bind IEnumerable<T> directly
+Then add PropertyGrid to your project, and bind the object to be displayed and edited to the `DataContext` property. If you want to bind multiple objects, just bind IEnumerable<T> directly
 
 ## Detail Description
 ### Data Modeling
-If you want to edit an object in PropertyGrid, you only need to directly set this object to the DataContext or SelectedObject property of PropertyGrid, PropertyGrid will automatically analyze the properties that can support editing, and edit it with the corresponding CellEdit. At the same time, you can also use Attributes in System.ComponentModel and System.ComponentModel.DataAnnotations to mark these properties, so that these properties have some special characteristics.  
+If you want to edit an object in PropertyGrid, you only need to directly set this object to the `DataContext` property of PropertyGrid, PropertyGrid will automatically analyze the properties that can support editing, and edit it with the corresponding CellEdit. At the same time, you can also use Attributes in System.ComponentModel and System.ComponentModel.DataAnnotations to mark these properties, so that these properties have some special characteristics.  
 Support but not limited to these:
 ```
 System.ComponentModel.CategoryAttribute                     /* set property category */  
@@ -114,7 +109,7 @@ set CustomPropertyDescriptorFilter, and add your custom process.
 ```C#
 private void OnCustomPropertyDescriptorFilter(object sender, CustomPropertyDescriptorFilterEventArgs e)
 {
-	if(e.SelectedObject is SimpleObject simpleObject&& e.PropertyDescriptor.Name == "ThreeStates2")
+	if(e.TargetObject is SimpleObject simpleObject&& e.PropertyDescriptor.Name == "ThreeStates2")
     {
         e.IsVisible = true;
         e.Handled = true;
@@ -131,7 +126,7 @@ Or set the NameWidth property of PropertyGrid directly.
 
 ### Multiple Objects Edit
 
-If you want to edit multiple objects at the same time, you only need to set the object to DataContext or SelectedObject as IEnumerable, for example:
+If you want to edit multiple objects at the same time, you only need to set the object to DataContext as IEnumerable, for example:
 
 ```C#
 public IEnumerable<SimpleObject> multiObjects => new SimpleObject[] { multiObject0, multiObject1 };
@@ -411,12 +406,16 @@ v11.0.4.1
 ``The data modeling module has been extracted into an independent project (PropertyModels) to facilitate the implementation of a project organization structure that separates data and performance. Therefore, after this version, you need to install two NUGET packages.``  
 v11.0.6.2  
 ``
-Set the SelectedObject property to obsolete. It is recommended to use the DataContext mechanism directly to provide data to the PropertyGrid;
+Set the `SelectedObject` property to obsolete. It is recommended to use the DataContext mechanism directly to provide data to the PropertyGrid;
 add custom property visibility filter support.
 ``  
 v11.0.10.1  
 ``
-SelectedObject property is deleted, please use DataContext directly.
+`SelectedObject` property is deleted, please use `DataContext` directly.
+``
+v11.1.1.1  
+``
+There is no need to associate the bodong.PropertyModels Nuget package separately. You can automatically reference this package when you reference Avalonia.PropertyGrid. If you need to reference PropertyModels in your own data model project, please ensure that their version numbers are consistent with the version referenced by PropertyGrid.
 ``
 
 

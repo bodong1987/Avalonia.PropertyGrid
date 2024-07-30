@@ -81,7 +81,7 @@ namespace Avalonia.PropertyGrid.Samples.Views
 
         private void OnCustomPropertyDescriptorFilter(object sender, CustomPropertyDescriptorFilterEventArgs e)
 		{
-			if(e.SelectedObject is SimpleObject simpleObject&& e.PropertyDescriptor.Name == "ThreeStates2")
+			if(e.TargetObject is SimpleObject simpleObject&& e.PropertyDescriptor.Name == "ThreeStates2")
             {
                 e.IsVisible = true;
                 e.Handled = true;
