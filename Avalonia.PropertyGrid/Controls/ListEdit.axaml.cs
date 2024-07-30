@@ -14,6 +14,7 @@ using Avalonia.Interactivity;
 using Avalonia.PropertyGrid.Services;
 using System.Collections;
 using Avalonia.Platform;
+using Avalonia.Reactive;
 
 namespace Avalonia.PropertyGrid.Controls
 {
@@ -188,7 +189,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         static ListEdit()
         {
-            DataListProperty.Changed.Subscribe(OnDataListChanged);
+            DataListProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<IList>>(OnDataListChanged));
         }
 
         /// <summary>

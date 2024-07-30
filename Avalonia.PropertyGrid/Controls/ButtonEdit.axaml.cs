@@ -5,6 +5,7 @@ using Avalonia.Interactivity;
 using PropertyModels.ComponentModel;
 using System;
 using System.Windows.Input;
+using Avalonia.Reactive;
 
 namespace Avalonia.PropertyGrid.Controls
 {
@@ -122,7 +123,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         static ButtonEdit()
         {
-            TextProperty.Changed.Subscribe(OnTextProperyChanged);
+            TextProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<string>>(OnTextProperyChanged));
         }
 
         /// <summary>

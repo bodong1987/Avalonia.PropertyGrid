@@ -3,6 +3,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.PropertyGrid.Localization;
 using PropertyModels.ComponentModel;
 using System;
+using Avalonia.Reactive;
 
 namespace Avalonia.PropertyGrid.Controls
 {
@@ -59,7 +60,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         static CheckedMask()
         {
-            ModelProperty.Changed.Subscribe(OnModelChanged);
+            ModelProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<CheckedMaskModel>>(OnModelChanged));
         }
 
         /// <summary>
