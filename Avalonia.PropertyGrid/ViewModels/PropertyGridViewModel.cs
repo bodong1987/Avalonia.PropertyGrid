@@ -28,6 +28,11 @@ namespace Avalonia.PropertyGrid.ViewModels
         Category,
 
         /// <summary>
+        /// Use category internal order.
+        /// </summary>
+        CategoryBuiltin,
+
+        /// <summary>
         /// The alphabetic
         /// </summary>
         Alphabetic,
@@ -194,7 +199,7 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// Gets the categories.
         /// </summary>
         /// <value>The categories.</value>
-        public SortedList<string, List<PropertyDescriptor>> Categories { get; private set; } = new SortedList<string, List<PropertyDescriptor>>();
+        public Dictionary<string, List<PropertyDescriptor>> Categories { get; private set; } = new Dictionary<string, List<PropertyDescriptor>>();
 
         /// <summary>
         /// Occurs when [filter changed].
