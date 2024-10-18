@@ -451,6 +451,10 @@ namespace Avalonia.PropertyGrid.Controls
                     {
                         BuildCategoryPropertiesView(target, referencePath);
                     }
+                    else if (propertyGridShowStyle == PropertyGridShowStyle.CategoryBuiltin)
+                    {
+                    BuildCategoryPropertiesView(target, referencePath, false);
+                    }
                     else if (propertyGridShowStyle == PropertyGridShowStyle.Alphabetic)
                     {
                         BuildAlphabeticPropertiesView(target, referencePath);
@@ -480,16 +484,23 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <param name="target">The target.</param>
         /// <param name="referencePath">The reference path.</param>
-        protected virtual void BuildCategoryPropertiesView(object target, ReferencePath referencePath)
+        protected virtual void BuildCategoryPropertiesView(object target, ReferencePath referencePath, bool alphabeticSort = true)
         {
             propertiesGrid.ColumnDefinitions.Clear();
 
-            foreach (var categoryInfo in ViewModel.Categories)
+            var categories = ViewModel.Categories;
+
+            if (alphabeticSort)
+            {
+                categories = categories.OrderBy(x => x.Key).ToDictionary(pair => pair.Key, pair => pair.Value);
+            }
+
+            foreach (var categoryInfo in categories)
             {
                 propertiesGrid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
 
                 Expander expander = new Expander();
-                expander.ExpandDirection = ExpandDirection.Down;                
+                expander.ExpandDirection = ExpandDirection.Down;
                 expander.SetValue(Grid.RowProperty, propertiesGrid.RowDefinitions.Count - 1);
                 expander.IsExpanded = true;
                 expander.HorizontalContentAlignment = Layout.HorizontalAlignment.Stretch;
