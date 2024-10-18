@@ -55,7 +55,7 @@ namespace PropertyModels.ComponentModel
 
             var fieldInfo = value.GetType().GetField(value.ToString());
 
-            var attr = fieldInfo.GetCustomAttribute<EnumDisplayNameAttribute>();
+            var attr = fieldInfo?.GetCustomAttribute<EnumDisplayNameAttribute>();
 
             DisplayName = attr?.DisplayName ?? value.ToString();
         }
