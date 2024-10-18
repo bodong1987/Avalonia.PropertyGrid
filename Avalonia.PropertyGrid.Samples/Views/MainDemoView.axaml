@@ -39,7 +39,7 @@
                             ShowStyle="{Binding ShowStyle, Mode=TwoWay}"
                             ShowTitle="{Binding IsShowTitle, Mode=TwoWay}"
                             AllowQuickFilter="{Binding AllowQuickFilter, Mode=TwoWay}"
-                            NameWidth="{Binding DefaultNameWidth}"
+                            NameWidth="280"
                         >
                         </pgc:PropertyGrid>
                     </ScrollViewer>

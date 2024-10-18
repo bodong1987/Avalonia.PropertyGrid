@@ -114,7 +114,7 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
             set => this.RaiseAndSetIfChanged(ref _IsReadOnly, value);
         }
 
-        double _DefaultNameWidth = 180;
+        double _DefaultNameWidth = 280;
         public double DefaultNameWidth
         {
             get => _DefaultNameWidth;
