@@ -22,5 +22,7 @@
     "Insert a new element at {0}": "在数组{0}处插入一个新的元素",
     "Insert a new element at the end of the array": "在数组尾部新增一个新的元素",
     "Change {0} form {1} to {2}": "将属性[{0}]从<{1}>修改为<{2}>",
-    "Change {0} selection from {1} to {2}": "属性[{0}]选择项从<{1}>变更为<{2}>"
+    "Change {0} selection from {1} to {2}": "属性[{0}]选择项从<{1}>变更为<{2}>",
+    "ReadOnly": "只读",
+    "Readonly": "只读"
 }

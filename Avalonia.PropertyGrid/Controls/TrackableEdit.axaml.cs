@@ -46,6 +46,21 @@ namespace Avalonia.PropertyGrid.Controls
             get => GetValue(FormatStringProperty);
             set => SetValue(FormatStringProperty, value);
         }
+
+        /// <summary>
+        /// The Readonly property
+        /// </summary>
+        public static readonly StyledProperty<bool> IsReadOnlyProperty =
+            AvaloniaProperty.Register<TrackableEdit, bool>(nameof(IsReadOnly), false);
+
+        /// <summary>
+        /// Gets or sets IsReadOnly state
+        /// </summary>        
+        public bool IsReadOnly
+        {
+            get => GetValue(IsReadOnlyProperty);
+            set => SetValue(IsReadOnlyProperty, value);
+        }
     }
 
     /// <summary>

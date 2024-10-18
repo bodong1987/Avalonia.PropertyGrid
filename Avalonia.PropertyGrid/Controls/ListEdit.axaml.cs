@@ -415,6 +415,17 @@ namespace Avalonia.PropertyGrid.Controls
             set => this.RaiseAndSetIfChanged(ref _IsEditable, value);
         }
 
+        bool _IsReadOnly;
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is readonly.
+        /// </summary>
+        /// <value><c>true</c> if this instance is readonly; otherwise, <c>false</c>.</value>
+        public bool IsReadOnly
+        {
+            get => _IsReadOnly;
+            set => this.RaiseAndSetIfChanged(ref _IsReadOnly, value);
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ListViewModel"/> class.
         /// </summary>
@@ -532,6 +543,12 @@ namespace Avalonia.PropertyGrid.Controls
         public bool IsEditable => Model.IsEditable;
 
         /// <summary>
+        /// Gets a value indicating whether this instance is readonly.
+        /// </summary>
+        /// <value><c>true</c> if this instance is readonly; otherwise, <c>false</c>.</value>
+        public bool IsReadOnly => Model.IsReadOnly;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ListElementDataDesc" /> class.
         /// </summary>
         /// <param name="model">The model.</param>
@@ -575,6 +592,10 @@ namespace Avalonia.PropertyGrid.Controls
             if(e.PropertyName == nameof(Model.IsEditable))
             {
                 RaisePropertyChanged(nameof(IsEditable));
+            }
+            else if(e.PropertyName == nameof(Model.IsReadOnly))
+            {
+                RaisePropertyChanged(nameof(IsReadOnly));
             }
         }
 

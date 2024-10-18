@@ -69,11 +69,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             ListEdit control = new ListEdit();
             control.Model.PropertyContext = context;
-            control.Model.Collection = (this as ICellEditFactory).Collection;            
+            control.Model.Collection = (this as ICellEditFactory).Collection;
+            control.Model.IsReadOnly = context.IsReadOnly;
 
             var attr = context.Property.GetCustomAttribute<EditableAttribute>();
             
-            if((attr != null && !attr.AllowEdit) || context.Property.IsReadOnly)
+            if((attr != null && !attr.AllowEdit) || context.IsReadOnly)
             {
                 control.Model.IsEditable = false;
             }
@@ -111,6 +112,24 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Handles readonly flag changed
+        /// </summary>
+        /// <param name="control">control.</param>
+        /// <param name="readOnly">readonly flag</param>
+        /// <returns>Control.</returns>
+        public override void HandleReadOnlyStateChanged(Control control, bool readOnly)
+        {
+            if (control is ListEdit ae)
+            {
+                ae.Model.IsReadOnly = readOnly;
+            }
+            else
+            {
+                base.HandleReadOnlyStateChanged(control, readOnly);
+            }
         }
 
         /// <summary>

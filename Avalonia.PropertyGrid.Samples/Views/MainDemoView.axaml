@@ -65,6 +65,8 @@
                                 <apv:PropertyGridOrderStyle>Alphabetic</apv:PropertyGridOrderStyle>
                             </ComboBox.Items>
                         </ComboBox>
+                        <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Readonly}"></TextBlock>
+                        <ToggleSwitch IsChecked="{Binding IsReadOnly}" Margin="4"></ToggleSwitch>
                         <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Allow_Filter}"></TextBlock>
                         <ToggleSwitch IsChecked="{Binding AllowFilter}" Margin="4"></ToggleSwitch>
                         <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Allow_Quick_Filter}"></TextBlock>

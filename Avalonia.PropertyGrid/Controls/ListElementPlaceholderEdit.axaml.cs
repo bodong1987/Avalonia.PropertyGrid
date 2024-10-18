@@ -75,6 +75,8 @@ namespace Avalonia.PropertyGrid.Controls
 
                 Debug.Assert(Context.Factory != null);
 
+                Context.Factory.HandleReadOnlyStateChanged(control, Context.IsReadOnly || value.IsReadOnly);
+
                 Context.Factory.HandlePropertyChanged(Context);
             }
         }

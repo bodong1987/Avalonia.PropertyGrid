@@ -92,6 +92,10 @@ namespace Avalonia.PropertyGrid.Samples.Views
             {
                 propertyGrid_Styles.NameWidth = MainVM.DefaultNameWidth;
             }
+            else if(e.PropertyName == nameof(MainVM.IsReadOnly))
+            {
+                propertyGrid_Styles.IsReadOnly = MainVM.IsReadOnly;
+            }
         }
 
         private void OnCustomPropertyDescriptorFilter(object sender, CustomPropertyDescriptorFilterEventArgs e)

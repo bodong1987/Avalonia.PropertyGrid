@@ -300,7 +300,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
         [Category("Readonly")]
         [ReadOnly(true)]
-        public CheckedList<PlatformID> ReadonlyPlatforms { get; set; } = new CheckedList<PlatformID>(Enum.GetValues(typeof(PlatformID)).Cast<PlatformID>());
+        public CheckedList<PlatformID> ReadonlyPlatforms { get; set; } = new CheckedList<PlatformID>(Enum.GetValues(typeof(PlatformID)).Cast<PlatformID>(), new PlatformID[] {PlatformID.Win32NT, PlatformID.Unix});
 
         [Category("Readonly")]
         [ReadOnly(true)]
