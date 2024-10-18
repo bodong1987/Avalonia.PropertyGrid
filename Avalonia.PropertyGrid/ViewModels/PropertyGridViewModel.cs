@@ -172,16 +172,16 @@ namespace Avalonia.PropertyGrid.ViewModels
             }
         }
 
-        PropertyGridOrderStyle _PropertyCategoryStyle = PropertyGridOrderStyle.Builtin;
+        PropertyGridOrderStyle _CategoryOrderStyle = PropertyGridOrderStyle.Builtin;
 
-        public PropertyGridOrderStyle PropertyCategoryStyle
+        public PropertyGridOrderStyle CategoryOrderStyle
         {
-            get => _PropertyCategoryStyle;
+            get => _CategoryOrderStyle;
             set
             {
-                if(_PropertyCategoryStyle != value)
+                if(_CategoryOrderStyle != value)
                 {
-                    this.RaiseAndSetIfChanged(ref _PropertyCategoryStyle, value);
+                    this.RaiseAndSetIfChanged(ref _CategoryOrderStyle, value);
                 }
             }
         }

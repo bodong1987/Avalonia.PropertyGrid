@@ -44,11 +44,25 @@
                         </pgc:PropertyGrid>
                     </ScrollViewer>
                     <StackPanel Orientation="Horizontal" Grid.Row="1">
-                        <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Show_Style}"></TextBlock>                        
+                        <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Show_Style}"></TextBlock>
                         <ComboBox x:Name="ShowStyleComboBox" Margin="4" VerticalAlignment="Center" SelectedIndex="0">
                             <ComboBox.Items>
                                 <apv:PropertyGridShowStyle>Category</apv:PropertyGridShowStyle>
                                 <apv:PropertyGridShowStyle>Tiled</apv:PropertyGridShowStyle>                                
+                            </ComboBox.Items>
+                        </ComboBox>
+                        <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize CategoryOrder}"></TextBlock>
+                        <ComboBox x:Name="CategoryOrderComboBox" Margin="4" VerticalAlignment="Center" SelectedIndex="0">
+                            <ComboBox.Items>
+                                <apv:PropertyGridOrderStyle>Builtin</apv:PropertyGridOrderStyle>
+                                <apv:PropertyGridOrderStyle>Alphabetic</apv:PropertyGridOrderStyle>                            
+                            </ComboBox.Items>
+                        </ComboBox>
+                        <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize PropertyOrder}"></TextBlock>
+                        <ComboBox x:Name="PropertyOrderComboBox" Margin="4" VerticalAlignment="Center" SelectedIndex="0">
+                            <ComboBox.Items>
+                                <apv:PropertyGridOrderStyle>Builtin</apv:PropertyGridOrderStyle>
+                                <apv:PropertyGridOrderStyle>Alphabetic</apv:PropertyGridOrderStyle>
                             </ComboBox.Items>
                         </ComboBox>
                         <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Allow_Filter}"></TextBlock>

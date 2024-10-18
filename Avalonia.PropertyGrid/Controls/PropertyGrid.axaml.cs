@@ -131,17 +131,17 @@ namespace Avalonia.PropertyGrid.Controls
         /// The order style property
         /// control property sort algorithm
         /// </summary>
-        public static readonly StyledProperty<PropertyGridOrderStyle> OrderStyleProperty = AvaloniaProperty.Register<PropertyGrid, PropertyGridOrderStyle>(nameof(OrderStyle), PropertyGridOrderStyle.Builtin);
+        public static readonly StyledProperty<PropertyGridOrderStyle> PropertyOrderStyleProperty = AvaloniaProperty.Register<PropertyGrid, PropertyGridOrderStyle>(nameof(PropertyOrderStyle), PropertyGridOrderStyle.Builtin);
 
         /// <summary>
         /// Gets or sets the order style.
         /// </summary>
         /// <value>The order style.</value>
         [Category("Views")]
-        public PropertyGridOrderStyle OrderStyle
+        public PropertyGridOrderStyle PropertyOrderStyle
         {
-            get => GetValue(OrderStyleProperty);
-            set => SetValue(OrderStyleProperty, value);
+            get => GetValue(PropertyOrderStyleProperty);
+            set => SetValue(PropertyOrderStyleProperty, value);
         }
 
         /// <summary>
@@ -235,6 +235,8 @@ namespace Avalonia.PropertyGrid.Controls
             AllowFilterProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnAllowFilterChanged));
             AllowQuickFilterProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnAllowQuickFilterChanged));
             ShowStyleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<PropertyGridShowStyle>>(OnShowStyleChanged));
+            CategoryOrderStyleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<PropertyGridOrderStyle>>(OnCategoryOrderStyleChanged));
+            PropertyOrderStyleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<PropertyGridOrderStyle>>(OnPropertyOrderStyleChanged));
             ShowTitleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnShowTitleChanged));
             NameWidthProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<double>>(OnNameWidthChanged));
         }
@@ -295,6 +297,16 @@ namespace Avalonia.PropertyGrid.Controls
             if (e.PropertyName == nameof(ViewModel.ShowStyle))
             {
                 ShowStyle = ViewModel.ShowStyle;
+                BuildPropertiesView();
+            }
+            else if(e.PropertyName == nameof(ViewModel.CategoryOrderStyle))
+            {
+                CategoryOrderStyle = ViewModel.CategoryOrderStyle;
+                BuildPropertiesView();
+            }
+            else if(e.PropertyName == nameof(ViewModel.PropertyOrderStyle))
+            {
+                PropertyOrderStyle = ViewModel.PropertyOrderStyle;
                 BuildPropertiesView();
             }
         }
@@ -406,6 +418,32 @@ namespace Avalonia.PropertyGrid.Controls
             ViewModel.ShowStyle = newValue.Value;
         }
 
+        private static void OnCategoryOrderStyleChanged(AvaloniaPropertyChangedEventArgs<PropertyGridOrderStyle> e)
+        {
+            if (e.Sender is PropertyGrid sender)
+            {
+                sender.OnCategoryOrderStyleChanged(e.OldValue, e.NewValue);
+            }
+        }
+
+        private void OnCategoryOrderStyleChanged(Optional<PropertyGridOrderStyle> oldValue, BindingValue<PropertyGridOrderStyle> newValue)
+        {
+            ViewModel.CategoryOrderStyle = newValue.Value;
+        }
+
+        private static void OnPropertyOrderStyleChanged(AvaloniaPropertyChangedEventArgs<PropertyGridOrderStyle> e)
+        {
+            if (e.Sender is PropertyGrid sender)
+            {
+                sender.OnPropertyOrderStyleChanged(e.OldValue, e.NewValue);
+            }
+        }
+
+        private void OnPropertyOrderStyleChanged(Optional<PropertyGridOrderStyle> oldValue, BindingValue<PropertyGridOrderStyle> newValue)
+        {
+            ViewModel.PropertyOrderStyle = newValue.Value;
+        }
+
         private static void OnShowTitleChanged(AvaloniaPropertyChangedEventArgs<bool> e)
         {
             if (e.Sender is PropertyGrid sender)
@@ -485,7 +523,7 @@ namespace Avalonia.PropertyGrid.Controls
 
                 if (ViewModel.ShowStyle == PropertyGridShowStyle.Category)
                 {
-                    BuildCategoryPropertiesView(target, referencePath, ViewModel.PropertyCategoryStyle, ViewModel.PropertyOrderStyle);
+                    BuildCategoryPropertiesView(target, referencePath, ViewModel.CategoryOrderStyle, ViewModel.PropertyOrderStyle);
                 }                
                 else if(ViewModel.PropertyOrderStyle == PropertyGridOrderStyle.Alphabetic)
                 {

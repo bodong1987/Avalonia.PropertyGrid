@@ -139,5 +139,7 @@
     "Name_Width": "名称宽度",
     "Can not be null": "不可为空",
     "ValidateString": "可校验字符串",
-    "Show_Style":  "显示风格"
+    "Show_Style": "显示风格",
+    "CategoryOrder": "分类顺序",
+    "PropertyOrder": "属性顺序"
 }

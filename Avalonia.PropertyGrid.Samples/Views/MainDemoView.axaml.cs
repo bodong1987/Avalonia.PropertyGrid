@@ -53,6 +53,21 @@ namespace Avalonia.PropertyGrid.Samples.Views
                 }
             };
 
+            CategoryOrderComboBox.SelectionChanged += (sender, e) =>
+            {
+                if (CategoryOrderComboBox.SelectedItem is PropertyGridOrderStyle showStyle)
+                {
+                    propertyGrid_Styles.CategoryOrderStyle = showStyle;
+                }
+            };
+
+            PropertyOrderComboBox.SelectionChanged += (sender, e) =>
+            {
+                if (PropertyOrderComboBox.SelectedItem is PropertyGridOrderStyle showStyle)
+                {
+                    propertyGrid_Styles.PropertyOrderStyle = showStyle;
+                }
+            };
         }
 
         private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
