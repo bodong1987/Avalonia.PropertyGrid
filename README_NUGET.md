@@ -7,9 +7,10 @@ Its main features are:
 * Support array editing, support for creating, inserting, deleting and clearing in the control
 * Support data verification
 * Support Built-in undo and redo framework
+* Support global `ReadOnly` setting
 * Support for automatically adjusting the visibility of properties based on conditions
 * Support path picking
-* Support three display modes: category-based, alphabetical sorting, builtin sorting  
+* Support three display modes: category-based, alphabetical sorting and builtin sorting  
 * Support text filtering, regular expression filtering, and supports ignoring case settings  
 * Support fast filtering by Category
 * Support data automatic reloading

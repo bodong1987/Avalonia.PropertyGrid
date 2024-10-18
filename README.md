@@ -7,6 +7,7 @@ Its main features are:
 * Support array editing, support for creating, inserting, deleting and clearing in the control
 * Support data verification
 * Support Built-in undo and redo framework
+* Support global `ReadOnly` setting
 * Support for automatically adjusting the visibility of properties based on conditions
 * Support path picking
 * Support three display modes: category-based, alphabetical sorting and builtin sorting  
@@ -403,19 +404,21 @@ This example shows how to use PropertyGrid through the Nuget package.
 
 ### Major changes  
 v11.0.4.1  
-``The data modeling module has been extracted into an independent project (PropertyModels) to facilitate the implementation of a project organization structure that separates data and performance. Therefore, after this version, you need to install two NUGET packages.``  
-v11.0.6.2  
-``
-Set the `SelectedObject` property to obsolete. It is recommended to use the DataContext mechanism directly to provide data to the PropertyGrid;
-add custom property visibility filter support.
-``  
-v11.0.10.1  
-``
-`SelectedObject` property is deleted, please use `DataContext` directly.
-``
-v11.1.1.1  
-``
-There is no need to associate the bodong.PropertyModels Nuget package separately. You can automatically reference this package when you reference Avalonia.PropertyGrid. If you need to reference PropertyModels in your own data model project, please ensure that their version numbers are consistent with the version referenced by PropertyGrid.
-``
+* The data modeling module has been extracted into an independent project (PropertyModels) to facilitate the implementation of a project organization structure that separates data and performance. Therefore, after this version, you need to install two NUGET packages.
 
+v11.0.6.2  
+* Set the `SelectedObject` property to obsolete. It is recommended to use the DataContext mechanism directly to provide data to the PropertyGrid;
+add custom property visibility filter support.
+
+v11.0.10.1  
+* `SelectedObject` property is deleted, please use `DataContext` directly.
+
+v11.1.1.1  
+
+* There is no need to associate the bodong.PropertyModels Nuget package separately. You can automatically reference this package when you reference Avalonia.PropertyGrid. If you need to reference PropertyModels in your own data model project, please ensure that their version numbers are consistent with the version referenced by PropertyGrid.
+
+v11.1.4.1  
+
+* The ShowStyle attribute is split into three: ShowStyle, PropertyOrderStyle, and CategoryOrderStyle. They are respectively used to indicate: whether to display categories, attribute sorting method, and category sorting method.
+* ICellEditFactory adds an interface `HandleReadOnlyStateChanged` to notify the processing of ReadOnly tags. You can customize your ReadOnly behavior through this interface. For example, by default ReadOnly is handled by setting IsEnabled to false. If your control supports better read-only effects, you can customize it by overriding this method. For example, when it comes to String and number, the IsReadOnly property is more suitable than IsEnabled because it can better support users to copy the content in the control.
 
