@@ -83,7 +83,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
 		[Category("Boolean")]
 		public bool AlwaysHiddenBoolean { get; set; }
 
-		[Category("Enum")]
+        [Category("Enum")]
         public PhoneService Service { get; set; } = PhoneService.None;
 
         [Category("Enum")]
@@ -252,6 +252,60 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
         [Category("Font")]
         public Avalonia.Media.FontFamily FontFamily { get; set; } = new FontFamily("Courier New");
+
+        [Category("Readonly")]        
+        [PathBrowsable(PathBrowsableType.Directory)]
+        [ReadOnly(true)]
+        public string ReadonlyPath { get; set; } = "C:\\Windows\\System32";
+
+        [Category("Readonly")]
+        [ReadOnly(true)]
+        public string ReadonlyString { get; set; } = "You can copy but you can't edit it";
+
+        [Category("Readonly")]
+        [ReadOnly(true)]
+        public bool ReadonlyBoolean { get; set; } = false;
+
+        [Category("Readonly")]
+        [ReadOnly(true)]
+        public PhoneService ReadonlyPhoneService { get; set; }
+
+        [Category("Readonly")]
+        [ReadOnly(true)]
+        public PlatformType ReadonlyPlatformType { get; set; }
+
+        [Category("Readonly")]
+        [ReadOnly(true)]
+        public int ReadonlyInt32 { get; set; }
+
+        [Category("Readonly")]
+        [ReadOnly(true)]
+        public float ReadonlyFloat { get; set; }
+
+        [Category("Readonly")]
+        [ReadOnly(true)]
+        public BindingList<int> ReadonlyIntArray { get; set; } = new BindingList<int>() { 1, 2, 3 };
+
+        [Category("Readonly")]
+        [ReadOnly(true)]
+        public BindingList<string> ReadonlyStringArray { get; set; } = new BindingList<string>() { "Hello", "World", "!!!" };
+
+        [Category("Readonly")]
+        [ReadOnly(true)]
+        public SelectableList<string> ReadonlySelectableList { get; set; } = new SelectableList<string>(new string[] { "John", "David", "bodong" });
+
+        [Category("Readonly")]
+        [ReadOnly(true)]
+        public Vector3 ReadonlyVector3 { get; set; } = new Vector3(1, 2, 3);
+
+        [Category("Readonly")]
+        [ReadOnly(true)]
+        public CheckedList<PlatformID> ReadonlyPlatforms { get; set; } = new CheckedList<PlatformID>(Enum.GetValues(typeof(PlatformID)).Cast<PlatformID>());
+
+        [Category("Readonly")]
+        [ReadOnly(true)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]        
+        public LoginInfo ReadonlyLoginInfo { get; set; } = new LoginInfo();
     }
 
     [Flags]

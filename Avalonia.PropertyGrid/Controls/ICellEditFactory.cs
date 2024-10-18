@@ -66,6 +66,14 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="filterContext">The filter context.</param>
         /// <returns>System.Nullable&lt;PropertyVisibility&gt;.</returns>
         PropertyVisibility? HandlePropagateVisibility(object target, PropertyCellContext context, IPropertyGridFilterContext filterContext);
+
+        /// <summary>
+        /// Handles readonly flag changed
+        /// </summary>
+        /// <param name="control">control.</param>
+        /// <param name="readOnly">readonly flag</param>
+        /// <returns>Control.</returns>
+        void HandleReadOnlyStateChanged(Control control, bool readOnly);
     }
 
     /// <summary>
@@ -114,6 +122,11 @@ namespace Avalonia.PropertyGrid.Controls
         /// The parent
         /// </summary>
         public readonly PropertyCellContext ParentContext;
+
+        /// <summary>
+        /// If this property should be readonly
+        /// </summary>
+        public bool IsReadOnly => Property.IsReadOnly || Owner.IsReadOnly || (ParentContext != null && ParentContext.IsReadOnly);
 
         /// <summary>
         /// Gets the value.

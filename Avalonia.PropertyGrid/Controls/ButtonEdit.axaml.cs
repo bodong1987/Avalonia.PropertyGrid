@@ -42,6 +42,28 @@ namespace Avalonia.PropertyGrid.Controls
         }
 
         /// <summary>
+        /// The IsReadOnly property
+        /// </summary>
+        public static readonly DirectProperty<ButtonEdit, bool> IsReadOnlyProperty =
+            AvaloniaProperty.RegisterDirect<ButtonEdit, bool>(
+                nameof(IsReadOnly),
+                o => o.IsReadOnly,
+                (o, v) => o.IsReadOnly = v
+                );
+
+
+        bool _IsReadOnly = false;
+
+        /// <summary>
+        /// Gets or sets Is ReadOnly Flags.
+        /// </summary>
+        public bool IsReadOnly
+        {
+            get => _IsReadOnly;
+            set => SetAndRaise(IsReadOnlyProperty, ref _IsReadOnly, value);
+        }
+
+        /// <summary>
         /// The text property
         /// </summary>
         public static readonly DirectProperty<ButtonEdit, string> TextProperty =
@@ -123,7 +145,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         static ButtonEdit()
         {
-            TextProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<string>>(OnTextProperyChanged));
+            TextProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<string>>(OnTextPropertyChanged));
         }
 
         /// <summary>
@@ -145,14 +167,14 @@ namespace Avalonia.PropertyGrid.Controls
         }
 
         /// <summary>
-        /// Called when [text propery changed].
+        /// Called when [text property changed].
         /// </summary>
         /// <param name="e">The e.</param>
-        private static void OnTextProperyChanged(AvaloniaPropertyChangedEventArgs<string> e)
+        private static void OnTextPropertyChanged(AvaloniaPropertyChangedEventArgs<string> e)
         {
             if(e.Sender is ButtonEdit be)
             {
-                be.OntextPropertyChanged(e.NewValue.Value);
+                be.OnTextPropertyChanged(e.NewValue.Value);
             }
         }
 
@@ -160,7 +182,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Called when [property changed].
         /// </summary>
         /// <param name="value">The value.</param>
-        private void OntextPropertyChanged(string value)
+        private void OnTextPropertyChanged(string value)
         {
             var evt = new RoutedEventArgs(TextChangedEvent);
             RaiseEvent(evt);

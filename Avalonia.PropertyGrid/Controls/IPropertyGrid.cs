@@ -50,6 +50,12 @@ namespace Avalonia.PropertyGrid.Controls
         bool AllowFilter { get; set; }
 
         /// <summary>
+        /// Gets or sets Is Readonly flag
+        /// </summary>
+        /// <value><c>true</c> if [readonly]; otherwise, <c>false</c>.</value>
+        bool IsReadOnly { get; set; }
+
+        /// <summary>
         /// Gets or sets the show style.
         /// </summary>
         /// <value>The show style.</value>

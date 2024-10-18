@@ -160,6 +160,10 @@ namespace Avalonia.PropertyGrid.ViewModels
 
         PropertyGridOrderStyle _PropertyOrderStyle = PropertyGridOrderStyle.Builtin;
 
+        /// <summary>
+        /// Gets the property order style
+        /// </summary>
+        /// <value>The show style </value>
         public PropertyGridOrderStyle PropertyOrderStyle
         {
             get => _PropertyOrderStyle;
@@ -174,6 +178,10 @@ namespace Avalonia.PropertyGrid.ViewModels
 
         PropertyGridOrderStyle _CategoryOrderStyle = PropertyGridOrderStyle.Builtin;
 
+        /// <summary>
+        /// Gets the category order style
+        /// </summary>
+        /// <value>The show style </value>
         public PropertyGridOrderStyle CategoryOrderStyle
         {
             get => _CategoryOrderStyle;
@@ -186,6 +194,23 @@ namespace Avalonia.PropertyGrid.ViewModels
             }
         }
 
+        bool _IsReadOnly = false;
+
+        /// <summary>
+        /// Gets the readonly flag
+        /// </summary>
+        /// <value>The readonly flag </value>
+        public bool IsReadOnly
+        {
+            get => _IsReadOnly;
+            set
+            {
+                if(_IsReadOnly != value)
+                {
+                    this.RaiseAndSetIfChanged(ref _IsReadOnly, value);
+                }
+            }
+        }
 
         /// <summary>
         /// The category filter

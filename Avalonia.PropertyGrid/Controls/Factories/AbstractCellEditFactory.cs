@@ -69,6 +69,19 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         public abstract bool HandlePropertyChanged(PropertyCellContext context);
 
         /// <summary>
+        /// Handles readonly flag changed
+        /// </summary>
+        /// <param name="control">control.</param>
+        /// <param name="readOnly">readonly flag</param>
+        /// <returns>Control.</returns>
+        public virtual void HandleReadOnlyStateChanged(Control control, bool readOnly)
+        {
+            // default operation, set IsEnabled flag
+            // you can override this method to change this default operation
+            control.IsEnabled = !readOnly;
+        }
+
+        /// <summary>
         /// Sets the and raise.
         /// </summary>
         /// <param name="context">The context.</param>

@@ -161,5 +161,23 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             return null;
         }
+
+        /// <summary>
+        /// Handles readonly flag changed
+        /// </summary>
+        /// <param name="control">control.</param>
+        /// <param name="readOnly">readonly flag</param>
+        /// <returns>Control.</returns>
+        public override void HandleReadOnlyStateChanged(Control control, bool readOnly)
+        {
+            if (control is Border border && border.Child is PropertyGrid pg)
+            {
+                pg.IsReadOnly = readOnly;
+            }
+            else
+            {
+                base.HandleReadOnlyStateChanged(control, readOnly);
+            }
+        }
     }
 }

@@ -161,6 +161,21 @@ namespace Avalonia.PropertyGrid.Controls
         }
 
         /// <summary>
+        /// The IsReadOnly property
+        /// </summary>
+        public static readonly StyledProperty<bool> IsReadOnlyProperty = AvaloniaProperty.Register<PropertyGrid, bool>(nameof(IsReadOnly), false);
+                
+        /// <summary>
+        /// Gets or sets Is Readonly flag
+        /// </summary>
+        /// <value><c>true</c> if [readonly]; otherwise, <c>false</c>.</value>
+        public bool IsReadOnly 
+        {
+            get => GetValue(IsReadOnlyProperty);
+            set => SetValue(IsReadOnlyProperty, value);
+        }
+
+        /// <summary>
         /// The view model
         /// </summary>
         internal PropertyGridViewModel ViewModel { get; private set; } = new PropertyGridViewModel();
@@ -239,8 +254,8 @@ namespace Avalonia.PropertyGrid.Controls
             PropertyOrderStyleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<PropertyGridOrderStyle>>(OnPropertyOrderStyleChanged));
             ShowTitleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnShowTitleChanged));
             NameWidthProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<double>>(OnNameWidthChanged));
+            IsReadOnlyProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnIsReadOnyPropertyChanged));
         }
-
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyGrid" /> class.
@@ -307,6 +322,11 @@ namespace Avalonia.PropertyGrid.Controls
             else if(e.PropertyName == nameof(ViewModel.PropertyOrderStyle))
             {
                 PropertyOrderStyle = ViewModel.PropertyOrderStyle;
+                BuildPropertiesView();
+            }
+            else if(e.PropertyName == nameof(ViewModel.IsReadOnly))
+            {
+                IsReadOnly = ViewModel.IsReadOnly;
                 BuildPropertiesView();
             }
         }
@@ -457,6 +477,18 @@ namespace Avalonia.PropertyGrid.Controls
             splitterGrid.IsVisible = newValue;
         }
 
+        private static void OnIsReadOnyPropertyChanged(AvaloniaPropertyChangedEventArgs<bool> e)
+        {
+            if(e.Sender is PropertyGrid sender)
+            {
+                sender.OnIsReadOnyPropertyChanged(e.OldValue.Value, e.NewValue.Value);
+            }
+        }
+
+        private void OnIsReadOnyPropertyChanged(bool oldValue, bool newValue)
+        {
+            ViewModel.IsReadOnly = newValue;
+        }
 
         private static void OnAllowQuickFilterChanged(AvaloniaPropertyChangedEventArgs<bool> e)
         {
@@ -703,8 +735,8 @@ namespace Avalonia.PropertyGrid.Controls
 
             control.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
             control.SetValue(Grid.ColumnProperty, 1);
-            control.IsEnabled = control.IsEnabled && !property.IsReadOnly;
             control.Margin = new Thickness(4);
+            factory.HandleReadOnlyStateChanged(control, context.IsReadOnly);
 
             grid.Children.Add(control);
 

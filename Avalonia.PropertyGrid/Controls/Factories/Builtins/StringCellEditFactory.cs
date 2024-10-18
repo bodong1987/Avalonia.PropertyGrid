@@ -111,5 +111,23 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             return false;
         }
+
+        /// <summary>
+        /// Handles readonly flag changed
+        /// </summary>
+        /// <param name="control">control.</param>
+        /// <param name="readOnly">readonly flag</param>
+        /// <returns>Control.</returns>
+        public override void HandleReadOnlyStateChanged(Control control, bool readOnly)
+        {
+            if(control is TextBox textBox)
+            {
+                textBox.IsReadOnly = readOnly;
+            }
+            else
+            {
+                base.HandleReadOnlyStateChanged(control, readOnly);
+            }            
+        }
     }
 }
