@@ -10,9 +10,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.1.1" />
-    <PackageReference Include="Avalonia.Desktop" Version="11.1.1" />
-    <PackageReference Include="Avalonia.Diagnostics" Version="11.1.1" />
+    <PackageReference Include="Avalonia" Version="11.1.4" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.1.4" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="11.1.4" />
   </ItemGroup>
 
   <ItemGroup>

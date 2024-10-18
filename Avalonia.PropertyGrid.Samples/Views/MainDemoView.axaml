@@ -48,8 +48,7 @@
                         <ComboBox x:Name="ShowStyleComboBox" Margin="4" VerticalAlignment="Center" SelectedIndex="0">
                             <ComboBox.Items>
                                 <apv:PropertyGridShowStyle>Category</apv:PropertyGridShowStyle>
-                                <apv:PropertyGridShowStyle>Alphabetic</apv:PropertyGridShowStyle>
-                                <apv:PropertyGridShowStyle>Builtin</apv:PropertyGridShowStyle>
+                                <apv:PropertyGridShowStyle>Tiled</apv:PropertyGridShowStyle>                                
                             </ComboBox.Items>
                         </ComboBox>
                         <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Allow_Filter}"></TextBlock>

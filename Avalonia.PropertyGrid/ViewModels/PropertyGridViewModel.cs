@@ -23,24 +23,30 @@ namespace Avalonia.PropertyGrid.ViewModels
     public enum PropertyGridShowStyle
     {
         /// <summary>
-        /// The category
+        /// use category
         /// </summary>
         Category,
 
         /// <summary>
-        /// Use category internal order.
+        /// use tiled mode
         /// </summary>
-        CategoryBuiltin,
+        Tiled
+    }
+
+    /// <summary>
+    /// Enum PropertyGridOrderStyle
+    /// </summary>
+    public enum PropertyGridOrderStyle
+    {
+        /// <summary>
+        /// Use internal order.
+        /// </summary>
+        Builtin,
 
         /// <summary>
-        /// The alphabetic
+        /// Use alphabetic order.
         /// </summary>
-        Alphabetic,
-
-        /// <summary>
-        /// use internal order
-        /// </summary>
-        Builtin
+        Alphabetic
     }
 
     /// <summary>
@@ -111,7 +117,6 @@ namespace Avalonia.PropertyGrid.ViewModels
                 {
                     this.RaiseAndSetIfChanged(ref _ShowStyle, value);
 
-                    this.RaisePropertyChanged(nameof(ShowStyleType));
                     this.RaisePropertyChanged(nameof(ShowStyleText));
                 }                
             }
@@ -121,30 +126,15 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// Gets a value indicating whether [show style type].
         /// </summary>
         /// <value><c>null</c> if [show style type] contains no value, <c>true</c> if [show style type]; otherwise, <c>false</c>.</value>
-        public bool? ShowStyleType
+        public bool ShowStyleType
         {
             get
             {
-                switch (ShowStyle)
-                {
-                    case PropertyGridShowStyle.Category:
-                        return true;
-                    case PropertyGridShowStyle.Alphabetic:
-                        return false;
-
-                    default:
-                        return null;
-                }
+                return ShowStyle == PropertyGridShowStyle.Category;
             }
             set
             {
-                if(value == null)
-                {
-                    ShowStyle = PropertyGridShowStyle.Builtin;
-                    return;
-                }
-
-                ShowStyle = (bool)value ? PropertyGridShowStyle.Category : PropertyGridShowStyle.Alphabetic;
+                ShowStyle = value ? PropertyGridShowStyle.Category : PropertyGridShowStyle.Tiled;
             }
         }
 
@@ -158,16 +148,44 @@ namespace Avalonia.PropertyGrid.ViewModels
             {
                 switch (ShowStyle)
                 {
-                    case PropertyGridShowStyle.Category:
-                        return "C";
-                    case PropertyGridShowStyle.Alphabetic:
-                        return "A";
+                    case PropertyGridShowStyle.Tiled:
+                        return "T";
 
                     default:
-                        return "B";
+                        return "C";
                 }
             }
         }
+
+
+        PropertyGridOrderStyle _PropertyOrderStyle = PropertyGridOrderStyle.Builtin;
+
+        public PropertyGridOrderStyle PropertyOrderStyle
+        {
+            get => _PropertyOrderStyle;
+            set
+            {
+                if (_PropertyOrderStyle != value)
+                {
+                    this.RaiseAndSetIfChanged(ref _PropertyOrderStyle, value);
+                }
+            }
+        }
+
+        PropertyGridOrderStyle _PropertyCategoryStyle = PropertyGridOrderStyle.Builtin;
+
+        public PropertyGridOrderStyle PropertyCategoryStyle
+        {
+            get => _PropertyCategoryStyle;
+            set
+            {
+                if(_PropertyCategoryStyle != value)
+                {
+                    this.RaiseAndSetIfChanged(ref _PropertyCategoryStyle, value);
+                }
+            }
+        }
+
 
         /// <summary>
         /// The category filter
@@ -199,7 +217,7 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// Gets the categories.
         /// </summary>
         /// <value>The categories.</value>
-        public Dictionary<string, List<PropertyDescriptor>> Categories { get; private set; } = new Dictionary<string, List<PropertyDescriptor>>();
+        public List<KeyValuePair<string, List<PropertyDescriptor>>> Categories { get; private set; } = new List<KeyValuePair<string, List<PropertyDescriptor>>>();
 
         /// <summary>
         /// Occurs when [filter changed].
@@ -439,14 +457,15 @@ namespace Avalonia.PropertyGrid.ViewModels
             {
                 string category = GetCategory(property);
 
-                if (!Categories.TryGetValue(category, out var list))
+                var index = Categories.IndexOf(x=> x.Key == category);
+                if (index == -1)
                 {
-                    list = new List<PropertyDescriptor> { property };
-                    Categories.Add(category, list);
+                    var list = new List<PropertyDescriptor> { property };
+                    Categories.Add(new KeyValuePair<string, List<PropertyDescriptor>>(category, list));
                 }
                 else
                 {
-                    list.Add(property);
+                    Categories[index].Value.Add(property);
                 }
             }
         }
