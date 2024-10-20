@@ -50,7 +50,7 @@ namespace PropertyModels.ComponentModel.DataAnnotations
                 return $"{validationResult.ErrorMessage}:{string.Join(",", validationResult.MemberNames)}";
             }
 
-            return validationResult.ErrorMessage;
+            return validationResult.ErrorMessage ?? "";
         }
     }
 }

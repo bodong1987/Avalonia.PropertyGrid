@@ -81,7 +81,7 @@ namespace PropertyModels.Collections
         /// <summary>
         /// Occurs when [selection changed].
         /// </summary>
-        public event EventHandler SelectionChanged;
+        public event EventHandler? SelectionChanged;
 
         /// <summary>
         /// The source items core
@@ -139,11 +139,7 @@ namespace PropertyModels.Collections
         {
             get
             {
-                List<object> list = new List<object>();
-                foreach (T item in ItemsCore)
-                {
-                    list.Add(item);
-                }
+                List<object> list = [.. ItemsCore];
 
                 return list.ToArray();
             }
@@ -160,7 +156,7 @@ namespace PropertyModels.Collections
                 List<object> list = new List<object>();
                 foreach (T item in SourceItemsCore)
                 {
-                    list.Add(item);
+                    list.Add(item!);
                 }
 
                 return list.ToArray();
@@ -192,7 +188,7 @@ namespace PropertyModels.Collections
         /// </summary>
         /// <param name="obj">The object to compare with the current object.</param>
         /// <returns><c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.</returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj is CheckedList<T> other)
             {

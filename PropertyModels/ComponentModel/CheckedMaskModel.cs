@@ -44,7 +44,7 @@ namespace PropertyModels.ComponentModel
         /// <summary>
         /// Occurs when [check changed].
         /// </summary>
-        public event EventHandler CheckChanged;
+        public event EventHandler? CheckChanged;
 
         bool _IsUpdating = false;
         bool _IsDirty = false;

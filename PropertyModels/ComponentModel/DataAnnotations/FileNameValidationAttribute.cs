@@ -21,7 +21,7 @@ namespace PropertyModels.ComponentModel.DataAnnotations
         /// <param name="value">The value to validate.</param>
         /// <param name="validationContext">The context information about the validation operation.</param>
         /// <returns>An instance of the <see cref="T:System.ComponentModel.DataAnnotations.ValidationResult" /> class.</returns>
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
             if (value is string name)
             {

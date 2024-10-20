@@ -17,9 +17,9 @@ namespace PropertyModels.ComponentModel
         /// <typeparam name="T"></typeparam>
         /// <param name="args">The arguments.</param>
         /// <returns>T.</returns>
-        public static T Create<T>(params object[] args)
+        public static T? Create<T>(params object[] args)
         {
-            return (T)Create(typeof(T), args);
+            return (T?)Create(typeof(T), args);
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace PropertyModels.ComponentModel
         /// <param name="type">The type.</param>
         /// <param name="args">The arguments.</param>
         /// <returns>System.Object.</returns>
-        public static object Create(Type type, params object[] args)
+        public static object? Create(Type type, params object[] args)
         {
             if (type == typeof(string))
             {

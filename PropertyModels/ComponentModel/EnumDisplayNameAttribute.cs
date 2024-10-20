@@ -51,9 +51,9 @@ namespace PropertyModels.ComponentModel
         {
             Debug.Assert(value != null);
 
-            Value = value;
+            Value = value!;
 
-            var fieldInfo = value.GetType().GetField(value.ToString());
+            var fieldInfo = value!.GetType().GetField(value.ToString());
 
             var attr = fieldInfo?.GetCustomAttribute<EnumDisplayNameAttribute>();
 
@@ -69,7 +69,7 @@ namespace PropertyModels.ComponentModel
         {
             Debug.Assert(value != null);
 
-            Value = value;
+            Value = value!;
             DisplayName = displayName;
         }
 
@@ -87,7 +87,7 @@ namespace PropertyModels.ComponentModel
         /// </summary>
         /// <param name="obj">The object to compare with the current object.</param>
         /// <returns><c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.</returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if(obj is EnumValueWrapper evw)
             {

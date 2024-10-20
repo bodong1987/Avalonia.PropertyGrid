@@ -18,7 +18,7 @@ namespace PropertyModels.Localilzation
         /// <summary>
         /// The local texts
         /// </summary>
-        protected Dictionary<string, string> LocalTexts = null;
+        protected Dictionary<string, string>? LocalTexts = null;
 
         /// <summary>
         /// Gets the culture.
@@ -104,14 +104,14 @@ namespace PropertyModels.Localilzation
                 }
 
                 int endPos = 0;
-                string key = PickStringToken(configLine, 0, out endPos);
+                var key = PickStringToken(configLine, 0, out endPos);
 
                 if(key == null)
                 {
                     continue;
                 }
 
-                string value = PickStringToken(configLine, endPos + 1, out _);
+                var value = PickStringToken(configLine, endPos + 1, out _);
 
                 if(value == null)
                 {
@@ -124,7 +124,7 @@ namespace PropertyModels.Localilzation
             return dict;
         }
 
-        private static string PickStringToken(string line, int startPos, out int endPos)
+        private static string? PickStringToken(string line, int startPos, out int endPos)
         {
             int Begin = -1;
             int Escape = -1;

@@ -116,9 +116,9 @@ namespace PropertyModels.ComponentModel.DataAnnotations
             }
         }
 
-        private bool IsVisible(object value)
+        private bool IsVisible(object? value)
         {
-            bool isEqual = EqualityComparer<object>.Default.Equals(VisibleValue, value);
+            bool isEqual = EqualityComparer<object>.Default.Equals(VisibleValue, value!);
 
             return LogicType == ConditionLogicType.Default ? isEqual : !isEqual;
         }

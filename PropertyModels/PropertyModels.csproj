@@ -7,7 +7,7 @@
 	  <Version>11.1.4.1</Version>
 	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
 	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
-	  <Nullable>disable</Nullable>
+	  <Nullable>enable</Nullable>
 	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	  <PackageId>bodong.$(AssemblyName)</PackageId>
 	  <Title>bodong.$(AssemblyName)</Title>

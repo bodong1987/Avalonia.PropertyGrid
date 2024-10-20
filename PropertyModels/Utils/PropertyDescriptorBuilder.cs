@@ -56,7 +56,7 @@ namespace PropertyModels.Utils
         {
             if(IsMultipleObjects)
             {
-                return GetMultipleProperties(Target as IEnumerable);
+                return GetMultipleProperties((Target as IEnumerable)!);
             }
             else
             {

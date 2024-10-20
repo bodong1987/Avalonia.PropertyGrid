@@ -55,7 +55,7 @@ namespace PropertyModels.ComponentModel.DataAnnotations
         /// Gets or sets the initial name of the file or directory (When PathBrowsableType is Directory).
         /// </summary>
         /// <value>The initial name of the file.</value>
-        public string InitialFileName { get; set; }
+        public string? InitialFileName { get; set; }
 
         /// <summary>
         /// Gets or sets the filters.
@@ -63,13 +63,13 @@ namespace PropertyModels.ComponentModel.DataAnnotations
         ///     "txt files (*.txt)|*.txt|All files (*.*)|*.*"
         /// </summary>
         /// <value>The filters.</value>
-        public string Filters { get; set; }
+        public string? Filters { get; set; }
 
         /// <summary>
         /// Gets or sets the title.
         /// </summary>
         /// <value>The title.</value>
-        public string Title { get; set; }
+        public string? Title { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether this instance is file selection.

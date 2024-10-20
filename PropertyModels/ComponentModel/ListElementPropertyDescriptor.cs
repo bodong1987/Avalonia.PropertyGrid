@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PropertyModels.ComponentModel
 {
@@ -20,7 +16,7 @@ namespace PropertyModels.ComponentModel
         /// When overridden in a derived class, gets the type of the component this property is bound to.
         /// </summary>
         /// <value>The type of the component.</value>
-        public override Type ComponentType => null;
+        public override Type ComponentType => typeof(ListElementPropertyDescriptor);
 
         /// <summary>
         /// When overridden in a derived class, gets a value indicating whether this property is read-only.
@@ -70,11 +66,11 @@ namespace PropertyModels.ComponentModel
         /// </summary>
         /// <param name="component">The component with the property for which to retrieve the value.</param>
         /// <returns>The value of a property for a given component.</returns>
-        public override object GetValue(object component)
+        public override object? GetValue(object? component)
         {
             Debug.Assert(component is IList);
 
-            return (component as IList)[Index];
+            return (component as IList)![Index];
         }
 
         /// <summary>
@@ -92,11 +88,11 @@ namespace PropertyModels.ComponentModel
         /// </summary>
         /// <param name="component">The component with the property value that is to be set.</param>
         /// <param name="value">The new value.</param>
-        public override void SetValue(object component, object value)
+        public override void SetValue(object? component, object? value)
         {
             Debug.Assert(component is IList);
 
-            (component as IList)[Index] = value;
+            (component as IList)![Index] = value;
         }
 
         /// <summary>

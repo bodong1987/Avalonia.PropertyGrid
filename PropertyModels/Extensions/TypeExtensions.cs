@@ -22,14 +22,14 @@ namespace PropertyModels.Extensions
         /// <param name="memberInfo">The member information.</param>
         /// <param name="inherit">if set to <c>true</c> [inherit].</param>
         /// <returns>T.</returns>
-        public static T GetAnyCustomAttribute<T>(this MemberInfo memberInfo, bool inherit = true)
+        public static T? GetAnyCustomAttribute<T>(this MemberInfo memberInfo, bool inherit = true)
             where T : Attribute
         {
             var Attrs = memberInfo.GetCustomAttributes(typeof(T), inherit);
 
             if (Attrs != null && Attrs.Length > 0)
             {
-                T attr = Attrs[0] as T;
+                var attr = Attrs[0] as T;
 
                 return attr;
             }
@@ -54,7 +54,7 @@ namespace PropertyModels.Extensions
                 return Attrs.Cast<T>().ToArray();
             }
 
-            return new T[0];
+            return [];
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace PropertyModels.Extensions
             switch (memberInfo.MemberType)
             {
                 case MemberTypes.Event:
-                    return ((EventInfo)memberInfo).EventHandlerType;
+                    return ((EventInfo)memberInfo).EventHandlerType!;
                 case MemberTypes.Field:
                     return ((FieldInfo)memberInfo).FieldType;
                 case MemberTypes.Method:
@@ -103,7 +103,7 @@ namespace PropertyModels.Extensions
         /// <param name="target">The target.</param>
         /// <returns>System.Object.</returns>
         /// <exception cref="System.ArgumentException">Input MemberInfo must be if type FieldInfo, or PropertyInfo</exception>
-        public static object GetUnderlyingValue(this MemberInfo memberInfo, object target)
+        public static object? GetUnderlyingValue(this MemberInfo memberInfo, object? target)
         {
             switch (memberInfo.MemberType)
             {
@@ -127,7 +127,7 @@ namespace PropertyModels.Extensions
         /// <param name="value">The value.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         /// <exception cref="System.ArgumentException">Input MemberInfo must be if type FieldInfo, or PropertyInfo</exception>
-        public static bool SetUnderlyingValue(this MemberInfo memberInfo, object target, object value)
+        public static bool SetUnderlyingValue(this MemberInfo memberInfo, object? target, object? value)
         {
             switch (memberInfo.MemberType)
             {
@@ -154,12 +154,12 @@ namespace PropertyModels.Extensions
         {
             if (info.MemberType == MemberTypes.Field)
             {
-                return (info as FieldInfo).IsPublic;
+                return (info as FieldInfo)!.IsPublic;
             }
             else if (info.MemberType == MemberTypes.Property)
             {
-                var GetMethod = (info as PropertyInfo).GetGetMethod();
-                var SetMethod = (info as PropertyInfo).GetSetMethod();
+                var GetMethod = (info as PropertyInfo)!.GetGetMethod();
+                var SetMethod = (info as PropertyInfo)!.GetSetMethod();
                 return GetMethod != null && SetMethod != null && GetMethod.IsPublic;
             }
 
@@ -175,12 +175,12 @@ namespace PropertyModels.Extensions
         {
             if (info.MemberType == MemberTypes.Field)
             {
-                return (info as FieldInfo).IsStatic;
+                return (info as FieldInfo)!.IsStatic;
             }
             else if (info.MemberType == MemberTypes.Property)
             {
-                var GetMethod = (info as PropertyInfo).GetGetMethod();
-                var SetMethod = (info as PropertyInfo).GetSetMethod();
+                var GetMethod = (info as PropertyInfo)!.GetGetMethod();
+                var SetMethod = (info as PropertyInfo)!.GetSetMethod();
                 return GetMethod != null && SetMethod != null && GetMethod.IsStatic;
             }
 
@@ -194,7 +194,7 @@ namespace PropertyModels.Extensions
         /// <returns><c>true</c> if the specified information is constant; otherwise, <c>false</c>.</returns>
         public static bool IsConstant(this MemberInfo info)
         {
-            return info is FieldInfo && (info as FieldInfo).IsInitOnly;
+            return info is FieldInfo && (info as FieldInfo)!.IsInitOnly;
         }
 
         /// <summary>
@@ -251,9 +251,9 @@ namespace PropertyModels.Extensions
         /// </summary>
         /// <param name="attribute">The input attribute.</param>
         /// <returns>System.Type.</returns>
-        public static System.Type GetConverterType(this System.ComponentModel.TypeConverterAttribute attribute)
+        public static Type? GetConverterType(this System.ComponentModel.TypeConverterAttribute attribute)
         {
-            Type Result = null;
+            Type? Result = null;
             TryGetTypeByName(attribute.ConverterTypeName, out Result, AppDomain.CurrentDomain.GetAssemblies());
             return Result;
         }
@@ -265,7 +265,7 @@ namespace PropertyModels.Extensions
         /// <param name="type">The type.</param>
         /// <param name="customAssemblies">Additional loaded assemblies (optional).</param>
         /// <returns>Returns <c>true</c> if the type was found; otherwise <c>false</c>.</returns>
-        private static bool TryGetTypeByName(string typeName, out Type type, params Assembly[] customAssemblies)
+        private static bool TryGetTypeByName(string typeName, out Type? type, params Assembly[] customAssemblies)
         {
             if (typeName.Contains("Version=")
                 && !typeName.Contains("`"))
@@ -303,10 +303,10 @@ namespace PropertyModels.Extensions
                     Type[] genericArgumentTypes = new Type[typeArgs.Count];
                     for (int genTypeIndex = 0; genTypeIndex < typeArgs.Count; genTypeIndex++)
                     {
-                        Type genericType;
+                        Type? genericType;
                         if (TryGetTypeByName(typeArgs[genTypeIndex], out genericType, customAssemblies))
                         {
-                            genericArgumentTypes[genTypeIndex] = genericType;
+                            genericArgumentTypes[genTypeIndex] = genericType!;
                         }
                         else
                         {
@@ -316,7 +316,7 @@ namespace PropertyModels.Extensions
                     }
 
                     string genericTypeString = match.Groups["MainType"].Value;
-                    Type genericMainType;
+                    Type? genericMainType;
                     if (TryGetTypeByName(genericTypeString, out genericMainType))
                     {
                         // make generic type
@@ -334,9 +334,9 @@ namespace PropertyModels.Extensions
         /// <param name="typeName">Name of the type.</param>
         /// <param name="customAssemblies">The custom assemblies.</param>
         /// <returns>Type.</returns>
-        private static Type GetTypeFromAssemblies(string typeName, params Assembly[] customAssemblies)
+        private static Type? GetTypeFromAssemblies(string typeName, params Assembly[] customAssemblies)
         {
-            Type type = null;
+            Type? type = null;
 
             if (customAssemblies != null
                && customAssemblies.Length > 0)
@@ -367,7 +367,7 @@ namespace PropertyModels.Extensions
         /// </summary>
         /// <param name="typeName">Name of the type.</param>
         /// <returns>Type.</returns>
-        public static Type GetType(string typeName)
+        public static Type? GetType(string typeName)
         {
             var type = Type.GetType(typeName);
             if (type != null)
@@ -455,7 +455,7 @@ namespace PropertyModels.Extensions
         }
 
         /// <summary>
-        /// Determines whether the specified property information is browsable.
+        /// Determines whether the specified property information is can browse.
         /// </summary>
         /// <param name="propertyInfo">The property information.</param>
         /// <returns><c>true</c> if the specified property information is browsable; otherwise, <c>false</c>.</returns>
@@ -468,7 +468,7 @@ namespace PropertyModels.Extensions
 
         #region For ProeprtyDescriptor
         /// <summary>
-        /// Determines whether the specified property descriptor is defiend.
+        /// Determines whether the specified property descriptor is defined an attribute.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="propertyDescriptor">The property descriptor.</param>
@@ -492,7 +492,7 @@ namespace PropertyModels.Extensions
         /// <typeparam name="T"></typeparam>
         /// <param name="propertyDescriptor">The property descriptor.</param>
         /// <returns>T.</returns>
-        public static T GetCustomAttribute<T>(this PropertyDescriptor propertyDescriptor) where T : Attribute
+        public static T? GetCustomAttribute<T>(this PropertyDescriptor propertyDescriptor) where T : Attribute
         {
             foreach (var attr in propertyDescriptor.Attributes)
             {
@@ -578,7 +578,7 @@ namespace PropertyModels.Extensions
         /// <param name="value">The value.</param>
         /// <param name="oldValue">The old value.</param>
         /// <returns><c>true</c> if [is property changed] [the specified component]; otherwise, <c>false</c>.</returns>
-        public static bool IsPropertyChanged(this PropertyDescriptor property, object component, object value, out object oldValue)
+        public static bool IsPropertyChanged(this PropertyDescriptor property, object component, object value, out object? oldValue)
         {
             var obj = property.GetValue(component);
             oldValue = obj;

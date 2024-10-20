@@ -17,22 +17,22 @@ namespace PropertyModels.ComponentModel
         /// <summary>
         /// Occurs when changes occur that affect whether or not the command should execute.
         /// </summary>
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler? CanExecuteChanged;
 
         /// <summary>
         /// The can execute delegate
         /// </summary>
-        public Func<object, bool> CanExecuteDelegate;
+        public Func<object?, bool>? CanExecuteDelegate;
 
         /// <summary>
         /// The execute delegate
         /// </summary>
-        public Action<object> ExecuteDelegate;
+        public Action<object?>? ExecuteDelegate;
 
         /// <summary>
         /// The execute delegate no parameter
         /// </summary>
-        public Action ExecuteDelegateNoParam;
+        public Action? ExecuteDelegateNoParam;
 
         private void OnCanExecuteChanged()
         {
@@ -44,7 +44,7 @@ namespace PropertyModels.ComponentModel
         /// </summary>
         /// <param name="parameter">Data used by the command.  If the command does not require data to be passed, this object can be set to <see langword="null" />.</param>
         /// <returns><see langword="true" /> if this command can be executed; otherwise, <see langword="false" />.</returns>
-        public bool CanExecute(object parameter)
+        public bool CanExecute(object? parameter)
         {
             return CanExecuteDelegate == null || CanExecuteDelegate(parameter);
         }
@@ -53,7 +53,7 @@ namespace PropertyModels.ComponentModel
         /// Defines the method to be called when the command is invoked.
         /// </summary>
         /// <param name="parameter">Data used by the command.  If the command does not require data to be passed, this object can be set to <see langword="null" />.</param>
-        public void Execute(object parameter)
+        public void Execute(object? parameter)
         {
             ExecuteDelegate?.Invoke(parameter);
             ExecuteDelegateNoParam?.Invoke();
@@ -65,7 +65,7 @@ namespace PropertyModels.ComponentModel
         /// </summary>
         /// <param name="action">The action.</param>
         /// <returns>ICommand.</returns>
-        public static ICommand Create(Action<object> action)
+        public static ICommand Create(Action<object?>? action)
         {
             return new ReactiveCommand()
             {
@@ -92,7 +92,7 @@ namespace PropertyModels.ComponentModel
         /// <param name="action">The action.</param>
         /// <param name="canExecute">The can execute.</param>
         /// <returns>ICommand.</returns>
-        public static ICommand Create(Action<object> action, Func<object, bool> canExecute)
+        public static ICommand Create(Action<object?>? action, Func<object?, bool>? canExecute)
         {
             return new ReactiveCommand()
             {
@@ -107,7 +107,7 @@ namespace PropertyModels.ComponentModel
         /// <param name="action">The action.</param>
         /// <param name="canExecute">The can execute.</param>
         /// <returns>ICommand.</returns>
-        public static ICommand Create(Action action, Func<object, bool> canExecute)
+        public static ICommand Create(Action action, Func<object?, bool> canExecute)
         {
             return new ReactiveCommand()
             {

@@ -82,7 +82,7 @@ namespace PropertyModels.Extensions
             }
 
             int maxValue = int.MinValue;
-            T result = default(T);
+            T result = default(T)!;
 
             foreach (T item in list)
             {

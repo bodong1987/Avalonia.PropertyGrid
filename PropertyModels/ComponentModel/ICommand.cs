@@ -109,8 +109,8 @@ namespace PropertyModels.ComponentModel
     /// <seealso cref="PropertyModels.ComponentModel.AbstractBaseCommand" />
     public class GenericCommand : AbstractBaseCommand
     {
-        Func<bool> _CanExecuteFunc;
-        Func<bool> _ExecuteFunc;
+        Func<bool>? _CanExecuteFunc;
+        Func<bool>? _ExecuteFunc;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GenericCommand" /> class.
@@ -118,7 +118,7 @@ namespace PropertyModels.ComponentModel
         /// <param name="name">The name.</param>
         /// <param name="executeFunc">The execute function.</param>
         /// <param name="canExecuteFunc">The can execute function.</param>
-        public GenericCommand(string name, Func<bool> executeFunc, Func<bool> canExecuteFunc = null) :
+        public GenericCommand(string name, Func<bool>? executeFunc, Func<bool>? canExecuteFunc = null) :
             base(name)
         {            
             _ExecuteFunc = executeFunc;
@@ -185,13 +185,13 @@ namespace PropertyModels.ComponentModel
     /// <seealso cref="PropertyModels.ComponentModel.AbstractCancelableCommand" />
     public class GenericCancelableCommand : AbstractCancelableCommand
     {
-        Func<bool> _CanCancelFunc, _CanExecuteFunc, _CancelFunc, _ExecuteFunc;
+        Func<bool>? _CanCancelFunc, _CanExecuteFunc, _CancelFunc, _ExecuteFunc;
 
         /// <summary>
         /// Gets or sets the tag.
         /// </summary>
         /// <value>The tag.</value>
-        public object Tag { get; set; }
+        public object? Tag { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GenericCancelableCommand"/> class.
@@ -203,10 +203,10 @@ namespace PropertyModels.ComponentModel
         /// <param name="canCancelFunc">The can cancel function.</param>
         public GenericCancelableCommand(
             string name, 
-            Func<bool> executeFunc, 
-            Func<bool> cancelFunc,
-            Func<bool> canExecuteFunc = null,
-            Func<bool> canCancelFunc = null
+            Func<bool>? executeFunc, 
+            Func<bool>? cancelFunc,
+            Func<bool>? canExecuteFunc = null,
+            Func<bool>? canCancelFunc = null
             ) :
             base(name)
         {

@@ -24,9 +24,9 @@ namespace PropertyModels.ComponentModel
         class MultiObjectAttributes : AttributeCollection
         {
             MultiObjectPropertyDescriptor _Owner;
-            AttributeCollection[] _ParentAttributes;
+            AttributeCollection[]? _ParentAttributes;
             Lazy<Attribute[]> _Attributes;
-            Hashtable _AttributesTable;
+            Hashtable? _AttributesTable;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="MultiObjectAttributes"/> class.
@@ -44,7 +44,7 @@ namespace PropertyModels.ComponentModel
             /// </summary>
             /// <param name="attributeType">Type of the attribute.</param>
             /// <returns>Attribute.</returns>
-            public override Attribute this[Type attributeType]
+            public override Attribute? this[Type attributeType]
             {
                 get
                 {
@@ -62,16 +62,16 @@ namespace PropertyModels.ComponentModel
                         return GetDefaultAttribute(attributeType);
                     }
                         
-                    Attribute a;
+                    Attribute? a;
                     if (_AttributesTable != null)
                     {
-                        a = (Attribute)_AttributesTable[attributeType];
+                        a = (Attribute)_AttributesTable[attributeType]!;
                         if (a != null)
                         {
                             return a;
                         }                            
                     }
-                    a = _ParentAttributes[0][attributeType];
+                    a = _ParentAttributes[0][attributeType]!;
                     if (a == null)
                     {
                         return null;
@@ -141,10 +141,10 @@ namespace PropertyModels.ComponentModel
         /// <param name="list">The list.</param>
         /// <param name="index">The index.</param>
         /// <returns>System.Object.</returns>
-        object GetOwner(object[] list, int index)
+        object? GetOwner(object[] list, int index)
         {
             object res = list[index];
-            ICustomTypeDescriptor custom = res as ICustomTypeDescriptor;
+            var custom = res as ICustomTypeDescriptor;
             return custom == null ? res : custom.GetPropertyOwner(_Descriptors[index]);
         }
 
@@ -162,7 +162,7 @@ namespace PropertyModels.ComponentModel
         /// </summary>
         /// <param name="editorBaseType">The base type of editor, which is used to differentiate between multiple editors that a property supports.</param>
         /// <returns>An instance of the requested editor type, or <see langword="null" /> if an editor cannot be found.</returns>
-        public override object GetEditor(Type editorBaseType)
+        public override object? GetEditor(Type editorBaseType)
         {
             return _Descriptors[0].GetEditor(editorBaseType);
         }
@@ -177,7 +177,7 @@ namespace PropertyModels.ComponentModel
             object[] list = (object[])component;
             for (int i = 0; i < _Descriptors.Length; i++)
             {
-                if (!_Descriptors[i].CanResetValue(GetOwner(list, i)))
+                if (!_Descriptors[i].CanResetValue(GetOwner(list, i)!))
                 {
                     return false;
                 }                    
@@ -207,7 +207,7 @@ namespace PropertyModels.ComponentModel
                     continue;
                 }
                     
-                _Descriptors[i].AddValueChanged(GetOwner(list, i), handler);
+                _Descriptors[i].AddValueChanged(GetOwner(list, i)!, handler);
             }
         }
 
@@ -226,7 +226,7 @@ namespace PropertyModels.ComponentModel
                     continue;
                 }
 
-                _Descriptors[i].RemoveValueChanged(GetOwner(list, i), handler);
+                _Descriptors[i].RemoveValueChanged(GetOwner(list, i)!, handler);
             }
         }
 
@@ -244,13 +244,13 @@ namespace PropertyModels.ComponentModel
         /// </summary>
         /// <param name="component">The component with the property for which to retrieve the value.</param>
         /// <returns>The value of a property for a given component.</returns>
-        public override object GetValue(object component)
+        public override object GetValue(object? component)
         {
-            object[] list = (object[])component;
-            object res = GetValue(_Descriptors[0], GetOwner(list, 0));
+            object[] list = (object[])component!;
+            object res = GetValue(_Descriptors[0], GetOwner(list, 0)!);
             for (int i = 0; i < _Descriptors.Length; i++)
             {
-                object temp = GetValue(_Descriptors[i], GetOwner(list, i));
+                object temp = GetValue(_Descriptors[i], GetOwner(list, i)!);
                 if (res != temp && res != null && !res.Equals(temp))
                 {
                     return null;
@@ -322,7 +322,7 @@ namespace PropertyModels.ComponentModel
             object[] list = (object[])component;
             for (int i = 0; i < _Descriptors.Length; i++)
             {
-                _Descriptors[i].ResetValue(GetOwner(list, i));
+                _Descriptors[i].ResetValue(GetOwner(list, i)!);
             }                
         }
 
@@ -336,7 +336,7 @@ namespace PropertyModels.ComponentModel
             object[] list = new object[components.Length];
             for (int i = 0; i < _Descriptors.Length; i++)
             {
-                list[i] = GetValue(_Descriptors[i], GetOwner(components, i));
+                list[i] = GetValue(_Descriptors[i], GetOwner(components, i)!);
             }
                 
             return list;
@@ -347,12 +347,12 @@ namespace PropertyModels.ComponentModel
         /// </summary>
         /// <param name="component">The component with the property value that is to be set.</param>
         /// <param name="value">The new value.</param>
-        public override void SetValue(object component, object value)
+        public override void SetValue(object? component, object? value)
         {
-            object[] list = (object[])component;
+            object[] list = (object[])component!;
             for (int i = 0; i < _Descriptors.Length; i++)
             {
-                object clonedVal = null;
+                object? clonedVal = null;
                 if (value is ICloneable)
                 {
                     clonedVal = ((ICloneable)value).Clone();
@@ -362,9 +362,9 @@ namespace PropertyModels.ComponentModel
             }
         }
 
-        static object GetValue(PropertyDescriptor pd, object component)
+        static object? GetValue(PropertyDescriptor pd, object component)
         {
-            object value = null;
+            object? value = null;
             if (component == null || pd == null)
             {
                 return value;
@@ -385,13 +385,13 @@ namespace PropertyModels.ComponentModel
 
         static Exception GetUnwindedException(Exception e)
         {
-            Exception result = e;
+            Exception? result = e;
             if (e is System.Reflection.TargetInvocationException)
             {
                 result = e.InnerException;
             }
                 
-            string message = result.Message;
+            string message = result!.Message;
             while (string.IsNullOrEmpty(message) && result.InnerException != null)
             {
                 message = result.InnerException.Message;
@@ -403,13 +403,13 @@ namespace PropertyModels.ComponentModel
 
         static object GetPropertyOwner(PropertyDescriptor pd, object component)
         {
-            ICustomTypeDescriptor typeDescriptor = component as ICustomTypeDescriptor;
+            var typeDescriptor = component as ICustomTypeDescriptor;
             if (typeDescriptor == null)
             {
                 return component;
             }
                 
-            return component = typeDescriptor.GetPropertyOwner(pd);
+            return component = typeDescriptor.GetPropertyOwner(pd)!;
         }
 
         /// <summary>
@@ -422,7 +422,7 @@ namespace PropertyModels.ComponentModel
             object[] list = (object[])component;
             for (int i = 0; i < _Descriptors.Length; i++)
             {
-                if (_Descriptors[i].ShouldSerializeValue(GetOwner(list, i)))
+                if (_Descriptors[i].ShouldSerializeValue(GetOwner(list, i)!))
                 {
                     return true;
                 }                    

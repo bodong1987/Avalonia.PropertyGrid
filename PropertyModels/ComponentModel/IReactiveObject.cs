@@ -30,7 +30,7 @@ namespace PropertyModels.ComponentModel
         /// Occurs when a property value changes.
         /// </summary>
         [Browsable(false)]
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         /// <summary>
         /// Raises the property changed.
@@ -38,7 +38,7 @@ namespace PropertyModels.ComponentModel
         /// <param name="propertyName">Name of the property.</param>
         public void RaisePropertyChanged(string propertyName)
         {
-            PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion
@@ -67,7 +67,7 @@ namespace PropertyModels.ComponentModel
         }
 
         [NonSerialized]
-        private static Dictionary<System.Type, Dictionary<string, List<string>>> MetaCaches = new Dictionary<Type, Dictionary<string, List<string>>>();
+        private static Dictionary<System.Type, Dictionary<string, List<string>>?> MetaCaches = new Dictionary<Type, Dictionary<string, List<string>>?>();
 
         /// <summary>
         /// Automatics the collect depends information.
@@ -114,7 +114,7 @@ namespace PropertyModels.ComponentModel
         /// </summary>
         /// <param name="type">The type.</param>
         /// <returns>Dictionary&lt;System.String, List&lt;System.String&gt;&gt;.</returns>
-        private static Dictionary<string, List<string>> GetCache(Type type)
+        private static Dictionary<string, List<string>>? GetCache(Type type)
         {
             MetaCaches.TryGetValue(type, out var cache);
             return cache;
@@ -127,20 +127,20 @@ namespace PropertyModels.ComponentModel
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="System.ComponentModel.PropertyChangedEventArgs"/> instance containing the event data.</param>
-        protected virtual void ProcessPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        protected virtual void ProcessPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if (ProcessStack.Contains(e.PropertyName))
+            if (ProcessStack.Contains(e.PropertyName!))
             {
                 return;
             }
 
             var RelativeProperties = GetCache(GetType());
 
-            if (RelativeProperties != null && RelativeProperties.TryGetValue(e.PropertyName, out var relevance))
+            if (RelativeProperties != null && RelativeProperties.TryGetValue(e.PropertyName!, out var relevance))
             {
                 try
                 {
-                    ProcessStack.Push(e.PropertyName);
+                    ProcessStack.Push(e.PropertyName!);
 
                     foreach (var r in relevance)
                     {
@@ -175,7 +175,7 @@ namespace PropertyModels.ComponentModel
         public static TRet RaiseAndSetIfChanged<TObj, TRet>(this TObj reactiveObject,
             ref TRet backingField,
             TRet newValue,
-            [CallerMemberName] string propertyName = null
+            [CallerMemberName] string? propertyName = null
             )
             where TObj : IReactiveObject
         {
@@ -185,7 +185,7 @@ namespace PropertyModels.ComponentModel
             }
 
             backingField = newValue;
-            reactiveObject.RaisePropertyChanged(propertyName);
+            reactiveObject.RaisePropertyChanged(propertyName!);
 
             return newValue;
         }
@@ -196,12 +196,12 @@ namespace PropertyModels.ComponentModel
         /// <typeparam name="TSender">The type of the t sender.</typeparam>
         /// <param name="reactiveObject">The reactive object.</param>
         /// <param name="propertyName">Name of the property.</param>
-        public static void RaisePropertyChanged<TSender>(this TSender reactiveObject, [CallerMemberName] string propertyName = null)
+        public static void RaisePropertyChanged<TSender>(this TSender reactiveObject, [CallerMemberName] string? propertyName = null)
             where TSender : IReactiveObject
         {
             if (propertyName != null)
             {
-                reactiveObject.RaisePropertyChanged(propertyName);
+                reactiveObject.RaisePropertyChanged(propertyName!);
             }
         }
     }

@@ -29,7 +29,7 @@ namespace PropertyModels.Collections
         /// Gets or sets the selected value.
         /// </summary>
         /// <value>The selected value.</value>
-        object SelectedValue { get; set; }
+        object? SelectedValue { get; set; }
     }
 
     /// <summary>
@@ -76,7 +76,7 @@ namespace PropertyModels.Collections
         /// <summary>
         /// Occurs when [selection changed].
         /// </summary>
-        public event EventHandler SelectionChanged;
+        public event EventHandler? SelectionChanged;
 
         /// <summary>
         /// Gets the values.
@@ -137,7 +137,7 @@ namespace PropertyModels.Collections
                 List<object> list = new List<object>();
                 foreach (var i in ValuesCore)
                 {
-                    list.Add((object)i);
+                    list.Add((object)i!);
                 }
 
                 return list.ToArray();
@@ -148,9 +148,9 @@ namespace PropertyModels.Collections
         /// Gets or sets the selected value.
         /// </summary>
         /// <value>The selected value.</value>
-        object ISelectableList.SelectedValue
+        object? ISelectableList.SelectedValue
         {
-            get => (object)SelectedValueCore;
+            get => (object?)SelectedValueCore;
             set
             {
                 if (value != null && !EqualityComparer<T>.Default.Equals((T)value, SelectedValueCore))
