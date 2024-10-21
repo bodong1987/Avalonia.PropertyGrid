@@ -544,7 +544,7 @@ namespace PropertyModels.Extensions
         /// <param name="value">The value.</param>
         /// <param name="oldValue">The old value.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
-        public static bool SetAndRaiseEvent(this PropertyDescriptor property, object component, object value, out object oldValue)
+        public static bool SetAndRaiseEvent(this PropertyDescriptor property, object component, object value, out object? oldValue)
         {
             if(!IsPropertyChanged(property, component, value, out oldValue))
             {

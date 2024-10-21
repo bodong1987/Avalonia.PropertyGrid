@@ -54,14 +54,14 @@ namespace PropertyModels.ComponentModel
                         for (int i = 0; i < _ParentAttributes.Length; i++)
                         {
                             _ParentAttributes[i] = _Owner._Descriptors[i].Attributes;
-                        }                            
+                        }
                     }
 
                     if (_ParentAttributes.Length == 0)
                     {
                         return GetDefaultAttribute(attributeType);
                     }
-                        
+
                     Attribute? a;
                     if (_AttributesTable != null)
                     {
@@ -69,14 +69,14 @@ namespace PropertyModels.ComponentModel
                         if (a != null)
                         {
                             return a;
-                        }                            
+                        }
                     }
                     a = _ParentAttributes[0][attributeType]!;
                     if (a == null)
                     {
                         return null;
                     }
-                        
+
                     for (int i = 1; i < _ParentAttributes.Length; i++)
                     {
                         if (!a.Equals(_ParentAttributes[i][attributeType]))
@@ -90,7 +90,7 @@ namespace PropertyModels.ComponentModel
                     {
                         _AttributesTable = new Hashtable();
                     }
-                        
+
                     _AttributesTable[attributeType] = a;
                     return a;
                 }
@@ -112,8 +112,10 @@ namespace PropertyModels.ComponentModel
             Attribute[] GetAttributes()
             {
                 return _Owner.Descriptors.First().Attributes.Cast<Attribute>()
-                    .Select(x => this[x.GetType()])
-                    .ToArray();
+                        .Select(x => this[x.GetType()])
+                        .Where(attr => attr != null)
+                        .Select(attr => attr!)
+                        .ToArray();
             }
         }
         #endregion
@@ -180,9 +182,9 @@ namespace PropertyModels.ComponentModel
                 if (!_Descriptors[i].CanResetValue(GetOwner(list, i)!))
                 {
                     return false;
-                }                    
+                }
             }
-                
+
             return true;
         }
 
@@ -206,7 +208,7 @@ namespace PropertyModels.ComponentModel
                 {
                     continue;
                 }
-                    
+
                 _Descriptors[i].AddValueChanged(GetOwner(list, i)!, handler);
             }
         }
@@ -244,17 +246,17 @@ namespace PropertyModels.ComponentModel
         /// </summary>
         /// <param name="component">The component with the property for which to retrieve the value.</param>
         /// <returns>The value of a property for a given component.</returns>
-        public override object GetValue(object? component)
+        public override object? GetValue(object? component)
         {
             object[] list = (object[])component!;
-            object res = GetValue(_Descriptors[0], GetOwner(list, 0)!);
+            var res = GetValue(_Descriptors[0], GetOwner(list, 0)!);
             for (int i = 0; i < _Descriptors.Length; i++)
             {
-                object temp = GetValue(_Descriptors[i], GetOwner(list, i)!);
+                var temp = GetValue(_Descriptors[i], GetOwner(list, i)!);
                 if (res != temp && res != null && !res.Equals(temp))
                 {
                     return null;
-                }                    
+                }
             }
 
             return res;
@@ -273,9 +275,9 @@ namespace PropertyModels.ComponentModel
                     if (_Descriptors[i].IsReadOnly)
                     {
                         return true;
-                    }                        
+                    }
                 }
-                    
+
                 return false;
             }
         }
@@ -323,7 +325,7 @@ namespace PropertyModels.ComponentModel
             for (int i = 0; i < _Descriptors.Length; i++)
             {
                 _Descriptors[i].ResetValue(GetOwner(list, i)!);
-            }                
+            }
         }
 
         /// <summary>
@@ -331,14 +333,14 @@ namespace PropertyModels.ComponentModel
         /// </summary>
         /// <param name="components">The components.</param>
         /// <returns>System.Object[].</returns>
-        public object[] GetValues(object[] components)
+        public object?[] GetValues(object[] components)
         {
-            object[] list = new object[components.Length];
+            var list = new object?[components.Length];
             for (int i = 0; i < _Descriptors.Length; i++)
             {
                 list[i] = GetValue(_Descriptors[i], GetOwner(components, i)!);
             }
-                
+
             return list;
         }
 
@@ -357,7 +359,7 @@ namespace PropertyModels.ComponentModel
                 {
                     clonedVal = ((ICloneable)value).Clone();
                 }
-                    
+
                 _Descriptors[i].SetValue(GetOwner(list, i), clonedVal ?? value);
             }
         }
@@ -369,7 +371,7 @@ namespace PropertyModels.ComponentModel
             {
                 return value;
             }
-                
+
             try
             {
                 component = GetPropertyOwner(pd, component);
@@ -390,7 +392,7 @@ namespace PropertyModels.ComponentModel
             {
                 result = e.InnerException;
             }
-                
+
             string message = result!.Message;
             while (string.IsNullOrEmpty(message) && result.InnerException != null)
             {
@@ -408,7 +410,7 @@ namespace PropertyModels.ComponentModel
             {
                 return component;
             }
-                
+
             return component = typeDescriptor.GetPropertyOwner(pd)!;
         }
 
@@ -425,9 +427,9 @@ namespace PropertyModels.ComponentModel
                 if (_Descriptors[i].ShouldSerializeValue(GetOwner(list, i)!))
                 {
                     return true;
-                }                    
+                }
             }
-                
+
             return false;
         }
 
@@ -458,7 +460,7 @@ namespace PropertyModels.ComponentModel
             for (int i = 0; i < _Descriptors.Length; i++)
             {
                 _Descriptors[i].SetValue(componentsArray[i], valuesArray[i]);
-            }                
+            }
         }
 
         /// <summary>

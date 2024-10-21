@@ -42,6 +42,7 @@ namespace PropertyModels.ComponentModel
         /// The command queue
         /// </summary>
         protected List<ICancelableCommand> CommandQueue = new List<ICancelableCommand>();
+
         /// <summary>
         /// The canceled queue
         /// </summary>
@@ -51,25 +52,25 @@ namespace PropertyModels.ComponentModel
         /// Occurs when [on command canceled].
         /// </summary>
         [Browsable(true)]
-        public event CommandCanceledEventHandler OnCommandCanceled;
+        public event CommandCanceledEventHandler? OnCommandCanceled;
 
         /// <summary>
         /// Occurs when [on command redo].
         /// </summary>
         [Browsable(true)]
-        public event CommandRedoEventHandler OnCommandRedo;
+        public event CommandRedoEventHandler? OnCommandRedo;
 
         /// <summary>
         /// Occurs when [on new command added].
         /// </summary>
         [Browsable(true)]
-        public event NewCommandAddedEventHandler OnNewCommandAdded;
+        public event NewCommandAddedEventHandler? OnNewCommandAdded;
 
         /// <summary>
         /// Occurs when [on command cleared].
         /// </summary>
         [Browsable(true)]
-        public event EventHandler OnCommandCleared;
+        public event EventHandler? OnCommandCleared;
 
         // just push
         /// <summary>
@@ -79,7 +80,7 @@ namespace PropertyModels.ComponentModel
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public virtual bool PushCommand(ICancelableCommand command)
         {
-            Debug.Assert(command != null);
+            // Debug.Assert(command != null);
 
             CommandQueue.Add(command);
 
@@ -99,7 +100,7 @@ namespace PropertyModels.ComponentModel
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         public virtual bool ExecuteCommand(ICancelableCommand command)
         {
-            Debug.Assert(command != null);
+            // Debug.Assert(command != null);
 
             if (!command.Execute())
             {

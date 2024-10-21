@@ -71,7 +71,7 @@ namespace PropertyModels.Collections
         /// <summary>
         /// The selected value core
         /// </summary>
-        T SelectedValueCore;
+        T SelectedValueCore = default(T)!;
 
         /// <summary>
         /// Occurs when [selection changed].

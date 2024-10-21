@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using PropertyModels.Extensions;
+using System.Diagnostics;
 
 namespace PropertyModels.ComponentModel.DataAnnotations
 {
@@ -28,6 +29,8 @@ namespace PropertyModels.ComponentModel.DataAnnotations
                 {
                     List<ValidationResult> Results = new List<ValidationResult>();
                     var value = property.GetValue(target);
+                    Debug.Assert(value != null);
+
                     if (!Validator.TryValidateValue(
                         value,
                         new ValidationContext(value)

@@ -148,7 +148,7 @@ namespace PropertyModels.Utils
                 return false;
             }
                 
-            MergablePropertyAttribute mergablePropertyAttribute = descriptor.Attributes[typeof(MergablePropertyAttribute)] as MergablePropertyAttribute;
+            var mergablePropertyAttribute = descriptor.Attributes[typeof(MergablePropertyAttribute)] as MergablePropertyAttribute;
 
             if (mergablePropertyAttribute == null)
             {
