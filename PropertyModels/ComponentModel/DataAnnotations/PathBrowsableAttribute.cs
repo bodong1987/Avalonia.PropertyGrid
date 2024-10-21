@@ -66,6 +66,7 @@ namespace PropertyModels.ComponentModel.DataAnnotations
         /// Gets or sets the title.
         /// </summary>
         /// <value>The title.</value>
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public string? Title { get; set; }
 
         /// <summary>

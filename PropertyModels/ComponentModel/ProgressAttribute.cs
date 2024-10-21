@@ -29,6 +29,7 @@ namespace PropertyModels.ComponentModel
         /// Gets or sets a value indicating whether [show progress text].
         /// </summary>
         /// <value><c>true</c> if [show progress text]; otherwise, <c>false</c>.</value>
+        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
         public bool ShowProgressText { get; set; } = true;
 
         /// <summary>

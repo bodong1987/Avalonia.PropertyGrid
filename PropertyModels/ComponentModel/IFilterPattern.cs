@@ -39,6 +39,7 @@ namespace PropertyModels.ComponentModel
         /// <param name="propertyDescriptor">The property descriptor.</param>
         /// <param name="context">The context.</param>
         /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
+        // ReSharper disable once UnusedParameter.Global
         bool Match(PropertyDescriptor propertyDescriptor, object context);
     }
 }

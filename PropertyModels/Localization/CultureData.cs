@@ -14,7 +14,7 @@ namespace PropertyModels.Localization
         /// <summary>
         /// The local texts
         /// </summary>
-        protected readonly Dictionary<string, string>? LocalTexts = null;
+        protected Dictionary<string, string>? LocalTexts = null;
 
         /// <summary>
         /// Gets the culture.

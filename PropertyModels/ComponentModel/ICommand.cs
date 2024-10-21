@@ -194,6 +194,7 @@ namespace PropertyModels.ComponentModel
         /// Gets or sets the tag.
         /// </summary>
         /// <value>The tag.</value>
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public object? Tag { get; set; }
 
         /// <summary>
