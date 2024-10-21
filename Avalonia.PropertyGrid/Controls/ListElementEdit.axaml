@@ -1,7 +1,10 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:controls="using:Avalonia.PropertyGrid.Controls"
 		xmlns:ll="using:Avalonia.PropertyGrid.Localization"
+        xmlns:local="clr-namespace:Avalonia.PropertyGrid.Controls"
+        d:DataContext="{d:DesignInstance Type=local:ListElementDataDesc, IsDesignTimeCreatable=True}"
 		>
   <Design.PreviewWith>
     <controls:ListElementEdit />
@@ -13,7 +16,7 @@
       <ControlTemplate>
 		  <DataValidationErrors>
 			  <Grid ColumnDefinitions="36, *,Auto,Auto">
-				  <TextBlock Text="{Binding DisplayName}" 
+				  <TextBlock Grid.Column="0" Text="{Binding DisplayName}" 
 							 Margin="10,0,2,0"
 							 VerticalAlignment="Center"
 							 ></TextBlock>

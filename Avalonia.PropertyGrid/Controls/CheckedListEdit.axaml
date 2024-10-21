@@ -11,7 +11,7 @@
       <ControlTemplate>
 		  <DataValidationErrors>
 			  <Border BorderBrush="Gray" BorderThickness="0.5" CornerRadius="0,0,5,5" Margin="0">
-				  <ItemsControl x:Name="PART_ItemsPresenter"
+				  <ItemsControl x:Name="ItemsPresenter"
 								  ItemsSource="{Binding Model.Items, RelativeSource={RelativeSource TemplatedParent}}">
 					  <ItemsControl.ItemsPanel>
 						  <ItemsPanelTemplate>

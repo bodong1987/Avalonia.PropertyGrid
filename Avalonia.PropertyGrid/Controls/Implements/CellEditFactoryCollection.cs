@@ -87,14 +87,16 @@ namespace Avalonia.PropertyGrid.Controls.Implements
             foreach (var factory in _factories)
             {
                 var control = factory.HandleNewProperty(context);
-                var classesAttributes = context.Property.GetCustomAttributes<ControlClassesAttribute>();
-                if (classesAttributes.Length > 0)
-                {
-                    var classes = classesAttributes.SelectMany(a => a.Classes).Distinct();
-                    control?.Classes.AddRange(classes);
-                }
+                
                 if (control != null)
                 {
+                    var classesAttributes = context.Property.GetCustomAttributes<ControlClassesAttribute>();
+                    if (classesAttributes.Length > 0)
+                    {
+                        var classes = classesAttributes.SelectMany(a => a.Classes).Distinct();
+                        control.Classes.AddRange(classes);
+                    }
+                    
                     context.CellEdit = control;
                     context.Factory = factory;
 

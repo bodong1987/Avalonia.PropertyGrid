@@ -97,7 +97,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="value">The value.</param>
         private void OnModelChanged(CheckedMaskModel? value)
         {
-            mainPanel.Children.Clear();
+            MainPanel.Children.Clear();
 
             if (value == null)
             {
@@ -122,7 +122,7 @@ namespace Avalonia.PropertyGrid.Controls
                     value.Check(value.All);
 
                     // ReSharper disable once PossibleInvalidCastExceptionInForeachLoop
-                    foreach (ToggleButton btn in mainPanel.Children)
+                    foreach (ToggleButton btn in MainPanel.Children)
                     {
                         if (btn != allButton)
                         {
@@ -136,7 +136,7 @@ namespace Avalonia.PropertyGrid.Controls
                 }
             };
 
-            mainPanel.Children.Add(allButton);
+            MainPanel.Children.Add(allButton);
 
             foreach (var mask in value.Masks)
             {
@@ -166,7 +166,7 @@ namespace Avalonia.PropertyGrid.Controls
                     }
                 };
 
-                mainPanel.Children.Add(button);
+                MainPanel.Children.Add(button);
             }
         }
     }

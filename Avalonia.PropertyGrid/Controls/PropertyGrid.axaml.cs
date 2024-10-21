@@ -264,7 +264,7 @@ namespace Avalonia.PropertyGrid.Controls
 
             InitializeComponent();
 
-            column_name.PropertyChanged += OnColumnNamePropertyChanged;
+            ColumnName.PropertyChanged += OnColumnNamePropertyChanged;
         }
 
         private void OnCustomPropertyDescriptorFilter(object? sender, CustomPropertyDescriptorFilterEventArgs e)
@@ -393,7 +393,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="newValue">The new value.</param>
         private void OnAllowFilterChanged(object? oldValue, object? newValue)
         {
-            headerGrid.IsVisible = (bool)newValue!;
+            HeaderGrid.IsVisible = (bool)newValue!;
         }
 
         private static void OnNameWidthChanged(AvaloniaPropertyChangedEventArgs e)
@@ -406,7 +406,7 @@ namespace Avalonia.PropertyGrid.Controls
 
         private void OnNameWidthChanged(object? oldValue, object? newValue)
         {
-            splitterGrid.ColumnDefinitions[0].Width = new GridLength((double)newValue!);
+            SplitterGrid.ColumnDefinitions[0].Width = new GridLength((double)newValue!);
         }
 
         /// <summary>
@@ -467,7 +467,7 @@ namespace Avalonia.PropertyGrid.Controls
 
         private void OnShowTitleChanged(bool oldValue, bool newValue)
         {
-            splitterGrid.IsVisible = newValue;
+            SplitterGrid.IsVisible = newValue;
         }
 
         private static void OnIsReadOnyPropertyChanged(AvaloniaPropertyChangedEventArgs<bool> e)
@@ -524,8 +524,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         private void BuildPropertiesView()
         {
-            propertiesGrid.RowDefinitions.Clear();
-            propertiesGrid.Children.Clear();
+            PropertiesGrid.RowDefinitions.Clear();
+            PropertiesGrid.Children.Clear();
             _expandableObjectCache.Clear();
 
             ClearPropertyChangedObservers(_cellInfoCache.Children);
@@ -568,7 +568,7 @@ namespace Avalonia.PropertyGrid.Controls
 
             RefreshVisibilities();
 
-            var width = column_name.Bounds.Width;
+            var width = ColumnName.Bounds.Width;
 
             SyncNameWidth(width, false);
         }
@@ -583,7 +583,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="propertyOrderStyle">property style.</param>
         protected virtual void BuildCategoryPropertiesView(object target, ReferencePath referencePath, PropertyGridOrderStyle categoryStyle, PropertyGridOrderStyle propertyOrderStyle)
         {
-            propertiesGrid.ColumnDefinitions.Clear();
+            PropertiesGrid.ColumnDefinitions.Clear();
 
             var categories = ViewModel.Categories;
 
@@ -594,13 +594,13 @@ namespace Avalonia.PropertyGrid.Controls
 
             foreach (var categoryInfo in categories)
             {
-                propertiesGrid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
+                PropertiesGrid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
 
                 var expander = new Expander
                 {
                     ExpandDirection = ExpandDirection.Down
                 };
-                expander.SetValue(Grid.RowProperty, propertiesGrid.RowDefinitions.Count - 1);
+                expander.SetValue(Grid.RowProperty, PropertiesGrid.RowDefinitions.Count - 1);
                 expander.IsExpanded = true;
                 expander.HorizontalContentAlignment = HorizontalAlignment.Stretch;
                 expander.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -631,10 +631,10 @@ namespace Avalonia.PropertyGrid.Controls
 
                 expander.Content = grid;
 
-                propertiesGrid.Children.Add(expander);
+                PropertiesGrid.Children.Add(expander);
             }
 
-            propertiesGrid.RowDefinitions.Add(new RowDefinition(GridLength.Star));
+            PropertiesGrid.RowDefinitions.Add(new RowDefinition(GridLength.Star));
         }
 
         /// <summary>
@@ -760,11 +760,11 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="referencePath">The reference path.</param>
         protected virtual void BuildAlphabeticPropertiesView(object target, ReferencePath referencePath)
         {
-            propertiesGrid.ColumnDefinitions.Clear();
-            propertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
-            propertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
+            PropertiesGrid.ColumnDefinitions.Clear();
+            PropertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
+            PropertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
 
-            BuildPropertiesCellEdit(target, referencePath, ViewModel.AllProperties.OrderBy(x => x.DisplayName), null, propertiesGrid, _cellInfoCache);
+            BuildPropertiesCellEdit(target, referencePath, ViewModel.AllProperties.OrderBy(x => x.DisplayName), null, PropertiesGrid, _cellInfoCache);
         }
 
         /// <summary>
@@ -774,11 +774,11 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="referencePath">The reference path.</param>
         protected virtual void BuildBuiltinPropertiesView(object target, ReferencePath referencePath)
         {
-            propertiesGrid.ColumnDefinitions.Clear();
-            propertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
-            propertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
+            PropertiesGrid.ColumnDefinitions.Clear();
+            PropertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
+            PropertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
 
-            BuildPropertiesCellEdit(target, referencePath, ViewModel.AllProperties, null, propertiesGrid, _cellInfoCache);
+            BuildPropertiesCellEdit(target, referencePath, ViewModel.AllProperties, null, PropertiesGrid, _cellInfoCache);
         }
         #endregion
 
@@ -799,7 +799,7 @@ namespace Avalonia.PropertyGrid.Controls
 
             if (syncToTitle)
             {
-                column_name.Width = width;
+                ColumnName.Width = width;
             }
         }
 

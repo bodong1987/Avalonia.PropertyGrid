@@ -7,6 +7,7 @@
              mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="900"
              x:Class="Avalonia.PropertyGrid.Controls.PropertyGrid">
 	<UserControl.Resources>
+		<!-- ReSharper disable once Xaml.RedundantResource -->
 		<Thickness x:Key="ExpanderContentPadding">2</Thickness>
 	</UserControl.Resources>
 
@@ -20,30 +21,28 @@
 		<StyleInclude Source="avares://Avalonia.Controls.ColorPicker/Themes/Simple/Simple.xaml"/>
 	</UserControl.Styles>
 	
-	<Grid x:Name="mainGrid"
-		  RowDefinitions="Auto,Auto,Auto,*"
-		>
-		<Grid x:Name="headerGrid"
+	<Grid RowDefinitions="Auto,Auto,Auto,*">
+		<Grid x:Name="HeaderGrid"
 			  ColumnDefinitions="*,Auto, Auto, Auto"
 			  Margin="2"
 		  >
-			<TextBox Classes="clearButton" x:Name="searchTextBox" VerticalAlignment="Center" VerticalContentAlignment="Center" Watermark="{ll:Localize Search}" Grid.Column="0" Text="{Binding $parent[lc:PropertyGrid].ViewModel.FilterPattern.FilterText}" ></TextBox>
+			<TextBox Classes="clearButton" x:Name="SearchTextBox" VerticalAlignment="Center" VerticalContentAlignment="Center" Watermark="{ll:Localize Search}" Grid.Column="0" Text="{Binding $parent[lc:PropertyGrid].ViewModel.FilterPattern.FilterText}" ></TextBox>
 			<ToggleButton x:Name="ShowStyleButton" Margin="2" Content="{Binding $parent[lc:PropertyGrid].ViewModel.ShowStyleText}" Grid.Column="1" IsChecked="{Binding $parent[lc:PropertyGrid].ViewModel.ShowStyleType}" ToolTip.Tip="{ll:Localize ShowStyle}"></ToggleButton>
 			<ToggleButton Margin="2" Content="R" Grid.Column="2" IsChecked="{Binding $parent[lc:PropertyGrid].ViewModel.FilterPattern.UseRegex}" ToolTip.Tip="{ll:Localize UseRegex}"></ToggleButton>
 			<ToggleButton Margin="2" Content="K" Grid.Column="3" IsChecked="{Binding $parent[lc:PropertyGrid].ViewModel.FilterPattern.IgnoreCase}" ToolTip.Tip="{ll:Localize IgnoreCase}"></ToggleButton>
 		</Grid>
 		<lc:CheckedMask x:Name="FastFilterBox" Grid.Row="1" Model="{Binding $parent[lc:PropertyGrid].ViewModel.CategoryFilter}"></lc:CheckedMask>
-		<Grid x:Name="splitterGrid" Grid.Row="2">
+		<Grid x:Name="SplitterGrid" Grid.Row="2">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="180" MinWidth="60"></ColumnDefinition>
 				<ColumnDefinition Width="2"></ColumnDefinition>
 				<ColumnDefinition Width="*"></ColumnDefinition>				
 			</Grid.ColumnDefinitions>
+			<TextBlock x:Name="ColumnName" Margin="8,0,2,2" Text="{ll:Localize Name}" Grid.Column="0"></TextBlock>
 			<GridSplitter Grid.Column="1"></GridSplitter>
-			<TextBlock x:Name="column_name" Margin="8,0,2,2" Text="{ll:Localize Name}"></TextBlock>
-			<TextBlock x:Name="column_properties" Margin="6, 0, 2, 2" Text="{ll:Localize Properties}" Grid.Column="2"></TextBlock>
+			<TextBlock x:Name="ColumnProperties" Margin="6, 0, 2, 2" Text="{ll:Localize Properties}" Grid.Column="2"></TextBlock>
 		</Grid>
-		<Grid x:Name="propertiesGrid" Grid.Row="3">
+		<Grid x:Name="PropertiesGrid" Grid.Row="3">
 			
 		</Grid>
 	</Grid>

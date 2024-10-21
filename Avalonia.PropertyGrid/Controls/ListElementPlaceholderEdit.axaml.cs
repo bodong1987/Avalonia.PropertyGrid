@@ -52,7 +52,7 @@ namespace Avalonia.PropertyGrid.Controls
                 oldValue.ValueChanged -= OnElementValueChanged;
             }
 
-            mainBorder.Child = null;
+            MainBorder.Child = null;
 
             if (value == null)
             {
@@ -71,7 +71,7 @@ namespace Avalonia.PropertyGrid.Controls
             {
                 control.Margin = new Thickness(2,2);
 
-                mainBorder.Child = control;
+                MainBorder.Child = control;
 
                 Debug.Assert(_context.Factory != null);
 
