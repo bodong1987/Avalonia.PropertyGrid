@@ -11,6 +11,7 @@
         /// so it can display complex characters correctly.
         /// </summary>
         /// <value>The default font family.</value>
-        public static string DefaultFontFamily { get; set; } = "Microsoft YaHei,Simsun,苹方-简,宋体-简";
+        // ReSharper disable once StringLiteralTypo
+        public static string DefaultFontFamily => "Microsoft YaHei,Simsun,苹方-简,宋体-简";
     }
 }
