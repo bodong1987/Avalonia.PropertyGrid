@@ -1,5 +1,5 @@
 ﻿using Avalonia.PropertyGrid.Localization;
-using PropertyModels.Localilzation;
+using PropertyModels.Localization;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

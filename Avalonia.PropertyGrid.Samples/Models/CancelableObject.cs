@@ -15,10 +15,10 @@ namespace Avalonia.PropertyGrid.Samples.Models
         CancelableCommandRecorder _Recorder = new CancelableCommandRecorder();
 
         [Browsable(false)]
-        public bool CanUndo => _Recorder.Undoable;
+        public bool CanUndo => _Recorder.CanUndo;
 
         [Browsable(false)]
-        public bool CanRedo => _Recorder.Redoable;
+        public bool CanRedo => _Recorder.CanRedo;
 
         [Browsable(false)]
         public string UndoDescription => _Recorder.UndoCommandDescription;

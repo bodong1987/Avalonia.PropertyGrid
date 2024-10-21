@@ -49,8 +49,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (watermarkAttr != null)
             {
-                // control.Watermark = LocalizationService.Default[watermarkAttr.Watermask];
-                control.SetLocalizeBinding(ButtonEdit.WatermarkProperty, watermarkAttr.Watermask);
+                // control.Watermark = LocalizationService.Default[watermarkAttr.Watermark];
+                control.SetLocalizeBinding(ButtonEdit.WatermarkProperty, watermarkAttr.Watermark);
             }
 
             control.ButtonClick += async (s, e) =>
