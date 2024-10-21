@@ -27,7 +27,14 @@ namespace Avalonia.PropertyGrid.Utils
             {
                 var wrapper = new EnumValueWrapper((x as Enum)!);
 
-                wrapper.DisplayName = LocalizationService.Default[wrapper.DisplayName];
+                try
+                {
+                    wrapper.DisplayName = LocalizationService.Default[wrapper.DisplayName];
+                }
+                catch
+                {
+                    wrapper.DisplayName = x.ToString()!;
+                }
 
                 return wrapper;
             }).ToArray();
