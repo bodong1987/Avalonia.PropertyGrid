@@ -53,7 +53,7 @@ namespace PropertyModels.Extensions
         }
 
         /// <summary>
-        /// check if has defined an Attribute
+        /// if it has defined an Attribute
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="memberInfo">The member information.</param>
@@ -125,7 +125,7 @@ namespace PropertyModels.Extensions
         /// <param name="memberInfo">The member information.</param>
         /// <param name="target">The target.</param>
         /// <param name="value">The value.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         /// <exception cref="System.ArgumentException">Input MemberInfo must be if type FieldInfo, or PropertyInfo</exception>
         public static bool SetUnderlyingValue(this MemberInfo memberInfo, object? target, object? value)
         {
@@ -469,7 +469,7 @@ namespace PropertyModels.Extensions
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="propertyDescriptor">The property descriptor.</param>
-        /// <returns><c>true</c> if the specified property descriptor is defiend; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the specified property descriptor is defined an attribute; otherwise, <c>false</c>.</returns>
         public static bool IsDefined<T>(this PropertyDescriptor propertyDescriptor) where T : Attribute
         {
             return propertyDescriptor.Attributes.OfType<T>().Any();
@@ -515,7 +515,7 @@ namespace PropertyModels.Extensions
         }
 
         /// <summary>
-        /// Sets the and raise event.
+        /// Sets and raise event.
         /// </summary>
         /// <param name="property">The property.</param>
         /// <param name="component">The component.</param>
@@ -595,9 +595,9 @@ namespace PropertyModels.Extensions
             {
                 npc.RaisePropertyChanged(property.Name);
             }
-            else if (component is IEnumerable<INotifyPropertyChanged> enpcps)
+            else if (component is IEnumerable<INotifyPropertyChanged> p)
             {
-                foreach (var e in enpcps)
+                foreach (var e in p)
                 {
                     e.RaisePropertyChanged(property.Name);
                 }
