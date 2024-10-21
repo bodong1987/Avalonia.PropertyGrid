@@ -52,9 +52,9 @@ namespace PropertyModels.ComponentModel
         {
             Debug.Assert(value != null);
 
-            Value = value!;
+            Value = value;
 
-            var fieldInfo = value!.GetType().GetField(value.ToString());
+            var fieldInfo = value.GetType().GetField(value.ToString());
 
             var attr = fieldInfo?.GetCustomAttribute<EnumDisplayNameAttribute>();
 
@@ -70,7 +70,7 @@ namespace PropertyModels.ComponentModel
         {
             Debug.Assert(value != null);
 
-            Value = value!;
+            Value = value;
             DisplayName = displayName;
         }
 

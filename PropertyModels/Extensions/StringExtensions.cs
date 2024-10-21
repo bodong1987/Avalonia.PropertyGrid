@@ -41,7 +41,7 @@ namespace PropertyModels.Extensions
                 throw new ArgumentOutOfRangeException(nameof(length), length, "Length is less than zero");
             }
 
-            return length <= value.Length ? value.Substring(0, length) : value;
+            return length <= value.Length ? value[..length] : value;
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace PropertyModels.Extensions
                 throw new ArgumentOutOfRangeException(nameof(length), length, "Length is less than zero");
             }
 
-            return length < value.Length ? value.Substring(value.Length - length) : value;
+            return length < value.Length ? value[^length..] : value;
         }
 
 

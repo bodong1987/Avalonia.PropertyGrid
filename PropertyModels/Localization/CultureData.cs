@@ -94,7 +94,7 @@ namespace PropertyModels.Localization
             {
                 var configLine = line.Trim();
 
-                if(!configLine.Contains(":") || configLine.StartsWith("\\"))
+                if(!configLine.Contains(':') || configLine.StartsWith('\\'))
                 {
                     continue;
                 }

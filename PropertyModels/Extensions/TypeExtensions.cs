@@ -271,17 +271,17 @@ namespace PropertyModels.Extensions
         private static bool TryGetTypeByName(string typeName, out Type? type, params Assembly[] customAssemblies)
         {
             if (typeName.Contains("Version=")
-                && !typeName.Contains("`"))
+                && !typeName.Contains('`'))
             {
                 // remove full qualified assembly type name
-                typeName = typeName.Substring(0, typeName.IndexOf(','));
+                typeName = typeName[..typeName.IndexOf(',')];
             }
 
             type = Type.GetType(typeName) ?? GetTypeFromAssemblies(typeName, customAssemblies);
 
             // try get generic types
             if (type == null
-                && typeName.Contains("`"))
+                && typeName.Contains('`'))
             {
                 var match = Regex.Match(typeName, @"(?<MainType>.+`(?<ParamCount>[0-9]+))\[(?<Types>.*)\]");
 
@@ -571,6 +571,8 @@ namespace PropertyModels.Extensions
         /// <returns><c>true</c> if [is property changed] [the specified component]; otherwise, <c>false</c>.</returns>
         public static bool IsPropertyChanged(this PropertyDescriptor property, object? component, object? value, out object? oldValue)
         {
+            // for .net standard 2.1
+            // ReSharper disable once AssignNullToNotNullAttribute
             var obj = property.GetValue(component);
             oldValue = obj;
 
