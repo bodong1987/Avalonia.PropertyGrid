@@ -20,18 +20,19 @@ namespace Avalonia.PropertyGrid.Controls
         public static readonly DirectProperty<ListElementEdit, ICommand> InsertCommandProperty =
             AvaloniaProperty.RegisterDirect<ListElementEdit, ICommand>(
                 nameof(InsertCommand),
-                o => o.InsertCommand,
+                o => o.InsertCommand!,
                 (o, v) => o.InsertCommand = v);
 
-        ICommand _InsertCommand;
+        ICommand? _InsertCommand;
+
         /// <summary>
         /// Gets or sets the insert command.
         /// </summary>
         /// <value>The insert command.</value>
-        public ICommand InsertCommand
+        public ICommand? InsertCommand
         {
             get => _InsertCommand;
-            set => SetAndRaise(InsertCommandProperty, ref _InsertCommand, value);
+            set => SetAndRaise(InsertCommandProperty!, ref _InsertCommand, value);
         }
 
         /// <summary>
@@ -40,18 +41,19 @@ namespace Avalonia.PropertyGrid.Controls
         public static readonly DirectProperty<ListElementEdit, ICommand> RemoveCommandProperty =
             AvaloniaProperty.RegisterDirect<ListElementEdit, ICommand>(
                 nameof(RemoveCommand),
-                o => o.RemoveCommand,
+                o => o.RemoveCommand!,
                 (o, v) => o.RemoveCommand = v);
 
-        ICommand _RemoveCommand;
+        ICommand? _RemoveCommand;
+
         /// <summary>
         /// Gets or sets the remove command.
         /// </summary>
         /// <value>The remove command.</value>
-        public ICommand RemoveCommand
+        public ICommand? RemoveCommand
         {
             get => _RemoveCommand;
-            set => SetAndRaise(RemoveCommandProperty, ref _RemoveCommand, value);
+            set => SetAndRaise(RemoveCommandProperty!, ref _RemoveCommand, value);
         }
 
         /// <summary>

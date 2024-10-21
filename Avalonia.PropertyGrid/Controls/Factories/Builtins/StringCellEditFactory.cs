@@ -34,7 +34,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns>Control.</returns>
-        public override Control HandleNewProperty(PropertyCellContext context)
+        public override Control? HandleNewProperty(PropertyCellContext context)
         {
             var propertyDescriptor = context.Property;
             var target = context.Target;

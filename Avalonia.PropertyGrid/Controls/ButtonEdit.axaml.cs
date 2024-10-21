@@ -22,23 +22,23 @@ namespace Avalonia.PropertyGrid.Controls
         public static readonly DirectProperty<ButtonEdit, ICommand> ButtonClickedCommandProperty =
             AvaloniaProperty.RegisterDirect<ButtonEdit, ICommand>(
                 nameof(ButtonClickedCommand),
-                o => o.ButtonClickedCommand,
+                o => o.ButtonClickedCommand!,
                 (o, v) => o.ButtonClickedCommand = v
                 );
 
         /// <summary>
         /// The button clicked command
         /// </summary>
-        private ICommand _ButtonClickedCommand;
+        private ICommand? _ButtonClickedCommand;
 
         /// <summary>
         /// Gets or sets the button clicked command.
         /// </summary>
         /// <value>The button clicked command.</value>
-        public ICommand ButtonClickedCommand
+        public ICommand? ButtonClickedCommand
         {
             get => _ButtonClickedCommand;
-            set => SetAndRaise(ButtonClickedCommandProperty, ref _ButtonClickedCommand, value);
+            set => SetAndRaise(ButtonClickedCommandProperty!, ref _ButtonClickedCommand, value);
         }
 
         /// <summary>
@@ -69,22 +69,22 @@ namespace Avalonia.PropertyGrid.Controls
         public static readonly DirectProperty<ButtonEdit, string> TextProperty =
             AvaloniaProperty.RegisterDirect<ButtonEdit, string>(
                 nameof(Text),
-                o => o.Text,
+                o => o.Text ?? string.Empty,
                 (o, v) => o.Text = v
                 );
 
         /// <summary>
         /// The text
         /// </summary>
-        string _Text;
+        string? _Text;
         /// <summary>
         /// Gets or sets the text.
         /// </summary>
         /// <value>The text.</value>
-        public string Text
+        public string? Text
         {
             get => _Text;
-            set => SetAndRaise(TextProperty, ref _Text, value);
+            set => SetAndRaise(TextProperty!, ref _Text, value);
         }
 
         /// <summary>
@@ -93,19 +93,20 @@ namespace Avalonia.PropertyGrid.Controls
         public static readonly DirectProperty<ButtonEdit, string> WatermarkProperty =
             AvaloniaProperty.RegisterDirect<ButtonEdit, string>(
                 nameof(Watermark),
-                o => o.Watermark,
+                o => o.Watermark ?? string.Empty,
                 (o, v) => o.Watermark = v
                 );
-        string _Watermark;
+        
+        string? _Watermark;
 
         /// <summary>
         /// Gets or sets the Watermark.
         /// </summary>
         /// <value>The Watermark.</value>
-        public string Watermark
+        public string? Watermark
         {
             get => _Watermark;
-            set=> SetAndRaise(WatermarkProperty, ref _Watermark, value);
+            set=> SetAndRaise(WatermarkProperty!, ref _Watermark, value);
         }
 
         #region Events
@@ -160,7 +161,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Called when [button clicked].
         /// </summary>
         /// <param name="sender">The sender.</param>
-        private void OnButtonClicked(object sender)
+        private void OnButtonClicked(object? sender)
         {
             var evt = new RoutedEventArgs(ButtonClickEvent);
             RaiseEvent(evt);
@@ -182,7 +183,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Called when [property changed].
         /// </summary>
         /// <param name="value">The value.</param>
-        private void OnTextPropertyChanged(string value)
+        private void OnTextPropertyChanged(string? value)
         {
             var evt = new RoutedEventArgs(TextChangedEvent);
             RaiseEvent(evt);

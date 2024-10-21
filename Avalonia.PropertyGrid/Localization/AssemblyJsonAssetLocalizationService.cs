@@ -35,7 +35,7 @@ namespace Avalonia.PropertyGrid.Localization
         /// <summary>
         /// Occurs when [on culture changed].
         /// </summary>
-        public event EventHandler OnCultureChanged;
+        public event EventHandler? OnCultureChanged;
 
         /// <summary>
         /// Gets the available cultures.
@@ -44,7 +44,7 @@ namespace Avalonia.PropertyGrid.Localization
         public ISelectableList<ICultureData> AvailableCultures => AssetCultureDatas;
 
         /// <summary>
-        /// The asset culture datas
+        /// The asset culture data
         /// </summary>
         readonly SelectableList<ICultureData> AssetCultureDatas = new SelectableList<ICultureData>();
 
@@ -183,7 +183,7 @@ namespace Avalonia.PropertyGrid.Localization
             }
         }
 
-        private void OnSelectionChanged(object sender, EventArgs e)
+        private void OnSelectionChanged(object? sender, EventArgs e)
         {            
             // all bind in xaml can be refreshed
             RaisePropertyChanged("Item");

@@ -87,13 +87,13 @@ namespace Avalonia.PropertyGrid.Controls
         /// Adds the specified target.
         /// </summary>
         /// <param name="target">The target.</param>
-        void Add(object target);
+        void Add(object? target);
 
         /// <summary>
         /// Removes the specified target.
         /// </summary>
         /// <param name="target">The target.</param>
-        void Remove(object target);
+        void Remove(object? target);
 
         /// <summary>
         /// Clears this instance.
@@ -105,7 +105,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <param name="target">The target.</param>
         /// <returns><c>true</c> if the specified target is exists; otherwise, <c>false</c>.</returns>
-        bool IsExists(object target);
+        bool IsExists(object? target);
 
         /// <summary>
         /// Merges the specified cache.
@@ -129,7 +129,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The target
         /// </summary>
-        public readonly Object Target;
+        public readonly object Target;
 
         /// <summary>
         /// The property
@@ -139,17 +139,17 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The old value
         /// </summary>
-        public readonly object OldValue;
+        public readonly object? OldValue;
 
         /// <summary>
         /// Creates new value.
         /// </summary>
-        public readonly object NewValue;
+        public readonly object? NewValue;
 
         /// <summary>
         /// The context
         /// </summary>
-        public readonly object Context;
+        public readonly object? Context;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RoutedCommandExecutedEventArgs"/> class.
@@ -166,9 +166,9 @@ namespace Avalonia.PropertyGrid.Controls
             ICancelableCommand command,
             object target,
             PropertyDescriptor property,
-            object oldValue,
-            object newValue,
-            object context) :
+            object? oldValue,
+            object? newValue,
+            object? context) :
             base(routedEvent)
         {
             Command = command;
@@ -208,9 +208,9 @@ namespace Avalonia.PropertyGrid.Controls
             ICancelableCommand command, 
             object target, 
             PropertyDescriptor property, 
-            object oldValue, 
-            object newValue, 
-            object context) :
+            object? oldValue, 
+            object? newValue, 
+            object? context) :
             base(routedEvent, command, target, property, oldValue, newValue, context)
         {
         }

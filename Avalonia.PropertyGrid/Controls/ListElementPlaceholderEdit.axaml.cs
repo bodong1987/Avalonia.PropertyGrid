@@ -13,7 +13,7 @@ namespace Avalonia.PropertyGrid.Controls
     /// <seealso cref="UserControl" />
     public partial class ListElementPlaceholderEdit : UserControl
     {
-        PropertyCellContext Context;
+        PropertyCellContext? Context;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ListElementPlaceholderEdit"/> class.
@@ -46,7 +46,7 @@ namespace Avalonia.PropertyGrid.Controls
             base.OnDataContextChanged(e);
         }
      
-        private void OnDataDescPropertyChanged(ListElementDataDesc oldValue, ListElementDataDesc value)
+        private void OnDataDescPropertyChanged(ListElementDataDesc? oldValue, ListElementDataDesc? value)
         {
             if(oldValue != null)
             {
@@ -62,6 +62,7 @@ namespace Avalonia.PropertyGrid.Controls
 
             value.ValueChanged += OnElementValueChanged;
 
+            Debug.Assert(value.Context != null);
             Debug.Assert(value.Context.Root!=null);
 
             Context = new PropertyCellContext(value.Context, value.List, value.Property);
@@ -75,14 +76,14 @@ namespace Avalonia.PropertyGrid.Controls
 
                 Debug.Assert(Context.Factory != null);
 
-                Context.Factory.HandleReadOnlyStateChanged(control, Context.IsReadOnly || value.IsReadOnly);
+                Context.Factory!.HandleReadOnlyStateChanged(control, Context.IsReadOnly || value.IsReadOnly);
 
                 Context.Factory.HandlePropertyChanged(Context);
             }
         }
 
 
-        private void OnElementValueChanged(object sender, EventArgs e)
+        private void OnElementValueChanged(object? sender, EventArgs e)
         {
             var value = DataContext as ListElementDataDesc;
 
@@ -94,7 +95,7 @@ namespace Avalonia.PropertyGrid.Controls
             if(Context != null && Context.Factory != null)
             {
                 Debug.Assert(Context!=null);
-                Debug.Assert(Context.CellEdit != null);
+                Debug.Assert(Context!.CellEdit != null);
 
                 Context.Factory.HandlePropertyChanged(Context);
             }

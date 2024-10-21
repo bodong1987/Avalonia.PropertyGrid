@@ -4,6 +4,7 @@ using Avalonia.PropertyGrid.Localization;
 using PropertyModels.ComponentModel;
 using System;
 using Avalonia.Reactive;
+using System.Diagnostics;
 
 namespace Avalonia.PropertyGrid.Controls
 {
@@ -17,15 +18,16 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The model
         /// </summary>
-        CheckedMaskModel _Model;
+        CheckedMaskModel? _Model;
+
         /// <summary>
         /// The model property
         /// </summary>
         public static readonly DirectProperty<CheckedMask, CheckedMaskModel> ModelProperty =
             AvaloniaProperty.RegisterDirect<CheckedMask, CheckedMaskModel>(
                 nameof(Model),
-                o => o._Model,
-                (o, v) => o.SetAndRaise(ModelProperty, ref o._Model, v)
+                o => o._Model!,
+                (o, v) => o.SetAndRaise(ModelProperty!, ref o._Model!, v)
                 );
 
         /// <summary>
@@ -34,8 +36,13 @@ namespace Avalonia.PropertyGrid.Controls
         /// <value>The model.</value>
         public CheckedMaskModel Model
         {
-            get => _Model;
-            set => SetAndRaise(ModelProperty, ref _Model, value);
+            get 
+            {
+                Debug.Assert(_Model != null); 
+                return _Model;
+            }
+
+            set => SetAndRaise(ModelProperty, ref _Model!, value);
         }
 
         /// <summary>

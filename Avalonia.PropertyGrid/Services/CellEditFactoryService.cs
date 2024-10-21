@@ -26,7 +26,7 @@ namespace Avalonia.PropertyGrid.Services
             {
                 if (type.IsClass && !type.IsAbstract && type.IsImplementFrom<ICellEditFactory>())
                 {
-                    Default.AddFactory(Activator.CreateInstance(type) as ICellEditFactory);
+                    Default.AddFactory((Activator.CreateInstance(type) as ICellEditFactory)!);
                 }
             }
         }

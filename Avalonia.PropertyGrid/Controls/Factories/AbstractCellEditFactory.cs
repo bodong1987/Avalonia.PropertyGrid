@@ -33,7 +33,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         /// Gets or sets the collection.
         /// </summary>
         /// <value>The collection.</value>
-        ICellEditFactoryCollection ICellEditFactory.Collection { get; set; }
+        ICellEditFactoryCollection? ICellEditFactory.Collection { get; set; }
 
         /// <summary>
         /// Check available for target
@@ -49,7 +49,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         /// Clones this instance.
         /// </summary>
         /// <returns>ICellEditFactory.</returns>
-        public virtual ICellEditFactory Clone()
+        public virtual ICellEditFactory? Clone()
         {
             return Activator.CreateInstance(GetType()) as ICellEditFactory;
         }
@@ -59,7 +59,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns>Control.</returns>
-        public abstract Control HandleNewProperty(PropertyCellContext context);
+        public abstract Control? HandleNewProperty(PropertyCellContext context);
 
         /// <summary>
         /// Handles the property changed.
@@ -87,7 +87,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         /// <param name="context">The context.</param>
         /// <param name="sourceControl">The source control.</param>
         /// <param name="value">The value.</param>
-        protected virtual void SetAndRaise(PropertyCellContext context, Control sourceControl, object value) 
+        protected virtual void SetAndRaise(PropertyCellContext context, Control sourceControl, object? value) 
         {
             if(context.Property.IsPropertyChanged(context.Target, value, out var oldValue))
             {
@@ -121,7 +121,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         /// <param name="value">The value.</param>
         /// <param name="context">The context.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
-        protected virtual bool ExecuteCommand(ICancelableCommand command, PropertyCellContext propertyContext, object oldValue, object value, object context)
+        protected virtual bool ExecuteCommand(ICancelableCommand command, PropertyCellContext propertyContext, object? oldValue, object? value, object? context)
         {
             RoutedCommandExecutingEventArgs evt = new RoutedCommandExecutingEventArgs(
                     PropertyGrid.CommandExecutingEvent,
@@ -177,7 +177,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         /// <param name="sourceControl">The source control.</param>
         /// <param name="context">The context.</param>
         /// <param name="value">The value.</param>
-        protected virtual void HandleSetValue(Control sourceControl, PropertyCellContext context, object value)
+        protected virtual void HandleSetValue(Control sourceControl, PropertyCellContext context, object? value)
         {
             DataValidationErrors.ClearErrors(sourceControl);
 

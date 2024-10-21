@@ -40,14 +40,14 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             var attr = property.GetCustomAttribute<TypeConverterAttribute>();
 
-            if(attr != null && attr.GetConverterType().IsChildOf<ExpandableObjectConverter>())
+            if(attr != null && attr.GetConverterType()!.IsChildOf<ExpandableObjectConverter>())
             {
                 return true;
             }
 
             attr = property.PropertyType.GetCustomAttribute<TypeConverterAttribute>();
 
-            return attr != null && attr.GetConverterType().IsChildOf<ExpandableObjectConverter>();
+            return attr != null && attr.GetConverterType()!.IsChildOf<ExpandableObjectConverter>();
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns>Control.</returns>
-        public override Control HandleNewProperty(PropertyCellContext context)
+        public override Control? HandleNewProperty(PropertyCellContext context)
         {
             var propertyDescriptor = context.Property;
             var target = context.Target;
@@ -83,8 +83,10 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             border.CornerRadius = new CornerRadius(0, 0, 5, 5);
             border.Margin = new Thickness(0);
                         
-            PropertyGrid propertyGrid = context.Root.ClonePropertyGrid() as PropertyGrid;
-            propertyGrid.RootPropertyGrid = context.Root;
+            var propertyGrid = context.Root.ClonePropertyGrid() as PropertyGrid;
+            Debug.Assert(propertyGrid != null);
+
+            propertyGrid!.RootPropertyGrid = context.Root;
 
             Debug.Assert(propertyGrid.RootPropertyGrid != null);
             Debug.Assert(propertyGrid.RootPropertyGrid != propertyGrid);

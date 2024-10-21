@@ -27,7 +27,7 @@ namespace Avalonia.PropertyGrid.Localization
         /// Gets or sets the context.
         /// </summary>
         /// <value>The context.</value>
-        public string Context { get; set; }
+        public string? Context { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LocalizeExtension"/> class.

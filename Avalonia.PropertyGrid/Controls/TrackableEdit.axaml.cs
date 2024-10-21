@@ -81,7 +81,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <remarks>This method should not throw exceptions. If the value is not convertible, return
         /// a <see cref="T:Avalonia.Data.BindingNotification" /> in an error state. Any exceptions thrown will be
         /// treated as an application exception.</remarks>
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             if((targetType == typeof(Decimal) || targetType == typeof(Decimal?)) && value != null)
             {
@@ -105,7 +105,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <remarks>This method should not throw exceptions. If the value is not convertible, return
         /// a <see cref="T:Avalonia.Data.BindingNotification" /> in an error state. Any exceptions thrown will be
         /// treated as an application exception.</remarks>
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             if(value != null)
             {

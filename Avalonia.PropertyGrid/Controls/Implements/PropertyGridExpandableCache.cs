@@ -6,9 +6,9 @@ namespace Avalonia.PropertyGrid.Controls.Implements
 {
     internal class PropertyGridExpandableCache : IExpandableObjectCache
     {
-        readonly List<object> Targets = new List<object>();
+        private readonly List<object?> Targets = [];
 
-        public void Add(object target)
+        public void Add(object? target)
         {
             if(!Targets.Contains(target))
             {
@@ -21,7 +21,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
             Targets.Clear();
         }
 
-        public bool IsExists(object target)
+        public bool IsExists(object? target)
         {
             return Targets.Contains(target);
         }
@@ -30,14 +30,14 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         {
             if(cache is PropertyGridExpandableCache c)
             {
-                foreach(object target in c.Targets)
+                foreach(var target in c.Targets)
                 {
                     Add(target);
                 }
             }
         }
 
-        public void Remove(object target)
+        public void Remove(object? target)
         {
             Targets.Remove(target);
         }

@@ -350,23 +350,23 @@ namespace Avalonia.PropertyGrid.Controls
         /// Gets or sets the collection.
         /// </summary>
         /// <value>The collection.</value>
-        public ICellEditFactoryCollection Collection { get; set; }
+        public ICellEditFactoryCollection? Collection { get; set; }
 
         /// <summary>
         /// Gets or sets the property context.
         /// </summary>
         /// <value>The property context.</value>
-        public PropertyCellContext PropertyContext { get; set; }
+        public PropertyCellContext? PropertyContext { get; set; }
 
         /// <summary>
         /// The list
         /// </summary>
-        IList _List;
+        IList? _List;
         /// <summary>
         /// Gets or sets the list.
         /// </summary>
         /// <value>The list.</value>
-        public IList List
+        public IList? List
         {
             get => _List;
             set => this.RaiseAndSetIfChanged(ref _List, value);
@@ -442,7 +442,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="list">The list.</param>
         /// <param name="insertCommand">The insert command.</param>
         /// <param name="removeCommand">The remove command.</param>
-        public ListViewModel(IList list, ICommand insertCommand, ICommand removeCommand)
+        public ListViewModel(IList? list, ICommand insertCommand, ICommand removeCommand)
         {            
             InsertCommand = insertCommand;
             RemoveCommand = removeCommand;
@@ -456,7 +456,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="PropertyChangedEventArgs"/> instance containing the event data.</param>
-        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if(e.PropertyName == nameof(List))
             {
@@ -498,6 +498,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// The list
         /// </summary>
         public readonly IList List;
+
         /// <summary>
         /// The property
         /// </summary>
@@ -506,7 +507,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The root property grid
         /// </summary>
-        public readonly PropertyCellContext Context;
+        public readonly PropertyCellContext? Context;
 
         /// <summary>
         /// Gets or sets the insert command.

@@ -45,7 +45,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// </summary>
         /// <param name="pd">The pd.</param>
         /// <returns>Type.</returns>
-        private Type GetElementType(PropertyDescriptor pd)
+        private Type? GetElementType(PropertyDescriptor pd)
         {
             if (pd.PropertyType.IsGenericType && pd.PropertyType.GetGenericTypeDefinition() == typeof(BindingList<>))
             {
@@ -60,7 +60,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns>Control.</returns>
-        public override Control HandleNewProperty(PropertyCellContext context)
+        public override Control? HandleNewProperty(PropertyCellContext context)
         {
             if (!IsAcceptType(context.Property) || context.Property.GetValue(context.Target) == null)
             {
@@ -139,7 +139,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <param name="e">The <see cref="ListRoutedEventArgs"/> instance containing the event data.</param>
         /// <param name="context">The context.</param>
         /// <param name="control">The control.</param>
-        protected virtual void HandleRemoveElement(object s, ListRoutedEventArgs e, PropertyCellContext context, ListEdit control)
+        protected virtual void HandleRemoveElement(object? s, ListRoutedEventArgs e, PropertyCellContext context, ListEdit control)
         {
             Debug.Assert(e.Index != -1);
 
@@ -159,7 +159,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                         {
                             value.RemoveAt(e.Index);
 
-                            HandleRaiseEvent(context.CellEdit, context);
+                            HandleRaiseEvent(context.CellEdit!, context);
 
                             return true;
                         }
@@ -172,7 +172,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                         {
                             value.Insert(e.Index, oldElement);
 
-                            HandleRaiseEvent(context.CellEdit, context);
+                            HandleRaiseEvent(context.CellEdit!, context);
 
                             return true;
                         }
@@ -203,7 +203,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <param name="e">The <see cref="ListRoutedEventArgs"/> instance containing the event data.</param>
         /// <param name="context">The context.</param>
         /// <param name="control">The control.</param>
-        protected virtual void HandleClearElements(object s, ListRoutedEventArgs e, PropertyCellContext context, ListEdit control)
+        protected virtual void HandleClearElements(object? s, ListRoutedEventArgs e, PropertyCellContext context, ListEdit control)
         {
             var value = context.GetValue() as IBindingList;
 
@@ -211,11 +211,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (value != null)
             {
-                List<object> list = new List<object>();
-                foreach(var obj in value)
-                {
-                    list.Add(obj);
-                }
+                List<object> list = [.. value];
 
                 GenericCancelableCommand command = new GenericCancelableCommand(
                     LocalizationService.Default["Clear all elements of the array"],
@@ -223,7 +219,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     {
                         value.Clear();
 
-                        HandleRaiseEvent(context.CellEdit, context);
+                        HandleRaiseEvent(context.CellEdit!, context);
 
                         return true;
                     },
@@ -234,7 +230,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                             value.Add(l);
                         }
 
-                        HandleRaiseEvent(context.CellEdit, context);
+                        HandleRaiseEvent(context.CellEdit!, context);
 
                         return true;
                     })
@@ -253,7 +249,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <param name="e">The <see cref="ListRoutedEventArgs"/> instance containing the event data.</param>
         /// <param name="context">The context.</param>
         /// <param name="control">The control.</param>
-        protected virtual void HandleInsertElement(object s, ListRoutedEventArgs e, PropertyCellContext context, ListEdit control)
+        protected virtual void HandleInsertElement(object? s, ListRoutedEventArgs e, PropertyCellContext context, ListEdit control)
         {
             Debug.Assert(e.Index != -1);
 
@@ -263,7 +259,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (value != null)
             {
-                var NewElement = ObjectCreator.Create(GetElementType(context.Property));
+                var NewElement = ObjectCreator.Create(GetElementType(context.Property)!);
 
                 GenericCancelableCommand command = new GenericCancelableCommand(
                     string.Format(LocalizationService.Default["Insert a new element at {0}"], e.Index),
@@ -271,7 +267,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     {
                         value.Insert(e.Index, NewElement);
 
-                        HandleRaiseEvent(context.CellEdit, context);
+                        HandleRaiseEvent(context.CellEdit!, context);
 
                         return true;
                     },
@@ -279,7 +275,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     {
                         value.RemoveAt(e.Index);
 
-                        HandleRaiseEvent(context.CellEdit, context);
+                        HandleRaiseEvent(context.CellEdit!, context);
 
                         return true;
                     },
@@ -307,7 +303,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <param name="e">The <see cref="ListRoutedEventArgs"/> instance containing the event data.</param>
         /// <param name="context">The context.</param>
         /// <param name="control">The control.</param>
-        protected virtual void HandleNewElement(object s, ListRoutedEventArgs e, PropertyCellContext context, ListEdit control)
+        protected virtual void HandleNewElement(object? s, ListRoutedEventArgs e, PropertyCellContext context, ListEdit control)
         {
             var value = context.GetValue() as IBindingList;
 
@@ -315,7 +311,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (value != null)
             {
-                var NewElement = ObjectCreator.Create(GetElementType(context.Property));
+                var NewElement = ObjectCreator.Create(GetElementType(context.Property)!);
 
                 GenericCancelableCommand command = new GenericCancelableCommand(
                     LocalizationService.Default["Insert a new element at the end of the array"],
@@ -323,7 +319,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     {
                         value.Add(NewElement);
 
-                        HandleRaiseEvent(context.CellEdit, context);
+                        HandleRaiseEvent(context.CellEdit!, context);
 
                         return true;
                     },
@@ -331,7 +327,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     {
                         value.RemoveAt(value.Count - 1);
 
-                        HandleRaiseEvent(context.CellEdit, context);
+                        HandleRaiseEvent(context.CellEdit!, context);
 
                         return true;
                     },

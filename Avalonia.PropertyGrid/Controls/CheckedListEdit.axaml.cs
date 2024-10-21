@@ -105,7 +105,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void OnSelectedItemChanged(object sender, EventArgs e)
+        private void OnSelectedItemChanged(object? sender, EventArgs e)
         {
             var evt = new RoutedEventArgs(SelectedItemsChangedEvent);
             RaiseEvent(evt);
@@ -145,7 +145,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Occurs when [selected items changed].
         /// </summary>
-        public event EventHandler SelectedItemsChanged;
+        public event EventHandler? SelectedItemsChanged;
 
         /// <summary>
         /// Gets or sets a value indicating whether [enable raise selected items changed event].
@@ -312,6 +312,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// The parent
         /// </summary>
         public readonly CheckedListViewModel Parent;
+
         /// <summary>
         /// The value
         /// </summary>
@@ -362,7 +363,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Gets the name.
         /// </summary>
         /// <value>The name.</value>
-        public string Name => Value?.ToString();
+        public string Name => Value?.ToString() ?? string.Empty;
     }
     #endregion
 }

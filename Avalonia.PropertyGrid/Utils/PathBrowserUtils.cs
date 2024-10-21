@@ -23,7 +23,7 @@ namespace Avalonia.PropertyGrid.Utils
         /// <param name="title">The title.</param>
         /// <param name="filename">The filename.</param>
         /// <returns>A Task&lt;System.String&gt; representing the asynchronous operation.</returns>
-        public static async Task<string[]> ShowOpenFileDialogAsync(Window parent, string filters, bool multipleSelection = false, string title = null, string filename = null)
+        public static async Task<string[]?> ShowOpenFileDialogAsync(Window parent, string filters, bool multipleSelection = false, string? title = null, string? filename = null)
         {
             var files = await ShowDialogAsync(
                 parent,
@@ -45,7 +45,7 @@ namespace Avalonia.PropertyGrid.Utils
         /// <param name="title">The title.</param>
         /// <param name="filename">The filename.</param>
         /// <returns>A Task&lt;System.String&gt; representing the asynchronous operation.</returns>
-        public static async Task<string> ShowOpenSingleFileDialogAsync(Window parent, string filters, string title = null, string filename = null)
+        public static async Task<string?> ShowOpenSingleFileDialogAsync(Window parent, string filters, string? title = null, string? filename = null)
         {
             var files = await ShowDialogAsync(
                 parent,
@@ -56,7 +56,7 @@ namespace Avalonia.PropertyGrid.Utils
                 filename
                 );
 
-            return files.FirstOrDefault();
+            return files?.FirstOrDefault();
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Avalonia.PropertyGrid.Utils
         /// <param name="title">The title.</param>
         /// <param name="filename">The filename.</param>
         /// <returns>A Task&lt;System.String&gt; representing the asynchronous operation.</returns>
-        public static async Task<string> ShowSaveFileDialogAsync(Window parent, string filters, string title = null, string filename = null)
+        public static async Task<string?> ShowSaveFileDialogAsync(Window parent, string filters, string? title = null, string? filename = null)
         {
             var files = await ShowDialogAsync(
                 parent,
@@ -78,7 +78,7 @@ namespace Avalonia.PropertyGrid.Utils
                 filename
                 );
 
-            return files.FirstOrDefault();
+            return files?.FirstOrDefault();
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace Avalonia.PropertyGrid.Utils
         /// <param name="title">The title.</param>
         /// <param name="filename">The filename.</param>
         /// <returns>A Task&lt;System.String&gt; representing the asynchronous operation.</returns>
-        public static async Task<string> ShowOpenFolderDialogAsync(Window parent, string title = null, string filename = null)
+        public static async Task<string?> ShowOpenFolderDialogAsync(Window parent, string? title = null, string? filename = null)
         {
             var files = await ShowDialogAsync(
                 parent,
@@ -99,12 +99,12 @@ namespace Avalonia.PropertyGrid.Utils
                 filename
                 );
 
-            return files.FirstOrDefault();
+            return files?.FirstOrDefault();
         }
 
-        private static IStorageProvider GetStorageProvider(Window parentWindow)
+        private static IStorageProvider? GetStorageProvider(Window parentWindow)
         {
-            return TopLevel.GetTopLevel(parentWindow).StorageProvider;
+            return TopLevel.GetTopLevel(parentWindow)?.StorageProvider;
         }
 
         /// <summary>
@@ -117,11 +117,10 @@ namespace Avalonia.PropertyGrid.Utils
         /// <param name="filters">The filters.</param>
         /// <param name="initFileName">Name of the initialize file.</param>
         /// <returns>A Task&lt;System.String[]&gt; representing the asynchronous operation.</returns>
-        public static async Task<string[]> ShowDialogAsync(Window parentWindow, PathBrowsableType type, bool saveMode, string title, string filters, string initFileName)
+        public static async Task<string[]?> ShowDialogAsync(Window parentWindow, PathBrowsableType type, bool saveMode, string? title, string? filters, string? initFileName)
         {
-            IStorageProvider storageProvider = GetStorageProvider(parentWindow);
+            var storageProvider = GetStorageProvider(parentWindow);
 
-            Debug.Assert(storageProvider != null);
             if (storageProvider == null)
             {
                 return null;
@@ -144,7 +143,7 @@ namespace Avalonia.PropertyGrid.Utils
                 // If an InitFileName is specified, make that location available for opening.
                 if (!string.IsNullOrEmpty(initFileName))
                 {
-                    IStorageFolder startFolder = await storageProvider.TryGetFolderFromPathAsync(initFileName);
+                    var startFolder = await storageProvider.TryGetFolderFromPathAsync(initFileName!);
                     options.SuggestedStartLocation = startFolder;
                 }
 
@@ -164,7 +163,7 @@ namespace Avalonia.PropertyGrid.Utils
             }
             else if (type == PathBrowsableType.File || type == PathBrowsableType.MultipleFiles)
             {
-                FilePickerOpenOptions options = new FilePickerOpenOptions();
+                var options = new FilePickerOpenOptions();
 
                 if (type == PathBrowsableType.MultipleFiles)
                 {
@@ -192,9 +191,14 @@ namespace Avalonia.PropertyGrid.Utils
         /// </summary>
         /// <param name="filters">The filters.</param>
         /// <returns>List&lt;FileDialogFilter&gt;.</returns>
-        public static List<FilePickerFileType> ConvertToFilterList(string filters)
+        public static List<FilePickerFileType> ConvertToFilterList(string? filters)
         {
-            List<FilePickerFileType> list = new List<FilePickerFileType>();
+            if(filters == null)
+            {
+                return [];
+            }
+
+            var list = new List<FilePickerFileType>();
 
             var results = filters.Split('|');
 
@@ -203,7 +207,7 @@ namespace Avalonia.PropertyGrid.Utils
                 string name = results[i * 2 + 0];
                 string exts = results[i * 2 + 1];
 
-                FilePickerFileType filter = new FilePickerFileType(name.Trim());
+                var filter = new FilePickerFileType(name.Trim());
 
                 filter.Patterns = exts.Split(';').Select(x =>
                 {
@@ -223,7 +227,7 @@ namespace Avalonia.PropertyGrid.Utils
         /// <param name="parent">The parent.</param>
         /// <param name="attribute">The attribute.</param>
         /// <returns>A Task&lt;System.String[]&gt; representing the asynchronous operation.</returns>
-        public static async Task<string[]> ShowPathBrowserAsync(Window parent, PathBrowsableAttribute attribute)
+        public static async Task<string[]?> ShowPathBrowserAsync(Window parent, PathBrowsableAttribute attribute)
         {
             return await ShowDialogAsync(
                 parent,

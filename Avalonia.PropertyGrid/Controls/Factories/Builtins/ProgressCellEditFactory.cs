@@ -27,7 +27,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns>Control.</returns>
-        public override Control HandleNewProperty(PropertyCellContext context)
+        public override Control? HandleNewProperty(PropertyCellContext context)
         {
             var propertyDescriptor = context.Property;
             var target = context.Target;
@@ -39,7 +39,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             ProgressBar control = new ProgressBar();
 
-            var attr = propertyDescriptor.GetCustomAttribute<ProgressAttribute>();
+            var attr = propertyDescriptor.GetCustomAttribute<ProgressAttribute>()!;
             control.Minimum = attr.Minimum; 
             control.Maximum = attr.Maximum;
             control.ProgressTextFormat = attr.FormatString;
@@ -57,7 +57,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         {
             var propertyDescriptor = context.Property;
             var target = context.Target;
-            var control = context.CellEdit;
+            var control = context.CellEdit!;
 
             if (propertyDescriptor.PropertyType != typeof(double) || !propertyDescriptor.IsDefined<ProgressAttribute>())
             {
@@ -68,7 +68,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (control is ProgressBar progressBar)
             {
-                double value = (double)propertyDescriptor.GetValue(target);
+                double value = (double)propertyDescriptor.GetValue(target)!;
 
                 progressBar.Value = value;
 

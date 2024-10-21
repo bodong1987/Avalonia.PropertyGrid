@@ -31,7 +31,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns>Control.</returns>
-        public override Control HandleNewProperty(PropertyCellContext context)
+        public override Control? HandleNewProperty(PropertyCellContext context)
         {
             var propertyDescriptor = context.Property;
             var target = context.Target;
@@ -41,7 +41,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return null;
             }
 
-            ICheckedList list = propertyDescriptor.GetValue(target) as ICheckedList;
+            var list = propertyDescriptor.GetValue(target) as ICheckedList;
 
             if (list == null)
             {
@@ -116,7 +116,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         {
             var propertyDescriptor = context.Property;
             var target = context.Target;
-            var control = context.CellEdit;
+            var control = context.CellEdit!;
 
             if (!propertyDescriptor.PropertyType.IsImplementFrom<ICheckedList>())
             {
@@ -127,7 +127,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (control is CheckedListEdit c)
             {
-                ICheckedList list = propertyDescriptor.GetValue(target) as ICheckedList;
+                var list = propertyDescriptor.GetValue(target) as ICheckedList;
 
                 if (list != null)
                 {

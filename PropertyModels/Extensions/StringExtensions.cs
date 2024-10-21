@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
+using System.Diagnostics.CodeAnalysis;
 
 namespace PropertyModels.Extensions
 {
@@ -74,7 +75,7 @@ namespace PropertyModels.Extensions
         /// <param name="value">The value.</param>
         /// <returns><c>true</c> if the specified value is valid; otherwise, <c>false</c>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsNotNullOrEmpty(this string? value)
+        public static bool IsNotNullOrEmpty([NotNullWhen(true)] this string? value)
         {
             return !string.IsNullOrEmpty(value);
         }
@@ -85,7 +86,7 @@ namespace PropertyModels.Extensions
         /// <param name="value">The value.</param>
         /// <returns><c>true</c> if [is null or empty] [the specified value]; otherwise, <c>false</c>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsNullOrEmpty(this string? value)
+        public static bool IsNullOrEmpty([NotNullWhen(false)] this string? value)
         {
             return string.IsNullOrEmpty(value);
         }

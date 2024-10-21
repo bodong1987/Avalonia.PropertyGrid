@@ -24,11 +24,11 @@ namespace Avalonia.PropertyGrid.Utils
         {
             Debug.Assert(enumType!=null && enumType.IsEnum);
 
-            var values = enumType.GetEnumValues();
+            var values = enumType!.GetEnumValues();
 
             return values.Select(x =>
             {
-                var wrapper = new EnumValueWrapper(x as Enum);
+                var wrapper = new EnumValueWrapper((x as Enum)!);
 
                 wrapper.DisplayName = LocalizationService.Default[wrapper.DisplayName];
 

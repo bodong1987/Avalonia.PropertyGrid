@@ -14,11 +14,11 @@ namespace Avalonia.PropertyGrid.Controls.Implements
 {
     internal class PropertyGridFilterPattern : MiniReactiveObject, IFilterPattern
     {
-        string _FilterText;
-        Regex _CachedRegex;
-        ICheckedMaskModel _QuickFilter;
+        string? _FilterText;
+        Regex? _CachedRegex;
+        ICheckedMaskModel? _QuickFilter;
 
-        public string FilterText
+        public string? FilterText
         {
             get => _FilterText;
             set => this.RaiseAndSetIfChanged(ref _FilterText, value);
@@ -43,7 +43,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         /// Gets the quick filter.
         /// </summary>
         /// <value>The quick filter.</value>
-        public ICheckedMaskModel QuickFilter
+        public ICheckedMaskModel? QuickFilter
         {
             get => this._QuickFilter;
             set => this.RaiseAndSetIfChanged(ref _QuickFilter, value);
@@ -54,9 +54,9 @@ namespace Avalonia.PropertyGrid.Controls.Implements
             this.PropertyChanged += OnPropertyChanged;
         }
 
-        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if(e.PropertyName == nameof(FilterText) && _UseRegex)
+            if(e.PropertyName == nameof(FilterText) && _UseRegex && FilterText.IsNotNullOrEmpty())
             {
                 _CachedRegex = null;
                 try

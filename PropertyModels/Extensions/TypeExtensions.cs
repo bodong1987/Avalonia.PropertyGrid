@@ -520,7 +520,7 @@ namespace PropertyModels.Extensions
         /// <param name="property">The property.</param>
         /// <param name="component">The component.</param>
         /// <param name="value">The value.</param>
-        public static void SetAndRaiseEvent(this PropertyDescriptor property, object component, object value)
+        public static void SetAndRaiseEvent(this PropertyDescriptor property, object? component, object? value)
         {
             SetAndRaiseEvent(property, component, value, out _);
         }
@@ -535,7 +535,7 @@ namespace PropertyModels.Extensions
         /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         // ReSharper disable once UnusedMethodReturnValue.Global
         // ReSharper disable once OutParameterValueIsAlwaysDiscarded.Global
-        public static bool SetAndRaiseEvent(this PropertyDescriptor property, object component, object value, out object? oldValue)
+        public static bool SetAndRaiseEvent(this PropertyDescriptor property, object? component, object? value, out object? oldValue)
         {
             if(!IsPropertyChanged(property, component, value, out oldValue))
             {
@@ -569,7 +569,7 @@ namespace PropertyModels.Extensions
         /// <param name="value">The value.</param>
         /// <param name="oldValue">The old value.</param>
         /// <returns><c>true</c> if [is property changed] [the specified component]; otherwise, <c>false</c>.</returns>
-        public static bool IsPropertyChanged(this PropertyDescriptor property, object component, object? value, out object? oldValue)
+        public static bool IsPropertyChanged(this PropertyDescriptor property, object? component, object? value, out object? oldValue)
         {
             var obj = property.GetValue(component);
             oldValue = obj;
@@ -587,7 +587,7 @@ namespace PropertyModels.Extensions
         /// </summary>
         /// <param name="property">The property.</param>
         /// <param name="component">The component.</param>
-        public static void RaiseEvent(this PropertyDescriptor property, object component)
+        public static void RaiseEvent(this PropertyDescriptor property, object? component)
         {
             if (component is INotifyPropertyChanged npc)
             {

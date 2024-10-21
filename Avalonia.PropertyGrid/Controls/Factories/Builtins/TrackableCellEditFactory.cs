@@ -27,7 +27,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns>Control.</returns>
-        public override Control HandleNewProperty(PropertyCellContext context)
+        public override Control? HandleNewProperty(PropertyCellContext context)
         {
             if (!context.Property.PropertyType.IsNumericType() || !context.Property.IsDefined<TrackableAttribute>())
             {
@@ -36,7 +36,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             TrackableEdit control = new TrackableEdit();
 
-            TrackableAttribute attr = context.Property.GetCustomAttribute<TrackableAttribute>();
+            TrackableAttribute attr = context.Property.GetCustomAttribute<TrackableAttribute>()!;
             control.Minimum = attr.Minimum;
             control.Maximum = attr.Maximum;
 
@@ -116,7 +116,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if(context.CellEdit is TrackableEdit te)
             {
-                if(double.TryParse(context.GetValue().ToString(), out double d))
+                if(double.TryParse(context.GetValue()?.ToString(), out double d))
                 {
                     te.Value = d;
                 }
@@ -124,7 +124,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 {
                     try
                     {
-                        te.Value = (double)Convert.ChangeType(context.GetValue(), typeof(double));
+                        te.Value = (double)Convert.ChangeType(context.GetValue()!, typeof(double));
                     }
                     catch(Exception ex)
                     {

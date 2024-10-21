@@ -61,7 +61,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         /// <returns>IEnumerable&lt;ICellEditFactory&gt;.</returns>
         public IEnumerable<ICellEditFactory> CloneFactories(object accessToken)
         {
-            return _Factories.FindAll(x=>x.Accept(accessToken)).Select(x=>x.Clone());
+            return _Factories.FindAll(x=>x.Accept(accessToken)).Select(x=>x.Clone()).Where(x=> x != null).Select(x=>x!);
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns>Control.</returns>
-        public Control BuildPropertyControl(PropertyCellContext context)
+        public Control? BuildPropertyControl(PropertyCellContext context)
         {
             foreach (var Factory in _Factories)
             {

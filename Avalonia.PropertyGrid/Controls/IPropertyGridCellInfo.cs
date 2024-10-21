@@ -65,7 +65,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Gets the reference path.
         /// </summary>
         /// <value>The reference path.</value>
-        string ReferencePath { get; }
+        string? ReferencePath { get; }
 
         /// <summary>
         /// Gets the type of the cell.
@@ -77,31 +77,31 @@ namespace Avalonia.PropertyGrid.Controls
         /// Gets the name control.
         /// </summary>
         /// <value>The name control.</value>
-        Control NameControl { get; }
+        Control? NameControl { get; }
 
         /// <summary>
         /// Gets the category.
         /// </summary>
         /// <value>The category.</value>
-        string Category { get; }
+        string? Category { get; }
 
         /// <summary>
         /// Gets the owner object.
         /// </summary>
         /// <value>The owner object.</value>
-        object OwnerObject { get; }
+        object? OwnerObject { get; }
 
         /// <summary>
         /// Gets the target.
         /// </summary>
         /// <value>The target.</value>
-        object Target { get; }
+        object? Target { get; }
 
         /// <summary>
         /// Gets the container.
         /// </summary>
         /// <value>The container.</value>
-        Expander Container { get; }
+        Expander? Container { get; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is visible.
@@ -112,7 +112,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Occurs when [cell property changed].
         /// </summary>
-        event EventHandler<CellPropertyChangedEventArgs> CellPropertyChanged;
+        event EventHandler<CellPropertyChangedEventArgs>? CellPropertyChanged;
 
         /// <summary>
         /// Binds this instance.

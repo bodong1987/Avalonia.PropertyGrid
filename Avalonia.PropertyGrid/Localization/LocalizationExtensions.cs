@@ -67,7 +67,7 @@ namespace Avalonia.PropertyGrid.Localization
             }
         }
 
-        private void OnCultureChanged(object sender, EventArgs e)
+        private void OnCultureChanged(object? sender, EventArgs e)
         {
             RaisePropertyChanged(nameof(Value));
         }

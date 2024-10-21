@@ -43,6 +43,6 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns>Control.</returns>
-        Control BuildPropertyControl(PropertyCellContext context);
+        Control? BuildPropertyControl(PropertyCellContext context);
     }
 }

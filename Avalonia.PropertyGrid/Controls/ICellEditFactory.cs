@@ -29,7 +29,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <value>The collection.</value>
         [Browsable(false)]
-        ICellEditFactoryCollection Collection { get; internal set; }
+        ICellEditFactoryCollection? Collection { get; internal set; }
 
         /// <summary>
         /// Check available for target
@@ -42,14 +42,14 @@ namespace Avalonia.PropertyGrid.Controls
         /// Clones this instance.
         /// </summary>
         /// <returns>ICellEditFactory.</returns>
-        ICellEditFactory Clone();
+        ICellEditFactory? Clone();
 
         /// <summary>
         /// Handles the new property.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns>Control.</returns>
-        Control HandleNewProperty(PropertyCellContext context);
+        Control? HandleNewProperty(PropertyCellContext context);
 
         /// <summary>
         /// Handles the property changed.
@@ -105,18 +105,18 @@ namespace Avalonia.PropertyGrid.Controls
         /// Gets the display name.
         /// </summary>
         /// <value>The display name.</value>
-        public string DisplayName => Property?.DisplayName;
+        public string DisplayName => Property.DisplayName;
 
         /// <summary>
         /// The cell edit
         /// </summary>
-        public Control CellEdit { get; set; }
+        public Control? CellEdit { get; set; }
 
         /// <summary>
         /// Gets or sets the factory.
         /// </summary>
         /// <value>The factory.</value>
-        public ICellEditFactory Factory { get; set; }
+        public ICellEditFactory? Factory { get; set; }
 
         /// <summary>
         /// The parent
@@ -132,7 +132,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Gets the value.
         /// </summary>
         /// <returns>System.Object.</returns>
-        public object GetValue()
+        public object? GetValue()
         {
             return Target != null ? Property.GetValue(Target) : null;
         }
@@ -143,7 +143,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <returns>ICellEditFactoryCollection.</returns>
         public ICellEditFactoryCollection GetCellEditFactoryCollection()
         {
-            return Root?.GetCellEditFactoryCollection();
+            return Root.GetCellEditFactoryCollection();
         }
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="target">The target.</param>
         /// <param name="property">The property.</param>
         /// <param name="cellEdit">The cell edit.</param>
-        public PropertyCellContext(PropertyCellContext parentContext, IPropertyGrid root, IPropertyGrid owner, object target, PropertyDescriptor property, Control cellEdit = null) 
+        public PropertyCellContext(PropertyCellContext parentContext, IPropertyGrid root, IPropertyGrid owner, object target, PropertyDescriptor property, Control? cellEdit = null) 
         {
             ParentContext = parentContext;
             Root = root;
@@ -174,8 +174,6 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="property">The property.</param>
         public PropertyCellContext(PropertyCellContext parentContext, object target, PropertyDescriptor property)
         {
-            Debug.Assert(parentContext != null);
-
             ParentContext = parentContext;
             Root = parentContext.Root;
             Owner = parentContext.Owner;

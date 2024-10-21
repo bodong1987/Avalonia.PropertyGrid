@@ -46,34 +46,34 @@ namespace Avalonia.PropertyGrid.Controls.Implements
     {
         public PropertyCellContext Context { get; set; }
 
-        public string ReferencePath { get; set; }
+        public string? ReferencePath { get; set; }
 
         public PropertyGridCellType CellType { get; set; }
 
-        public Control NameControl { get; set; }
+        public Control? NameControl { get; set; }
 
-        public Control CellEdit => Context?.CellEdit;
+        public Control CellEdit => Context.CellEdit!;
 
-        public PropertyDescriptor Property => Context?.Property;
+        public PropertyDescriptor Property => Context.Property;
 
-        public string Category { get; set; }
+        public string? Category { get; set; }
 
-        public object OwnerObject { get; set; }
+        public object? OwnerObject { get; set; }
 
-        public object Target { get; set; }
+        public object? Target { get; set; }
 
-        public Expander Container { get; set; }
+        public Expander? Container { get; set; }
 
-        public ICellEditFactory Factory => Context?.Factory;
+        public ICellEditFactory Factory => Context.Factory!;
 
         /// <summary>
         /// Occurs when [cell property changed].
         /// </summary>
-        public event EventHandler<CellPropertyChangedEventArgs> CellPropertyChanged;
+        public event EventHandler<CellPropertyChangedEventArgs>? CellPropertyChanged;
 
         public override string ToString()
         {
-            return ReferencePath;
+            return ReferencePath ?? string.Empty;
         }
 
         bool _IsVisible = true;
@@ -151,7 +151,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
             }
         }
 
-        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (Property != null && e.PropertyName == Property.Name)
             {

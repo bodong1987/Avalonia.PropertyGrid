@@ -4,6 +4,7 @@ using PropertyModels.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,7 +30,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// </summary>
         /// <param name="context">The context.</param>
         /// <returns>Control.</returns>
-        public override Control HandleNewProperty(PropertyCellContext context)
+        public override Control? HandleNewProperty(PropertyCellContext context)
         {
             var propertyDescriptor = context.Property;
 
@@ -66,6 +67,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return false;
             }
 
+            Debug.Assert(control != null);
+
             ValidateProperty(control, propertyDescriptor, target);
 
             if (control is CheckBox ts)
@@ -85,7 +88,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 }
                 else
                 {
-                    ts.IsChecked = (bool)propertyDescriptor.GetValue(target);
+                    ts.IsChecked = (bool)propertyDescriptor.GetValue(target)!;
                 }
 
                 return true;

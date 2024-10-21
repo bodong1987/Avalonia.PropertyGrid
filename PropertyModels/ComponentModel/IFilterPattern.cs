@@ -13,7 +13,7 @@ namespace PropertyModels.ComponentModel
         /// Gets or sets the filter text.
         /// </summary>
         /// <value>The filter text.</value>
-        string FilterText { get; set; }
+        string? FilterText { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether [use regex].
@@ -31,7 +31,7 @@ namespace PropertyModels.ComponentModel
         /// Gets the quick filter.
         /// </summary>
         /// <value>The quick filter.</value>
-        ICheckedMaskModel QuickFilter { get; }
+        ICheckedMaskModel? QuickFilter { get; }
 
         /// <summary>
         /// Matches the specified property descriptor.
