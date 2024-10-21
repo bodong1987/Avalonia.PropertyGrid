@@ -9,17 +9,15 @@ namespace PropertyModels.ComponentModel.DataAnnotations
     /// Implements the <see cref="Attribute" />
     /// </summary>
     /// <seealso cref="Attribute" />
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
-    public class ConditionTargetAttribute : Attribute
-    {
-    }
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
+    public class ConditionTargetAttribute : Attribute;
 
     /// <summary>
     /// base class for property, used to set property's visibility in PropertyGrid
     /// Implements the <see cref="Attribute" />
     /// </summary>
     /// <seealso cref="Attribute" />
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Property)]
     public abstract class AbstractVisibilityConditionAttribute : Attribute
     {
         /// <summary>
@@ -75,6 +73,7 @@ namespace PropertyModels.ComponentModel.DataAnnotations
         /// Gets or sets the type of the logic.
         /// </summary>
         /// <value>The type of the logic.</value>
+        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
         public ConditionLogicType LogicType { get; set; } = ConditionLogicType.Default;
 
         /// <summary>
@@ -106,12 +105,10 @@ namespace PropertyModels.ComponentModel.DataAnnotations
 
                 return IsVisible(pd?.GetValue(component));
             }
-            else
-            {
-                var property = component.GetType().GetProperty(PropertyName);
 
-                return IsVisible(property?.GetValue(component));
-            }
+            var property = component.GetType().GetProperty(PropertyName);
+
+            return IsVisible(property?.GetValue(component));
         }
 
         private bool IsVisible(object? value)

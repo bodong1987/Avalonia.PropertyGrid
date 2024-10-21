@@ -42,6 +42,7 @@ namespace PropertyModels.ComponentModel
         /// Cancels this instance.
         /// </summary>
         /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
+        // ReSharper disable once UnusedMethodReturnValue.Global
         bool Cancel();
     }
 
@@ -56,6 +57,7 @@ namespace PropertyModels.ComponentModel
         /// Gets the name.
         /// </summary>
         /// <value>The name.</value>
+        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
         public string Name { get; protected set; }
 
         /// <summary>

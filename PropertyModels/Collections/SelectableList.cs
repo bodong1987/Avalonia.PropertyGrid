@@ -65,12 +65,12 @@ namespace PropertyModels.Collections
         /// <summary>
         /// The values core
         /// </summary>
-        private readonly List<T> _valuesCore = new List<T>();
+        private readonly List<T> _valuesCore = [];
 
         /// <summary>
         /// The selected value core
         /// </summary>
-        private T _selectedValueCore = default(T)!;
+        private T _selectedValueCore = default!;
 
         /// <summary>
         /// Occurs when [selection changed].

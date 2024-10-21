@@ -20,13 +20,13 @@ namespace PropertyModels.Localization
         /// Gets the culture.
         /// </summary>
         /// <value>The culture.</value>
-        public CultureInfo Culture { get; private set; }
+        public CultureInfo Culture { get; }
 
         /// <summary>
         /// Gets the path.
         /// </summary>
         /// <value>The path.</value>
-        public Uri Path { get; private set; }
+        public Uri Path { get; }
 
         /// <summary>
         /// Gets a value indicating whether this instance is loaded.

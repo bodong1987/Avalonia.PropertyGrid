@@ -1,6 +1,6 @@
-﻿using PropertyModels.Extensions;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using PropertyModels.Extensions;
 
 namespace PropertyModels.ComponentModel.DataAnnotations
 {

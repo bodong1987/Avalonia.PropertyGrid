@@ -20,9 +20,9 @@ namespace PropertyModels.Extensions
         /// <returns>System.Int32.</returns>
         public static int IndexOf<TSource>(this IEnumerable<TSource> source, Predicate<TSource> predicate)
         {
-            int i = 0;
+            var i = 0;
 
-            foreach (TSource element in source)
+            foreach (var element in source)
             {
                 if (predicate(element))
                     return i;
@@ -43,10 +43,10 @@ namespace PropertyModels.Extensions
         /// <returns>System.Int32.</returns>
         public static int IndexOf<TSource>(this IEnumerable<TSource> source, int startIndex, Predicate<TSource> predicate)
         {
-            int i = 0;
-            int c = 0;
+            var i = 0;
+            var c = 0;
 
-            foreach (TSource element in source)
+            foreach (var element in source)
             {
                 if (c < startIndex)
                 {

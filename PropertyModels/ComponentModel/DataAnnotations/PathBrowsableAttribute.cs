@@ -26,14 +26,14 @@ namespace PropertyModels.ComponentModel.DataAnnotations
         /// The multiple directories
         /// </summary>
         MultipleDirectories
-    };
+    }
 
     /// <summary>
     /// Class PathBrowsableAttribute.
     /// Implements the <see cref="Attribute" />
     /// </summary>
     /// <seealso cref="Attribute" />
-    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
     public class PathBrowsableAttribute : Attribute
     {
         /// <summary>
@@ -45,6 +45,7 @@ namespace PropertyModels.ComponentModel.DataAnnotations
         /// Gets or sets a value indicating whether [save mode].
         /// </summary>
         /// <value><c>true</c> if [save mode]; otherwise, <c>false</c>.</value>
+        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
         public bool SaveMode { get; set; }
 
         /// <summary>
@@ -71,7 +72,7 @@ namespace PropertyModels.ComponentModel.DataAnnotations
         /// Gets a value indicating whether this instance is file selection.
         /// </summary>
         /// <value><c>true</c> if this instance is file selection; otherwise, <c>false</c>.</value>
-        public bool IsFileSelection => Type == PathBrowsableType.File || Type == PathBrowsableType.MultipleFiles;
+        public bool IsFileSelection => Type is PathBrowsableType.File or PathBrowsableType.MultipleFiles;
 
         /// <summary>
         /// Gets a value indicating whether this instance is directory selection.

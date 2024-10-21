@@ -64,7 +64,7 @@ namespace PropertyModels.ComponentModel
         /// <returns>ICommand.</returns>
         public static ICommand Create(Action<object?>? action)
         {
-            return new ReactiveCommand()
+            return new ReactiveCommand
             {
                 ExecuteDelegate = action
             };
@@ -77,7 +77,7 @@ namespace PropertyModels.ComponentModel
         /// <returns>ICommand.</returns>
         public static ICommand Create(Action action)
         {
-            return new ReactiveCommand()
+            return new ReactiveCommand
             {
                 ExecuteDelegateNoParam = action
             };
@@ -91,7 +91,7 @@ namespace PropertyModels.ComponentModel
         /// <returns>ICommand.</returns>
         public static ICommand Create(Action<object?>? action, Func<object?, bool>? canExecute)
         {
-            return new ReactiveCommand()
+            return new ReactiveCommand
             {
                 ExecuteDelegate = action,
                 CanExecuteDelegate = canExecute
@@ -106,7 +106,7 @@ namespace PropertyModels.ComponentModel
         /// <returns>ICommand.</returns>
         public static ICommand Create(Action action, Func<object?, bool> canExecute)
         {
-            return new ReactiveCommand()
+            return new ReactiveCommand
             {
                 ExecuteDelegateNoParam = action,
                 CanExecuteDelegate = canExecute

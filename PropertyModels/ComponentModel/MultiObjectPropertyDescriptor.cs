@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 
 namespace PropertyModels.ComponentModel
 {
@@ -346,7 +347,7 @@ namespace PropertyModels.ComponentModel
         private static Exception GetUnWindedException(Exception e)
         {
             var result = e;
-            if (e is System.Reflection.TargetInvocationException)
+            if (e is TargetInvocationException)
             {
                 result = e.InnerException;
             }
@@ -401,7 +402,7 @@ namespace PropertyModels.ComponentModel
         public void SetValues(object components, object values)
         {
             var valuesArray = (object[])values;
-            object[] componentsArray = (object[])components;
+            var componentsArray = (object[])components;
 
             if (valuesArray.Length != Descriptors.Length || valuesArray.Length != componentsArray.Length)
                 throw new ArgumentOutOfRangeException();
@@ -425,7 +426,7 @@ namespace PropertyModels.ComponentModel
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         public IEnumerator<PropertyDescriptor> GetEnumerator()
         {
-            foreach (PropertyDescriptor descriptor in Descriptors)
+            foreach (var descriptor in Descriptors)
             {
                 yield return descriptor;
             }

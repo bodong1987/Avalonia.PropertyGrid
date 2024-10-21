@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using INotifyPropertyChanged = PropertyModels.ComponentModel.INotifyPropertyChanged;
+using INotifyPropertyChanging = PropertyModels.ComponentModel.INotifyPropertyChanging;
 
 namespace PropertyModels.Extensions
 {
@@ -76,6 +78,7 @@ namespace PropertyModels.Extensions
             switch (memberInfo.MemberType)
             {
                 case MemberTypes.Event:
+                    // ReSharper disable once RedundantSuppressNullableWarningExpression
                     return ((EventInfo)memberInfo).EventHandlerType!;
                 case MemberTypes.Field:
                     return ((FieldInfo)memberInfo).FieldType;
@@ -286,7 +289,7 @@ namespace PropertyModels.Extensions
                 {
                     var genericParameterCount = int.Parse(match.Groups["ParamCount"].Value);
                     var genericDef = match.Groups["Types"].Value;
-                    List<string> typeArgs = new List<string>(genericParameterCount);
+                    var typeArgs = new List<string>(genericParameterCount);
                     foreach (Match typeArgMatch in Regex.Matches(genericDef, @"\[(?<Type>.*?)\],?"))
                     {
                         if (typeArgMatch.Success)
@@ -385,6 +388,8 @@ namespace PropertyModels.Extensions
         /// <returns><c>true</c> if [is numeric type] [the specified type]; otherwise, <c>false</c>.</returns>
         public static bool IsNumericType(this Type type)
         {
+            // ReSharper disable once ConvertSwitchStatementToSwitchExpression
+            // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
             switch (Type.GetTypeCode(type))
             {
                 case TypeCode.Byte:
@@ -443,7 +448,7 @@ namespace PropertyModels.Extensions
         {
             var attr = propertyInfo.GetAnyCustomAttribute<ReadOnlyAttribute>();
 
-            return attr != null && attr.IsReadOnly;
+            return attr is { IsReadOnly: true };
         }
 
         /// <summary>
@@ -467,15 +472,7 @@ namespace PropertyModels.Extensions
         /// <returns><c>true</c> if the specified property descriptor is defiend; otherwise, <c>false</c>.</returns>
         public static bool IsDefined<T>(this PropertyDescriptor propertyDescriptor) where T : Attribute
         {
-            foreach (var attr in propertyDescriptor.Attributes)
-            {
-                if (attr is T)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return propertyDescriptor.Attributes.OfType<T>().Any();
         }
 
         /// <summary>
@@ -529,13 +526,15 @@ namespace PropertyModels.Extensions
         }
 
         /// <summary>
-        /// Sets the and raise event.
+        /// Sets and raise event.
         /// </summary>
         /// <param name="property">The property.</param>
         /// <param name="component">The component.</param>
         /// <param name="value">The value.</param>
         /// <param name="oldValue">The old value.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
+        // ReSharper disable once UnusedMethodReturnValue.Global
+        // ReSharper disable once OutParameterValueIsAlwaysDiscarded.Global
         public static bool SetAndRaiseEvent(this PropertyDescriptor property, object component, object value, out object? oldValue)
         {
             if(!IsPropertyChanged(property, component, value, out oldValue))
@@ -543,13 +542,13 @@ namespace PropertyModels.Extensions
                 return false;
             }
 
-            if (component is ComponentModel.INotifyPropertyChanging npcp)
+            if (component is INotifyPropertyChanging p0)
             {
-                npcp.RaisePropertyChanging(property.Name);
+                p0.RaisePropertyChanging(property.Name);
             }
-            else if (component is IEnumerable<ComponentModel.INotifyPropertyChanging> enpcps)
+            else if (component is IEnumerable<INotifyPropertyChanging> p1)
             {
-                foreach (var e in enpcps)
+                foreach (var e in p1)
                 {
                     e.RaisePropertyChanging(property.Name);
                 }
@@ -579,12 +578,8 @@ namespace PropertyModels.Extensions
             {
                 return false;
             }
-            else if (obj != null && value != null && obj.Equals(value))
-            {
-                return false;
-            }
 
-            return true;
+            return obj == null || value == null || !obj.Equals(value);
         }
 
         /// <summary>
@@ -594,11 +589,11 @@ namespace PropertyModels.Extensions
         /// <param name="component">The component.</param>
         public static void RaiseEvent(this PropertyDescriptor property, object component)
         {
-            if (component is ComponentModel.INotifyPropertyChanged npc)
+            if (component is INotifyPropertyChanged npc)
             {
                 npc.RaisePropertyChanged(property.Name);
             }
-            else if (component is IEnumerable<ComponentModel.INotifyPropertyChanged> enpcps)
+            else if (component is IEnumerable<INotifyPropertyChanged> enpcps)
             {
                 foreach (var e in enpcps)
                 {

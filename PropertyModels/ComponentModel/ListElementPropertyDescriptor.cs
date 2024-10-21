@@ -34,7 +34,7 @@ namespace PropertyModels.ComponentModel
         /// Gets the index.
         /// </summary>
         /// <value>The index.</value>
-        public int Index { get; private set; }
+        public int Index { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ListElementPropertyDescriptor" /> class.

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 
 namespace PropertyModels.Extensions
 {
@@ -39,7 +40,7 @@ namespace PropertyModels.Extensions
                 throw new ArgumentOutOfRangeException(nameof(length), length, "Length is less than zero");
             }
 
-            return (length <= value.Length) ? value.Substring(0, length) : value;
+            return length <= value.Length ? value.Substring(0, length) : value;
         }
 
         /// <summary>
@@ -63,7 +64,7 @@ namespace PropertyModels.Extensions
                 throw new ArgumentOutOfRangeException(nameof(length), length, "Length is less than zero");
             }
 
-            return (length < value.Length) ? value.Substring(value.Length - length) : value;
+            return length < value.Length ? value.Substring(value.Length - length) : value;
         }
 
 
@@ -103,7 +104,8 @@ namespace PropertyModels.Extensions
             {
                 return true;
             }
-            else if (value == null || other == null)
+
+            if (value == null || other == null)
             {
                 return false;
             }
@@ -124,7 +126,8 @@ namespace PropertyModels.Extensions
             {
                 return true;
             }
-            else if (value == null || other == null)
+
+            if (value == null || other == null)
             {
                 return false;
             }
@@ -145,7 +148,8 @@ namespace PropertyModels.Extensions
             {
                 return true;
             }
-            else if (value == null || other == null)
+
+            if (value == null || other == null)
             {
                 return false;
             }
@@ -164,11 +168,11 @@ namespace PropertyModels.Extensions
         {
             if (input.IsNotNullOrEmpty())
             {
-                var result = System.Text.RegularExpressions.Regex.Replace(
+                var result = Regex.Replace(
                     input,
-                    System.Text.RegularExpressions.Regex.Escape(search),
+                    Regex.Escape(search),
                     value.Replace("$", "$$"),
-                    System.Text.RegularExpressions.RegexOptions.IgnoreCase
+                    RegexOptions.IgnoreCase
                     );
 
                 return result;

@@ -9,7 +9,7 @@ namespace PropertyModels.ComponentModel
     /// Implements the <see cref="Attribute" />
     /// </summary>
     /// <seealso cref="Attribute" />
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Enum, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Enum)]
     public class EnumDisplayNameAttribute : Attribute
     {
         /// <summary>
@@ -35,11 +35,13 @@ namespace PropertyModels.ComponentModel
         /// <summary>
         /// The value
         /// </summary>
+        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
         public Enum Value { get; set; }
         
         /// <summary>
         /// The display name
         /// </summary>
+        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
         public string DisplayName { get; set; }
 
         /// <summary>

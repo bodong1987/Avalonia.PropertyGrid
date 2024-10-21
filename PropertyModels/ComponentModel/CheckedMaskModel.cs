@@ -25,7 +25,7 @@ namespace PropertyModels.ComponentModel
         /// Gets all.
         /// </summary>
         /// <value>All.</value>
-        public string All { get; private set; }
+        public string All { get; }
 
         /// <summary>
         /// Gets a value indicating whether this instance is all checked.
@@ -68,12 +68,7 @@ namespace PropertyModels.ComponentModel
         /// <returns><c>true</c> if the specified mask is checked; otherwise, <c>false</c>.</returns>
         public bool IsChecked(string mask)
         {
-            if(IsAllChecked)
-            {
-                return true;
-            }
-
-            return CheckedValues.Contains(mask);
+            return IsAllChecked || CheckedValues.Contains(mask);
         }
 
         /// <summary>

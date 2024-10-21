@@ -1,18 +1,16 @@
-﻿using PropertyModels.ComponentModel.DataAnnotations;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using PropertyModels.ComponentModel.DataAnnotations;
 
 namespace PropertyModels.ComponentModel
 {
     /// <summary>
     /// Interface IReactiveObject
     /// </summary>
-    public interface IReactiveObject : INotifyPropertyChanged
-    {
-    }
+    public interface IReactiveObject : INotifyPropertyChanged;
 
     /// <summary>
     /// Class MiniReactiveObject.
@@ -87,7 +85,7 @@ namespace PropertyModels.ComponentModel
                     {
                         if (!cache.TryGetValue(name, out var relevance))
                         {
-                            relevance = new List<string>();
+                            relevance = [];
                             cache.Add(name, relevance);
                         }
 

@@ -151,11 +151,8 @@ namespace PropertyModels.Collections
         {
             get
             {
-                List<object> list = new List<object>();
-                foreach (T item in _sourceItemsCore)
-                {
-                    list.Add(item!);
-                }
+                List<object> list = [];
+                list.AddRange(_sourceItemsCore.Select(item => item!).Cast<object>());
 
                 return list.ToArray();
             }

@@ -1,6 +1,6 @@
-﻿using PropertyModels.ComponentModel;
-using System;
+﻿using System;
 using System.Globalization;
+using PropertyModels.ComponentModel;
 
 namespace PropertyModels.Localization
 {

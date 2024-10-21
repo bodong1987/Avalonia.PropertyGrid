@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Runtime.CompilerServices;
 
 namespace PropertyModels.ComponentModel.DataAnnotations
@@ -20,12 +21,7 @@ namespace PropertyModels.ComponentModel.DataAnnotations
         {
             if (value is string name)
             {
-                if (IsValidFileName(name))
-                {
-                    return ValidationResult.Success;
-                }
-
-                return new ValidationResult($"[{validationContext.DisplayName}]{name} is not an valid file name.");
+                return IsValidFileName(name) ? ValidationResult.Success : new ValidationResult($"[{validationContext.DisplayName}]{name} is not an valid file name.");
             }
 
             return new ValidationResult($"{validationContext.DisplayName} is not an valid file name.");
@@ -37,9 +33,9 @@ namespace PropertyModels.ComponentModel.DataAnnotations
         /// <param name="filename">The filename.</param>
         /// <returns><c>true</c> if [is valid file name] [the specified filename]; otherwise, <c>false</c>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsValidFileName(string filename)
+        public static bool IsValidFileName(string filename)
         {
-            return !(filename.IndexOfAny(System.IO.Path.GetInvalidFileNameChars()) >= 0);
+            return !(filename.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0);
         }
     }
 }

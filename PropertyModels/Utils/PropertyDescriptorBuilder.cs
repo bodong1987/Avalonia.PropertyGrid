@@ -1,9 +1,9 @@
-﻿using PropertyModels.ComponentModel;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using PropertyModels.ComponentModel;
 
 namespace PropertyModels.Utils
 {
@@ -61,7 +61,7 @@ namespace PropertyModels.Utils
         /// </summary>
         /// <param name="target">The target.</param>
         /// <returns>PropertyDescriptorCollection.</returns>
-        private PropertyDescriptorCollection GetProperties(object target)
+        private static PropertyDescriptorCollection GetProperties(object target)
         {
             if(target is ICustomTypeDescriptor ctd)
             {
@@ -76,7 +76,7 @@ namespace PropertyModels.Utils
         /// </summary>
         /// <param name="targets">The targets.</param>
         /// <returns>PropertyDescriptorCollection.</returns>
-        private PropertyDescriptorCollection GetMultipleProperties(IEnumerable targets)
+        private static PropertyDescriptorCollection GetMultipleProperties(IEnumerable targets)
         {
             var collections = new List<PropertyDescriptorCollection>();
             foreach(var target in targets)
