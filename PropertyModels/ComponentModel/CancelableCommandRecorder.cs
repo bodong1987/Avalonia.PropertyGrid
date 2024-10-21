@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace PropertyModels.ComponentModel
 {
@@ -41,12 +39,12 @@ namespace PropertyModels.ComponentModel
         /// <summary>
         /// The command queue
         /// </summary>
-        protected List<ICancelableCommand> CommandQueue = new List<ICancelableCommand>();
+        protected readonly List<ICancelableCommand> CommandQueue = [];
 
         /// <summary>
         /// The canceled queue
         /// </summary>
-        protected List<ICancelableCommand> CanceledQueue = new List<ICancelableCommand>();
+        protected readonly List<ICancelableCommand> CanceledQueue = [];
 
         /// <summary>
         /// Occurs when [on command canceled].
@@ -77,7 +75,7 @@ namespace PropertyModels.ComponentModel
         /// Pushes the command.
         /// </summary>
         /// <param name="command">The in command.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         public virtual bool PushCommand(ICancelableCommand command)
         {
             // Debug.Assert(command != null);
@@ -97,7 +95,7 @@ namespace PropertyModels.ComponentModel
         /// Executes the command.
         /// </summary>
         /// <param name="command">The in command.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         public virtual bool ExecuteCommand(ICancelableCommand command)
         {
             // Debug.Assert(command != null);
@@ -120,24 +118,24 @@ namespace PropertyModels.ComponentModel
         /// <summary>
         /// Undoes this instance.
         /// </summary>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         public virtual bool Undo()
         {
-            if (!Undoable)
+            if (!CanUndo)
             {
                 return false;
             }
 
-            ICancelableCommand Command = CommandQueue.Last();
+            var command = CommandQueue.Last();
 
-            Command.Cancel();
+            command.Cancel();
 
             // remove last one...
             CommandQueue.RemoveAt(CommandQueue.Count - 1);
 
-            CanceledQueue.Add(Command);
+            CanceledQueue.Add(command);
 
-            OnCommandCanceled?.Invoke(this, Command);
+            OnCommandCanceled?.Invoke(this, command);
 
             return true;
         }
@@ -146,42 +144,31 @@ namespace PropertyModels.ComponentModel
         /// Gets the undo command description.
         /// </summary>
         /// <value>The undo command description.</value>
-        public virtual string UndoCommandDescription
-        {
-            get
-            {
-                if (CommandQueue.Count > 0)
-                {
-                    return CommandQueue.Last().Name;
-                }
-
-                return "No Command";
-            }
-        }
+        public virtual string UndoCommandDescription => CommandQueue.Count > 0 ? CommandQueue.Last().Name : "No Command";
 
         /// <summary>
         /// Redoes this instance.
         /// </summary>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         public virtual bool Redo()
         {
-            if (!Redoable)
+            if (!CanRedo)
             {
                 return false;
             }
 
-            ICancelableCommand Command = CanceledQueue.Last();
+            var command = CanceledQueue.Last();
 
             CanceledQueue.RemoveAt(CanceledQueue.Count - 1);
 
-            if (!Command.Execute())
+            if (!command.Execute())
             {
                 return false;
             }
 
-            CommandQueue.Add(Command);
+            CommandQueue.Add(command);
 
-            OnCommandRedo?.Invoke(this, Command);
+            OnCommandRedo?.Invoke(this, command);
 
             return true;
         }
@@ -190,42 +177,19 @@ namespace PropertyModels.ComponentModel
         /// Gets the redo command description.
         /// </summary>
         /// <value>The redo command description.</value>
-        public virtual string RedoCommandDescription
-        {
-            get
-            {
-                if (CanceledQueue.Count > 0)
-                {
-                    return CanceledQueue.Last().Name;
-                }
-
-                return "No Command";
-            }
-        }
+        public virtual string RedoCommandDescription => CanceledQueue.Count > 0 ? CanceledQueue.Last().Name : "No Command";
 
         /// <summary>
-        /// Gets a value indicating whether this <see cref="CancelableCommandRecorder"/> is redoable.
+        /// Gets a value indicating whether this <see cref="CancelableCommandRecorder"/> can redo.
         /// </summary>
-        /// <value><c>true</c> if redoable; otherwise, <c>false</c>.</value>
-        public bool Redoable
-        {
-            get
-            {
-                return CanceledQueue.Count > 0 && CanceledQueue.Last().CanExecute();
-            }
-        }
+        /// <value><c>true</c> can redo; otherwise, <c>false</c>.</value>
+        public bool CanRedo => CanceledQueue.Count > 0 && CanceledQueue.Last().CanExecute();
 
         /// <summary>
         /// Gets a value indicating whether this <see cref="CancelableCommandRecorder"/> is undoable.
         /// </summary>
-        /// <value><c>true</c> if undoable; otherwise, <c>false</c>.</value>
-        public bool Undoable
-        {
-            get
-            {
-                return CommandQueue.Count > 0 && CommandQueue.Last().CanCancel();
-            }
-        }
+        /// <value><c>true</c> can undo; otherwise, <c>false</c>.</value>
+        public bool CanUndo => CommandQueue.Count > 0 && CommandQueue.Last().CanCancel();
 
         /// <summary>
         /// Clears this instance.

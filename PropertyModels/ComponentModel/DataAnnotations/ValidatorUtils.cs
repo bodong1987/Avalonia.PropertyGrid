@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using PropertyModels.Extensions;
 using System.Diagnostics;
 
@@ -20,14 +19,14 @@ namespace PropertyModels.ComponentModel.DataAnnotations
         /// </summary>
         /// <param name="target">The target.</param>
         /// <param name="message">The message.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> valid object and properties, <c>false</c> otherwise.</returns>
         public static bool TryValidateObject(object target, out string message)
         {
             foreach (PropertyDescriptor property in TypeDescriptor.GetProperties(target))
             {
                 if (property.IsDefined<ValidationAttribute>())
                 {
-                    List<ValidationResult> Results = new List<ValidationResult>();
+                    var results = new List<ValidationResult>();
                     var value = property.GetValue(target);
                     Debug.Assert(value != null);
 
@@ -38,11 +37,11 @@ namespace PropertyModels.ComponentModel.DataAnnotations
                             DisplayName = property.DisplayName,
                             MemberName = property.Name
                         },
-                        Results,
+                        results,
                         property.GetCustomAttributes<ValidationAttribute>()
                         ))
                     {
-                        message = string.Join(Environment.NewLine, Results.Select(x => x.GetDisplayMessage()));
+                        message = string.Join(Environment.NewLine, results.Select(x => x.GetDisplayMessage()));
                         return false;
                     }
                 }
@@ -58,12 +57,12 @@ namespace PropertyModels.ComponentModel.DataAnnotations
         /// <param name="component">The component.</param>
         /// <param name="property">The property.</param>
         /// <param name="message">The message.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> is valid, <c>false</c> otherwise.</returns>
         public static bool TryValidateProperty(object component, PropertyDescriptor property, out string message)
         {
             if (property.IsDefined<ValidationAttribute>())
             {
-                List<ValidationResult> Results = new List<ValidationResult>();
+                var results = new List<ValidationResult>();
                 var value = property.GetValue(component);
 
                 if(value != null)
@@ -75,29 +74,29 @@ namespace PropertyModels.ComponentModel.DataAnnotations
                         DisplayName = property.DisplayName,
                         MemberName = property.Name
                     },
-                    Results,
+                    results,
                     property.GetCustomAttributes<ValidationAttribute>()
                     ))
                     {
-                        message = string.Join(Environment.NewLine, Results.Select(x => x.GetDisplayMessage()));
+                        message = string.Join(Environment.NewLine, results.Select(x => x.GetDisplayMessage()));
                         return false;
                     }
                 }
                 else
                 {
-                    StringBuilder builder = new StringBuilder();
-                    bool HasError = false;
+                    var builder = new StringBuilder();
+                    var hasError = false;
 
                     foreach(var attr in property.GetCustomAttributes<ValidationAttribute>())
                     {
                         if (!attr.IsValid(value))
                         {
-                            HasError = true;
-                            builder.AppendLine(attr.FormatErrorMessage(property.DisplayName) ?? "Unknown Error.");
+                            hasError = true;
+                            builder.AppendLine(attr.FormatErrorMessage(property.DisplayName));
                         }
                     }
 
-                    if(HasError)
+                    if(hasError)
                     {
                         message = builder.ToString().Trim();
                         return false;

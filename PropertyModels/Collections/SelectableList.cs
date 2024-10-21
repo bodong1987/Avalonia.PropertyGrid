@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PropertyModels.Collections
 {
@@ -40,6 +38,7 @@ namespace PropertyModels.Collections
     /// <typeparam name="T"></typeparam>
     /// <seealso cref="PropertyModels.Collections.ISelectableList" />
     /// <seealso cref="ICollection{T}" />
+    // ReSharper disable once PossibleInterfaceMemberAmbiguity
     public interface ISelectableList<T> : ISelectableList, ICollection<T>
     {
         /// <summary>
@@ -66,12 +65,12 @@ namespace PropertyModels.Collections
         /// <summary>
         /// The values core
         /// </summary>
-        readonly List<T> ValuesCore = new List<T>();
+        private readonly List<T> _valuesCore = new List<T>();
 
         /// <summary>
         /// The selected value core
         /// </summary>
-        T SelectedValueCore = default(T)!;
+        private T _selectedValueCore = default(T)!;
 
         /// <summary>
         /// Occurs when [selection changed].
@@ -82,7 +81,7 @@ namespace PropertyModels.Collections
         /// Gets the values.
         /// </summary>
         /// <value>The values.</value>
-        public T[] Values => ValuesCore.ToArray();
+        public T[] Values => _valuesCore.ToArray();
 
         /// <summary>
         /// Gets or sets the selected value.
@@ -90,12 +89,12 @@ namespace PropertyModels.Collections
         /// <value>The selected value.</value>
         public T SelectedValue
         {
-            get => SelectedValueCore;
+            get => _selectedValueCore;
             set
             {
-                if (!EqualityComparer<T>.Default.Equals(value, SelectedValueCore))
+                if (!EqualityComparer<T>.Default.Equals(value, _selectedValueCore))
                 {
-                    SelectedValueCore = value;
+                    _selectedValueCore = value;
 
                     SelectionChanged?.Invoke(this, EventArgs.Empty);
                 }
@@ -106,7 +105,7 @@ namespace PropertyModels.Collections
         /// Gets the number of elements contained in the <see cref="T:System.Collections.ICollection" />.
         /// </summary>
         /// <value>The count.</value>
-        public int Count => ValuesCore.Count;
+        public int Count => _valuesCore.Count;
 
         /// <summary>
         /// Gets a value indicating whether access to the <see cref="T:System.Collections.ICollection" /> is synchronized (thread safe).
@@ -130,19 +129,7 @@ namespace PropertyModels.Collections
         /// Gets the values.
         /// </summary>
         /// <value>The values.</value>
-        object[] ISelectableList.Values
-        {
-            get
-            {
-                List<object> list = new List<object>();
-                foreach (var i in ValuesCore)
-                {
-                    list.Add((object)i!);
-                }
-
-                return list.ToArray();
-            }
-        }
+        object[] ISelectableList.Values => _valuesCore.Select(i => i!).Cast<object>().ToArray();
 
         /// <summary>
         /// Gets or sets the selected value.
@@ -150,12 +137,12 @@ namespace PropertyModels.Collections
         /// <value>The selected value.</value>
         object? ISelectableList.SelectedValue
         {
-            get => (object?)SelectedValueCore;
+            get => _selectedValueCore;
             set
             {
-                if (value != null && !EqualityComparer<T>.Default.Equals((T)value, SelectedValueCore))
+                if (value != null && !EqualityComparer<T>.Default.Equals((T)value, _selectedValueCore))
                 {
-                    SelectedValueCore = (T)value;
+                    _selectedValueCore = (T)value;
 
                     SelectionChanged?.Invoke(this, EventArgs.Empty);
                 }
@@ -175,7 +162,7 @@ namespace PropertyModels.Collections
         /// <param name="values">The values.</param>
         public SelectableList(IEnumerable<T> values)
         {
-            ValuesCore.AddRange(values);
+            _valuesCore.AddRange(values);
         }
 
         /// <summary>
@@ -195,7 +182,7 @@ namespace PropertyModels.Collections
         /// <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
         public void Add(T item)
         {
-            ValuesCore.Add(item);
+            _valuesCore.Add(item);
         }
 
         /// <summary>
@@ -203,7 +190,7 @@ namespace PropertyModels.Collections
         /// </summary>
         public void Clear()
         {
-            ValuesCore.Clear();
+            _valuesCore.Clear();
         }
 
         /// <summary>
@@ -213,7 +200,7 @@ namespace PropertyModels.Collections
         /// <returns><see langword="true" /> if <paramref name="item" /> is found in the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, <see langword="false" />.</returns>
         public bool Contains(T item)
         {
-            return ValuesCore.Contains(item);
+            return _valuesCore.Contains(item);
         }
 
         /// <summary>
@@ -223,7 +210,7 @@ namespace PropertyModels.Collections
         /// <param name="index">The zero-based index in <paramref name="array" /> at which copying begins.</param>
         public void CopyTo(Array array, int index)
         {
-            ((ICollection)ValuesCore).CopyTo(array, index);
+            ((ICollection)_valuesCore).CopyTo(array, index);
         }
 
         /// <summary>
@@ -233,7 +220,7 @@ namespace PropertyModels.Collections
         /// <param name="arrayIndex">The zero-based index in <paramref name="array" /> at which copying begins.</param>
         public void CopyTo(T[] array, int arrayIndex)
         {
-            ValuesCore.CopyTo(array, arrayIndex);
+            _valuesCore.CopyTo(array, arrayIndex);
         }
 
         /// <summary>
@@ -242,7 +229,7 @@ namespace PropertyModels.Collections
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         public IEnumerator<T> GetEnumerator()
         {
-            return ValuesCore.GetEnumerator();
+            return _valuesCore.GetEnumerator();
         }
 
         /// <summary>
@@ -252,7 +239,7 @@ namespace PropertyModels.Collections
         /// <returns><see langword="true" /> if <paramref name="item" /> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, <see langword="false" />. This method also returns <see langword="false" /> if <paramref name="item" /> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1" />.</returns>
         public bool Remove(T item)
         {
-            return ValuesCore.Remove(item);
+            return _valuesCore.Remove(item);
         }
 
         /// <summary>
@@ -261,7 +248,7 @@ namespace PropertyModels.Collections
         /// <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return ValuesCore.GetEnumerator();
+            return _valuesCore.GetEnumerator();
         }
     }
 }

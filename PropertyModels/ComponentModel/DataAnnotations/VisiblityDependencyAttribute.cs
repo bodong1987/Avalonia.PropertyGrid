@@ -1,8 +1,6 @@
-﻿using PropertyModels.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 
 namespace PropertyModels.ComponentModel.DataAnnotations
 {
@@ -22,13 +20,13 @@ namespace PropertyModels.ComponentModel.DataAnnotations
     /// </summary>
     /// <seealso cref="Attribute" />
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
-    public abstract class AbstractVisiblityConditionAttribute : Attribute
+    public abstract class AbstractVisibilityConditionAttribute : Attribute
     {
         /// <summary>
         /// Checks the visibility.
         /// </summary>
         /// <param name="component">The component.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if visible, <c>false</c> otherwise.</returns>
         public abstract bool CheckVisibility(object component);
     }
 
@@ -38,19 +36,19 @@ namespace PropertyModels.ComponentModel.DataAnnotations
     public enum ConditionLogicType
     {
         /// <summary>
-        /// The default
+        /// default
         /// </summary>
         Default,
         /// <summary>
-        /// The not
+        /// not
         /// </summary>
         Not,
         /// <summary>
-        /// The and
+        /// and
         /// </summary>
         And,
         /// <summary>
-        /// The or
+        /// or
         /// </summary>
         Or
     }
@@ -58,10 +56,10 @@ namespace PropertyModels.ComponentModel.DataAnnotations
 
     /// <summary>
     /// Class VisibilityPropertyConditionAttribute.
-    /// Implements the <see cref="PropertyModels.ComponentModel.DataAnnotations.AbstractVisiblityConditionAttribute" />
+    /// Implements the <see cref="PropertyModels.ComponentModel.DataAnnotations.AbstractVisibilityConditionAttribute" />
     /// </summary>
-    /// <seealso cref="PropertyModels.ComponentModel.DataAnnotations.AbstractVisiblityConditionAttribute" />
-    public class VisibilityPropertyConditionAttribute : AbstractVisiblityConditionAttribute
+    /// <seealso cref="PropertyModels.ComponentModel.DataAnnotations.AbstractVisibilityConditionAttribute" />
+    public class VisibilityPropertyConditionAttribute : AbstractVisibilityConditionAttribute
     {
         /// <summary>
         /// The property name
@@ -94,8 +92,8 @@ namespace PropertyModels.ComponentModel.DataAnnotations
         /// Checks the visibility.
         /// </summary>
         /// <param name="component">The component.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
-        public override bool CheckVisibility(object component)
+        /// <returns><c>true</c> if visible, <c>false</c> otherwise.</returns>
+        public override bool CheckVisibility(object? component)
         {
             if(component == null)
             {
@@ -118,7 +116,7 @@ namespace PropertyModels.ComponentModel.DataAnnotations
 
         private bool IsVisible(object? value)
         {
-            bool isEqual = EqualityComparer<object>.Default.Equals(VisibleValue, value!);
+            var isEqual = EqualityComparer<object>.Default.Equals(VisibleValue, value!);
 
             return LogicType == ConditionLogicType.Default ? isEqual : !isEqual;
         }

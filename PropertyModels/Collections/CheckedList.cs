@@ -2,8 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PropertyModels.Collections
 {
@@ -86,30 +84,30 @@ namespace PropertyModels.Collections
         /// <summary>
         /// The source items core
         /// </summary>
-        List<T> SourceItemsCore = new List<T>();
+        private readonly List<T> _sourceItemsCore = [];
 
         /// <summary>
         /// The selected items
         /// </summary>
-        List<T> ItemsCore = new List<T>();
+        private readonly List<T> _itemsCore = [];
 
         /// <summary>
         /// Gets the items.
         /// </summary>
         /// <value>The items.</value>
-        public T[] Items => ItemsCore.ToArray();
+        public T[] Items => _itemsCore.ToArray();
 
         /// <summary>
         /// Gets the source items.
         /// </summary>
         /// <value>The source items.</value>
-        public T[] SourceItems => SourceItemsCore.ToArray();
+        public T[] SourceItems => _sourceItemsCore.ToArray();
 
         /// <summary>
         /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.
         /// </summary>
         /// <value>The count.</value>
-        public int Count => ItemsCore.Count;
+        public int Count => _itemsCore.Count;
 
         /// <summary>
         /// Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1" /> is read-only.
@@ -121,15 +119,15 @@ namespace PropertyModels.Collections
         /// Gets a value indicating whether this instance is synchronized.
         /// </summary>
         /// <value><c>true</c> if this instance is synchronized; otherwise, <c>false</c>.</value>
-        public bool IsSynchronized => ((ICollection)ItemsCore).IsSynchronized;
+        public bool IsSynchronized => ((ICollection)_itemsCore).IsSynchronized;
 
         /// <summary>
         /// Gets the synchronize root.
         /// </summary>
         /// <value>The synchronize root.</value>
-        public object SyncRoot => ((ICollection)ItemsCore).SyncRoot;
+        public object SyncRoot => ((ICollection)_itemsCore).SyncRoot;
 
-        private bool IsUpdating = false;
+        private bool _isUpdating;
 
         /// <summary>
         /// Gets the selected items.
@@ -139,7 +137,7 @@ namespace PropertyModels.Collections
         {
             get
             {
-                List<object> list = [.. ItemsCore];
+                List<object> list = [.. _itemsCore];
 
                 return list.ToArray();
             }
@@ -154,7 +152,7 @@ namespace PropertyModels.Collections
             get
             {
                 List<object> list = new List<object>();
-                foreach (T item in SourceItemsCore)
+                foreach (T item in _sourceItemsCore)
                 {
                     list.Add(item!);
                 }
@@ -169,7 +167,7 @@ namespace PropertyModels.Collections
         /// <param name="items">The items.</param>
         public CheckedList(IEnumerable<T> items)
         {
-            SourceItemsCore.AddRange(items);
+            _sourceItemsCore.AddRange(items);
         }
 
         /// <summary>
@@ -179,7 +177,7 @@ namespace PropertyModels.Collections
         /// <param name="checkedItems">The checked items.</param>
         public CheckedList(IEnumerable<T> items, IEnumerable<T> checkedItems)
         {
-            SourceItemsCore.AddRange(items);
+            _sourceItemsCore.AddRange(items);
             SetRangeChecked(checkedItems, true);
         }
 
@@ -192,7 +190,7 @@ namespace PropertyModels.Collections
         {
             if (obj is CheckedList<T> other)
             {
-                return ItemsCore.Equals(other.ItemsCore) && SourceItemsCore.Equals(other.SourceItemsCore);
+                return _itemsCore.Equals(other._itemsCore) && _sourceItemsCore.Equals(other._sourceItemsCore);
             }
 
             return false;
@@ -209,12 +207,12 @@ namespace PropertyModels.Collections
 
         private void BeginUpdate()
         {
-            IsUpdating = true;
+            _isUpdating = true;
         }
 
         private void EndUpdate()
         {
-            IsUpdating = false;
+            _isUpdating = false;
 
             SelectionChanged?.Invoke(this, EventArgs.Empty);
         }
@@ -225,11 +223,11 @@ namespace PropertyModels.Collections
         /// <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
         public void Add(T item)
         {
-            if (SourceItemsCore.Contains(item) && !ItemsCore.Contains(item))
+            if (_sourceItemsCore.Contains(item) && !_itemsCore.Contains(item))
             {
-                ItemsCore.Add(item);
+                _itemsCore.Add(item);
 
-                if(!IsUpdating)
+                if(!_isUpdating)
                 {
                     SelectionChanged?.Invoke(this, EventArgs.Empty);
                 }                
@@ -241,11 +239,11 @@ namespace PropertyModels.Collections
         /// </summary>
         public void Clear()
         {
-            if (ItemsCore.Count > 0)
+            if (_itemsCore.Count > 0)
             {
-                ItemsCore.Clear();
+                _itemsCore.Clear();
 
-                if(!IsUpdating)
+                if(!_isUpdating)
                 {
                     SelectionChanged?.Invoke(this, EventArgs.Empty);
                 }                
@@ -259,7 +257,7 @@ namespace PropertyModels.Collections
         /// <returns><see langword="true" /> if <paramref name="item" /> is found in the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, <see langword="false" />.</returns>
         public bool Contains(T item)
         {
-            return ItemsCore.Contains(item);
+            return _itemsCore.Contains(item);
         }
 
         /// <summary>
@@ -269,7 +267,7 @@ namespace PropertyModels.Collections
         /// <param name="arrayIndex">The zero-based index in <paramref name="array" /> at which copying begins.</param>
         public void CopyTo(T[] array, int arrayIndex)
         {
-            ItemsCore.CopyTo(array, arrayIndex);
+            _itemsCore.CopyTo(array, arrayIndex);
         }
 
         /// <summary>
@@ -280,7 +278,7 @@ namespace PropertyModels.Collections
         /// <exception cref="System.NotImplementedException"></exception>
         public void CopyTo(Array array, int index)
         {
-            ((ICollection)ItemsCore).CopyTo(array, index);
+            ((ICollection)_itemsCore).CopyTo(array, index);
         }
 
         /// <summary>
@@ -289,7 +287,7 @@ namespace PropertyModels.Collections
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         public IEnumerator<T> GetEnumerator()
         {
-            return ItemsCore.GetEnumerator();
+            return _itemsCore.GetEnumerator();
         }
 
         /// <summary>
@@ -299,9 +297,9 @@ namespace PropertyModels.Collections
         /// <returns><see langword="true" /> if <paramref name="item" /> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, <see langword="false" />. This method also returns <see langword="false" /> if <paramref name="item" /> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1" />.</returns>
         public bool Remove(T item)
         {
-            if (ItemsCore.Remove(item))
+            if (_itemsCore.Remove(item))
             {
-                if(!IsUpdating)
+                if(!_isUpdating)
                 {
                     SelectionChanged?.Invoke(this, EventArgs.Empty);
                 }
@@ -318,7 +316,7 @@ namespace PropertyModels.Collections
         /// <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return ItemsCore.GetEnumerator();
+            return _itemsCore.GetEnumerator();
         }
 
         /// <summary>
@@ -328,7 +326,7 @@ namespace PropertyModels.Collections
         /// <returns><c>true</c> if the specified item is checked; otherwise, <c>false</c>.</returns>
         bool ICheckedList.IsChecked(object item)
         {
-            return ItemsCore.Contains((T)item);
+            return _itemsCore.Contains((T)item);
         }
 
         void ICheckedList.SetChecked(object item, bool @checked)
@@ -356,7 +354,7 @@ namespace PropertyModels.Collections
         /// <returns><c>true</c> if the specified item is checked; otherwise, <c>false</c>.</returns>
         public bool IsChecked(T item)
         {
-            return ItemsCore.Contains(item);
+            return _itemsCore.Contains(item);
         }
 
         /// <summary>

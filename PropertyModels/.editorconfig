@@ -1,0 +1,11 @@
+[*.cs]
+resharper_member_can_be_private_global_highlighting = none
+resharper_loop_can_be_converted_to_query_highlighting = none
+resharper_foreach_can_be_partly_converted_to_query_using_another_get_enumerator_highlighting = none
+resharper_convert_if_statement_to_switch_statement_highlighting = none
+resharper_arrange_namespace_body_highlighting = none
+resharper_unused_member_global_highlighting = none
+resharper_base_object_get_hash_code_call_in_get_hash_code_highlighting = none
+resharper_invert_if_highlighting = none
+resharper_class_never_instantiated_global_highlighting = none
+resharper_event_never_subscribed_to_global_highlighting = none

@@ -1,18 +1,14 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
-using PropertyModels.Extensions;
-using System.Text.RegularExpressions;
 
-namespace PropertyModels.Localilzation
+namespace PropertyModels.Localization
 {
     /// <summary>
     /// Class AbstractCultureData.
-    /// Implements the <see cref="PropertyModels.Localilzation.ICultureData" />
+    /// Implements the <see cref="PropertyModels.Localization.ICultureData" />
     /// </summary>
-    /// <seealso cref="PropertyModels.Localilzation.ICultureData" />
+    /// <seealso cref="PropertyModels.Localization.ICultureData" />
     public abstract class AbstractCultureData : ICultureData
     {
         /// <summary>
