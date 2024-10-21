@@ -422,3 +422,7 @@ v11.1.4.1
 * The ShowStyle attribute is split into three: ShowStyle, PropertyOrderStyle, and CategoryOrderStyle. They are respectively used to indicate: whether to display categories, attribute sorting method, and category sorting method.
 * ICellEditFactory adds an interface `HandleReadOnlyStateChanged` to notify the processing of ReadOnly tags. You can customize your ReadOnly behavior through this interface. For example, by default ReadOnly is handled by setting IsEnabled to false. If your control supports better read-only effects, you can customize it by overriding this method. For example, when it comes to String and number, the IsReadOnly property is more suitable than IsEnabled because it can better support users to copy the content in the control.
 
+v11.1.4.2  
+
+* Enable Nullable
+
