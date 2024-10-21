@@ -19,12 +19,12 @@ namespace PropertyModels.ComponentModel
         /// Implements the <see cref="AttributeCollection" />
         /// </summary>
         /// <seealso cref="AttributeCollection" />
-        class MultiObjectAttributes : AttributeCollection
+        private class MultiObjectAttributes : AttributeCollection
         {
-            MultiObjectPropertyDescriptor _Owner;
-            AttributeCollection[]? _ParentAttributes;
-            Lazy<Attribute[]> _Attributes;
-            Hashtable? _AttributesTable;
+            private readonly MultiObjectPropertyDescriptor _owner;
+            private AttributeCollection[]? _parentAttributes;
+            private readonly Lazy<Attribute[]> _attributes;
+            private Hashtable? _attributesTable;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="MultiObjectAttributes"/> class.
@@ -33,8 +33,8 @@ namespace PropertyModels.ComponentModel
             public MultiObjectAttributes(MultiObjectPropertyDescriptor owner)
                 : base(null)
             {
-                this._Owner = owner;
-                this._Attributes = new Lazy<Attribute[]>(() => GetAttributes());
+                _owner = owner;
+                _attributes = new Lazy<Attribute[]>(GetAttributes);
             }
 
             /// <summary>
@@ -46,50 +46,47 @@ namespace PropertyModels.ComponentModel
             {
                 get
                 {
-                    if (_ParentAttributes == null)
+                    if (_parentAttributes == null)
                     {
-                        _ParentAttributes = new AttributeCollection[_Owner._Descriptors.Length];
-                        for (int i = 0; i < _ParentAttributes.Length; i++)
+                        _parentAttributes = new AttributeCollection[_owner.Descriptors.Length];
+                        for (var i = 0; i < _parentAttributes.Length; i++)
                         {
-                            _ParentAttributes[i] = _Owner._Descriptors[i].Attributes;
+                            _parentAttributes[i] = _owner.Descriptors[i].Attributes;
                         }
                     }
 
-                    if (_ParentAttributes.Length == 0)
+                    if (_parentAttributes.Length == 0)
                     {
                         return GetDefaultAttribute(attributeType);
                     }
 
                     Attribute? a;
-                    if (_AttributesTable != null)
+                    if (_attributesTable != null)
                     {
-                        a = (Attribute)_AttributesTable[attributeType]!;
+                        a = (Attribute?)_attributesTable[attributeType];
                         if (a != null)
                         {
                             return a;
                         }
                     }
-                    a = _ParentAttributes[0][attributeType]!;
+                    a = _parentAttributes[0][attributeType];
                     if (a == null)
                     {
                         return null;
                     }
 
-                    for (int i = 1; i < _ParentAttributes.Length; i++)
+                    for (var i = 1; i < _parentAttributes.Length; i++)
                     {
-                        if (!a.Equals(_ParentAttributes[i][attributeType]))
+                        if (!a.Equals(_parentAttributes[i][attributeType]))
                         {
                             a = GetDefaultAttribute(attributeType);
                             break;
                         }
                     }
 
-                    if (_AttributesTable == null)
-                    {
-                        _AttributesTable = new Hashtable();
-                    }
-
-                    _AttributesTable[attributeType] = a;
+                    _attributesTable ??= new Hashtable();
+                    _attributesTable[attributeType] = a;
+                    
                     return a;
                 }
             }
@@ -98,18 +95,15 @@ namespace PropertyModels.ComponentModel
             /// Gets the attribute collection.
             /// </summary>
             /// <value>The attributes.</value>
-            protected override Attribute[] Attributes
-            {
-                get { return _Attributes.Value; }
-            }
+            protected override Attribute[] Attributes => _attributes.Value;
 
             /// <summary>
             /// Gets the attributes.
             /// </summary>
             /// <returns>Attribute[].</returns>
-            Attribute[] GetAttributes()
+            private Attribute[] GetAttributes()
             {
-                return _Owner.Descriptors.First().Attributes.Cast<Attribute>()
+                return _owner.Descriptors.First().Attributes.Cast<Attribute>()
                         .Select(x => this[x.GetType()])
                         .Where(attr => attr != null)
                         .Select(attr => attr!)
@@ -118,12 +112,11 @@ namespace PropertyModels.ComponentModel
         }
         #endregion
 
-        PropertyDescriptor[] _Descriptors;
         /// <summary>
         /// Gets the descriptors.
         /// </summary>
         /// <value>The descriptors.</value>
-        internal PropertyDescriptor[] Descriptors => _Descriptors;
+        internal PropertyDescriptor[] Descriptors { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MultiObjectPropertyDescriptor"/> class.
@@ -132,7 +125,7 @@ namespace PropertyModels.ComponentModel
         public MultiObjectPropertyDescriptor(PropertyDescriptor[] descriptors)
             : base(descriptors[0].Name, null)
         {
-            this._Descriptors = descriptors;
+            Descriptors = descriptors;
         }
 
         /// <summary>
@@ -141,11 +134,10 @@ namespace PropertyModels.ComponentModel
         /// <param name="list">The list.</param>
         /// <param name="index">The index.</param>
         /// <returns>System.Object.</returns>
-        object? GetOwner(object[] list, int index)
+        private object? GetOwner(object[] list, int index)
         {
-            object res = list[index];
-            var custom = res as ICustomTypeDescriptor;
-            return custom == null ? res : custom.GetPropertyOwner(_Descriptors[index]);
+            var res = list[index];
+            return res is not ICustomTypeDescriptor custom ? res : custom.GetPropertyOwner(Descriptors[index]);
         }
 
         /// <summary>
@@ -164,7 +156,7 @@ namespace PropertyModels.ComponentModel
         /// <returns>An instance of the requested editor type, or <see langword="null" /> if an editor cannot be found.</returns>
         public override object? GetEditor(Type editorBaseType)
         {
-            return _Descriptors[0].GetEditor(editorBaseType);
+            return Descriptors[0].GetEditor(editorBaseType);
         }
 
         /// <summary>
@@ -174,10 +166,10 @@ namespace PropertyModels.ComponentModel
         /// <returns><see langword="true" /> if resetting the component changes its value; otherwise, <see langword="false" />.</returns>
         public override bool CanResetValue(object component)
         {
-            object[] list = (object[])component;
-            for (int i = 0; i < _Descriptors.Length; i++)
+            var list = (object[])component;
+            for (var i = 0; i < Descriptors.Length; i++)
             {
-                if (!_Descriptors[i].CanResetValue(GetOwner(list, i)!))
+                if (!Descriptors[i].CanResetValue(GetOwner(list, i)!))
                 {
                     return false;
                 }
@@ -190,7 +182,7 @@ namespace PropertyModels.ComponentModel
         /// Gets a value indicating whether value change notifications for this property may originate from outside the property descriptor.
         /// </summary>
         /// <value><c>true</c> if [supports change events]; otherwise, <c>false</c>.</value>
-        public override bool SupportsChangeEvents { get { return _Descriptors.Any(p => p.SupportsChangeEvents); } }
+        public override bool SupportsChangeEvents { get { return Descriptors.Any(p => p.SupportsChangeEvents); } }
 
         /// <summary>
         /// Enables other objects to be notified when this property changes.
@@ -199,15 +191,15 @@ namespace PropertyModels.ComponentModel
         /// <param name="handler">The delegate to add as a listener.</param>
         public override void AddValueChanged(object component, EventHandler handler)
         {
-            object[] list = (object[])component;
-            for (int i = 0; i < _Descriptors.Length; i++)
+            var list = (object[])component;
+            for (var i = 0; i < Descriptors.Length; i++)
             {
-                if (!_Descriptors[i].SupportsChangeEvents)
+                if (!Descriptors[i].SupportsChangeEvents)
                 {
                     continue;
                 }
 
-                _Descriptors[i].AddValueChanged(GetOwner(list, i)!, handler);
+                Descriptors[i].AddValueChanged(GetOwner(list, i)!, handler);
             }
         }
 
@@ -218,15 +210,15 @@ namespace PropertyModels.ComponentModel
         /// <param name="handler">The delegate to remove as a listener.</param>
         public override void RemoveValueChanged(object component, EventHandler handler)
         {
-            object[] list = (object[])component;
-            for (int i = 0; i < _Descriptors.Length; i++)
+            var list = (object[])component;
+            for (var i = 0; i < Descriptors.Length; i++)
             {
-                if (!_Descriptors[i].SupportsChangeEvents)
+                if (!Descriptors[i].SupportsChangeEvents)
                 {
                     continue;
                 }
 
-                _Descriptors[i].RemoveValueChanged(GetOwner(list, i)!, handler);
+                Descriptors[i].RemoveValueChanged(GetOwner(list, i)!, handler);
             }
         }
 
@@ -234,10 +226,7 @@ namespace PropertyModels.ComponentModel
         /// When overridden in a derived class, gets the type of the component this property is bound to.
         /// </summary>
         /// <value>The type of the component.</value>
-        public override Type ComponentType
-        {
-            get { return _Descriptors[0].ComponentType; }
-        }
+        public override Type ComponentType => Descriptors[0].ComponentType;
 
         /// <summary>
         /// When overridden in a derived class, gets the current value of the property on a component.
@@ -246,11 +235,11 @@ namespace PropertyModels.ComponentModel
         /// <returns>The value of a property for a given component.</returns>
         public override object? GetValue(object? component)
         {
-            object[] list = (object[])component!;
-            var res = GetValue(_Descriptors[0], GetOwner(list, 0)!);
-            for (int i = 0; i < _Descriptors.Length; i++)
+            var list = (object[])component!;
+            var res = GetValue(Descriptors[0], GetOwner(list, 0)!);
+            for (var i = 0; i < Descriptors.Length; i++)
             {
-                var temp = GetValue(_Descriptors[i], GetOwner(list, i)!);
+                var temp = GetValue(Descriptors[i], GetOwner(list, i)!);
                 if (res != temp && res != null && !res.Equals(temp))
                 {
                     return null;
@@ -264,54 +253,25 @@ namespace PropertyModels.ComponentModel
         /// When overridden in a derived class, gets a value indicating whether this property is read-only.
         /// </summary>
         /// <value><c>true</c> if this instance is read only; otherwise, <c>false</c>.</value>
-        public override bool IsReadOnly
-        {
-            get
-            {
-                for (int i = 0; i < _Descriptors.Length; i++)
-                {
-                    if (_Descriptors[i].IsReadOnly)
-                    {
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-        }
+        public override bool IsReadOnly => Descriptors.Any(x => x.IsReadOnly);
 
         /// <summary>
         /// When overridden in a derived class, gets the type of the property.
         /// </summary>
         /// <value>The type of the property.</value>
-        public override Type PropertyType
-        {
-            get { return _Descriptors[0].PropertyType; }
-        }
+        public override Type PropertyType => Descriptors[0].PropertyType;
 
         /// <summary>
         /// Gets the type converter for this property.
         /// </summary>
         /// <value>The converter.</value>
-        public override TypeConverter Converter
-        {
-            get
-            {
-                return _Descriptors[0].Converter;
-            }
-        }
+        public override TypeConverter Converter => Descriptors[0].Converter!;
 
         /// <summary>
         /// Gets the name that can be displayed in a window, such as a Properties window.
         /// </summary>
         /// <value>The display name.</value>
-        public override string DisplayName
-        {
-            get
-            {
-                return _Descriptors[0].DisplayName;
-            }
-        }
+        public override string DisplayName => Descriptors[0].DisplayName;
 
         /// <summary>
         /// When overridden in a derived class, resets the value for this property of the component to the default value.
@@ -319,10 +279,10 @@ namespace PropertyModels.ComponentModel
         /// <param name="component">The component with the property value that is to be reset to the default value.</param>
         public override void ResetValue(object component)
         {
-            object[] list = (object[])component;
-            for (int i = 0; i < _Descriptors.Length; i++)
+            var list = (object[])component;
+            for (var i = 0; i < Descriptors.Length; i++)
             {
-                _Descriptors[i].ResetValue(GetOwner(list, i)!);
+                Descriptors[i].ResetValue(GetOwner(list, i)!);
             }
         }
 
@@ -334,9 +294,9 @@ namespace PropertyModels.ComponentModel
         public object?[] GetValues(object[] components)
         {
             var list = new object?[components.Length];
-            for (int i = 0; i < _Descriptors.Length; i++)
+            for (var i = 0; i < Descriptors.Length; i++)
             {
-                list[i] = GetValue(_Descriptors[i], GetOwner(components, i)!);
+                list[i] = GetValue(Descriptors[i], GetOwner(components, i)!);
             }
 
             return list;
@@ -349,20 +309,20 @@ namespace PropertyModels.ComponentModel
         /// <param name="value">The new value.</param>
         public override void SetValue(object? component, object? value)
         {
-            object[] list = (object[])component!;
-            for (int i = 0; i < _Descriptors.Length; i++)
+            var list = (object[])component!;
+            for (var i = 0; i < Descriptors.Length; i++)
             {
                 object? clonedVal = null;
-                if (value is ICloneable)
+                if (value is ICloneable cloneable)
                 {
-                    clonedVal = ((ICloneable)value).Clone();
+                    clonedVal = cloneable.Clone();
                 }
 
-                _Descriptors[i].SetValue(GetOwner(list, i), clonedVal ?? value);
+                Descriptors[i].SetValue(GetOwner(list, i), clonedVal ?? value);
             }
         }
 
-        static object? GetValue(PropertyDescriptor pd, object component)
+        private static object? GetValue(PropertyDescriptor? pd, object? component)
         {
             object? value = null;
             if (component == null || pd == null)
@@ -377,21 +337,21 @@ namespace PropertyModels.ComponentModel
             }
             catch (Exception e)
             {
-                value = GetUnwindedException(e).Message;
+                value = GetUnWindedException(e).Message;
             }
 
             return value;
         }
 
-        static Exception GetUnwindedException(Exception e)
+        private static Exception GetUnWindedException(Exception e)
         {
-            Exception? result = e;
+            var result = e;
             if (e is System.Reflection.TargetInvocationException)
             {
                 result = e.InnerException;
             }
 
-            string message = result!.Message;
+            var message = result!.Message;
             while (string.IsNullOrEmpty(message) && result.InnerException != null)
             {
                 message = result.InnerException.Message;
@@ -401,15 +361,9 @@ namespace PropertyModels.ComponentModel
             return result;
         }
 
-        static object GetPropertyOwner(PropertyDescriptor pd, object component)
+        private static object GetPropertyOwner(PropertyDescriptor pd, object component)
         {
-            var typeDescriptor = component as ICustomTypeDescriptor;
-            if (typeDescriptor == null)
-            {
-                return component;
-            }
-
-            return component = typeDescriptor.GetPropertyOwner(pd)!;
+            return component is not ICustomTypeDescriptor typeDescriptor ? component : typeDescriptor.GetPropertyOwner(pd)!;
         }
 
         /// <summary>
@@ -419,10 +373,10 @@ namespace PropertyModels.ComponentModel
         /// <returns><see langword="true" /> if the property should be persisted; otherwise, <see langword="false" />.</returns>
         public override bool ShouldSerializeValue(object component)
         {
-            object[] list = (object[])component;
-            for (int i = 0; i < _Descriptors.Length; i++)
+            var list = (object[])component;
+            for (var i = 0; i < Descriptors.Length; i++)
             {
-                if (_Descriptors[i].ShouldSerializeValue(GetOwner(list, i)!))
+                if (Descriptors[i].ShouldSerializeValue(GetOwner(list, i)!))
                 {
                     return true;
                 }
@@ -436,10 +390,7 @@ namespace PropertyModels.ComponentModel
         /// </summary>
         /// <param name="index">The index.</param>
         /// <returns>PropertyDescriptor.</returns>
-        public PropertyDescriptor this[int index]
-        {
-            get { return _Descriptors[index]; }
-        }
+        public PropertyDescriptor this[int index] => Descriptors[index];
 
         /// <summary>
         /// Sets the values.
@@ -449,15 +400,15 @@ namespace PropertyModels.ComponentModel
         /// <exception cref="System.ArgumentOutOfRangeException"></exception>
         public void SetValues(object components, object values)
         {
-            object[] valuesArray = (object[])values;
+            var valuesArray = (object[])values;
             object[] componentsArray = (object[])components;
 
-            if (valuesArray.Length != _Descriptors.Length || valuesArray.Length != componentsArray.Length)
+            if (valuesArray.Length != Descriptors.Length || valuesArray.Length != componentsArray.Length)
                 throw new ArgumentOutOfRangeException();
 
-            for (int i = 0; i < _Descriptors.Length; i++)
+            for (var i = 0; i < Descriptors.Length; i++)
             {
-                _Descriptors[i].SetValue(componentsArray[i], valuesArray[i]);
+                Descriptors[i].SetValue(componentsArray[i], valuesArray[i]);
             }
         }
 
@@ -465,7 +416,7 @@ namespace PropertyModels.ComponentModel
         /// Gets the name of the category to which the member belongs, as specified in the <see cref="T:System.ComponentModel.CategoryAttribute" />.
         /// </summary>
         /// <value>The category.</value>
-        public override string Category { get { return this._Descriptors[0].Category; } }
+        public override string Category => Descriptors[0].Category ?? string.Empty;
 
         #region IEnumerable
         /// <summary>
@@ -474,7 +425,7 @@ namespace PropertyModels.ComponentModel
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
         public IEnumerator<PropertyDescriptor> GetEnumerator()
         {
-            foreach (PropertyDescriptor descriptor in _Descriptors)
+            foreach (PropertyDescriptor descriptor in Descriptors)
             {
                 yield return descriptor;
             }

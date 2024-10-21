@@ -37,7 +37,7 @@ namespace PropertyModels.Localization
         /// <summary>
         /// Reloads this instance.
         /// </summary>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if reload success, <c>false</c> otherwise.</returns>
         bool Reload();
     }
 

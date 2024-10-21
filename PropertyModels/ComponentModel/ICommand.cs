@@ -21,7 +21,7 @@ namespace PropertyModels.ComponentModel
         /// <summary>
         /// Executes this instance.
         /// </summary>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         bool Execute();
     }
 
@@ -41,7 +41,7 @@ namespace PropertyModels.ComponentModel
         /// <summary>
         /// Cancels this instance.
         /// </summary>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         bool Cancel();
     }
 
@@ -61,7 +61,7 @@ namespace PropertyModels.ComponentModel
         /// <summary>
         /// Initializes a new instance of the <see cref="AbstractBaseCommand"/> class.
         /// </summary>
-        public AbstractBaseCommand()
+        protected AbstractBaseCommand()
         {
             Name = GetType().Name;
         }
@@ -70,7 +70,7 @@ namespace PropertyModels.ComponentModel
         /// Initializes a new instance of the <see cref="AbstractBaseCommand"/> class.
         /// </summary>
         /// <param name="name">The name.</param>
-        public AbstractBaseCommand(string name)
+        protected AbstractBaseCommand(string name)
         {
             Name = name;
         }
@@ -87,7 +87,7 @@ namespace PropertyModels.ComponentModel
         /// <summary>
         /// Executes this instance.
         /// </summary>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         public abstract bool Execute();
 
         /// <summary>
@@ -107,8 +107,8 @@ namespace PropertyModels.ComponentModel
     /// <seealso cref="PropertyModels.ComponentModel.AbstractBaseCommand" />
     public class GenericCommand : AbstractBaseCommand
     {
-        Func<bool>? _CanExecuteFunc;
-        Func<bool>? _ExecuteFunc;
+        private readonly Func<bool>? _canExecuteFunc;
+        private readonly Func<bool>? _executeFunc;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GenericCommand" /> class.
@@ -119,8 +119,8 @@ namespace PropertyModels.ComponentModel
         public GenericCommand(string name, Func<bool>? executeFunc, Func<bool>? canExecuteFunc = null) :
             base(name)
         {            
-            _ExecuteFunc = executeFunc;
-            _CanExecuteFunc = canExecuteFunc;
+            _executeFunc = executeFunc;
+            _canExecuteFunc = canExecuteFunc;
         }
 
         /// <summary>
@@ -129,16 +129,16 @@ namespace PropertyModels.ComponentModel
         /// <returns><c>true</c> if this instance can execute; otherwise, <c>false</c>.</returns>
         public override bool CanExecute()
         {
-            return _CanExecuteFunc != null ? _CanExecuteFunc() : base.CanExecute();
+            return _canExecuteFunc?.Invoke() ?? base.CanExecute();
         }
 
         /// <summary>
         /// Executes this instance.
         /// </summary>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         public override bool Execute()
         {
-            return _ExecuteFunc != null && _ExecuteFunc();
+            return _executeFunc != null && _executeFunc();
         }
     }
 
@@ -155,7 +155,7 @@ namespace PropertyModels.ComponentModel
         /// Initializes a new instance of the <see cref="AbstractCancelableCommand"/> class.
         /// </summary>
         /// <param name="name">The name.</param>
-        public AbstractCancelableCommand(string name) :
+        protected AbstractCancelableCommand(string name) :
             base(name)
         {
         }
@@ -172,7 +172,7 @@ namespace PropertyModels.ComponentModel
         /// <summary>
         /// Cancels this instance.
         /// </summary>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         public abstract bool Cancel();
     }
 
@@ -183,7 +183,10 @@ namespace PropertyModels.ComponentModel
     /// <seealso cref="PropertyModels.ComponentModel.AbstractCancelableCommand" />
     public class GenericCancelableCommand : AbstractCancelableCommand
     {
-        Func<bool>? _CanCancelFunc, _CanExecuteFunc, _CancelFunc, _ExecuteFunc;
+        private readonly Func<bool>? _canCancelFunc;
+        private readonly Func<bool>? _canExecuteFunc;
+        private readonly Func<bool>? _cancelFunc;
+        private readonly Func<bool>? _executeFunc;
 
         /// <summary>
         /// Gets or sets the tag.
@@ -208,28 +211,28 @@ namespace PropertyModels.ComponentModel
             ) :
             base(name)
         {
-            _ExecuteFunc = executeFunc;
-            _CancelFunc = cancelFunc;
-            _CanExecuteFunc = canExecuteFunc;
-            _CanCancelFunc = canCancelFunc;
+            _executeFunc = executeFunc;
+            _cancelFunc = cancelFunc;
+            _canExecuteFunc = canExecuteFunc;
+            _canCancelFunc = canCancelFunc;
         }
 
         /// <summary>
         /// Cancels this instance.
         /// </summary>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         public override bool Cancel()
         {
-            return _CancelFunc != null && _CancelFunc();
+            return _cancelFunc != null && _cancelFunc();
         }
 
         /// <summary>
         /// Executes this instance.
         /// </summary>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         public override bool Execute()
         {
-            return _ExecuteFunc != null && _ExecuteFunc();
+            return _executeFunc != null && _executeFunc();
         }
 
         /// <summary>
@@ -238,7 +241,7 @@ namespace PropertyModels.ComponentModel
         /// <returns><c>true</c> if this instance can cancel; otherwise, <c>false</c>.</returns>
         public override bool CanCancel()
         {
-            return _CanCancelFunc != null ? _CanCancelFunc() : base.CanCancel();
+            return _canCancelFunc?.Invoke() ?? base.CanCancel();
         }
 
         /// <summary>
@@ -247,7 +250,7 @@ namespace PropertyModels.ComponentModel
         /// <returns><c>true</c> if this instance can execute; otherwise, <c>false</c>.</returns>
         public override bool CanExecute()
         {
-            return _CanExecuteFunc != null ? _CanExecuteFunc() : base.CanExecute();
+            return _canExecuteFunc?.Invoke() ?? base.CanExecute();
         }
     }
 }

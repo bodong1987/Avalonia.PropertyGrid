@@ -14,7 +14,7 @@ namespace PropertyModels.ComponentModel
         /// <summary>
         /// The increment
         /// </summary>
-        public readonly Decimal Increment;
+        public readonly decimal Increment;
 
         /// <summary>
         /// The format string
@@ -27,14 +27,15 @@ namespace PropertyModels.ComponentModel
         /// <param name="precision">The precision.</param>
         public FloatPrecisionAttribute(int precision = 2)
         {
-            Decimal v = 1;
-            for(int i=0; i < precision; ++i)
+            decimal v = 1;
+            for(var i=0; i < precision; ++i)
             {
-                v *= (Decimal)0.1;
+                v *= (decimal)0.1;
             }
 
             Increment = v;
 
+            // ReSharper disable once UseStringInterpolation
             FormatString = string.Format("{{0:0.{0}}}", new string('0', precision));
         }
 
@@ -43,7 +44,7 @@ namespace PropertyModels.ComponentModel
         /// </summary>
         /// <param name="increment">The increment.</param>
         /// <param name="formatString">The format string.</param>
-        public FloatPrecisionAttribute(Decimal increment = (Decimal)0.01, string formatString = "{0:0.00}")
+        public FloatPrecisionAttribute(decimal increment = (decimal)0.01, string formatString = "{0:0.00}")
         {
             Increment = increment;
             FormatString = formatString;
@@ -55,7 +56,7 @@ namespace PropertyModels.ComponentModel
 		/// <param name="increment">The increment.</param>
 		/// <param name="formatString">The format string.</param>
 		public FloatPrecisionAttribute(double increment, string formatString) :
-            this((Decimal)increment, formatString)
+            this((decimal)increment, formatString)
         {
         }
     }

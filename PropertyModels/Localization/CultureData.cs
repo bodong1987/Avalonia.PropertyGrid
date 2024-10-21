@@ -14,7 +14,7 @@ namespace PropertyModels.Localization
         /// <summary>
         /// The local texts
         /// </summary>
-        protected Dictionary<string, string>? LocalTexts = null;
+        protected readonly Dictionary<string, string>? LocalTexts = null;
 
         /// <summary>
         /// Gets the culture.
@@ -38,9 +38,9 @@ namespace PropertyModels.Localization
         /// Initializes a new instance of the <see cref="AbstractCultureData"/> class.
         /// </summary>
         /// <param name="uri">The URI.</param>
-        public AbstractCultureData(Uri uri)
+        protected AbstractCultureData(Uri uri)
         {
-            string localPath = uri.LocalPath;
+            var localPath = uri.LocalPath;
             Culture = new CultureInfo(System.IO.Path.GetFileNameWithoutExtension(localPath));
             Path = uri;
         }
@@ -66,7 +66,7 @@ namespace PropertyModels.Localization
         /// <summary>
         /// Reloads this instance.
         /// </summary>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if reload success, <c>false</c> otherwise.</returns>
         public abstract bool Reload();
 
         /// <summary>
@@ -86,9 +86,9 @@ namespace PropertyModels.Localization
         /// <returns>Dictionary&lt;System.String, System.String&gt;.</returns>
         public static Dictionary<string, string> ReadJsonStringDictionary(string json)
         {
-            Dictionary<string, string> dict = new Dictionary<string, string>();
+            var dict = new Dictionary<string, string>();
 
-            string[] configs = json.Split('\r', '\n');
+            var configs = json.Split('\r', '\n');
 
             foreach(var line in configs)
             {
@@ -99,8 +99,7 @@ namespace PropertyModels.Localization
                     continue;
                 }
 
-                int endPos = 0;
-                var key = PickStringToken(configLine, 0, out endPos);
+                var key = PickStringToken(configLine, 0, out var endPos);
 
                 if(key == null)
                 {
@@ -122,35 +121,34 @@ namespace PropertyModels.Localization
 
         private static string? PickStringToken(string line, int startPos, out int endPos)
         {
-            int Begin = -1;
-            int Escape = -1;
+            var begin = -1;
+            var escape = -1;
             endPos = -1;
 
-            for(int i=startPos; i < line.Length; ++i)
+            for(var i=startPos; i < line.Length; ++i)
             {
-                char ch = line[i];
+                var ch = line[i];
 
                 if(ch == '"')
                 {
-                    if(Escape == i-1 && Escape != -1)
+                    if(escape == i-1 && escape != -1)
                     {
-                        Escape = -1;
-                        continue;
+                        escape = -1;
                     }
-                    else if(Begin == -1)
+                    else if(begin == -1)
                     {
-                        Begin = i;
+                        begin = i;
                     }
-                    else if(Begin != -1)
+                    else if(endPos != -1)
                     {
                         endPos = i;
 
-                        return line.Substring(Begin + 1, endPos - Begin - 1);
+                        return line.Substring(begin + 1, endPos - begin - 1);
                     }
                 }
                 else if(ch == '\\')
                 {
-                    Escape = i;
+                    escape = i;
                 }
             }
 

@@ -28,15 +28,13 @@ namespace PropertyModels.ComponentModel
         /// When overridden in a derived class, gets the type of the property.
         /// </summary>
         /// <value>The type of the property.</value>
-        public override Type PropertyType => ElementType;
+        public override Type PropertyType { get; }
 
         /// <summary>
         /// Gets the index.
         /// </summary>
         /// <value>The index.</value>
         public int Index { get; private set; }
-
-        readonly Type ElementType;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ListElementPropertyDescriptor" /> class.
@@ -48,7 +46,7 @@ namespace PropertyModels.ComponentModel
             base(name, null)
         {
             Index = index;
-            ElementType = elementType;
+            PropertyType = elementType;
         }
 
         /// <summary>

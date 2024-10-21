@@ -11,17 +11,17 @@ namespace PropertyModels.ComponentModel
     public class WatermarkAttribute : Attribute
     {
         /// <summary>
-        /// The watermask
+        /// The watermark
         /// </summary>
-        public readonly string Watermask;
+        public readonly string Watermark;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WatermarkAttribute"/> class.
         /// </summary>
-        /// <param name="watermask">The watermask.</param>
-        public WatermarkAttribute(string watermask)
+        /// <param name="watermark">The watermark.</param>
+        public WatermarkAttribute(string watermark)
         {
-            Watermask = watermask;
+            Watermark = watermark;
         }
     }
 }

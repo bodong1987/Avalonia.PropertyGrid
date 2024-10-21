@@ -35,7 +35,7 @@ namespace PropertyModels.ComponentModel
         /// <summary>
         /// The target
         /// </summary>
-        public readonly Object Target;
+        public readonly object Target;
 
         /// <summary>
         /// The property

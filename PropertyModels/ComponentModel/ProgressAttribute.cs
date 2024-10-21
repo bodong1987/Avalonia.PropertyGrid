@@ -14,10 +14,12 @@ namespace PropertyModels.ComponentModel
         /// The minimum
         /// </summary>
         public readonly double Minimum;
+        
         /// <summary>
         /// The maximum
         /// </summary>
         public readonly double Maximum;
+        
         /// <summary>
         /// The format string
         /// </summary>

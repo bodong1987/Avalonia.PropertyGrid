@@ -36,6 +36,7 @@ namespace PropertyModels.ComponentModel
         /// The value
         /// </summary>
         public Enum Value { get; set; }
+        
         /// <summary>
         /// The display name
         /// </summary>
@@ -101,6 +102,7 @@ namespace PropertyModels.ComponentModel
         /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
         public override int GetHashCode()
         {
+            // ReSharper disable once NonReadonlyMemberInGetHashCode
             return Value.GetHashCode();
         }
     }

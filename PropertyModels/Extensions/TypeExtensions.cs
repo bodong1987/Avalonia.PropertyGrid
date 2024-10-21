@@ -23,11 +23,11 @@ namespace PropertyModels.Extensions
         public static T? GetAnyCustomAttribute<T>(this MemberInfo memberInfo, bool inherit = true)
             where T : Attribute
         {
-            var Attrs = memberInfo.GetCustomAttributes(typeof(T), inherit);
+            var attrs = memberInfo.GetCustomAttributes(typeof(T), inherit);
 
-            if (Attrs != null && Attrs.Length > 0)
+            if (attrs.Length > 0)
             {
-                var attr = Attrs[0] as T;
+                var attr = attrs[0] as T;
 
                 return attr;
             }
@@ -45,14 +45,9 @@ namespace PropertyModels.Extensions
         public static T[] GetCustomAttributes<T>(this MemberInfo memberInfo, bool inherit = true)
             where T : Attribute
         {
-            var Attrs = memberInfo.GetCustomAttributes(typeof(T), inherit);
+            var attrs = memberInfo.GetCustomAttributes(typeof(T), inherit);
 
-            if (Attrs != null && Attrs.Length > 0)
-            {
-                return Attrs.Cast<T>().ToArray();
-            }
-
-            return [];
+            return attrs.Length > 0 ? attrs.Cast<T>().ToArray() : [];
         }
 
         /// <summary>
@@ -76,6 +71,8 @@ namespace PropertyModels.Extensions
         /// <exception cref="System.ArgumentException">Input MemberInfo must be if type EventInfo, FieldInfo, MethodInfo, or PropertyInfo</exception>
         public static Type GetUnderlyingType(this MemberInfo memberInfo)
         {
+            // ReSharper disable once ConvertSwitchStatementToSwitchExpression
+            // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
             switch (memberInfo.MemberType)
             {
                 case MemberTypes.Event:
@@ -103,6 +100,8 @@ namespace PropertyModels.Extensions
         /// <exception cref="System.ArgumentException">Input MemberInfo must be if type FieldInfo, or PropertyInfo</exception>
         public static object? GetUnderlyingValue(this MemberInfo memberInfo, object? target)
         {
+            // ReSharper disable once ConvertSwitchStatementToSwitchExpression
+            // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
             switch (memberInfo.MemberType)
             {
                 case MemberTypes.Field:
@@ -127,6 +126,8 @@ namespace PropertyModels.Extensions
         /// <exception cref="System.ArgumentException">Input MemberInfo must be if type FieldInfo, or PropertyInfo</exception>
         public static bool SetUnderlyingValue(this MemberInfo memberInfo, object? target, object? value)
         {
+            // ReSharper disable once ConvertSwitchStatementToSwitchExpression
+            // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
             switch (memberInfo.MemberType)
             {
                 case MemberTypes.Field:
@@ -154,11 +155,12 @@ namespace PropertyModels.Extensions
             {
                 return (info as FieldInfo)!.IsPublic;
             }
-            else if (info.MemberType == MemberTypes.Property)
+
+            if (info.MemberType == MemberTypes.Property)
             {
-                var GetMethod = (info as PropertyInfo)!.GetGetMethod();
-                var SetMethod = (info as PropertyInfo)!.GetSetMethod();
-                return GetMethod != null && SetMethod != null && GetMethod.IsPublic;
+                var getMethod = (info as PropertyInfo)!.GetGetMethod();
+                var setMethod = (info as PropertyInfo)!.GetSetMethod();
+                return getMethod != null && setMethod != null && getMethod.IsPublic;
             }
 
             return false;
@@ -175,11 +177,12 @@ namespace PropertyModels.Extensions
             {
                 return (info as FieldInfo)!.IsStatic;
             }
-            else if (info.MemberType == MemberTypes.Property)
+
+            if (info.MemberType == MemberTypes.Property)
             {
-                var GetMethod = (info as PropertyInfo)!.GetGetMethod();
-                var SetMethod = (info as PropertyInfo)!.GetSetMethod();
-                return GetMethod != null && SetMethod != null && GetMethod.IsStatic;
+                var getMethod = (info as PropertyInfo)!.GetGetMethod();
+                var setMethod = (info as PropertyInfo)!.GetSetMethod();
+                return getMethod != null && setMethod != null && getMethod.IsStatic;
             }
 
             return false;
@@ -192,7 +195,7 @@ namespace PropertyModels.Extensions
         /// <returns><c>true</c> if the specified information is constant; otherwise, <c>false</c>.</returns>
         public static bool IsConstant(this MemberInfo info)
         {
-            return info is FieldInfo && (info as FieldInfo)!.IsInitOnly;
+            return info is FieldInfo { IsInitOnly: true };
         }
 
         /// <summary>
@@ -241,7 +244,7 @@ namespace PropertyModels.Extensions
         /// <returns><c>true</c> if [is child of] [the specified base type]; otherwise, <c>false</c>.</returns>
         public static bool IsChildOf(this Type type, Type baseType)
         {
-            return baseType != null && baseType.IsAssignableFrom(type);
+            return baseType.IsAssignableFrom(type);
         }
 
         /// <summary>
@@ -249,11 +252,10 @@ namespace PropertyModels.Extensions
         /// </summary>
         /// <param name="attribute">The input attribute.</param>
         /// <returns>System.Type.</returns>
-        public static Type? GetConverterType(this System.ComponentModel.TypeConverterAttribute attribute)
+        public static Type? GetConverterType(this TypeConverterAttribute attribute)
         {
-            Type? Result = null;
-            TryGetTypeByName(attribute.ConverterTypeName, out Result, AppDomain.CurrentDomain.GetAssemblies());
-            return Result;
+            TryGetTypeByName(attribute.ConverterTypeName, out var result, AppDomain.CurrentDomain.GetAssemblies());
+            return result;
         }
 
         /// <summary>
@@ -272,25 +274,20 @@ namespace PropertyModels.Extensions
                 typeName = typeName.Substring(0, typeName.IndexOf(','));
             }
 
-            type = Type.GetType(typeName);
-
-            if (type == null)
-            {
-                type = GetTypeFromAssemblies(typeName, customAssemblies);
-            }
+            type = Type.GetType(typeName) ?? GetTypeFromAssemblies(typeName, customAssemblies);
 
             // try get generic types
             if (type == null
                 && typeName.Contains("`"))
             {
-                var match = Regex.Match(typeName, "(?<MainType>.+`(?<ParamCount>[0-9]+))\\[(?<Types>.*)\\]");
+                var match = Regex.Match(typeName, @"(?<MainType>.+`(?<ParamCount>[0-9]+))\[(?<Types>.*)\]");
 
                 if (match.Success)
                 {
-                    int genericParameterCount = int.Parse(match.Groups["ParamCount"].Value);
-                    string genericDef = match.Groups["Types"].Value;
+                    var genericParameterCount = int.Parse(match.Groups["ParamCount"].Value);
+                    var genericDef = match.Groups["Types"].Value;
                     List<string> typeArgs = new List<string>(genericParameterCount);
-                    foreach (Match typeArgMatch in Regex.Matches(genericDef, "\\[(?<Type>.*?)\\],?"))
+                    foreach (Match typeArgMatch in Regex.Matches(genericDef, @"\[(?<Type>.*?)\],?"))
                     {
                         if (typeArgMatch.Success)
                         {
@@ -298,11 +295,10 @@ namespace PropertyModels.Extensions
                         }
                     }
 
-                    Type[] genericArgumentTypes = new Type[typeArgs.Count];
-                    for (int genTypeIndex = 0; genTypeIndex < typeArgs.Count; genTypeIndex++)
+                    var genericArgumentTypes = new Type[typeArgs.Count];
+                    for (var genTypeIndex = 0; genTypeIndex < typeArgs.Count; genTypeIndex++)
                     {
-                        Type? genericType;
-                        if (TryGetTypeByName(typeArgs[genTypeIndex], out genericType, customAssemblies))
+                        if (TryGetTypeByName(typeArgs[genTypeIndex], out var genericType, customAssemblies))
                         {
                             genericArgumentTypes[genTypeIndex] = genericType!;
                         }
@@ -313,9 +309,8 @@ namespace PropertyModels.Extensions
                         }
                     }
 
-                    string genericTypeString = match.Groups["MainType"].Value;
-                    Type? genericMainType;
-                    if (TryGetTypeByName(genericTypeString, out genericMainType))
+                    var genericTypeString = match.Groups["MainType"].Value;
+                    if (TryGetTypeByName(genericTypeString, out var genericMainType))
                     {
                         // make generic type
                         type = genericMainType?.MakeGenericType(genericArgumentTypes);
@@ -336,8 +331,7 @@ namespace PropertyModels.Extensions
         {
             Type? type = null;
 
-            if (customAssemblies != null
-               && customAssemblies.Length > 0)
+            if (customAssemblies.Length > 0)
             {
                 foreach (var assembly in customAssemblies)
                 {
@@ -511,7 +505,7 @@ namespace PropertyModels.Extensions
         /// <returns>T[].</returns>
         public static T[] GetCustomAttributes<T>(this PropertyDescriptor propertyDescriptor) where T : Attribute
         {
-            List<T> list = new List<T>();
+            var list = new List<T>();
             foreach (var attr in propertyDescriptor.Attributes)
             {
                 if (attr is T t)
@@ -555,7 +549,7 @@ namespace PropertyModels.Extensions
             }
             else if (component is IEnumerable<ComponentModel.INotifyPropertyChanging> enpcps)
             {
-                foreach (ComponentModel.INotifyPropertyChanging e in enpcps)
+                foreach (var e in enpcps)
                 {
                     e.RaisePropertyChanging(property.Name);
                 }
@@ -576,7 +570,7 @@ namespace PropertyModels.Extensions
         /// <param name="value">The value.</param>
         /// <param name="oldValue">The old value.</param>
         /// <returns><c>true</c> if [is property changed] [the specified component]; otherwise, <c>false</c>.</returns>
-        public static bool IsPropertyChanged(this PropertyDescriptor property, object component, object value, out object? oldValue)
+        public static bool IsPropertyChanged(this PropertyDescriptor property, object component, object? value, out object? oldValue)
         {
             var obj = property.GetValue(component);
             oldValue = obj;
@@ -606,7 +600,7 @@ namespace PropertyModels.Extensions
             }
             else if (component is IEnumerable<ComponentModel.INotifyPropertyChanged> enpcps)
             {
-                foreach (ComponentModel.INotifyPropertyChanged e in enpcps)
+                foreach (var e in enpcps)
                 {
                     e.RaisePropertyChanged(property.Name);
                 }

@@ -72,19 +72,20 @@ namespace PropertyModels.Extensions
         /// <param name="projection">The projection.</param>
         /// <returns>T.</returns>
         /// <exception cref="InvalidOperationException">Empty List</exception>
-        public static T MaxElement<T>(this IEnumerable<T> list, Converter<T, int> projection)
+        public static T? MaxElement<T>(this IEnumerable<T> list, Converter<T, int> projection)
         {
-            if (list.Count() == 0)
+            var enumerable = list as T[] ?? list.ToArray();
+            if (!enumerable.Any())
             {
                 throw new InvalidOperationException("Empty List");
             }
 
-            int maxValue = int.MinValue;
-            T result = default(T)!;
+            var maxValue = int.MinValue;
+            var result = default(T);
 
-            foreach (T item in list)
+            foreach (var item in enumerable)
             {
-                int value = projection(item);
+                var value = projection(item);
                 if (value > maxValue)
                 {
                     maxValue = value;
@@ -121,14 +122,14 @@ namespace PropertyModels.Extensions
         /// <typeparam name="T"></typeparam>
         /// <param name="list">The list.</param>
         /// <param name="match">The match.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if remove success, <c>false</c> otherwise.</returns>
         public static bool Remove<T>(this IList<T> list, Predicate<T> match)
         {
-            int Index = list.IndexOf(match);
+            var index = list.IndexOf(match);
 
-            if (Index != -1)
+            if (index != -1)
             {
-                list.RemoveAt(Index);
+                list.RemoveAt(index);
                 return true;
             }
 
@@ -137,7 +138,7 @@ namespace PropertyModels.Extensions
 
 
         /// <summary>
-        /// Distincts the by.
+        /// Distinct the target enumerable data.
         /// </summary>
         /// <typeparam name="TSource">The type of the t source.</typeparam>
         /// <typeparam name="TKey">The type of the t key.</typeparam>
@@ -149,7 +150,7 @@ namespace PropertyModels.Extensions
         public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> predicate)
         {
             if (source == null)
-                throw new ArgumentNullException("source");
+                throw new ArgumentNullException(nameof(source));
 
             return source
                 .GroupBy(predicate)
@@ -157,7 +158,7 @@ namespace PropertyModels.Extensions
         }
 
         /// <summary>
-        /// Converts to bindinglist.
+        /// Converts to binding list.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="source">The source.</param>
@@ -176,7 +177,7 @@ namespace PropertyModels.Extensions
         /// <returns>IEnumerable&lt;TRet&gt;.</returns>
         public static IEnumerable<TRet> Select<TRet>(this IEnumerable enumerable, Func<object, TRet> selector)
         {
-            foreach (object item in enumerable)
+            foreach (var item in enumerable)
             {
                 yield return selector(item);
             }

@@ -11,7 +11,7 @@ namespace PropertyModels.ComponentModel
     public class ReactiveCommand : ICommand
     {
         /// <summary>
-        /// Occurs when changes occur that affect whether or not the command should execute.
+        /// Occurs when changes occur that can execute state changed.
         /// </summary>
         public event EventHandler? CanExecuteChanged;
 
@@ -30,6 +30,7 @@ namespace PropertyModels.ComponentModel
         /// </summary>
         public Action? ExecuteDelegateNoParam;
 
+        // ReSharper disable once UnusedMember.Local
         private void OnCanExecuteChanged()
         {
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);
