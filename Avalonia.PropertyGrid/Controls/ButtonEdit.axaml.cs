@@ -1,9 +1,9 @@
-﻿using Avalonia.Controls.Primitives;
-using Avalonia.Interactivity;
-using PropertyModels.ComponentModel;
-using System;
+﻿using System;
 using System.Windows.Input;
+using Avalonia.Controls.Primitives;
+using Avalonia.Interactivity;
 using Avalonia.Reactive;
+using PropertyModels.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Controls
 {

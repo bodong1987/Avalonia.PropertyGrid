@@ -1,15 +1,15 @@
-﻿using Avalonia.PropertyGrid.Controls;
-using Avalonia.PropertyGrid.Controls.Implements;
-using PropertyModels.ComponentModel;
-using PropertyModels.ComponentModel.DataAnnotations;
-using PropertyModels.Extensions;
-using PropertyModels.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
+using Avalonia.PropertyGrid.Controls;
+using Avalonia.PropertyGrid.Controls.Implements;
+using PropertyModels.ComponentModel;
+using PropertyModels.ComponentModel.DataAnnotations;
+using PropertyModels.Extensions;
+using PropertyModels.Utils;
 
 namespace Avalonia.PropertyGrid.ViewModels
 {
@@ -70,7 +70,7 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// <summary>
         /// The hidden by condition
         /// </summary>
-        HiddenByCondition = 1<<10,
+        HiddenByCondition = 1<<10
     }
 
     /// <summary>
@@ -84,6 +84,7 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// Gets or sets the filter pattern.
         /// </summary>
         /// <value>The filter pattern.</value>
+        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
         public IFilterPattern FilterPattern { get; set; } = new PropertyGridFilterPattern();
 
         private object? _context;
@@ -224,13 +225,13 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// Gets all properties.
         /// </summary>
         /// <value>All properties.</value>
-        public List<PropertyDescriptor> AllProperties { get; private set; } = [];
+        public List<PropertyDescriptor> AllProperties { get; } = [];
 
         /// <summary>
         /// Gets the categories.
         /// </summary>
         /// <value>The categories.</value>
-        public List<KeyValuePair<string, List<PropertyDescriptor>>> Categories { get; private set; } = [];
+        public List<KeyValuePair<string, List<PropertyDescriptor>>> Categories { get; } = [];
 
         /// <summary>
         /// Occurs when [filter changed].
@@ -318,10 +319,8 @@ namespace Avalonia.PropertyGrid.ViewModels
 
                 return atLeastOneVisible ? PropertyVisibility.AlwaysVisible : PropertyVisibility.HiddenByNoVisibleChildren;
             }
-            else
-            {
-                return PropagateVisibility(info, info.Target, category);
-            }
+
+            return PropagateVisibility(info, info.Target, category);
         }
 
         private PropertyVisibility PropagateVisibility(IPropertyGridCellInfo cellInfo, object? target, FilterCategory category = FilterCategory.Default)
@@ -358,7 +357,7 @@ namespace Avalonia.PropertyGrid.ViewModels
                 {
                     if (!FilterPattern.Match(property, target))
                     {
-                        if(childrenVisibility == null || childrenVisibility != PropertyVisibility.AlwaysVisible)
+                        if(childrenVisibility is not PropertyVisibility.AlwaysVisible)
                         {
                             visibility |= PropertyVisibility.HiddenByFilter;
                         }
@@ -410,7 +409,7 @@ namespace Avalonia.PropertyGrid.ViewModels
                 {
                     if(CustomPropertyDescriptorFilter != null)
                     {
-                        var args = new CustomPropertyDescriptorFilterEventArgs(PropertyGrid.Controls.PropertyGrid.CustomPropertyDescriptorFilterEvent, _context, x);
+                        var args = new CustomPropertyDescriptorFilterEventArgs(Controls.PropertyGrid.CustomPropertyDescriptorFilterEvent, _context, x);
 
                         CustomPropertyDescriptorFilter(this, args);
 

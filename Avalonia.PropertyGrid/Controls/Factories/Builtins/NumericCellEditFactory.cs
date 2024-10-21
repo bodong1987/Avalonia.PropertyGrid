@@ -1,8 +1,9 @@
-﻿using Avalonia.Controls;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
-using PropertyModels.Extensions;
+using System.Globalization;
+using Avalonia.Controls;
 using PropertyModels.ComponentModel;
+using PropertyModels.Extensions;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
@@ -28,7 +29,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         public override Control? HandleNewProperty(PropertyCellContext context)
         {
             var propertyDescriptor = context.Property;
-            var target = context.Target;
+            // var target = context.Target;
             
             if (!propertyDescriptor.PropertyType.IsNumericType())
             {
@@ -41,8 +42,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (attr != null)
             {
-                control.Minimum = (Decimal)(double)Convert.ChangeType(attr.Minimum, typeof(double));
-                control.Maximum = (Decimal)(double)Convert.ChangeType(attr.Maximum, typeof(double));
+                control.Minimum = (decimal)(double)Convert.ChangeType(attr.Minimum, typeof(double));
+                control.Maximum = (decimal)(double)Convert.ChangeType(attr.Maximum, typeof(double));
             }
 
             var formatAttr = propertyDescriptor.GetCustomAttribute<FormatStringAttribute>();
@@ -53,13 +54,13 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 propertyDescriptor.PropertyType == typeof(ushort) ||
                 propertyDescriptor.PropertyType == typeof(int) ||
                 propertyDescriptor.PropertyType == typeof(uint) ||
-                propertyDescriptor.PropertyType == typeof(Int64) ||
-                propertyDescriptor.PropertyType == typeof(UInt64)
+                propertyDescriptor.PropertyType == typeof(long) ||
+                propertyDescriptor.PropertyType == typeof(ulong)
                 )
             {
                 var incrementAttr = propertyDescriptor.GetCustomAttribute<IntegerIncrementAttribute>();
 
-                control.Increment = incrementAttr != null ? incrementAttr.Increment : 1;
+                control.Increment = incrementAttr?.Increment ?? 1;
 
                 if(formatAttr != null)
                 {
@@ -76,7 +77,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 }
                 else
                 {
-                    control.Increment = (Decimal)0.01;
+                    control.Increment = (decimal)0.01;
                     control.FormatString = "{0:0.00}";
 
                     if (formatAttr != null)
@@ -95,7 +96,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 }
                 catch(Exception ex)
                 {
-                    DataValidationErrors.SetErrors(control, new string[] { ex.Message });
+                    DataValidationErrors.SetErrors(control, [ex.Message]);
                 }
             };
 
@@ -122,7 +123,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (control is NumericUpDown nup)
             {
-                if(Decimal.TryParse(((double)Convert.ChangeType(propertyDescriptor.GetValue(target)!, typeof(double))).ToString(), out var d))
+                if(decimal.TryParse(((double)Convert.ChangeType(propertyDescriptor.GetValue(target)!, typeof(double))).ToString(CultureInfo.InvariantCulture), out var d))
                 {
                     nup.Value = d;
                 }

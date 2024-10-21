@@ -1,8 +1,9 @@
 ﻿using Avalonia.Controls;
-using PropertyModels.Collections;
-using PropertyModels.Extensions;
-using PropertyModels.ComponentModel;
+using Avalonia.Layout;
 using Avalonia.PropertyGrid.Services;
+using PropertyModels.Collections;
+using PropertyModels.ComponentModel;
+using PropertyModels.Extensions;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
@@ -42,7 +43,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             var list = (propertyDescriptor.GetValue(target) as ISelectableList);
 
             control.ItemsSource = list?.Values;
-            control.HorizontalAlignment = Layout.HorizontalAlignment.Stretch;
+            control.HorizontalAlignment = HorizontalAlignment.Stretch;
 
             control.SelectionChanged += (s, e) =>
             {
@@ -52,7 +53,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 {
                     var oldValue = list.SelectedValue;
 
-                    GenericCancelableCommand command = new GenericCancelableCommand(
+                    var command = new GenericCancelableCommand(
                         string.Format(LocalizationService.Default["Change {0} selection from {1} to {2}"], context.Property.DisplayName, oldValue!=null?oldValue.ToString():"null", item!=null?item.ToString():"null"),
                         () =>
                         {

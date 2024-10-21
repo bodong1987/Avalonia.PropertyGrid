@@ -1,6 +1,8 @@
-﻿using Avalonia.Controls;
-using System.ComponentModel;
-using System.Drawing;
+﻿using System.ComponentModel;
+using Avalonia.Controls;
+using Avalonia.Layout;
+using Avalonia.Media;
+using Color = System.Drawing.Color;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
@@ -23,14 +25,14 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// </summary>
         /// <param name="property">The property.</param>
         /// <returns><c>true</c> if [is available color type] [the specified property]; otherwise, <c>false</c>.</returns>
-        public bool IsAvailableColorType(PropertyDescriptor property)
+        public static bool IsAvailableColorType(PropertyDescriptor property)
         {
             var type = property.PropertyType;
 
             return type == typeof(Color) ||
-                type == typeof(Avalonia.Media.Color) ||
-                type == typeof(Media.HslColor) ||
-                type == typeof(Media.HsvColor);
+                type == typeof(Media.Color) ||
+                type == typeof(HslColor) ||
+                type == typeof(HsvColor);
         }
 
         /// <summary>
@@ -41,7 +43,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         public override Control? HandleNewProperty(PropertyCellContext context)
         {
             var propertyDescriptor = context.Property;
-            var target = context.Target;
+            //var target = context.Target;
             
             if (!IsAvailableColorType(propertyDescriptor))
             {
@@ -50,28 +52,28 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             var type = propertyDescriptor.PropertyType;
 
-            ColorPicker colorPicker = new ColorPicker()
+            var colorPicker = new ColorPicker
             {
                 Palette = new MaterialHalfColorPalette(),
-                HorizontalAlignment = Layout.HorizontalAlignment.Left
+                HorizontalAlignment = HorizontalAlignment.Left
             };
 
             colorPicker.ColorChanged += (s, e) =>
             {
                 if(type == typeof(Color))
                 {
-                    Color c = Color.FromArgb(e.NewColor.A, e.NewColor.R, e.NewColor.G, e.NewColor.B);
+                    var c = Color.FromArgb(e.NewColor.A, e.NewColor.R, e.NewColor.G, e.NewColor.B);
                     SetAndRaise(context, colorPicker, c);
                 }
-                else if(type == typeof(Avalonia.Media.Color))
+                else if(type == typeof(Media.Color))
                 {
                     SetAndRaise(context, colorPicker, e.NewColor);
                 }
-                else if(type == typeof(Media.HslColor))
+                else if(type == typeof(HslColor))
                 {
                     SetAndRaise(context, colorPicker, e.NewColor.ToHsl());
                 }
-                else if(type == typeof(Media.HsvColor))
+                else if(type == typeof(HsvColor))
                 {
                     SetAndRaise(context, colorPicker, e.NewColor.ToHsv());
                 }
@@ -104,24 +106,24 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             {
                 if (type == typeof(Color))
                 {
-                    Color color = (Color)propertyDescriptor.GetValue(target)!;
+                    var color = (Color)propertyDescriptor.GetValue(target)!;
                     colorPicker.Color = Media.Color.FromArgb(color.A, color.R, color.G, color.B);
                 }
-                else if (type == typeof(Avalonia.Media.Color))
+                else if (type == typeof(Media.Color))
                 {
-                    Media.Color color = (Media.Color)propertyDescriptor.GetValue(target)!;
+                    var color = (Media.Color)propertyDescriptor.GetValue(target)!;
 
                     colorPicker.Color = color;
                 }
-                else if (type == typeof(Media.HslColor))
+                else if (type == typeof(HslColor))
                 {
-                    Media.HslColor color = (Media.HslColor)propertyDescriptor.GetValue(target)!;
+                    var color = (HslColor)propertyDescriptor.GetValue(target)!;
 
                     colorPicker.Color = color.ToRgb();
                 }
-                else if (type == typeof(Media.HsvColor))
+                else if (type == typeof(HsvColor))
                 {
-                    Media.HsvColor color = (Media.HsvColor)propertyDescriptor.GetValue(target)!;
+                    var color = (HsvColor)propertyDescriptor.GetValue(target)!;
 
                     colorPicker.Color = color.ToRgb();
                 }

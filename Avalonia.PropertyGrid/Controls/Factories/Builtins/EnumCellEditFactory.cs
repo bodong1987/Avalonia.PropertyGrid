@@ -1,10 +1,11 @@
-﻿using Avalonia.Controls;
-using PropertyModels.Extensions;
-using System;
+﻿using System;
 using System.Linq;
 using System.Text;
+using Avalonia.Controls;
+using Avalonia.Layout;
 using Avalonia.PropertyGrid.Utils;
 using PropertyModels.ComponentModel;
+using PropertyModels.Extensions;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
@@ -37,13 +38,16 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return null;
             }
 
-            bool isFlags = propertyDescriptor.PropertyType.IsDefined<FlagsAttribute>();
+            var isFlags = propertyDescriptor.PropertyType.IsDefined<FlagsAttribute>();
             //Enum value = propertyDescriptor.GetValue(target) as Enum;
 
             if (isFlags)
             {
-                var control = new CheckedListEdit();
-                control.Items = EnumUtils.GetEnumValues(propertyDescriptor.PropertyType);
+                var control = new CheckedListEdit
+                {
+                    // ReSharper disable once CoVariantArrayConversion
+                    Items = EnumUtils.GetEnumValues(propertyDescriptor.PropertyType)
+                };
 
                 control.SelectedItemsChanged += (s, e) =>
                 {
@@ -59,10 +63,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             }
             else
             {
-                var control = new ComboBox();
-
-                control.ItemsSource = EnumUtils.GetEnumValues(propertyDescriptor.PropertyType);
-                control.HorizontalAlignment = Layout.HorizontalAlignment.Stretch;
+                var control = new ComboBox
+                {
+                    ItemsSource = EnumUtils.GetEnumValues(propertyDescriptor.PropertyType),
+                    HorizontalAlignment = HorizontalAlignment.Stretch
+                };
 
                 control.SelectionChanged += (s, e) =>
                 {
@@ -72,7 +77,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     {
                         var v = (item as EnumValueWrapper)!.Value;
 
-                        if (v != propertyDescriptor.GetValue(target) as Enum)
+                        if (!Equals(v, propertyDescriptor.GetValue(target) as Enum))
                         {
                             SetAndRaise(context, control, v);
                         }
@@ -113,7 +118,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                     try
                     {
-                        c.SelectedItems = value!.GetUniqueFlags().Where(x=> x is Enum).Select(x => new EnumValueWrapper(x!)).ToArray();
+                        // ReSharper disable once CoVariantArrayConversion
+                        c.SelectedItems = value!.GetUniqueFlags().Where(x=> x is not null).Select(x => new EnumValueWrapper(x)).ToArray();
                     }
                     finally
                     {
@@ -123,7 +129,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                 return true;
             }
-            else if (control is ComboBox cb)
+
+            if (control is ComboBox cb)
             {
                 var value = propertyDescriptor.GetValue(target) as Enum;
                 cb.SelectedItem = new EnumValueWrapper(value!);
@@ -145,23 +152,21 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             {
                 return default;
             }
-            else if (items.Length == 1)
+
+            if (items.Length == 1)
             {
                 return (items[0] as EnumValueWrapper)?.Value;
             }
-            else
+            var sb = new StringBuilder();
+            sb.Append((items[0] as EnumValueWrapper)?.Value);
+
+            foreach (var i in items.Skip(1))
             {
-                StringBuilder sb = new StringBuilder();
-                sb.Append((items[0] as EnumValueWrapper)?.Value?.ToString());
-
-                foreach (var i in items.Skip(1))
-                {
-                    sb.Append(", ");
-                    sb.Append((i as EnumValueWrapper)?.Value?.ToString());
-                }
-
-                return (Enum)Enum.Parse(enumType, sb.ToString());
+                sb.Append(", ");
+                sb.Append((i as EnumValueWrapper)?.Value);
             }
+
+            return (Enum)Enum.Parse(enumType, sb.ToString());
         }
     }
 }

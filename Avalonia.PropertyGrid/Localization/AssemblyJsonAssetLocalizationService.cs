@@ -1,13 +1,13 @@
-﻿using Avalonia.Platform;
-using PropertyModels.Collections;
-using PropertyModels.ComponentModel;
-using PropertyModels.Extensions;
-using PropertyModels.Localization;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using Avalonia.Platform;
+using PropertyModels.Collections;
+using PropertyModels.ComponentModel;
+using PropertyModels.Extensions;
+using PropertyModels.Localization;
 
 namespace Avalonia.PropertyGrid.Localization
 {
@@ -23,7 +23,7 @@ namespace Avalonia.PropertyGrid.Localization
         /// <summary>
         /// The extra services
         /// </summary>
-        private readonly List<ILocalizationService> _extraServices = new();
+        private readonly List<ILocalizationService> _extraServices = [];
 
         /// <summary>
         /// Occurs when [on culture changed].
@@ -34,12 +34,12 @@ namespace Avalonia.PropertyGrid.Localization
         /// Gets the available cultures.
         /// </summary>
         /// <value>The available cultures.</value>
-        public ISelectableList<ICultureData> AvailableCultures => _assetCultureDatas;
+        public ISelectableList<ICultureData> AvailableCultures => _assetCultureData;
 
         /// <summary>
         /// The asset culture data
         /// </summary>
-        private readonly SelectableList<ICultureData> _assetCultureDatas = new();
+        private readonly SelectableList<ICultureData> _assetCultureData = [];
 
         /// <summary>
         /// Gets or sets the culture data.
@@ -47,12 +47,12 @@ namespace Avalonia.PropertyGrid.Localization
         /// <value>The culture data.</value>
         public ICultureData CultureData
         {
-            get => _assetCultureDatas.SelectedValue;
+            get => _assetCultureData.SelectedValue;
             set
             {
-                if(_assetCultureDatas.SelectedValue != value)
+                if(_assetCultureData.SelectedValue != value)
                 {
-                    _assetCultureDatas.SelectedValue = value;
+                    _assetCultureData.SelectedValue = value;
 
                     RaisePropertyChanged(nameof(CultureData));
                 }                
@@ -70,7 +70,7 @@ namespace Avalonia.PropertyGrid.Localization
             {
                 foreach(var service in _extraServices)
                 {
-                    string value = service[key];
+                    var value = service[key];
 
                     if(value.IsNotNullOrEmpty() && value != key)
                     {
@@ -78,7 +78,7 @@ namespace Avalonia.PropertyGrid.Localization
                     }
                 }
                                 
-                if (_assetCultureDatas.SelectedValue != null && _assetCultureDatas.SelectedValue[key] is string text)
+                if (_assetCultureData.SelectedValue[key] is { } text)
                 {
                     return text;
                 }
@@ -106,12 +106,12 @@ namespace Avalonia.PropertyGrid.Localization
 
             foreach(var asset in assets)
             {
-                AssetCultureData assetCultureData = new AssetCultureData(asset);
+                var assetCultureData = new AssetCultureData(asset);
              
                 AvailableCultures.Add(assetCultureData);
             }
 
-            _assetCultureDatas.SelectionChanged += OnSelectionChanged;
+            _assetCultureData.SelectionChanged += OnSelectionChanged;
 
             SelectCulture(CultureInfo.CurrentCulture.Name);
         }
@@ -123,12 +123,9 @@ namespace Avalonia.PropertyGrid.Localization
         public ICultureData[] GetCultures()
         {
             Dictionary<string, ICultureData> values = new();
-            foreach(var i in _assetCultureDatas)
+            foreach(var i in _assetCultureData)
             {
-                if(!values.ContainsKey(i.Culture.Name))
-                {
-                    values.Add(i.Culture.Name, i);
-                }
+                values.TryAdd(i.Culture.Name, i);
             }
 
             foreach(var i in _extraServices)
@@ -137,10 +134,7 @@ namespace Avalonia.PropertyGrid.Localization
 
                 foreach(var extra in extraCultures)
                 {
-                    if(!values.ContainsKey((string)extra.Culture.Name))
-                    {
-                        values.Add(extra.Culture.Name, extra);
-                    }
+                    values.TryAdd(extra.Culture.Name, extra);
                 }
             }
 
@@ -158,12 +152,7 @@ namespace Avalonia.PropertyGrid.Localization
                 i.SelectCulture(cultureName);
             }
 
-            var cultureData = _assetCultureDatas.ToList().Find(x => x.Culture.Name == cultureName);
-
-            if(cultureData == null)
-            {
-                cultureData = _assetCultureDatas.ToList().Find(x => x.Culture.Name == "en-US");
-            }
+            var cultureData = _assetCultureData.ToList().Find(x => x.Culture.Name == cultureName) ?? _assetCultureData.ToList().Find(x => x.Culture.Name == "en-US");
 
             if(cultureData != null)
             {

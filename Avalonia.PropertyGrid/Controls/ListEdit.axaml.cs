@@ -1,16 +1,16 @@
 ﻿using System;
-using Avalonia.Controls.Primitives;
-using PropertyModels.ComponentModel;
-using System.ComponentModel;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel;
 using System.Diagnostics;
-using PropertyModels.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Windows.Input;
+using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using Avalonia.PropertyGrid.Services;
-using System.Collections;
 using Avalonia.Reactive;
+using PropertyModels.ComponentModel;
+using PropertyModels.ComponentModel.DataAnnotations;
 
 namespace Avalonia.PropertyGrid.Controls
 {
@@ -178,7 +178,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Gets the model.
         /// </summary>
         /// <value>The model.</value>
-        internal ListViewModel Model { get; private set; }
+        internal ListViewModel Model { get; }
 
         /// <summary>
         /// Initializes static members of the <see cref="ListEdit"/> class.
@@ -259,7 +259,7 @@ namespace Avalonia.PropertyGrid.Controls
         {
             if(parameter is ListElementDataDesc desc)
             {
-                ListRoutedEventArgs et = new ListRoutedEventArgs(InsertElementEvent, desc.List, desc.Property.Index);
+                var et = new ListRoutedEventArgs(InsertElementEvent, desc.List, desc.Property.Index);
                 RaiseEvent(et);
             }            
         }
@@ -272,7 +272,7 @@ namespace Avalonia.PropertyGrid.Controls
         {
             if (parameter is ListElementDataDesc desc)
             {
-                ListRoutedEventArgs et = new ListRoutedEventArgs(RemoveElementsEvent, desc.List, desc.Property.Index);
+                var et = new ListRoutedEventArgs(RemoveElementsEvent, desc.List, desc.Property.Index);
                 RaiseEvent(et);
             }                
         }
@@ -284,11 +284,12 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="e">The <see cref="ListChangedEventArgs"/> instance containing the event data.</param>
         private void OnListChanged(object? sender, ListChangedEventArgs e)
         {
+            // ReSharper disable once MergeIntoLogicalPattern
             if (e.ListChangedType == ListChangedType.Reset ||
                 e.ListChangedType == ListChangedType.ItemDeleted ||
                 e.ListChangedType == ListChangedType.ItemAdded ||
                 e.ListChangedType == ListChangedType.ItemMoved
-                )
+               )
             {
                 // this will force refresh list elements
                 Model.RaisePropertyChanged(nameof(Model.List));
@@ -312,12 +313,14 @@ namespace Avalonia.PropertyGrid.Controls
         /// Gets the index.
         /// </summary>
         /// <value>The index.</value>
+        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
         public int Index { get; internal set; }
 
         /// <summary>
         /// Gets the array.
         /// </summary>
         /// <value>The array.</value>
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public IList? List { get; internal set; }
 
         /// <summary>
@@ -371,7 +374,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The elements
         /// </summary>
-        private readonly List<ListElementDataDesc> _elements = new();
+        private readonly List<ListElementDataDesc> _elements = [];
 
         /// <summary>
         /// Gets the elements.
@@ -384,18 +387,18 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <value>The title.</value>
         [DependsOnProperty(nameof(List))]
-        public string Title => string.Format(LocalizationService.Default["{0} Elements"], _list != null ? _list.Count : 0);
+        public string Title => string.Format(LocalizationService.Default["{0} Elements"], _list?.Count ?? 0);
 
         /// <summary>
         /// Gets the insert command.
         /// </summary>
         /// <value>The insert command.</value>
-        public ICommand InsertCommand { get; private set; }
+        public ICommand InsertCommand { get; }
         /// <summary>
         /// Gets the remove command.
         /// </summary>
         /// <value>The remove command.</value>
-        public ICommand RemoveCommand { get; private set; }
+        public ICommand RemoveCommand { get; }
 
         /// <summary>
         /// The is editable
@@ -466,7 +469,7 @@ namespace Avalonia.PropertyGrid.Controls
                     foreach (var index in Enumerable.Range(0, list.Count))
                     {
                         var pd = new ListElementPropertyDescriptor(index.ToString(), index, list[index]?.GetType() ?? list.GetType().GetGenericArguments()[0]);
-                        ListElementDataDesc desc = new ListElementDataDesc(
+                        var desc = new ListElementDataDesc(
                             this, 
                             list, 
                             pd, 
@@ -520,6 +523,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Gets or sets the model.
         /// </summary>
         /// <value>The model.</value>
+        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
         public ListViewModel Model { get; set; }
 
         /// <summary>

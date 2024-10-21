@@ -1,11 +1,11 @@
-﻿using Avalonia.Controls;
+﻿using System.Linq;
+using Avalonia.Controls;
 using Avalonia.PropertyGrid.Localization;
+using Avalonia.PropertyGrid.Utils;
+using Avalonia.VisualTree;
 using PropertyModels.ComponentModel;
 using PropertyModels.ComponentModel.DataAnnotations;
 using PropertyModels.Extensions;
-using Avalonia.PropertyGrid.Utils;
-using Avalonia.VisualTree;
-using System.Linq;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
@@ -41,8 +41,10 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             var attribute = propertyDescriptor.GetCustomAttribute<PathBrowsableAttribute>()!;
             var watermarkAttr = propertyDescriptor.GetCustomAttribute<WatermarkAttribute>();
 
-            ButtonEdit control = new ButtonEdit();
-            control.Text = propertyDescriptor.GetValue(target) as string;
+            var control = new ButtonEdit
+            {
+                Text = propertyDescriptor.GetValue(target) as string
+            };
 
             if (watermarkAttr != null)
             {
@@ -59,7 +61,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                 var files = await PathBrowserUtils.ShowPathBrowserAsync((control.GetVisualRoot() as Window)!, attribute);
 
-                if (files != null && files.Length > 0)
+                if (files is { Length: > 0 })
                 {
                     var file = files.FirstOrDefault();
 

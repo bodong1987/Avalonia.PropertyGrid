@@ -1,8 +1,10 @@
-﻿using Avalonia.Controls;
-using PropertyModels.ComponentModel;
-using Avalonia.PropertyGrid.Utils;
-using System;
+﻿using System;
 using System.ComponentModel;
+using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Layout;
+using Avalonia.PropertyGrid.Utils;
+using PropertyModels.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
@@ -28,7 +30,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         public override Control? HandleNewProperty(PropertyCellContext context)
         {
             var propertyDescriptor = context.Property;
-            var target = context.Target;
+            // var target = context.Target;
 
             if (propertyDescriptor is MultiObjectPropertyDescriptor)
             {
@@ -37,13 +39,13 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             var converter = TypeDescriptor.GetConverter(propertyDescriptor.PropertyType);
 
-            TextBox control = new TextBox();
-
-            control.VerticalContentAlignment = Layout.VerticalAlignment.Center;
-            control.FontFamily = FontUtils.DefaultFontFamily;
-            control.IsEnabled = converter != null && 
-                converter.CanConvertFrom(typeof(string)) && 
-                converter.CanConvertTo(typeof(string));
+            var control = new TextBox
+            {
+                VerticalContentAlignment = VerticalAlignment.Center,
+                FontFamily = FontUtils.DefaultFontFamily,
+                IsEnabled = converter.CanConvertFrom(typeof(string)) && 
+                            converter.CanConvertTo(typeof(string))
+            };
 
             // set first ...
             // HandlePropertyChanged(target, propertyDescriptor, control);
@@ -57,30 +59,30 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     try
                     {
                         DataValidationErrors.ClearErrors(control);
-                        var obj = converter!.ConvertFrom(value);
+                        var obj = converter.ConvertFrom(value);
                         SetAndRaise(context, control, obj);
                     }
                     catch (Exception ee)
                     {
-                        DataValidationErrors.SetErrors(control, new string[] { ee.Message });
+                        DataValidationErrors.SetErrors(control, [ee.Message]);
                     }
                 };
 
                 control.KeyUp += (s, e) =>
                 {
-                    if (e.Key == Input.Key.Enter)
+                    if (e.Key == Key.Enter)
                     {
-                        string value = control!.Text ?? string.Empty;
+                        var value = control.Text ?? string.Empty;
 
                         try
                         {
                             DataValidationErrors.ClearErrors(control);
-                            var obj = converter!.ConvertFrom(value);
+                            var obj = converter.ConvertFrom(value);
                             SetAndRaise(context, control, obj);
                         }
                         catch (Exception ee)
                         {
-                            DataValidationErrors.SetErrors(control, new string[] { ee.Message });
+                            DataValidationErrors.SetErrors(control, [ee.Message]);
                         }
                     }
                 };
@@ -113,7 +115,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 {
                     var converter = TypeDescriptor.GetConverter(propertyDescriptor.PropertyType);
 
-                    if(converter != null && converter.CanConvertFrom(typeof(string)) && converter.CanConvertTo(typeof(string)))
+                    if(converter.CanConvertFrom(typeof(string)) && converter.CanConvertTo(typeof(string)))
                     {
                         try
                         {
@@ -122,7 +124,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                         }
                         catch (Exception ee)
                         {
-                            DataValidationErrors.SetErrors(control, new string[] { ee.Message });
+                            DataValidationErrors.SetErrors(control, [ee.Message]);
                         }
                     }
                     else

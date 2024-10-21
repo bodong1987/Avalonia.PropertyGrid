@@ -1,6 +1,6 @@
-﻿using PropertyModels.ComponentModel;
+﻿using System;
 using Avalonia.PropertyGrid.ViewModels;
-using System;
+using PropertyModels.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Controls
 {

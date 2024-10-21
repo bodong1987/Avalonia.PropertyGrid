@@ -1,10 +1,10 @@
-﻿using Avalonia.Controls;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Avalonia.Controls;
 using Avalonia.Platform.Storage;
 using Avalonia.PropertyGrid.Services;
 using PropertyModels.ComponentModel.DataAnnotations;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Avalonia.PropertyGrid.Utils
 {
@@ -127,22 +127,25 @@ namespace Avalonia.PropertyGrid.Utils
 
             if (saveMode)
             {
-                FilePickerSaveOptions options = new FilePickerSaveOptions();
-                options.Title = title ?? LocalizationService.Default["Please select a file"];
-                options.SuggestedFileName = initFileName;
-                options.FileTypeChoices = ConvertToFilterList(filters);
+                var options = new FilePickerSaveOptions
+                {
+                    Title = title ?? LocalizationService.Default["Please select a file"],
+                    SuggestedFileName = initFileName,
+                    FileTypeChoices = ConvertToFilterList(filters)
+                };
                 var storage = await storageProvider.SaveFilePickerAsync(options);
 
                 return storage != null ? [storage.Path.LocalPath] : null;
             }
-            else if (type == PathBrowsableType.Directory || type == PathBrowsableType.MultipleDirectories)
+
+            if (type is PathBrowsableType.Directory or PathBrowsableType.MultipleDirectories)
             {
-                FolderPickerOpenOptions options = new FolderPickerOpenOptions();
+                var options = new FolderPickerOpenOptions();
 
                 // If an InitFileName is specified, make that location available for opening.
                 if (!string.IsNullOrEmpty(initFileName))
                 {
-                    var startFolder = await storageProvider.TryGetFolderFromPathAsync(initFileName!);
+                    var startFolder = await storageProvider.TryGetFolderFromPathAsync(initFileName);
                     options.SuggestedStartLocation = startFolder;
                 }
 
@@ -158,9 +161,9 @@ namespace Avalonia.PropertyGrid.Utils
                 }
 
                 var storage = await storageProvider.OpenFolderPickerAsync(options);
-                return storage != null ? storage.Select(x => x.Path.LocalPath).ToArray() : null;
+                return storage.Select(x => x.Path.LocalPath).ToArray();
             }
-            else if (type == PathBrowsableType.File || type == PathBrowsableType.MultipleFiles)
+            if (type is PathBrowsableType.File or PathBrowsableType.MultipleFiles)
             {
                 var options = new FilePickerOpenOptions();
 
@@ -179,7 +182,7 @@ namespace Avalonia.PropertyGrid.Utils
 
                 var storage = await storageProvider.OpenFilePickerAsync(options);
 
-                return storage != null ? storage.Select(x => x.Path.LocalPath).ToArray() : null;
+                return storage.Select(x => x.Path.LocalPath).ToArray();
             }
 
             return null;
@@ -201,18 +204,19 @@ namespace Avalonia.PropertyGrid.Utils
 
             var results = filters.Split('|');
 
-            for (int i = 0; i < results.Length / 2; ++i)
+            for (var i = 0; i < results.Length / 2; ++i)
             {
-                string name = results[i * 2 + 0];
-                string exts = results[i * 2 + 1];
+                var name = results[i * 2 + 0];
+                var extensions = results[i * 2 + 1];
 
-                var filter = new FilePickerFileType(name.Trim());
-
-                filter.Patterns = exts.Split(';').Select(x =>
+                var filter = new FilePickerFileType(name.Trim())
                 {
-                    var y = x.Trim();
-                    return y;
-                }).ToList();
+                    Patterns = extensions.Split(';').Select(x =>
+                    {
+                        var y = x.Trim();
+                        return y;
+                    }).ToList()
+                };
 
                 list.Add(filter);
             }

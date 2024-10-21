@@ -1,9 +1,11 @@
-﻿using Avalonia.Controls;
+﻿using System.ComponentModel;
+using Avalonia.Controls;
+using Avalonia.Layout;
+using Avalonia.Media;
 using Avalonia.PropertyGrid.Localization;
+using Avalonia.PropertyGrid.Utils;
 using PropertyModels.ComponentModel;
 using PropertyModels.Extensions;
-using Avalonia.PropertyGrid.Utils;
-using System.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
@@ -38,10 +40,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             var watermarkAttr = propertyDescriptor.GetCustomAttribute<WatermarkAttribute>();
 
-            TextBox control = new TextBox();
-            control.Text = propertyDescriptor.GetValue(target) as string;
-            control.VerticalContentAlignment = Layout.VerticalAlignment.Center;
-            control.FontFamily = FontUtils.DefaultFontFamily;
+            var control = new TextBox
+            {
+                Text = propertyDescriptor.GetValue(target) as string,
+                VerticalContentAlignment = VerticalAlignment.Center,
+                FontFamily = FontUtils.DefaultFontFamily
+            };
 
             if (watermarkAttr != null)
             {
@@ -49,16 +53,16 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 control.SetLocalizeBinding(TextBox.WatermarkProperty, watermarkAttr.Watermark);
             }
 
-            if (propertyDescriptor.GetCustomAttribute<PasswordPropertyTextAttribute>() is PasswordPropertyTextAttribute ppt && ppt.Password)
+            if (propertyDescriptor.GetCustomAttribute<PasswordPropertyTextAttribute>() is { Password: true })
             {
                 control.PasswordChar = '*';
             }
 
             var multilineAttr = propertyDescriptor.GetCustomAttribute<MultilineTextAttribute>();
 
-            if (multilineAttr != null && multilineAttr.IsMultiline)
+            if (multilineAttr is { IsMultiline: true })
             {
-                control.TextWrapping = Media.TextWrapping.Wrap;
+                control.TextWrapping = TextWrapping.Wrap;
                 control.AcceptsReturn = true;
                 control.AcceptsTab = true;
             }

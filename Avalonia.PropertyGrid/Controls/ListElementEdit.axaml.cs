@@ -1,5 +1,5 @@
-﻿using Avalonia.Controls.Primitives;
-using System.Windows.Input;
+﻿using System.Windows.Input;
+using Avalonia.Controls.Primitives;
 
 namespace Avalonia.PropertyGrid.Controls
 {

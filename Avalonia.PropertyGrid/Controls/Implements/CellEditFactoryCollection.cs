@@ -1,6 +1,6 @@
-﻿using Avalonia.Controls;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Avalonia.Controls;
 using PropertyModels.ComponentModel;
 using PropertyModels.Extensions;
 
@@ -16,7 +16,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         /// <summary>
         /// The factories
         /// </summary>
-        private readonly List<ICellEditFactory> _factories = new();
+        private readonly List<ICellEditFactory> _factories = [];
 
         /// <summary>
         /// Gets the factories.
@@ -38,10 +38,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         public CellEditFactoryCollection(IEnumerable<ICellEditFactory> factories)
         {            
             _factories.AddRange(factories);
-            _factories.Sort((x, y) =>
-            {
-                return Comparer<int>.Default.Compare(y.ImportPriority, x.ImportPriority);
-            });
+            _factories.Sort((x, y) => Comparer<int>.Default.Compare(y.ImportPriority, x.ImportPriority));
 
             foreach (var factory in _factories)
             {
@@ -68,10 +65,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         {
             factory.Collection = this;
             _factories.Add(factory);
-            _factories.Sort((x, y) =>
-            {
-                return Comparer<int>.Default.Compare(y.ImportPriority, x.ImportPriority);
-            });
+            _factories.Sort((x, y) => Comparer<int>.Default.Compare(y.ImportPriority, x.ImportPriority));
         }
 
         /// <summary>
@@ -93,8 +87,8 @@ namespace Avalonia.PropertyGrid.Controls.Implements
             foreach (var factory in _factories)
             {
                 var control = factory.HandleNewProperty(context);
-                ControlClassesAttribute[] classesAttributes = context.Property.GetCustomAttributes<ControlClassesAttribute>();
-                if (classesAttributes?.Length > 0)
+                var classesAttributes = context.Property.GetCustomAttributes<ControlClassesAttribute>();
+                if (classesAttributes.Length > 0)
                 {
                     var classes = classesAttributes.SelectMany(a => a.Classes).Distinct();
                     control?.Classes.AddRange(classes);

@@ -1,5 +1,5 @@
-﻿using Avalonia.Controls;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Avalonia.Controls;
 
 namespace Avalonia.PropertyGrid.Controls
 {

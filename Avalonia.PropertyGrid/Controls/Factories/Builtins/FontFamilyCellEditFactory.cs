@@ -1,8 +1,9 @@
-﻿using Avalonia.Controls;
+﻿using System.Linq;
+using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Data;
+using Avalonia.Layout;
 using Avalonia.Media;
-using System.Linq;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
@@ -35,16 +36,18 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return null;
             }
 
-            ComboBox control = new ComboBox();
-            control.ItemsSource = FontManager.Current.SystemFonts.ToArray();
-            control.HorizontalAlignment = Layout.HorizontalAlignment.Stretch;
-            control.ItemTemplate = new FuncDataTemplate<FontFamily>((value, namescope) =>            
-                new TextBlock
-                {
-                    [!TextBlock.TextProperty] = new Binding("Name"),
-                    [!TextBlock.FontFamilyProperty] = new Binding()
-                }
-            );
+            var control = new ComboBox
+            {
+                ItemsSource = FontManager.Current.SystemFonts.ToArray(),
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                ItemTemplate = new FuncDataTemplate<FontFamily>((value, namescope) =>            
+                    new TextBlock
+                    {
+                        [!TextBlock.TextProperty] = new Binding("Name"),
+                        [!TextBlock.FontFamilyProperty] = new Binding()
+                    }
+                )
+            };
 
             control.SelectionChanged += (s, e) =>
             {

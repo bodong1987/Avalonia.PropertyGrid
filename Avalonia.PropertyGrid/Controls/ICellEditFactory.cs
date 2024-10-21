@@ -1,7 +1,7 @@
-﻿using Avalonia.Controls;
-using Avalonia.PropertyGrid.ViewModels;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
+using Avalonia.Controls;
+using Avalonia.PropertyGrid.ViewModels;
 
 namespace Avalonia.PropertyGrid.Controls
 {
@@ -120,7 +120,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// If this property should be readonly
         /// </summary>
-        public bool IsReadOnly => Property.IsReadOnly || Owner.IsReadOnly || (ParentContext != null && ParentContext.IsReadOnly);
+        public bool IsReadOnly => Property.IsReadOnly || Owner.IsReadOnly || ParentContext is { IsReadOnly: true };
 
         /// <summary>
         /// Gets the value.
@@ -128,7 +128,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <returns>System.Object.</returns>
         public object? GetValue()
         {
-            return Target != null ? Property.GetValue(Target) : null;
+            return Property.GetValue(Target);
         }
 
         /// <summary>

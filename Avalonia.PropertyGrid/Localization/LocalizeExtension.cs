@@ -1,7 +1,7 @@
-﻿using Avalonia.Data;
-using Avalonia.Markup.Xaml.MarkupExtensions;
+﻿using System;
+using Avalonia.Data;
 using Avalonia.Markup.Xaml;
-using System;
+using Avalonia.Markup.Xaml.MarkupExtensions;
 using Avalonia.PropertyGrid.Services;
 
 namespace Avalonia.PropertyGrid.Localization
@@ -17,11 +17,13 @@ namespace Avalonia.PropertyGrid.Localization
         /// Gets or sets the key.
         /// </summary>
         /// <value>The key.</value>
+        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
         public string Key { get; set; }
         /// <summary>
         /// Gets or sets the context.
         /// </summary>
         /// <value>The context.</value>
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public string? Context { get; set; }
 
         /// <summary>
@@ -50,7 +52,7 @@ namespace Avalonia.PropertyGrid.Localization
             var binding = new ReflectionBindingExtension($"[{keyToUse}]")
             {
                 Mode = BindingMode.OneWay,
-                Source = LocalizationService.Default,
+                Source = LocalizationService.Default
             };
 
             return binding.ProvideValue(serviceProvider);

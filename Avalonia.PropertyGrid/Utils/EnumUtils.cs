@@ -1,9 +1,9 @@
-﻿using PropertyModels.ComponentModel;
-using PropertyModels.Extensions;
-using Avalonia.PropertyGrid.Services;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using Avalonia.PropertyGrid.Services;
+using PropertyModels.ComponentModel;
+using PropertyModels.Extensions;
 
 namespace Avalonia.PropertyGrid.Utils
 {
@@ -19,9 +19,9 @@ namespace Avalonia.PropertyGrid.Utils
         /// <returns>EnumValueWrapper[].</returns>
         public static EnumValueWrapper[] GetEnumValues(Type enumType)
         {
-            Debug.Assert(enumType!=null && enumType.IsEnum);
+            Debug.Assert(enumType is { IsEnum: true });
 
-            var values = enumType!.GetEnumValues();
+            var values = enumType.GetEnumValues();
 
             return values.Select(x =>
             {

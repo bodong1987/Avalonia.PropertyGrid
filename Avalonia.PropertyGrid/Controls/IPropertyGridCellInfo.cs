@@ -1,5 +1,5 @@
-﻿using Avalonia.Controls;
-using System;
+﻿using System;
+using Avalonia.Controls;
 
 namespace Avalonia.PropertyGrid.Controls
 {
@@ -147,7 +147,5 @@ namespace Avalonia.PropertyGrid.Controls
     /// <summary>
     /// Interface IPropertyGridCellInfoCache
     /// </summary>
-    public interface IPropertyGridCellInfoCache : IPropertyGridCellInfoContainer
-    {        
-    }
+    public interface IPropertyGridCellInfoCache : IPropertyGridCellInfoContainer;
 }

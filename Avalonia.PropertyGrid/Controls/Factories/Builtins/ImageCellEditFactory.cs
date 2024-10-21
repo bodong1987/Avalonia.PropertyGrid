@@ -1,4 +1,6 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Layout;
+using Avalonia.Media;
 using PropertyModels.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
@@ -25,21 +27,23 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         public override Control? HandleNewProperty(PropertyCellContext context)
         {
             var propertyDescriptor = context.Property;
-            var target = context.Target;
+            // var target = context.Target;
 
             if (propertyDescriptor is MultiObjectPropertyDescriptor)
             {
                 return null;
             }
 
-            if (propertyDescriptor.PropertyType != typeof(Media.IImage))
+            if (propertyDescriptor.PropertyType != typeof(IImage))
             {
                 return null;
             }
 
-            Image control = new Image();
-            control.VerticalAlignment = Layout.VerticalAlignment.Center;
-            control.HorizontalAlignment = Layout.HorizontalAlignment.Center;            
+            var control = new Image
+            {
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Center
+            };
 
             return control;
         }
@@ -55,7 +59,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             var target = context.Target;
             var control = context.CellEdit!;
 
-            if (propertyDescriptor.PropertyType != typeof(Media.IImage))
+            if (propertyDescriptor.PropertyType != typeof(IImage))
             {
                 return false;
             }
@@ -72,7 +76,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     return false;
                 }
 
-                if(imageData is Media.IImage iImage)
+                if(imageData is IImage iImage)
                 {
                     imageControl.Source = iImage;
                 }

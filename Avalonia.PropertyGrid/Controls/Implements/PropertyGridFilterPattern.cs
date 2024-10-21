@@ -1,9 +1,9 @@
-﻿using PropertyModels.ComponentModel;
-using PropertyModels.Extensions;
-using Avalonia.PropertyGrid.Services;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Text.RegularExpressions;
+using Avalonia.PropertyGrid.Services;
+using PropertyModels.ComponentModel;
+using PropertyModels.Extensions;
 
 namespace Avalonia.PropertyGrid.Controls.Implements
 {
@@ -57,9 +57,10 @@ namespace Avalonia.PropertyGrid.Controls.Implements
                 try
                 {
                     _cachedRegex = new Regex(FilterText.Trim());
-                }                
+                }
                 catch
                 {
+                    // ignored
                 }
             }
         }
@@ -73,12 +74,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
                 return _cachedRegex.IsMatch(displayName);
             }
 
-            if(FilterText.IsNullOrEmpty())
-            {
-                return true;
-            }
-
-            return displayName.Contains(FilterText, IgnoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture);
+            return FilterText.IsNullOrEmpty() || displayName.Contains(FilterText, IgnoreCase ? StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture);
         }
     }
 }

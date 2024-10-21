@@ -1,19 +1,20 @@
-﻿using Avalonia.Controls;
-using Avalonia.Data;
-using Avalonia.Interactivity;
-using Avalonia.PropertyGrid.Controls.Implements;
-using Avalonia.PropertyGrid.Localization;
-using PropertyModels.ComponentModel.DataAnnotations;
-using PropertyModels.Extensions;
-using Avalonia.PropertyGrid.Services;
-using Avalonia.PropertyGrid.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Data;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.PropertyGrid.Controls.Implements;
+using Avalonia.PropertyGrid.Localization;
+using Avalonia.PropertyGrid.Services;
+using Avalonia.PropertyGrid.ViewModels;
 using Avalonia.Reactive;
+using PropertyModels.ComponentModel.DataAnnotations;
+using PropertyModels.Extensions;
 
 namespace Avalonia.PropertyGrid.Controls
 {
@@ -88,7 +89,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The show style property
         /// </summary>
-        public static readonly StyledProperty<PropertyGridShowStyle> ShowStyleProperty = AvaloniaProperty.Register<PropertyGrid, PropertyGridShowStyle>(nameof(ShowStyle), PropertyGridShowStyle.Category);
+        public static readonly StyledProperty<PropertyGridShowStyle> ShowStyleProperty = AvaloniaProperty.Register<PropertyGrid, PropertyGridShowStyle>(nameof(ShowStyle));
 
         /// <summary>
         /// Gets or sets the show style.
@@ -98,17 +99,14 @@ namespace Avalonia.PropertyGrid.Controls
         public PropertyGridShowStyle ShowStyle
         {
             get => GetValue(ShowStyleProperty);
-            set
-            {
-                SetValue(ShowStyleProperty, value);
-            }
+            set => SetValue(ShowStyleProperty, value);
         }
 
         /// <summary>
         /// The order style property
         /// control category sort algorithm
         /// </summary>
-        public static readonly StyledProperty<PropertyGridOrderStyle> CategoryOrderStyleProperty = AvaloniaProperty.Register<PropertyGrid, PropertyGridOrderStyle>(nameof(CategoryOrderStyle), PropertyGridOrderStyle.Builtin);
+        public static readonly StyledProperty<PropertyGridOrderStyle> CategoryOrderStyleProperty = AvaloniaProperty.Register<PropertyGrid, PropertyGridOrderStyle>(nameof(CategoryOrderStyle));
 
         /// <summary>
         /// Gets or sets the category order style.
@@ -126,7 +124,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// The order style property
         /// control property sort algorithm
         /// </summary>
-        public static readonly StyledProperty<PropertyGridOrderStyle> PropertyOrderStyleProperty = AvaloniaProperty.Register<PropertyGrid, PropertyGridOrderStyle>(nameof(PropertyOrderStyle), PropertyGridOrderStyle.Builtin);
+        public static readonly StyledProperty<PropertyGridOrderStyle> PropertyOrderStyleProperty = AvaloniaProperty.Register<PropertyGrid, PropertyGridOrderStyle>(nameof(PropertyOrderStyle));
 
         /// <summary>
         /// Gets or sets the order style.
@@ -158,7 +156,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The IsReadOnly property
         /// </summary>
-        public static readonly StyledProperty<bool> IsReadOnlyProperty = AvaloniaProperty.Register<PropertyGrid, bool>(nameof(IsReadOnly), false);
+        public static readonly StyledProperty<bool> IsReadOnlyProperty = AvaloniaProperty.Register<PropertyGrid, bool>(nameof(IsReadOnly));
                 
         /// <summary>
         /// Gets or sets Is Readonly flag
@@ -173,7 +171,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The view model
         /// </summary>
-        internal PropertyGridViewModel ViewModel { get; private set; } = new();
+        internal PropertyGridViewModel ViewModel { get; } = new();
 
         /// <summary>
         /// The factories
@@ -492,10 +490,10 @@ namespace Avalonia.PropertyGrid.Controls
                 sender.OnAllowQuickFilterChanged(e.OldValue.Value, e.NewValue.Value);
             }
         }
-
+        
         private void OnAllowQuickFilterChanged(bool oldValue, bool newValue)
         {
-            fastFilterBox.IsVisible = newValue;
+            FastFilterBox.IsVisible = newValue;
         }
 
         #endregion
@@ -540,7 +538,7 @@ namespace Avalonia.PropertyGrid.Controls
                 return;
             }
 
-            ReferencePath referencePath = new ReferencePath();
+            var referencePath = new ReferencePath();
 
             try
             {
@@ -570,7 +568,7 @@ namespace Avalonia.PropertyGrid.Controls
 
             RefreshVisibilities();
 
-            double width = column_name.Bounds.Width;
+            var width = column_name.Bounds.Width;
 
             SyncNameWidth(width, false);
         }
@@ -598,25 +596,27 @@ namespace Avalonia.PropertyGrid.Controls
             {
                 propertiesGrid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
 
-                Expander expander = new Expander();
-                expander.ExpandDirection = ExpandDirection.Down;
+                var expander = new Expander
+                {
+                    ExpandDirection = ExpandDirection.Down
+                };
                 expander.SetValue(Grid.RowProperty, propertiesGrid.RowDefinitions.Count - 1);
                 expander.IsExpanded = true;
-                expander.HorizontalContentAlignment = Layout.HorizontalAlignment.Stretch;
-                expander.HorizontalAlignment = Layout.HorizontalAlignment.Stretch;
+                expander.HorizontalContentAlignment = HorizontalAlignment.Stretch;
+                expander.HorizontalAlignment = HorizontalAlignment.Stretch;
                 expander.Margin = new Thickness(2);
                 expander.Padding = new Thickness(2);
 
                 // expander.Header = categoryInfo.Key;
                 expander.SetLocalizeBinding(HeaderedContentControl.HeaderProperty, categoryInfo.Key);
 
-                Grid grid = new Grid();
+                var grid = new Grid();
                 grid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
                 grid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
 
                 var cellInfo = new PropertyGridCellInfo(null)
                 {
-                    ReferencePath = $"{referencePath.ToString()}[{categoryInfo.Key}]",
+                    ReferencePath = $"{referencePath}[{categoryInfo.Key}]",
                     Category = categoryInfo.Key,
                     OwnerObject = target,
                     Container = expander,
@@ -660,7 +660,7 @@ namespace Avalonia.PropertyGrid.Controls
                 referencePath.BeginScope(property.Name);
                 try
                 {
-                    var value = property.GetValue(target);
+                    // var value = property.GetValue(target);
 
                     BuildPropertyCellEdit(target, referencePath, property, expander, grid, container);
                 }
@@ -691,7 +691,7 @@ namespace Avalonia.PropertyGrid.Controls
         {
             var property = propertyDescriptor;
 
-            PropertyCellContext context = new PropertyCellContext(null, RootPropertyGrid ?? this, this, target, propertyDescriptor);
+            var context = new PropertyCellContext(null, RootPropertyGrid ?? this, this, target, propertyDescriptor);
 
             var control = Factories.BuildPropertyControl(context);
 
@@ -707,20 +707,20 @@ namespace Avalonia.PropertyGrid.Controls
             Debug.Assert(context.CellEdit != null);
             Debug.Assert(context.CellEdit == control);
 
-            ICellEditFactory factory = context.Factory;
+            var factory = context.Factory;
 
             grid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
 
-            TextBlock nameBlock = new TextBlock();
+            var nameBlock = new TextBlock();
             nameBlock.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
             nameBlock.SetValue(Grid.ColumnProperty, 0);
-            nameBlock.VerticalAlignment = Layout.VerticalAlignment.Center;
+            nameBlock.VerticalAlignment = VerticalAlignment.Center;
             nameBlock.Margin = new Thickness(4);
 
             // nameBlock.Text = LocalizationService.Default[property.DisplayName];
             nameBlock.SetLocalizeBinding(TextBlock.TextProperty, property.DisplayName);
 
-            if (property.GetCustomAttribute<DescriptionAttribute>() is DescriptionAttribute descriptionAttribute && descriptionAttribute.Description.IsNotNullOrEmpty())
+            if (property.GetCustomAttribute<DescriptionAttribute>() is { } descriptionAttribute && descriptionAttribute.Description.IsNotNullOrEmpty())
             {
                 // nameBlock.SetValue(ToolTip.TipProperty, LocalizationService.Default[descriptionAttribute.Description]);
                 nameBlock.SetLocalizeBinding(ToolTip.TipProperty, descriptionAttribute.Description);
@@ -748,7 +748,7 @@ namespace Avalonia.PropertyGrid.Controls
                 CellType = PropertyGridCellType.Cell
             };
 
-            container?.Add(cellInfo);
+            container.Add(cellInfo);
         }
         #endregion
 
@@ -803,7 +803,7 @@ namespace Avalonia.PropertyGrid.Controls
             }
         }
 
-        private void PropagateCellNameWidth(IEnumerable<IPropertyGridCellInfo> cells, double width)
+        private static void PropagateCellNameWidth(IEnumerable<IPropertyGridCellInfo> cells, double width)
         {
             foreach (var i in cells)
             {
@@ -825,7 +825,7 @@ namespace Avalonia.PropertyGrid.Controls
         {
             if (e.Property == BoundsProperty)
             {
-                double width = (sender as TextBlock)!.Bounds.Width;
+                var width = (sender as TextBlock)!.Bounds.Width;
 
                 SyncNameWidth(width, false);
             }
@@ -838,7 +838,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         private void RefreshVisibilities()
         {
-            FilterCells(ViewModel, FilterCategory.Default);
+            FilterCells(ViewModel);
         }
 
         /// <summary>
@@ -849,7 +849,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <returns>PropertyVisibility.</returns>
         public PropertyVisibility FilterCells(IPropertyGridFilterContext context, FilterCategory category = FilterCategory.Default)
         {
-            bool atleastOneVisible = false;
+            var atleastOneVisible = false;
 
             foreach (var info in _cellInfoCache.Children)
             {
@@ -883,7 +883,7 @@ namespace Avalonia.PropertyGrid.Controls
 
         private void OnCellPropertyChanged(object? sender, CellPropertyChangedEventArgs e)
         {
-            if (e.Cell != null && e.Cell.Context?.Property != null && e.Cell.Context.Property.IsDefined<ConditionTargetAttribute>())
+            if (e.Cell.Context?.Property != null && e.Cell.Context.Property.IsDefined<ConditionTargetAttribute>())
             {
                 RefreshVisibilities();
             }

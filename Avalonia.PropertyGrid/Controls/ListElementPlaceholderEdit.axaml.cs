@@ -1,6 +1,6 @@
-﻿using Avalonia.Controls;
-using System;
+﻿using System;
 using System.Diagnostics;
+using Avalonia.Controls;
 
 namespace Avalonia.PropertyGrid.Controls
 {
@@ -35,6 +35,7 @@ namespace Avalonia.PropertyGrid.Controls
             }
         }
 
+        // ReSharper disable once RedundantOverriddenMember
         /// <summary>
         /// Called when the <see cref="P:Avalonia.StyledElement.DataContext" /> property changes.
         /// </summary>
@@ -83,14 +84,12 @@ namespace Avalonia.PropertyGrid.Controls
 
         private void OnElementValueChanged(object? sender, EventArgs e)
         {
-            var value = DataContext as ListElementDataDesc;
-
-            if(value == null)
+            if(DataContext is not ListElementDataDesc)
             {
                 return;
             }
 
-            if(_context != null && _context.Factory != null)
+            if(_context is { Factory: not null })
             {
                 Debug.Assert(_context!=null);
                 Debug.Assert(_context!.CellEdit != null);

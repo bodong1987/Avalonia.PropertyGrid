@@ -1,7 +1,7 @@
-﻿using Avalonia.Controls.Primitives;
-using Avalonia.Data.Converters;
-using System;
+﻿using System;
 using System.Globalization;
+using Avalonia.Controls.Primitives;
+using Avalonia.Data.Converters;
 
 namespace Avalonia.PropertyGrid.Controls
 {
@@ -48,7 +48,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// The Readonly property
         /// </summary>
         public static readonly StyledProperty<bool> IsReadOnlyProperty =
-            AvaloniaProperty.Register<TrackableEdit, bool>(nameof(IsReadOnly), false);
+            AvaloniaProperty.Register<TrackableEdit, bool>(nameof(IsReadOnly));
 
         /// <summary>
         /// Gets or sets IsReadOnly state
@@ -80,9 +80,9 @@ namespace Avalonia.PropertyGrid.Controls
         /// treated as an application exception.</remarks>
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
-            if((targetType == typeof(Decimal) || targetType == typeof(Decimal?)) && value != null)
+            if((targetType == typeof(decimal) || targetType == typeof(decimal?)) && value != null)
             {
-                if(decimal.TryParse(value.ToString(), out decimal result))
+                if(decimal.TryParse(value.ToString(), out var result))
                 {
                     return result;
                 }
@@ -117,6 +117,7 @@ namespace Avalonia.PropertyGrid.Controls
                 }
                 catch
                 {
+                    // ignored
                 }
             }
 

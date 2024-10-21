@@ -1,7 +1,7 @@
-﻿using Avalonia.PropertyGrid.Controls;
+﻿using System;
+using Avalonia.PropertyGrid.Controls;
 using Avalonia.PropertyGrid.Controls.Implements;
 using PropertyModels.Extensions;
-using System;
 
 namespace Avalonia.PropertyGrid.Services
 {
@@ -13,7 +13,7 @@ namespace Avalonia.PropertyGrid.Services
         /// <summary>
         /// The default
         /// </summary>
-        public readonly static ICellEditFactoryCollection Default = new CellEditFactoryCollection();
+        public static readonly ICellEditFactoryCollection Default = new CellEditFactoryCollection();
 
         /// <summary>
         /// Initializes static members of the <see cref="CellEditFactoryService"/> class.
@@ -22,7 +22,7 @@ namespace Avalonia.PropertyGrid.Services
         {
             foreach (var type in typeof(CellEditFactoryService).Assembly.GetTypes())
             {
-                if (type.IsClass && !type.IsAbstract && type.IsImplementFrom<ICellEditFactory>())
+                if (type is { IsClass: true, IsAbstract: false } && type.IsImplementFrom<ICellEditFactory>())
                 {
                     Default.AddFactory((Activator.CreateInstance(type) as ICellEditFactory)!);
                 }

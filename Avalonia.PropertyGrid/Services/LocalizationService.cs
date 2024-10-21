@@ -11,7 +11,7 @@ namespace Avalonia.PropertyGrid.Services
         /// <summary>
         /// The default
         /// </summary>
-        public readonly static ILocalizationService Default = new AssemblyJsonAssetLocalizationService(typeof(LocalizationService).Assembly);
+        public static readonly ILocalizationService Default = new AssemblyJsonAssetLocalizationService(typeof(LocalizationService).Assembly);
 
         static LocalizationService()
         {

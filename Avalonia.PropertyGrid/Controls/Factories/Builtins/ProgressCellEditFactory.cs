@@ -26,14 +26,14 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         public override Control? HandleNewProperty(PropertyCellContext context)
         {
             var propertyDescriptor = context.Property;
-            var target = context.Target;
+            // var target = context.Target;
 
             if (propertyDescriptor.PropertyType != typeof(double) || !propertyDescriptor.IsDefined<ProgressAttribute>())
             {
                 return null;
             }
 
-            ProgressBar control = new ProgressBar();
+            var control = new ProgressBar();
 
             var attr = propertyDescriptor.GetCustomAttribute<ProgressAttribute>()!;
             control.Minimum = attr.Minimum; 
@@ -64,7 +64,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (control is ProgressBar progressBar)
             {
-                double value = (double)propertyDescriptor.GetValue(target)!;
+                var value = (double)propertyDescriptor.GetValue(target)!;
 
                 progressBar.Value = value;
 

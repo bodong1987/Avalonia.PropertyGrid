@@ -1,8 +1,8 @@
-﻿using Avalonia.Controls;
+﻿using System;
+using Avalonia.Controls;
 using Avalonia.Data;
-using PropertyModels.ComponentModel;
 using Avalonia.PropertyGrid.Services;
-using System;
+using PropertyModels.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Localization
 {
@@ -21,7 +21,7 @@ namespace Avalonia.PropertyGrid.Localization
         public static void SetLocalizeBinding(this Control control, AvaloniaProperty property, string name, BindingMode mode = BindingMode.Default)
         {
             var source = new LocalizedDataModel(name);
-            Binding binding = new Binding
+            var binding = new Binding
             {
                 Source = source,
                 Path = nameof(source.Value)
@@ -43,12 +43,7 @@ namespace Avalonia.PropertyGrid.Localization
                 var localizeService = LocalizationService.Default;
 
                 // in design mode, service maybe unavailable...
-                if (localizeService != null)
-                {
-                    return localizeService[Name];
-                }
-
-                return Name;
+                return localizeService[Name];
             }
         }
 
@@ -58,10 +53,7 @@ namespace Avalonia.PropertyGrid.Localization
 
             var localizeService = LocalizationService.Default;
 
-            if (localizeService != null)
-            {
-                localizeService.OnCultureChanged += OnCultureChanged;
-            }
+            localizeService.OnCultureChanged += OnCultureChanged;
         }
 
         private void OnCultureChanged(object? sender, EventArgs e)

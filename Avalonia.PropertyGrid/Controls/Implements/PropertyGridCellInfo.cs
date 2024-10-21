@@ -1,14 +1,14 @@
-﻿using Avalonia.Controls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using Avalonia.Controls;
 
 namespace Avalonia.PropertyGrid.Controls.Implements
 {
     internal class PropertyGridCellInfoContainer : IPropertyGridCellInfoContainer
     {
-        private readonly List<IPropertyGridCellInfo> _children = new();
+        private readonly List<IPropertyGridCellInfo> _children = [];
 
         public IPropertyGridCellInfo[] Children => _children.ToArray();
 
@@ -44,7 +44,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
 
     internal class PropertyGridCellInfo : PropertyGridCellInfoContainer, IPropertyGridCellInfo
     {
-        public PropertyCellContext? Context { get; set; }
+        public PropertyCellContext? Context { get; }
 
         public string? ReferencePath { get; set; }
 
@@ -64,7 +64,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
 
         public Expander? Container { get; set; }
 
-        public ICellEditFactory? Factory => Context?.Factory!;
+        public ICellEditFactory? Factory => Context?.Factory;
 
         /// <summary>
         /// Occurs when [cell property changed].
@@ -79,10 +79,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         private bool _isVisible = true;
         public bool IsVisible
         {
-            get
-            {
-                return _isVisible;
-            }
+            get => _isVisible;
             set
             {
                 if (_isVisible != value)
@@ -164,7 +161,5 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         }
     }
 
-    internal class PropertyGridCellInfoCache : PropertyGridCellInfoContainer, IPropertyGridCellInfoCache
-    {        
-    }
+    internal class PropertyGridCellInfoCache : PropertyGridCellInfoContainer, IPropertyGridCellInfoCache;
 }

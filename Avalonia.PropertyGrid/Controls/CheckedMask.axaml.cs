@@ -1,9 +1,10 @@
-﻿using Avalonia.Controls;
+﻿using System.Diagnostics;
+using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Layout;
 using Avalonia.PropertyGrid.Localization;
-using PropertyModels.ComponentModel;
 using Avalonia.Reactive;
-using System.Diagnostics;
+using PropertyModels.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Controls
 {
@@ -26,6 +27,7 @@ namespace Avalonia.PropertyGrid.Controls
             AvaloniaProperty.RegisterDirect<CheckedMask, CheckedMaskModel>(
                 nameof(Model),
                 o => o._model!,
+                // ReSharper disable once RedundantSuppressNullableWarningExpression
                 (o, v) => o.SetAndRaise(ModelProperty!, ref o._model!, v)
                 );
 
@@ -93,7 +95,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Called when [model changed].
         /// </summary>
         /// <param name="value">The value.</param>
-        private void OnModelChanged(CheckedMaskModel value)
+        private void OnModelChanged(CheckedMaskModel? value)
         {
             mainPanel.Children.Clear();
 
@@ -102,12 +104,13 @@ namespace Avalonia.PropertyGrid.Controls
                 return;
             }
 
-            ToggleButton allButton = new ToggleButton();
-            
-            allButton.IsChecked = value.IsAllChecked;
-            allButton.Margin = new Thickness(6);
-            allButton.MinWidth = ButtonMinWidth;
-            allButton.HorizontalContentAlignment = Layout.HorizontalAlignment.Center;
+            var allButton = new ToggleButton
+            {
+                IsChecked = value.IsAllChecked,
+                Margin = new Thickness(6),
+                MinWidth = ButtonMinWidth,
+                HorizontalContentAlignment = HorizontalAlignment.Center
+            };
 
             // allButton.Content = value.All;
             allButton.SetLocalizeBinding(ContentProperty, value.All);
@@ -118,6 +121,7 @@ namespace Avalonia.PropertyGrid.Controls
                 {
                     value.Check(value.All);
 
+                    // ReSharper disable once PossibleInvalidCastExceptionInForeachLoop
                     foreach (ToggleButton btn in mainPanel.Children)
                     {
                         if (btn != allButton)
@@ -136,11 +140,13 @@ namespace Avalonia.PropertyGrid.Controls
 
             foreach (var mask in value.Masks)
             {
-                ToggleButton button = new ToggleButton();                
-                button.IsChecked = value.IsChecked(mask) && !value.IsChecked(value.All);
-                button.Margin = new Thickness(6);
-                button.MinWidth = ButtonMinWidth;
-                button.HorizontalContentAlignment = Layout.HorizontalAlignment.Center;
+                var button = new ToggleButton
+                {
+                    IsChecked = value.IsChecked(mask) && !value.IsChecked(value.All),
+                    Margin = new Thickness(6),
+                    MinWidth = ButtonMinWidth,
+                    HorizontalContentAlignment = HorizontalAlignment.Center
+                };
 
                 //button.Content = mask.ToString();
                 button.SetLocalizeBinding(ContentProperty, mask);

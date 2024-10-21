@@ -1,8 +1,8 @@
-﻿using Avalonia.Interactivity;
-using PropertyModels.ComponentModel;
-using Avalonia.PropertyGrid.ViewModels;
-using System;
+﻿using System;
 using System.ComponentModel;
+using Avalonia.Interactivity;
+using Avalonia.PropertyGrid.ViewModels;
+using PropertyModels.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Controls
 {
@@ -189,6 +189,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Gets or sets a value indicating whether this <see cref="RoutedCommandExecutingEventArgs"/> is canceled.
         /// </summary>
         /// <value><c>true</c> if canceled; otherwise, <c>false</c>.</value>
+        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
         public bool Canceled { get; set; } = false;
 
         /// <summary>

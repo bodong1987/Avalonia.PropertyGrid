@@ -1,8 +1,8 @@
 ﻿using Avalonia.Controls;
-using PropertyModels.Collections;
-using PropertyModels.Extensions;
-using PropertyModels.ComponentModel;
 using Avalonia.PropertyGrid.Services;
+using PropertyModels.Collections;
+using PropertyModels.ComponentModel;
+using PropertyModels.Extensions;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
@@ -35,15 +35,15 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return null;
             }
 
-            var list = propertyDescriptor.GetValue(target) as ICheckedList;
-
-            if (list == null)
+            if (propertyDescriptor.GetValue(target) is not ICheckedList list)
             {
                 return null;
             }
 
-            var control = new CheckedListEdit();
-            control.Items = list.SourceItems;
+            var control = new CheckedListEdit
+            {
+                Items = list.SourceItems
+            };
 
             control.SelectedItemsChanged += (s, e) =>
             {
@@ -52,7 +52,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                 if(!CheckEquals(oldItems, items))
                 {
-                    GenericCancelableCommand command = new GenericCancelableCommand(
+                    var command = new GenericCancelableCommand(
                         string.Format(LocalizationService.Default["Change {0} selection from {1} to {2}"], context.Property.DisplayName, ArrayToString(oldItems), ArrayToString(items)),
                         () =>
                         {
@@ -121,9 +121,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (control is CheckedListEdit c)
             {
-                var list = propertyDescriptor.GetValue(target) as ICheckedList;
-
-                if (list != null)
+                if (propertyDescriptor.GetValue(target) is ICheckedList list)
                 {
                     var old = c.EnableRaiseSelectedItemsChangedEvent;
                     c.EnableRaiseSelectedItemsChangedEvent = false;

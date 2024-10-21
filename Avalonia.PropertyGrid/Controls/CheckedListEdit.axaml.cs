@@ -1,10 +1,10 @@
-﻿using Avalonia.Controls.Primitives;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using PropertyModels.ComponentModel;
 using PropertyModels.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Avalonia.PropertyGrid.Controls
 {
@@ -39,10 +39,6 @@ namespace Avalonia.PropertyGrid.Controls
                 o => o.Items,
                 (o, v) => o.Items = v
                 );
-        /// <summary>
-        /// The model
-        /// </summary>
-        private readonly CheckedListViewModel _model = new();
 
         /// <summary>
         /// Gets or sets the items.
@@ -50,13 +46,13 @@ namespace Avalonia.PropertyGrid.Controls
         /// <value>The items.</value>
         public object[] Items
         {
-            get => _model.Items.Select(x=>x.Value).ToArray();
+            get => Model.Items.Select(x=>x.Value!).ToArray();
             set
             {
-                if(_model.Items != value)
+                if(Model.Items != value)
                 {
-                    _model.ResetItems(value);
-                    _model.RaisePropertyChanged(nameof(Items));
+                    Model.ResetItems(value);
+                    Model.RaisePropertyChanged(nameof(Items));
                 }
             }
         }
@@ -67,18 +63,16 @@ namespace Avalonia.PropertyGrid.Controls
         /// <value>The selected items.</value>
         public object[] SelectedItems
         {
-            get => _model.SelectedItems.Select(x => x.Value).ToArray();
-            set
-            {
-                _model.ResetSelectedItems(value);                
-            }
+            get => Model.SelectedItems.Select(x => x.Value!).ToArray();
+            set => Model.ResetSelectedItems(value);
         }
 
         /// <summary>
         /// Gets the model.
         /// </summary>
         /// <value>The model.</value>
-        internal CheckedListViewModel Model => _model;
+        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Local
+        internal CheckedListViewModel Model { get; private set; } = new();
 
         /// <summary>
         /// Gets or sets a value indicating whether [enable raise selected items changed event].
@@ -86,8 +80,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// <value><c>true</c> if [enable raise selected items changed event]; otherwise, <c>false</c>.</value>
         public bool EnableRaiseSelectedItemsChangedEvent
         {
-            get => _model.EnableRaiseSelectedItemsChangedEvent;
-            set => _model.EnableRaiseSelectedItemsChangedEvent = value;
+            get => Model.EnableRaiseSelectedItemsChangedEvent;
+            set => Model.EnableRaiseSelectedItemsChangedEvent = value;
         }
 
         /// <summary>
@@ -95,7 +89,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         public CheckedListEdit()
         {
-            _model.SelectedItemsChanged += OnSelectedItemChanged;
+            Model.SelectedItemsChanged += OnSelectedItemChanged;
         }
 
         /// <summary>
@@ -121,12 +115,12 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The items
         /// </summary>
-        private readonly List<CheckedListItemViewModel> _items = new();
+        private readonly List<CheckedListItemViewModel> _items = [];
 
         /// <summary>
         /// The selected items
         /// </summary>
-        private readonly HashSet<CheckedListItemViewModel> _selectedItems = new();
+        private readonly HashSet<CheckedListItemViewModel> _selectedItems = [];
 
         /// <summary>
         /// Gets the items.
@@ -175,10 +169,11 @@ namespace Avalonia.PropertyGrid.Controls
         public CheckedListViewModel(IEnumerable<object> items, IEnumerable<object> selectedItems)
         {
             _items.AddRange(items.Select(x => new CheckedListItemViewModel(this, x)));
-
+            var enumerable = selectedItems as object[] ?? selectedItems.ToArray();
+            
             foreach(var i in _items)
             {
-                if(selectedItems.Contains(x=> i.IsValue(x)))
+                if(enumerable.Contains(x=> i.IsValue(x)))
                 {
                     _selectedItems.Add(i);
                 }
@@ -256,10 +251,8 @@ namespace Avalonia.PropertyGrid.Controls
         {
             if (value)
             {
-                if (!_selectedItems.Contains(item))
+                if (_selectedItems.Add(item))
                 {
-                    _selectedItems.Add(item);
-
                     RaiseSelectedItemsChangedEvent();
                     RefreshItemsCheckStates();
                 }
@@ -314,14 +307,14 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The value
         /// </summary>
-        public readonly object Value;
+        public readonly object? Value;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CheckedListItemViewModel"/> class.
         /// </summary>
         /// <param name="model">The model.</param>
         /// <param name="value">The value.</param>
-        public CheckedListItemViewModel(CheckedListViewModel model, object value)
+        public CheckedListItemViewModel(CheckedListViewModel model, object? value)
         {
             Parent = model;
             Value = value;
@@ -334,7 +327,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <returns><c>true</c> if the specified value is value; otherwise, <c>false</c>.</returns>
         public bool IsValue(object value)
         {
-            return Value.Equals(value);
+            return Value == value || (Value != null && Value.Equals(value));
         }
 
         /// <summary>
@@ -343,10 +336,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <value><c>true</c> if this instance is checked; otherwise, <c>false</c>.</value>
         public bool IsChecked
         {
-            get
-            {
-                return Parent.IsChecked(this);
-            }
+            get => Parent.IsChecked(this);
             set
             {
                 if (IsChecked != value)
