@@ -1,10 +1,7 @@
 ﻿using Avalonia.Controls;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using PropertyModels.Extensions;
 using PropertyModels.ComponentModel.DataAnnotations;
 using PropertyModels.ComponentModel;
@@ -189,7 +186,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories
             }
             catch (Exception e)
             {
-                DataValidationErrors.SetErrors(sourceControl, new object[] { e.Message });
+                DataValidationErrors.SetErrors(sourceControl, [e.Message]);
             }
         }
 
@@ -210,7 +207,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories
             }
             catch (Exception e)
             {
-                DataValidationErrors.SetErrors(sourceControl, new object[] { e.Message });
+                DataValidationErrors.SetErrors(sourceControl, [e.Message]);
             }
         }
 
@@ -225,7 +222,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         {
             if (!ValidatorUtils.TryValidateProperty(component, propertyDescriptor, out var message))
             {
-                DataValidationErrors.SetErrors(sourceControl, new object[] { LocalizationService.Default[message] });
+                DataValidationErrors.SetErrors(sourceControl, [LocalizationService.Default[message]]);
             }
             else
             {

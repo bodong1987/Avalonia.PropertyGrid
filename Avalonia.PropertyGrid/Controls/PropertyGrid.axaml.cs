@@ -1,23 +1,18 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Data;
-using Avalonia.Dialogs.Internal;
 using Avalonia.Interactivity;
 using Avalonia.PropertyGrid.Controls.Implements;
 using Avalonia.PropertyGrid.Localization;
-using PropertyModels.ComponentModel;
 using PropertyModels.ComponentModel.DataAnnotations;
 using PropertyModels.Extensions;
-using PropertyModels.Utils;
 using Avalonia.PropertyGrid.Services;
 using Avalonia.PropertyGrid.ViewModels;
-using Avalonia.Threading;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
+using Avalonia.Controls.Primitives;
 using Avalonia.Reactive;
 
 namespace Avalonia.PropertyGrid.Controls
@@ -178,15 +173,15 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The view model
         /// </summary>
-        internal PropertyGridViewModel ViewModel { get; private set; } = new PropertyGridViewModel();
+        internal PropertyGridViewModel ViewModel { get; private set; } = new();
 
         /// <summary>
         /// The factories
         /// </summary>
         public readonly ICellEditFactoryCollection Factories;
 
-        readonly IExpandableObjectCache ExpandableObjectCache = new PropertyGridExpandableCache();
-        readonly IPropertyGridCellInfoCache CellInfoCache = new PropertyGridCellInfoCache();
+        private readonly IExpandableObjectCache _expandableObjectCache = new PropertyGridExpandableCache();
+        private readonly IPropertyGridCellInfoCache _cellInfoCache = new PropertyGridCellInfoCache();
 
         /// <summary>
         /// Gets or sets the root property grid.
@@ -359,7 +354,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <returns>IExpandableObjectCache.</returns>
         public IExpandableObjectCache GetExpandableObjectCache()
         {
-            return ExpandableObjectCache;
+            return _expandableObjectCache;
         }
 
         /// <summary>
@@ -377,7 +372,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <returns>IPropertyGridCellInfoCache.</returns>
         public IPropertyGridCellInfoCache GetCellInfoCache()
         {
-            return CellInfoCache;
+            return _cellInfoCache;
         }
 
         #region Styled Properties Handler
@@ -413,7 +408,7 @@ namespace Avalonia.PropertyGrid.Controls
 
         private void OnNameWidthChanged(object? oldValue, object? newValue)
         {
-            this.splitterGrid.ColumnDefinitions[0].Width = new GridLength((double)newValue!);
+            splitterGrid.ColumnDefinitions[0].Width = new GridLength((double)newValue!);
         }
 
         /// <summary>
@@ -533,10 +528,10 @@ namespace Avalonia.PropertyGrid.Controls
         {
             propertiesGrid.RowDefinitions.Clear();
             propertiesGrid.Children.Clear();
-            ExpandableObjectCache.Clear();
+            _expandableObjectCache.Clear();
 
-            ClearPropertyChangedObservers(CellInfoCache.Children);
-            CellInfoCache.Clear();
+            ClearPropertyChangedObservers(_cellInfoCache.Children);
+            _cellInfoCache.Clear();
 
             var target = ViewModel.Context;
 
@@ -549,7 +544,7 @@ namespace Avalonia.PropertyGrid.Controls
 
             try
             {
-                ExpandableObjectCache.Add(target);
+                _expandableObjectCache.Add(target);
 
                 referencePath.BeginScope(target.GetType().Name);
 
@@ -571,7 +566,7 @@ namespace Avalonia.PropertyGrid.Controls
                 referencePath.EndScope();
             }
 
-            AddPropertyChangedObservers(CellInfoCache.Children);
+            AddPropertyChangedObservers(_cellInfoCache.Children);
 
             RefreshVisibilities();
 
@@ -613,7 +608,7 @@ namespace Avalonia.PropertyGrid.Controls
                 expander.Padding = new Thickness(2);
 
                 // expander.Header = categoryInfo.Key;
-                expander.SetLocalizeBinding(Expander.HeaderProperty, categoryInfo.Key);
+                expander.SetLocalizeBinding(HeaderedContentControl.HeaderProperty, categoryInfo.Key);
 
                 Grid grid = new Grid();
                 grid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
@@ -628,7 +623,7 @@ namespace Avalonia.PropertyGrid.Controls
                     CellType = PropertyGridCellType.Category
                 };
 
-                CellInfoCache.Add(cellInfo);
+                _cellInfoCache.Add(cellInfo);
 
                 var properties = propertyOrderStyle == PropertyGridOrderStyle.Builtin ? categoryInfo.Value : categoryInfo.Value.OrderBy(x => x.DisplayName).ToList();
 
@@ -769,7 +764,7 @@ namespace Avalonia.PropertyGrid.Controls
             propertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
             propertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
 
-            BuildPropertiesCellEdit(target, referencePath, ViewModel.AllProperties.OrderBy(x => x.DisplayName), null, propertiesGrid, CellInfoCache);
+            BuildPropertiesCellEdit(target, referencePath, ViewModel.AllProperties.OrderBy(x => x.DisplayName), null, propertiesGrid, _cellInfoCache);
         }
 
         /// <summary>
@@ -783,7 +778,7 @@ namespace Avalonia.PropertyGrid.Controls
             propertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
             propertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
 
-            BuildPropertiesCellEdit(target, referencePath, ViewModel.AllProperties, null, propertiesGrid, CellInfoCache);
+            BuildPropertiesCellEdit(target, referencePath, ViewModel.AllProperties, null, propertiesGrid, _cellInfoCache);
         }
         #endregion
 
@@ -800,7 +795,7 @@ namespace Avalonia.PropertyGrid.Controls
                 return;
             }
 
-            PropagateCellNameWidth(CellInfoCache.Children, width);
+            PropagateCellNameWidth(_cellInfoCache.Children, width);
 
             if (syncToTitle)
             {
@@ -828,7 +823,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="e">The <see cref="AvaloniaPropertyChangedEventArgs"/> instance containing the event data.</param>
         private void OnColumnNamePropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
         {
-            if (e.Property == TextBlock.BoundsProperty)
+            if (e.Property == BoundsProperty)
             {
                 double width = (sender as TextBlock)!.Bounds.Width;
 
@@ -854,14 +849,14 @@ namespace Avalonia.PropertyGrid.Controls
         /// <returns>PropertyVisibility.</returns>
         public PropertyVisibility FilterCells(IPropertyGridFilterContext context, FilterCategory category = FilterCategory.Default)
         {
-            bool AtleastOneVisible = false;
+            bool atleastOneVisible = false;
 
-            foreach (var info in CellInfoCache.Children)
+            foreach (var info in _cellInfoCache.Children)
             {
-                AtleastOneVisible |= context.PropagateVisibility(info, category) == PropertyVisibility.AlwaysVisible;
+                atleastOneVisible |= context.PropagateVisibility(info, category) == PropertyVisibility.AlwaysVisible;
             }
 
-            return AtleastOneVisible ? PropertyVisibility.AlwaysVisible : PropertyVisibility.HiddenByNoVisibleChidlren;
+            return atleastOneVisible ? PropertyVisibility.AlwaysVisible : PropertyVisibility.HiddenByNoVisibleChildren;
         }
         #endregion
 

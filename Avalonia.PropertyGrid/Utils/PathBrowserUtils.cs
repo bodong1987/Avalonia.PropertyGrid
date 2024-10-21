@@ -3,7 +3,6 @@ using Avalonia.Platform.Storage;
 using Avalonia.PropertyGrid.Services;
 using PropertyModels.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -134,7 +133,7 @@ namespace Avalonia.PropertyGrid.Utils
                 options.FileTypeChoices = ConvertToFilterList(filters);
                 var storage = await storageProvider.SaveFilePickerAsync(options);
 
-                return storage != null ? new string[] { storage.Path.LocalPath } : null;
+                return storage != null ? [storage.Path.LocalPath] : null;
             }
             else if (type == PathBrowsableType.Directory || type == PathBrowsableType.MultipleDirectories)
             {

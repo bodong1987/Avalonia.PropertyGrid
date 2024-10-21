@@ -1,11 +1,5 @@
 ﻿using Avalonia.Controls;
 using PropertyModels.Collections;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using PropertyModels.Extensions;
 using PropertyModels.ComponentModel;
 using Avalonia.PropertyGrid.Services;
@@ -136,7 +130,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                     try
                     {
-                        c.SelectedItems = new object[] { };
+                        c.SelectedItems = [];
                         c.Items = list.SourceItems;
                         c.SelectedItems = list.Items;
                     }

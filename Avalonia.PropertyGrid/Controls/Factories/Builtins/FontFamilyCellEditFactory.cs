@@ -2,11 +2,7 @@
 using Avalonia.Controls.Templates;
 using Avalonia.Data;
 using Avalonia.Media;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {

@@ -2,9 +2,7 @@
 using PropertyModels.ComponentModel;
 using Avalonia.PropertyGrid.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 
 namespace Avalonia.PropertyGrid.Controls
 {

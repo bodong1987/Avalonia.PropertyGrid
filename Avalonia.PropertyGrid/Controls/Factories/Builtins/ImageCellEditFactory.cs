@@ -1,9 +1,5 @@
 ﻿using Avalonia.Controls;
 using PropertyModels.ComponentModel;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
@@ -36,7 +32,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return null;
             }
 
-            if (propertyDescriptor.PropertyType != typeof(Avalonia.Media.IImage))
+            if (propertyDescriptor.PropertyType != typeof(Media.IImage))
             {
                 return null;
             }
@@ -59,7 +55,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             var target = context.Target;
             var control = context.CellEdit!;
 
-            if (propertyDescriptor.PropertyType != typeof(Avalonia.Media.IImage))
+            if (propertyDescriptor.PropertyType != typeof(Media.IImage))
             {
                 return false;
             }

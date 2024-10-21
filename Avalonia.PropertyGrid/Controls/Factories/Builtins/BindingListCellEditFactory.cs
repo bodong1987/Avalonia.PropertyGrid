@@ -1,5 +1,4 @@
 ﻿using Avalonia.Controls;
-using Avalonia.Logging;
 using PropertyModels.ComponentModel;
 using PropertyModels.Extensions;
 using Avalonia.PropertyGrid.Services;
@@ -8,9 +7,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
@@ -259,13 +255,13 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (value != null)
             {
-                var NewElement = ObjectCreator.Create(GetElementType(context.Property)!);
+                var newElement = ObjectCreator.Create(GetElementType(context.Property)!);
 
                 GenericCancelableCommand command = new GenericCancelableCommand(
                     string.Format(LocalizationService.Default["Insert a new element at {0}"], e.Index),
                     () =>
                     {
-                        value.Insert(e.Index, NewElement);
+                        value.Insert(e.Index, newElement);
 
                         HandleRaiseEvent(context.CellEdit!, context);
 
@@ -292,7 +288,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     Tag = "Insert"
                 };
 
-                ExecuteCommand(command, context, value, value, NewElement);                
+                ExecuteCommand(command, context, value, value, newElement);                
             }
         }
 
@@ -311,13 +307,13 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (value != null)
             {
-                var NewElement = ObjectCreator.Create(GetElementType(context.Property)!);
+                var newElement = ObjectCreator.Create(GetElementType(context.Property)!);
 
                 GenericCancelableCommand command = new GenericCancelableCommand(
                     LocalizationService.Default["Insert a new element at the end of the array"],
                     () =>
                     {
-                        value.Add(NewElement);
+                        value.Add(newElement);
 
                         HandleRaiseEvent(context.CellEdit!, context);
 
@@ -338,7 +334,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     Tag = "NewElement"
                 };
 
-                ExecuteCommand(command, context, value, value, NewElement);                
+                ExecuteCommand(command, context, value, value, newElement);                
             }
         }
 

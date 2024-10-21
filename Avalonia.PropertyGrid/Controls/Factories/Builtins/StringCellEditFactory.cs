@@ -1,17 +1,9 @@
 ﻿using Avalonia.Controls;
 using Avalonia.PropertyGrid.Localization;
 using PropertyModels.ComponentModel;
-using PropertyModels.ComponentModel.DataAnnotations;
 using PropertyModels.Extensions;
-using Avalonia.PropertyGrid.Services;
 using Avalonia.PropertyGrid.Utils;
-using Avalonia.VisualTree;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
@@ -48,7 +40,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             TextBox control = new TextBox();
             control.Text = propertyDescriptor.GetValue(target) as string;
-            control.VerticalContentAlignment = Avalonia.Layout.VerticalAlignment.Center;
+            control.VerticalContentAlignment = Layout.VerticalAlignment.Center;
             control.FontFamily = FontUtils.DefaultFontFamily;
 
             if (watermarkAttr != null)

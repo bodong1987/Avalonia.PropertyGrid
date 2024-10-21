@@ -1,6 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
+﻿using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using PropertyModels.ComponentModel;
 using System;
@@ -29,7 +27,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The button clicked command
         /// </summary>
-        private ICommand? _ButtonClickedCommand;
+        private ICommand? _buttonClickedCommand;
 
         /// <summary>
         /// Gets or sets the button clicked command.
@@ -37,8 +35,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// <value>The button clicked command.</value>
         public ICommand? ButtonClickedCommand
         {
-            get => _ButtonClickedCommand;
-            set => SetAndRaise(ButtonClickedCommandProperty!, ref _ButtonClickedCommand, value);
+            get => _buttonClickedCommand;
+            set => SetAndRaise(ButtonClickedCommandProperty!, ref _buttonClickedCommand, value);
         }
 
         /// <summary>
@@ -52,15 +50,15 @@ namespace Avalonia.PropertyGrid.Controls
                 );
 
 
-        bool _IsReadOnly = false;
+        private bool _isReadOnly;
 
         /// <summary>
         /// Gets or sets Is ReadOnly Flags.
         /// </summary>
         public bool IsReadOnly
         {
-            get => _IsReadOnly;
-            set => SetAndRaise(IsReadOnlyProperty, ref _IsReadOnly, value);
+            get => _isReadOnly;
+            set => SetAndRaise(IsReadOnlyProperty, ref _isReadOnly, value);
         }
 
         /// <summary>
@@ -76,15 +74,15 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The text
         /// </summary>
-        string? _Text;
+        private string? _text;
         /// <summary>
         /// Gets or sets the text.
         /// </summary>
         /// <value>The text.</value>
         public string? Text
         {
-            get => _Text;
-            set => SetAndRaise(TextProperty!, ref _Text, value);
+            get => _text;
+            set => SetAndRaise(TextProperty!, ref _text, value);
         }
 
         /// <summary>
@@ -96,8 +94,8 @@ namespace Avalonia.PropertyGrid.Controls
                 o => o.Watermark ?? string.Empty,
                 (o, v) => o.Watermark = v
                 );
-        
-        string? _Watermark;
+
+        private string? _watermark;
 
         /// <summary>
         /// Gets or sets the Watermark.
@@ -105,8 +103,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// <value>The Watermark.</value>
         public string? Watermark
         {
-            get => _Watermark;
-            set=> SetAndRaise(WatermarkProperty!, ref _Watermark, value);
+            get => _watermark;
+            set=> SetAndRaise(WatermarkProperty!, ref _watermark, value);
         }
 
         #region Events

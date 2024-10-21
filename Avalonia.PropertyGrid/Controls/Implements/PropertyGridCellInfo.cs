@@ -3,21 +3,20 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Text;
 
 namespace Avalonia.PropertyGrid.Controls.Implements
 {
     internal class PropertyGridCellInfoContainer : IPropertyGridCellInfoContainer
     {
-        readonly List<IPropertyGridCellInfo> _Children = new List<IPropertyGridCellInfo>();
+        private readonly List<IPropertyGridCellInfo> _children = new();
 
-        public IPropertyGridCellInfo[] Children => _Children.ToArray();
+        public IPropertyGridCellInfo[] Children => _children.ToArray();
 
         public virtual void Add(IPropertyGridCellInfo cellInfo)
         {
-            if(!_Children.Contains(cellInfo))
+            if(!_children.Contains(cellInfo))
             {
-                _Children.Add(cellInfo);
+                _children.Add(cellInfo);
 
                 cellInfo.AddPropertyChangedObserver();
             }            
@@ -25,22 +24,22 @@ namespace Avalonia.PropertyGrid.Controls.Implements
 
         public virtual void Clear()
         {
-            foreach(var child in _Children)
+            foreach(var child in _children)
             {
                 child.Clear();
             }
 
-            _Children.Clear();
+            _children.Clear();
         }
 
         public virtual void Remove(IPropertyGridCellInfo cellInfo)
         {
             cellInfo.RemovePropertyChangedObserver();
 
-            _Children.Remove(cellInfo);
+            _children.Remove(cellInfo);
         }
 
-        public int Count => _Children.Count;
+        public int Count => _children.Count;
     }
 
     internal class PropertyGridCellInfo : PropertyGridCellInfoContainer, IPropertyGridCellInfo
@@ -77,16 +76,16 @@ namespace Avalonia.PropertyGrid.Controls.Implements
             return ReferencePath ?? string.Empty;
         }
 
-        bool _IsVisible = true;
+        private bool _isVisible = true;
         public bool IsVisible
         {
             get
             {
-                return _IsVisible;
+                return _isVisible;
             }
             set
             {
-                if (_IsVisible != value)
+                if (_isVisible != value)
                 {
                     if(NameControl != null)
                     {
@@ -103,7 +102,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
                         Container.IsVisible = value;
                     }
 
-                    _IsVisible = value;
+                    _isVisible = value;
 
                 }
             }
@@ -124,11 +123,11 @@ namespace Avalonia.PropertyGrid.Controls.Implements
 
         public void AddPropertyChangedObserver()
         {
-            if (Target is System.ComponentModel.INotifyPropertyChanged npc2)
+            if (Target is INotifyPropertyChanged npc2)
             {
                 npc2.PropertyChanged += OnPropertyChanged;
             }
-            else if (Target is IEnumerable<System.ComponentModel.INotifyPropertyChanged> npcs2)
+            else if (Target is IEnumerable<INotifyPropertyChanged> npcs2)
             {
                 foreach (var n in npcs2)
                 {
@@ -139,11 +138,11 @@ namespace Avalonia.PropertyGrid.Controls.Implements
 
         public void RemovePropertyChangedObserver()
         {
-            if (Target is System.ComponentModel.INotifyPropertyChanged npc)
+            if (Target is INotifyPropertyChanged npc)
             {
                 npc.PropertyChanged -= OnPropertyChanged;
             }
-            else if (Target is IEnumerable<System.ComponentModel.INotifyPropertyChanged> npcs)
+            else if (Target is IEnumerable<INotifyPropertyChanged> npcs)
             {
                 foreach (var n in npcs)
                 {

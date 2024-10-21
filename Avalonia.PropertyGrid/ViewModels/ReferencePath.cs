@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Avalonia.PropertyGrid.ViewModels
 {
@@ -12,7 +10,7 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// <summary>
         /// The paths
         /// </summary>
-        public readonly Stack<string> Paths = new Stack<string>();
+        public readonly Stack<string> Paths = new();
 
         /// <summary>
         /// Gets the count.

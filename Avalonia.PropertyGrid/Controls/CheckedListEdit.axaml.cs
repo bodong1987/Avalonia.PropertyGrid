@@ -1,6 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
+﻿using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using PropertyModels.ComponentModel;
 using PropertyModels.Extensions;
@@ -44,7 +42,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The model
         /// </summary>
-        readonly CheckedListViewModel _Model = new CheckedListViewModel();
+        private readonly CheckedListViewModel _model = new();
 
         /// <summary>
         /// Gets or sets the items.
@@ -52,13 +50,13 @@ namespace Avalonia.PropertyGrid.Controls
         /// <value>The items.</value>
         public object[] Items
         {
-            get => _Model.Items.Select(x=>x.Value).ToArray();
+            get => _model.Items.Select(x=>x.Value).ToArray();
             set
             {
-                if(_Model.Items != value)
+                if(_model.Items != value)
                 {
-                    _Model.ResetItems(value);
-                    _Model.RaisePropertyChanged(nameof(Items));
+                    _model.ResetItems(value);
+                    _model.RaisePropertyChanged(nameof(Items));
                 }
             }
         }
@@ -69,10 +67,10 @@ namespace Avalonia.PropertyGrid.Controls
         /// <value>The selected items.</value>
         public object[] SelectedItems
         {
-            get => _Model.SelectedItems.Select(x => x.Value).ToArray();
+            get => _model.SelectedItems.Select(x => x.Value).ToArray();
             set
             {
-                _Model.ResetSelectedItems(value);                
+                _model.ResetSelectedItems(value);                
             }
         }
 
@@ -80,7 +78,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Gets the model.
         /// </summary>
         /// <value>The model.</value>
-        internal CheckedListViewModel Model => _Model;
+        internal CheckedListViewModel Model => _model;
 
         /// <summary>
         /// Gets or sets a value indicating whether [enable raise selected items changed event].
@@ -88,8 +86,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// <value><c>true</c> if [enable raise selected items changed event]; otherwise, <c>false</c>.</value>
         public bool EnableRaiseSelectedItemsChangedEvent
         {
-            get => _Model.EnableRaiseSelectedItemsChangedEvent;
-            set => _Model.EnableRaiseSelectedItemsChangedEvent = value;
+            get => _model.EnableRaiseSelectedItemsChangedEvent;
+            set => _model.EnableRaiseSelectedItemsChangedEvent = value;
         }
 
         /// <summary>
@@ -97,7 +95,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         public CheckedListEdit()
         {
-            _Model.SelectedItemsChanged += OnSelectedItemChanged;
+            _model.SelectedItemsChanged += OnSelectedItemChanged;
         }
 
         /// <summary>
@@ -123,24 +121,24 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The items
         /// </summary>
-        readonly List<CheckedListItemViewModel> _Items = new List<CheckedListItemViewModel>();
+        private readonly List<CheckedListItemViewModel> _items = new();
 
         /// <summary>
         /// The selected items
         /// </summary>
-        readonly HashSet<CheckedListItemViewModel> _SelectedItems = new HashSet<CheckedListItemViewModel>();
+        private readonly HashSet<CheckedListItemViewModel> _selectedItems = new();
 
         /// <summary>
         /// Gets the items.
         /// </summary>
         /// <value>The items.</value>
-        public CheckedListItemViewModel[] Items => _Items.ToArray();
+        public CheckedListItemViewModel[] Items => _items.ToArray();
 
         /// <summary>
         /// Gets the selected items.
         /// </summary>
         /// <value>The selected items.</value>
-        public CheckedListItemViewModel[] SelectedItems => _SelectedItems.ToArray();
+        public CheckedListItemViewModel[] SelectedItems => _selectedItems.ToArray();
 
         /// <summary>
         /// Occurs when [selected items changed].
@@ -176,13 +174,13 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="selectedItems">The selected items.</param>
         public CheckedListViewModel(IEnumerable<object> items, IEnumerable<object> selectedItems)
         {
-            _Items.AddRange(items.Select(x => new CheckedListItemViewModel(this, x)));
+            _items.AddRange(items.Select(x => new CheckedListItemViewModel(this, x)));
 
-            foreach(var i in _Items)
+            foreach(var i in _items)
             {
                 if(selectedItems.Contains(x=> i.IsValue(x)))
                 {
-                    _SelectedItems.Add(i);
+                    _selectedItems.Add(i);
                 }
             }
         }
@@ -193,8 +191,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="items">The items.</param>
         public void ResetItems(IEnumerable<object> items)
         {
-            _Items.Clear();
-            _SelectedItems.Clear();
+            _items.Clear();
+            _selectedItems.Clear();
 
             RaiseSelectedItemsChangedEvent();
 
@@ -209,15 +207,15 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="items">The items.</param>
         public void ResetSelectedItems(IEnumerable<object> items)
         {
-            _SelectedItems.Clear();
+            _selectedItems.Clear();
 
             foreach(var i in items)
             {
-                var obj = _Items.Find(x => x.IsValue(i));
+                var obj = _items.Find(x => x.IsValue(i));
 
                 if(obj != null)
                 {
-                    _SelectedItems.Add(obj);
+                    _selectedItems.Add(obj);
                 }
             }
 
@@ -232,7 +230,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="items">The items.</param>
         public void AddRange(IEnumerable<object> items)
         {
-            _Items.AddRange(items.Select(x => new CheckedListItemViewModel(this, x)));
+            _items.AddRange(items.Select(x => new CheckedListItemViewModel(this, x)));
 
             RaisePropertyChanged(nameof(Items));
 
@@ -246,7 +244,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <returns><c>true</c> if the specified item is checked; otherwise, <c>false</c>.</returns>
         public bool IsChecked(CheckedListItemViewModel item)
         {
-            return _SelectedItems.Contains(item);
+            return _selectedItems.Contains(item);
         }
 
         /// <summary>
@@ -258,9 +256,9 @@ namespace Avalonia.PropertyGrid.Controls
         {
             if (value)
             {
-                if (!_SelectedItems.Contains(item))
+                if (!_selectedItems.Contains(item))
                 {
-                    _SelectedItems.Add(item);
+                    _selectedItems.Add(item);
 
                     RaiseSelectedItemsChangedEvent();
                     RefreshItemsCheckStates();
@@ -268,9 +266,9 @@ namespace Avalonia.PropertyGrid.Controls
             }
             else
             {
-                if(_SelectedItems.Contains(item))
+                if(_selectedItems.Contains(item))
                 {
-                    _SelectedItems.Remove(item);
+                    _selectedItems.Remove(item);
 
                     RaiseSelectedItemsChangedEvent();
                     RefreshItemsCheckStates();
@@ -294,7 +292,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         public void RefreshItemsCheckStates()
         {
-            foreach(var item in _Items)
+            foreach(var item in _items)
             {
                 item.RaisePropertyChanged(nameof(item.IsChecked));
             }
@@ -354,7 +352,7 @@ namespace Avalonia.PropertyGrid.Controls
                 if (IsChecked != value)
                 {
                     Parent.SetChecked(this, value);
-                    this.RaisePropertyChanged(nameof(IsChecked));
+                    RaisePropertyChanged(nameof(IsChecked));
                 }
             }
         }

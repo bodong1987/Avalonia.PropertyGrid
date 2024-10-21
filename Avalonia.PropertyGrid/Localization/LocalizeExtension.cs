@@ -2,11 +2,6 @@
 using Avalonia.Markup.Xaml.MarkupExtensions;
 using Avalonia.Markup.Xaml;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Avalonia.PropertyGrid.Controls;
 using Avalonia.PropertyGrid.Services;
 
 namespace Avalonia.PropertyGrid.Localization

@@ -1,10 +1,8 @@
 ﻿using Avalonia.Platform;
 using PropertyModels.Localization;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using System.Linq;
 
 namespace Avalonia.PropertyGrid.Localization
 {

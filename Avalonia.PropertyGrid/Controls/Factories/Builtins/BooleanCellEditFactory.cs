@@ -1,13 +1,6 @@
 ﻿using Avalonia.Controls;
 using PropertyModels.ComponentModel;
-using PropertyModels.Extensions;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {

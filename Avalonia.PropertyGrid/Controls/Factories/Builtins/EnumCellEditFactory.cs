@@ -1,12 +1,8 @@
 ﻿using Avalonia.Controls;
 using PropertyModels.Extensions;
 using System;
-using System.Collections.Generic;
-using System.Collections;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Avalonia.PropertyGrid.Utils;
 using PropertyModels.ComponentModel;
 
@@ -41,10 +37,10 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return null;
             }
 
-            bool IsFlags = propertyDescriptor.PropertyType.IsDefined<FlagsAttribute>();
+            bool isFlags = propertyDescriptor.PropertyType.IsDefined<FlagsAttribute>();
             //Enum value = propertyDescriptor.GetValue(target) as Enum;
 
-            if (IsFlags)
+            if (isFlags)
             {
                 var control = new CheckedListEdit();
                 control.Items = EnumUtils.GetEnumValues(propertyDescriptor.PropertyType);

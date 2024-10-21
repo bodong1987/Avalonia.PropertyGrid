@@ -5,10 +5,7 @@ using PropertyModels.ComponentModel.DataAnnotations;
 using PropertyModels.Extensions;
 using Avalonia.PropertyGrid.Utils;
 using Avalonia.VisualTree;
-using System;
 using System.Linq;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {

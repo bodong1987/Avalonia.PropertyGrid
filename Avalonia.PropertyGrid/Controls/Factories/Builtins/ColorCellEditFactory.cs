@@ -1,9 +1,6 @@
 ﻿using Avalonia.Controls;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Text;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
@@ -32,8 +29,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             return type == typeof(Color) ||
                 type == typeof(Avalonia.Media.Color) ||
-                type == typeof(Avalonia.Media.HslColor) ||
-                type == typeof(Avalonia.Media.HsvColor);
+                type == typeof(Media.HslColor) ||
+                type == typeof(Media.HsvColor);
         }
 
         /// <summary>
@@ -70,11 +67,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 {
                     SetAndRaise(context, colorPicker, e.NewColor);
                 }
-                else if(type == typeof(Avalonia.Media.HslColor))
+                else if(type == typeof(Media.HslColor))
                 {
                     SetAndRaise(context, colorPicker, e.NewColor.ToHsl());
                 }
-                else if(type == typeof(Avalonia.Media.HsvColor))
+                else if(type == typeof(Media.HsvColor))
                 {
                     SetAndRaise(context, colorPicker, e.NewColor.ToHsv());
                 }
@@ -116,13 +113,13 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                     colorPicker.Color = color;
                 }
-                else if (type == typeof(Avalonia.Media.HslColor))
+                else if (type == typeof(Media.HslColor))
                 {
                     Media.HslColor color = (Media.HslColor)propertyDescriptor.GetValue(target)!;
 
                     colorPicker.Color = color.ToRgb();
                 }
-                else if (type == typeof(Avalonia.Media.HsvColor))
+                else if (type == typeof(Media.HsvColor))
                 {
                     Media.HsvColor color = (Media.HsvColor)propertyDescriptor.GetValue(target)!;
 

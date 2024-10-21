@@ -3,12 +3,9 @@ using Avalonia.Media;
 using PropertyModels.ComponentModel;
 using PropertyModels.Extensions;
 using Avalonia.PropertyGrid.ViewModels;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection;
-using System.Text;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {

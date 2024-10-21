@@ -3,9 +3,6 @@ using Avalonia.Data;
 using PropertyModels.ComponentModel;
 using Avalonia.PropertyGrid.Services;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
 
 namespace Avalonia.PropertyGrid.Localization
 {

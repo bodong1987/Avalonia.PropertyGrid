@@ -2,9 +2,6 @@
 using PropertyModels.ComponentModel;
 using PropertyModels.Extensions;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
@@ -128,7 +125,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     }
                     catch(Exception ex)
                     {
-                        DataValidationErrors.SetErrors(context.CellEdit, new object[] { ex.Message });
+                        DataValidationErrors.SetErrors(context.CellEdit, [ex.Message]);
                     }
                 }
 

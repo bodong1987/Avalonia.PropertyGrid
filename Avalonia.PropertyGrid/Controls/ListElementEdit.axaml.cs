@@ -1,8 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
-using PropertyModels.ComponentModel;
-using System;
+﻿using Avalonia.Controls.Primitives;
 using System.Windows.Input;
 
 namespace Avalonia.PropertyGrid.Controls
@@ -23,7 +19,7 @@ namespace Avalonia.PropertyGrid.Controls
                 o => o.InsertCommand!,
                 (o, v) => o.InsertCommand = v);
 
-        ICommand? _InsertCommand;
+        private ICommand? _insertCommand;
 
         /// <summary>
         /// Gets or sets the insert command.
@@ -31,8 +27,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// <value>The insert command.</value>
         public ICommand? InsertCommand
         {
-            get => _InsertCommand;
-            set => SetAndRaise(InsertCommandProperty!, ref _InsertCommand, value);
+            get => _insertCommand;
+            set => SetAndRaise(InsertCommandProperty!, ref _insertCommand, value);
         }
 
         /// <summary>
@@ -44,7 +40,7 @@ namespace Avalonia.PropertyGrid.Controls
                 o => o.RemoveCommand!,
                 (o, v) => o.RemoveCommand = v);
 
-        ICommand? _RemoveCommand;
+        private ICommand? _removeCommand;
 
         /// <summary>
         /// Gets or sets the remove command.
@@ -52,8 +48,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// <value>The remove command.</value>
         public ICommand? RemoveCommand
         {
-            get => _RemoveCommand;
-            set => SetAndRaise(RemoveCommandProperty!, ref _RemoveCommand, value);
+            get => _removeCommand;
+            set => SetAndRaise(RemoveCommandProperty!, ref _removeCommand, value);
         }
 
         /// <summary>

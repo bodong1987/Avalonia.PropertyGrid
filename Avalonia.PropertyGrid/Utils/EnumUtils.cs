@@ -1,12 +1,9 @@
-﻿using Avalonia.PropertyGrid.Controls;
-using PropertyModels.ComponentModel;
+﻿using PropertyModels.ComponentModel;
 using PropertyModels.Extensions;
 using Avalonia.PropertyGrid.Services;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace Avalonia.PropertyGrid.Utils
 {

@@ -1,6 +1,4 @@
 ﻿using Avalonia.Controls;
-using PropertyModels.ComponentModel;
-using System.ComponentModel;
 using System;
 using System.Diagnostics;
 
@@ -13,7 +11,7 @@ namespace Avalonia.PropertyGrid.Controls
     /// <seealso cref="UserControl" />
     public partial class ListElementPlaceholderEdit : UserControl
     {
-        PropertyCellContext? Context;
+        private PropertyCellContext? _context;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ListElementPlaceholderEdit"/> class.
@@ -65,20 +63,20 @@ namespace Avalonia.PropertyGrid.Controls
             Debug.Assert(value.Context != null);
             Debug.Assert(value.Context.Root!=null);
 
-            Context = new PropertyCellContext(value.Context, value.List, value.Property);
+            _context = new PropertyCellContext(value.Context, value.List, value.Property);
 
-            var control = Context.GetCellEditFactoryCollection().BuildPropertyControl(Context);
+            var control = _context.GetCellEditFactoryCollection().BuildPropertyControl(_context);
             if (control != null)
             {
                 control.Margin = new Thickness(2,2);
 
                 mainBorder.Child = control;
 
-                Debug.Assert(Context.Factory != null);
+                Debug.Assert(_context.Factory != null);
 
-                Context.Factory!.HandleReadOnlyStateChanged(control, Context.IsReadOnly || value.IsReadOnly);
+                _context.Factory!.HandleReadOnlyStateChanged(control, _context.IsReadOnly || value.IsReadOnly);
 
-                Context.Factory.HandlePropertyChanged(Context);
+                _context.Factory.HandlePropertyChanged(_context);
             }
         }
 
@@ -92,12 +90,12 @@ namespace Avalonia.PropertyGrid.Controls
                 return;
             }
 
-            if(Context != null && Context.Factory != null)
+            if(_context != null && _context.Factory != null)
             {
-                Debug.Assert(Context!=null);
-                Debug.Assert(Context!.CellEdit != null);
+                Debug.Assert(_context!=null);
+                Debug.Assert(_context!.CellEdit != null);
 
-                Context.Factory.HandlePropertyChanged(Context);
+                _context.Factory.HandlePropertyChanged(_context);
             }
         }
     }

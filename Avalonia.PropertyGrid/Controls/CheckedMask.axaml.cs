@@ -2,7 +2,6 @@
 using Avalonia.Controls.Primitives;
 using Avalonia.PropertyGrid.Localization;
 using PropertyModels.ComponentModel;
-using System;
 using Avalonia.Reactive;
 using System.Diagnostics;
 
@@ -18,7 +17,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The model
         /// </summary>
-        CheckedMaskModel? _Model;
+        private CheckedMaskModel? _model;
 
         /// <summary>
         /// The model property
@@ -26,8 +25,8 @@ namespace Avalonia.PropertyGrid.Controls
         public static readonly DirectProperty<CheckedMask, CheckedMaskModel> ModelProperty =
             AvaloniaProperty.RegisterDirect<CheckedMask, CheckedMaskModel>(
                 nameof(Model),
-                o => o._Model!,
-                (o, v) => o.SetAndRaise(ModelProperty!, ref o._Model!, v)
+                o => o._model!,
+                (o, v) => o.SetAndRaise(ModelProperty!, ref o._model!, v)
                 );
 
         /// <summary>
@@ -38,11 +37,11 @@ namespace Avalonia.PropertyGrid.Controls
         {
             get 
             {
-                Debug.Assert(_Model != null); 
-                return _Model;
+                Debug.Assert(_model != null); 
+                return _model;
             }
 
-            set => SetAndRaise(ModelProperty, ref _Model!, value);
+            set => SetAndRaise(ModelProperty, ref _model!, value);
         }
 
         /// <summary>
@@ -111,7 +110,7 @@ namespace Avalonia.PropertyGrid.Controls
             allButton.HorizontalContentAlignment = Layout.HorizontalAlignment.Center;
 
             // allButton.Content = value.All;
-            allButton.SetLocalizeBinding(ToggleButton.ContentProperty, value.All);
+            allButton.SetLocalizeBinding(ContentProperty, value.All);
 
             allButton.IsCheckedChanged += (s, e) =>
             {
@@ -144,7 +143,7 @@ namespace Avalonia.PropertyGrid.Controls
                 button.HorizontalContentAlignment = Layout.HorizontalAlignment.Center;
 
                 //button.Content = mask.ToString();
-                button.SetLocalizeBinding(ToggleButton.ContentProperty, mask);
+                button.SetLocalizeBinding(ContentProperty, mask);
 
                 button.IsCheckedChanged += (s, e) =>
                 {

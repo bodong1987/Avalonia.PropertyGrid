@@ -1,11 +1,8 @@
 ﻿using Avalonia.Controls;
 using PropertyModels.ComponentModel;
-using PropertyModels.Extensions;
 using Avalonia.PropertyGrid.Utils;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
@@ -42,7 +39,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             TextBox control = new TextBox();
 
-            control.VerticalContentAlignment = Avalonia.Layout.VerticalAlignment.Center;
+            control.VerticalContentAlignment = Layout.VerticalAlignment.Center;
             control.FontFamily = FontUtils.DefaultFontFamily;
             control.IsEnabled = converter != null && 
                 converter.CanConvertFrom(typeof(string)) && 
