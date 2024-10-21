@@ -139,7 +139,7 @@ namespace PropertyModels.Localization
                     {
                         begin = i;
                     }
-                    else if(endPos != -1)
+                    else
                     {
                         endPos = i;
 
