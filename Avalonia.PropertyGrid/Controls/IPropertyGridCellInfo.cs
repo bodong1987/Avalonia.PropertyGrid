@@ -59,7 +59,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Gets the context.
         /// </summary>
         /// <value>The context.</value>
-        PropertyCellContext Context { get; }
+        PropertyCellContext? Context { get; }
 
         /// <summary>
         /// Gets the reference path.

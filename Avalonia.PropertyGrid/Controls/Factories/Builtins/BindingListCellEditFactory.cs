@@ -94,7 +94,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// Handles the property changed.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         public override bool HandlePropertyChanged(PropertyCellContext context)
         {
             if (!IsAcceptType(context.Property))
@@ -349,7 +349,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <param name="e">The <see cref="ListRoutedEventArgs"/> instance containing the event data.</param>
         /// <param name="context">The context.</param>
         /// <param name="control">The control.</param>
-        protected virtual void HandleElementValueChanged(object s, ListRoutedEventArgs e, PropertyCellContext context, ListEdit control)
+        protected virtual void HandleElementValueChanged(object? s, ListRoutedEventArgs e, PropertyCellContext context, ListEdit control)
         {
             // element has been changed
             // we just raise event, so property grid can refresh ui...

@@ -70,12 +70,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// Handles the property changed.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         public override bool HandlePropertyChanged(PropertyCellContext context)
         {
             var propertyDescriptor = context.Property;
             var target = context.Target;
-            var control = context.CellEdit;
+            var control = context.CellEdit!;
 
             if (propertyDescriptor.PropertyType != typeof(FontFamily))
             {
@@ -86,7 +86,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (control is ComboBox cb)
             {
-                FontFamily value = propertyDescriptor.GetValue(target) as FontFamily;
+                var value = propertyDescriptor.GetValue(target) as FontFamily;
                 cb.SelectedItem = value;
                 return true;
             }

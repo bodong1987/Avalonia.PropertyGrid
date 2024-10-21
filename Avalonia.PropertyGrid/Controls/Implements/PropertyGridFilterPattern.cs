@@ -69,7 +69,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
             }
         }
 
-        public bool Match(PropertyDescriptor propertyDescriptor, object context)
+        public bool Match(PropertyDescriptor propertyDescriptor, object? context)
         {
             var displayName = LocalizationService.Default[propertyDescriptor.DisplayName];
 

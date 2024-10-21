@@ -32,48 +32,48 @@ namespace Avalonia.PropertyGrid.Controls
         public static readonly DirectProperty<ListEdit, IList> DataListProperty =
             AvaloniaProperty.RegisterDirect<ListEdit, IList>(
                 nameof(DataList),
-                o => o.DataList,
+                o => o.DataList!,
                 (o, v) => o.DataList = v
                 );
 
         /// <summary>
         /// The data list
         /// </summary>
-        IList _DataList;
+        IList? _DataList;
         /// <summary>
         /// Gets or sets the data list.
         /// </summary>
         /// <value>The data list.</value>
-        public IList DataList
+        public IList? DataList
         {
             get => _DataList;
-            set => SetAndRaise(DataListProperty, ref _DataList, value);
+            set => SetAndRaise(DataListProperty!, ref _DataList, value);
         }
         #endregion
 
         #region Commands
         /// <summary>
-        /// Creates new elementcommandproperty.
+        /// Creates new element command property.
         /// </summary>
         public static readonly DirectProperty<ListEdit, ICommand> NewElementCommandProperty =
             AvaloniaProperty.RegisterDirect<ListEdit, ICommand>(
                 nameof(NewElementCommand),
-                o => o.NewElementCommand,
+                o => o.NewElementCommand!,
                 (o, v) => o.NewElementCommand = v
                 );
 
         /// <summary>
         /// The new element command
         /// </summary>
-        ICommand _NewElementCommand;
+        ICommand? _NewElementCommand;
         /// <summary>
-        /// Creates new elementcommand.
+        /// Creates new element command.
         /// </summary>
         /// <value>The new element command.</value>
-        public ICommand NewElementCommand
+        public ICommand? NewElementCommand
         {
             get => _NewElementCommand;
-            set => SetAndRaise(NewElementCommandProperty, ref _NewElementCommand, value);
+            set => SetAndRaise(NewElementCommandProperty!, ref _NewElementCommand, value);
         }
 
         /// <summary>
@@ -82,22 +82,22 @@ namespace Avalonia.PropertyGrid.Controls
         public static readonly DirectProperty<ListEdit, ICommand> ClearElementsCommandProperty =
             AvaloniaProperty.RegisterDirect<ListEdit, ICommand>(
                 nameof(ClearElementsCommand),
-                o => o.ClearElementsCommand,
+                o => o.ClearElementsCommand!,
                 (o, v) => o.ClearElementsCommand = v
                 );
 
         /// <summary>
         /// The clear elements command
         /// </summary>
-        ICommand _ClearElementsCommand;
+        ICommand? _ClearElementsCommand;
         /// <summary>
         /// Gets or sets the clear elements command.
         /// </summary>
         /// <value>The clear elements command.</value>
-        public ICommand ClearElementsCommand
+        public ICommand? ClearElementsCommand
         {
             get => _ClearElementsCommand;
-            set => SetAndRaise(ClearElementsCommandProperty, ref _ClearElementsCommand, value);
+            set => SetAndRaise(ClearElementsCommandProperty!, ref _ClearElementsCommand, value);
         }
         #endregion
 
@@ -239,7 +239,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Handles the new element.
         /// </summary>
         /// <param name="parameter">The parameter.</param>
-        private void HandleNewElement(object parameter)
+        private void HandleNewElement(object? parameter)
         {
             var et = new ListRoutedEventArgs(NewElementEvent, _DataList, -1);
             RaiseEvent(et);
@@ -249,7 +249,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Handles the clear elements.
         /// </summary>
         /// <param name="parameter">The parameter.</param>
-        private void HandleClearElements(object parameter)
+        private void HandleClearElements(object? parameter)
         {
             var et = new ListRoutedEventArgs(ClearElementsEvent, _DataList, -1);
             RaiseEvent(et);
@@ -259,7 +259,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Handles the insert element.
         /// </summary>
         /// <param name="parameter">The parameter.</param>
-        private void HandleInsertElement(object parameter)
+        private void HandleInsertElement(object? parameter)
         {
             if(parameter is ListElementDataDesc desc)
             {
@@ -272,7 +272,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Handles the remove element.
         /// </summary>
         /// <param name="parameter">The parameter.</param>
-        private void HandleRemoveElement(object parameter)
+        private void HandleRemoveElement(object? parameter)
         {
             if (parameter is ListElementDataDesc desc)
             {
@@ -286,7 +286,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="ListChangedEventArgs"/> instance containing the event data.</param>
-        private void OnListChanged(object sender, ListChangedEventArgs e)
+        private void OnListChanged(object? sender, ListChangedEventArgs e)
         {
             if (e.ListChangedType == ListChangedType.Reset ||
                 e.ListChangedType == ListChangedType.ItemDeleted ||
@@ -322,7 +322,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Gets the array.
         /// </summary>
         /// <value>The array.</value>
-        public IList List { get; internal set; }
+        public IList? List { get; internal set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ListRoutedEventArgs" /> class.
@@ -330,7 +330,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="routedEvent">The routed event.</param>
         /// <param name="list">The list.</param>
         /// <param name="index">The index.</param>
-        public ListRoutedEventArgs(RoutedEvent routedEvent, IList list, int index) :
+        public ListRoutedEventArgs(RoutedEvent routedEvent, IList? list, int index) :
             base(routedEvent)
         {
             List = list;
@@ -535,7 +535,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Occurs when [value changed].
         /// </summary>
-        public event EventHandler ValueChanged;
+        public event EventHandler? ValueChanged;
 
         /// <summary>
         /// Gets a value indicating whether this instance is editable.
@@ -562,7 +562,7 @@ namespace Avalonia.PropertyGrid.Controls
             ListViewModel model, 
             IList list,
             ListElementPropertyDescriptor property,
-            PropertyCellContext context,
+            PropertyCellContext? context,
             ICommand insertCommand,
             ICommand removeCommand
             )
@@ -588,7 +588,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="PropertyChangedEventArgs"/> instance containing the event data.</param>
-        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if(e.PropertyName == nameof(Model.IsEditable))
             {
@@ -605,7 +605,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="ListChangedEventArgs"/> instance containing the event data.</param>
-        private void OnListChanged(object sender, ListChangedEventArgs e)
+        private void OnListChanged(object? sender, ListChangedEventArgs e)
         {
             if(e.ListChangedType != ListChangedType.ItemChanged || e.NewIndex != Property.Index)
             {

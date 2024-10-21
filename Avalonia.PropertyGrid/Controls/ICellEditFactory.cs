@@ -35,7 +35,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Check available for target
         /// </summary>
         /// <param name="accessToken">The access token.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         bool Accept(object accessToken);
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Handles the property changed.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         bool HandlePropertyChanged(PropertyCellContext context);
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="context">The context.</param>
         /// <param name="filterContext">The filter context.</param>
         /// <returns>System.Nullable&lt;PropertyVisibility&gt;.</returns>
-        PropertyVisibility? HandlePropagateVisibility(object target, PropertyCellContext context, IPropertyGridFilterContext filterContext);
+        PropertyVisibility? HandlePropagateVisibility(object? target, PropertyCellContext context, IPropertyGridFilterContext filterContext);
 
         /// <summary>
         /// Handles readonly flag changed
@@ -84,7 +84,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The root
         /// </summary>
-        public readonly IPropertyGrid Root;
+        public readonly IPropertyGrid? Root;
 
         /// <summary>
         /// The owner
@@ -121,7 +121,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The parent
         /// </summary>
-        public readonly PropertyCellContext ParentContext;
+        public readonly PropertyCellContext? ParentContext;
 
         /// <summary>
         /// If this property should be readonly
@@ -143,6 +143,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// <returns>ICellEditFactoryCollection.</returns>
         public ICellEditFactoryCollection GetCellEditFactoryCollection()
         {
+            Debug.Assert(Root != null);
+
             return Root.GetCellEditFactoryCollection();
         }
 
@@ -155,7 +157,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="target">The target.</param>
         /// <param name="property">The property.</param>
         /// <param name="cellEdit">The cell edit.</param>
-        public PropertyCellContext(PropertyCellContext parentContext, IPropertyGrid root, IPropertyGrid owner, object target, PropertyDescriptor property, Control? cellEdit = null) 
+        public PropertyCellContext(PropertyCellContext? parentContext, IPropertyGrid root, IPropertyGrid owner, object target, PropertyDescriptor property, Control? cellEdit = null) 
         {
             ParentContext = parentContext;
             Root = root;

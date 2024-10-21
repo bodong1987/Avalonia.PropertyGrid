@@ -49,13 +49,13 @@ namespace Avalonia.PropertyGrid.Controls
         /// Gets the filter pattern.
         /// </summary>
         /// <value>The filter pattern.</value>
-        IFilterPattern FilterPattern { get; }
+        IFilterPattern? FilterPattern { get; }
 
         /// <summary>
         /// Gets the fast filter pattern.
         /// </summary>
         /// <value>The fast filter pattern.</value>
-        ICheckedMaskModel FastFilterPattern { get; }
+        ICheckedMaskModel? FastFilterPattern { get; }
 
         /// <summary>
         /// Propagates the visibility.

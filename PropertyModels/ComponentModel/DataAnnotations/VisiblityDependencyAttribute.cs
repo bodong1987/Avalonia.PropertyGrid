@@ -25,7 +25,7 @@ namespace PropertyModels.ComponentModel.DataAnnotations
         /// </summary>
         /// <param name="component">The component.</param>
         /// <returns><c>true</c> if visible, <c>false</c> otherwise.</returns>
-        public abstract bool CheckVisibility(object component);
+        public abstract bool CheckVisibility(object? component);
     }
 
     /// <summary>

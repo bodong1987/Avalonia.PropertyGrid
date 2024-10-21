@@ -90,13 +90,13 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// <value>The filter pattern.</value>
         public IFilterPattern FilterPattern { get; set; } = new PropertyGridFilterPattern();
                 
-        object _Context;
+        object? _Context;
 
         /// <summary>
         /// Gets or sets the context.
         /// </summary>
         /// <value>The context.</value>
-        public object Context
+        public object? Context
         {
             get => _Context;
             set => this.RaiseAndSetIfChanged(ref _Context, value);
@@ -215,12 +215,13 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// <summary>
         /// The category filter
         /// </summary>
-        CheckedMaskModel _CategoryFilter;
+        CheckedMaskModel? _CategoryFilter;
+
         /// <summary>
         /// Gets or sets the category filter.
         /// </summary>
         /// <value>The category filter.</value>
-        public CheckedMaskModel CategoryFilter
+        public CheckedMaskModel? CategoryFilter
         {
             get => _CategoryFilter;
             set => this.RaiseAndSetIfChanged(ref _CategoryFilter, value);
@@ -230,7 +231,7 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// Gets the fast filter pattern.
         /// </summary>
         /// <value>The fast filter pattern.</value>
-        public ICheckedMaskModel FastFilterPattern => CategoryFilter;
+        public ICheckedMaskModel? FastFilterPattern => CategoryFilter;
 
         /// <summary>
         /// Gets all properties.
@@ -248,18 +249,18 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// Occurs when [filter changed].
         /// it means we need recreate all properties
         /// </summary>
-        public event EventHandler PropertyDescriptorChanged;
+        public event EventHandler? PropertyDescriptorChanged;
 
         /// <summary>
         /// Occurs when [filter changed].
         /// it means we need show or hide some property
         /// </summary>
-        public event EventHandler FilterChanged;
+        public event EventHandler? FilterChanged;
 
 		/// <summary>
 		/// Occurs when [custom property descriptor filter].
 		/// </summary>
-		public event EventHandler<CustomPropertyDescriptorFilterEventArgs> CustomPropertyDescriptorFilter;
+		public event EventHandler<CustomPropertyDescriptorFilterEventArgs>? CustomPropertyDescriptorFilter;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyGridViewModel" /> class.
@@ -284,7 +285,7 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="PropertyChangedEventArgs" /> instance containing the event data.</param>
-        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(Context))
             {
@@ -336,12 +337,14 @@ namespace Avalonia.PropertyGrid.ViewModels
             }
         }
 
-        PropertyVisibility PropagateVisibility(IPropertyGridCellInfo cellInfo, object target, FilterCategory category = FilterCategory.Default)
+        PropertyVisibility PropagateVisibility(IPropertyGridCellInfo cellInfo, object? target, FilterCategory category = FilterCategory.Default)
         {
             PropertyVisibility visibility = PropertyVisibility.AlwaysVisible;
 
             if(cellInfo.CellType == PropertyGridCellType.Cell)
             {
+                Debug.Assert(cellInfo.Context != null);
+
                 var property = cellInfo.Context.Property;
 
                 Debug.Assert(property != null);
@@ -464,7 +467,7 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-        private void OnCategoryFilterChanged(object sender, EventArgs e)
+        private void OnCategoryFilterChanged(object? sender, EventArgs e)
         {
             FilterProperties();   
 

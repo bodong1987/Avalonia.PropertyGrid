@@ -87,12 +87,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// Handles the property changed.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         public override bool HandlePropertyChanged(PropertyCellContext context)
         {
             var propertyDescriptor = context.Property;
             var target = context.Target;
-            var control = context.CellEdit;
+            var control = context.CellEdit!;
 
             if (!IsAvailableColorType(propertyDescriptor))
             {
@@ -107,24 +107,24 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             {
                 if (type == typeof(Color))
                 {
-                    Color color = (Color)propertyDescriptor.GetValue(target);
+                    Color color = (Color)propertyDescriptor.GetValue(target)!;
                     colorPicker.Color = Media.Color.FromArgb(color.A, color.R, color.G, color.B);
                 }
                 else if (type == typeof(Avalonia.Media.Color))
                 {
-                    Media.Color color = (Media.Color)propertyDescriptor.GetValue(target);
+                    Media.Color color = (Media.Color)propertyDescriptor.GetValue(target)!;
 
                     colorPicker.Color = color;
                 }
                 else if (type == typeof(Avalonia.Media.HslColor))
                 {
-                    Media.HslColor color = (Media.HslColor)propertyDescriptor.GetValue(target);
+                    Media.HslColor color = (Media.HslColor)propertyDescriptor.GetValue(target)!;
 
                     colorPicker.Color = color.ToRgb();
                 }
                 else if (type == typeof(Avalonia.Media.HsvColor))
                 {
-                    Media.HsvColor color = (Media.HsvColor)propertyDescriptor.GetValue(target);
+                    Media.HsvColor color = (Media.HsvColor)propertyDescriptor.GetValue(target)!;
 
                     colorPicker.Color = color.ToRgb();
                 }

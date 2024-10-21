@@ -44,7 +44,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return null;
             }
 
-            WatermarkAttribute watermarkAttr = propertyDescriptor.GetCustomAttribute<WatermarkAttribute>();
+            var watermarkAttr = propertyDescriptor.GetCustomAttribute<WatermarkAttribute>();
 
             TextBox control = new TextBox();
             control.Text = propertyDescriptor.GetValue(target) as string;
@@ -62,7 +62,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 control.PasswordChar = '*';
             }
 
-            MultilineTextAttribute multilineAttr = propertyDescriptor.GetCustomAttribute<MultilineTextAttribute>();
+            var multilineAttr = propertyDescriptor.GetCustomAttribute<MultilineTextAttribute>();
 
             if (multilineAttr != null && multilineAttr.IsMultiline)
             {
@@ -89,12 +89,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// Handles the property changed.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         public override bool HandlePropertyChanged(PropertyCellContext context)
         {
             var propertyDescriptor = context.Property;
             var target = context.Target;
-            var control = context.CellEdit;
+            var control = context.CellEdit!;
 
             if (propertyDescriptor.PropertyType != typeof(string))
             {

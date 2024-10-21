@@ -55,12 +55,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             {
                 control.LostFocus += (s, e) =>
                 {
-                    string value = control.Text;
+                    var value = control.Text ?? string.Empty;
 
                     try
                     {
                         DataValidationErrors.ClearErrors(control);
-                        var obj = converter.ConvertFrom(value);
+                        var obj = converter!.ConvertFrom(value);
                         SetAndRaise(context, control, obj);
                     }
                     catch (Exception ee)
@@ -73,12 +73,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 {
                     if (e.Key == Input.Key.Enter)
                     {
-                        string value = control.Text;
+                        string value = control!.Text ?? string.Empty;
 
                         try
                         {
                             DataValidationErrors.ClearErrors(control);
-                            var obj = converter.ConvertFrom(value);
+                            var obj = converter!.ConvertFrom(value);
                             SetAndRaise(context, control, obj);
                         }
                         catch (Exception ee)
@@ -96,7 +96,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// Handles the property changed.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         public override bool HandlePropertyChanged(PropertyCellContext context)
         {
             var propertyDescriptor = context.Property;

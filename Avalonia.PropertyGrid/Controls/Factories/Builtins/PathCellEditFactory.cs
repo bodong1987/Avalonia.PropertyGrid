@@ -41,8 +41,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return null;
             }
 
-            PathBrowsableAttribute attribute = propertyDescriptor.GetCustomAttribute<PathBrowsableAttribute>();
-            WatermarkAttribute watermarkAttr = propertyDescriptor.GetCustomAttribute<WatermarkAttribute>();
+            var attribute = propertyDescriptor.GetCustomAttribute<PathBrowsableAttribute>()!;
+            var watermarkAttr = propertyDescriptor.GetCustomAttribute<WatermarkAttribute>();
 
             ButtonEdit control = new ButtonEdit();
             control.Text = propertyDescriptor.GetValue(target) as string;
@@ -60,7 +60,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     attribute.InitialFileName = control.Text;
                 }
 
-                var files = await PathBrowserUtils.ShowPathBrowserAsync(control.GetVisualRoot() as Window, attribute);
+                var files = await PathBrowserUtils.ShowPathBrowserAsync((control.GetVisualRoot() as Window)!, attribute);
 
                 if (files != null && files.Length > 0)
                 {
@@ -89,12 +89,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// Handles the property changed.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         public override bool HandlePropertyChanged(PropertyCellContext context)
         {
             var propertyDescriptor = context.Property;
             var target = context.Target;
-            var control = context.CellEdit;
+            var control = context.CellEdit!;
 
             if (propertyDescriptor.PropertyType != typeof(string) || !propertyDescriptor.IsDefined<PathBrowsableAttribute>())
             {

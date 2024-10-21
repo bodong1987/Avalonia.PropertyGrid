@@ -45,17 +45,17 @@ namespace PropertyModels.ComponentModel
         /// <summary>
         /// The old value
         /// </summary>
-        public readonly object OldValue;
+        public readonly object? OldValue;
 
         /// <summary>
         /// Creates new value.
         /// </summary>
-        public readonly object NewValue;
+        public readonly object? NewValue;
 
         /// <summary>
         /// The context
         /// </summary>
-        public readonly object Context;
+        public readonly object? Context;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandExecutingEventArgs" /> class.
@@ -66,7 +66,7 @@ namespace PropertyModels.ComponentModel
         /// <param name="oldValue">The old value.</param>
         /// <param name="newValue">The new value.</param>
         /// <param name="context">The context.</param>
-        public CommandExecutingEventArgs(ICancelableCommand command, object target, PropertyDescriptor property, object oldValue, object newValue, object context)
+        public CommandExecutingEventArgs(ICancelableCommand command, object target, PropertyDescriptor property, object? oldValue, object? newValue, object? context)
         {
             Command = command;
             Target = target;

@@ -51,7 +51,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                 control.SelectedItemsChanged += (s, e) =>
                 {
-                    Enum selectedValue = ConvertSelectedItemToEnum(propertyDescriptor.PropertyType, control.SelectedItems);
+                    var selectedValue = ConvertSelectedItemToEnum(propertyDescriptor.PropertyType, control.SelectedItems);
 
                     if ((propertyDescriptor.GetValue(target) as Enum)?.ToString() != selectedValue?.ToString())
                     {
@@ -74,7 +74,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                     if (item != null)
                     {
-                        var v = (item as EnumValueWrapper).Value;
+                        var v = (item as EnumValueWrapper)!.Value;
 
                         if (v != propertyDescriptor.GetValue(target) as Enum)
                         {
@@ -91,12 +91,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// Handles the property changed.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         public override bool HandlePropertyChanged(PropertyCellContext context)
         {
             var propertyDescriptor = context.Property;
             var target = context.Target;
-            var control = context.CellEdit;
+            var control = context.CellEdit!;
 
             if (!propertyDescriptor.PropertyType.IsEnum)
             {
@@ -107,8 +107,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (control is CheckedListEdit c)
             {
-                Enum value = propertyDescriptor.GetValue(target) as Enum;
-                Enum selectedValue = ConvertSelectedItemToEnum(propertyDescriptor.PropertyType, c.SelectedItems);
+                var value = propertyDescriptor.GetValue(target) as Enum;
+                var selectedValue = ConvertSelectedItemToEnum(propertyDescriptor.PropertyType, c.SelectedItems);
 
                 if (value?.ToString() != selectedValue?.ToString())
                 {
@@ -117,7 +117,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                     try
                     {
-                        c.SelectedItems = value.GetUniqueFlags().Select(x => new EnumValueWrapper(x as Enum)).ToArray();
+                        c.SelectedItems = value!.GetUniqueFlags().Where(x=> x is Enum).Select(x => new EnumValueWrapper(x!)).ToArray();
                     }
                     finally
                     {
@@ -129,8 +129,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             }
             else if (control is ComboBox cb)
             {
-                Enum value = propertyDescriptor.GetValue(target) as Enum;
-                cb.SelectedItem = new EnumValueWrapper(value);
+                var value = propertyDescriptor.GetValue(target) as Enum;
+                cb.SelectedItem = new EnumValueWrapper(value!);
                 return true;
             }
 
@@ -143,11 +143,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <param name="enumType">Type of the enum.</param>
         /// <param name="items">The items.</param>
         /// <returns>Enum.</returns>
-        private static Enum ConvertSelectedItemToEnum(Type enumType, object[] items)
+        private static Enum? ConvertSelectedItemToEnum(Type enumType, object[] items)
         {
             if (items.Length == 0)
             {
-                return default(Enum);
+                return default;
             }
             else if (items.Length == 1)
             {

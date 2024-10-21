@@ -192,7 +192,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Gets or sets the root property grid.
         /// </summary>
         /// <value>The root property grid.</value>
-        public IPropertyGrid RootPropertyGrid { get; set; }
+        public IPropertyGrid? RootPropertyGrid { get; set; }
 
         /// <summary>
         /// The custom property descriptor filter event
@@ -274,7 +274,7 @@ namespace Avalonia.PropertyGrid.Controls
             column_name.PropertyChanged += OnColumnNamePropertyChanged;
         }
 
-        private void OnCustomPropertyDescriptorFilter(object sender, CustomPropertyDescriptorFilterEventArgs e)
+        private void OnCustomPropertyDescriptorFilter(object? sender, CustomPropertyDescriptorFilterEventArgs e)
         {
             if (RootPropertyGrid is PropertyGrid pg)
             {
@@ -286,7 +286,7 @@ namespace Avalonia.PropertyGrid.Controls
             }
         }
 
-        private void BroadcastCustomPropertyDescriptorFilterEvent(object sender, CustomPropertyDescriptorFilterEventArgs e)
+        private void BroadcastCustomPropertyDescriptorFilterEvent(object? sender, CustomPropertyDescriptorFilterEventArgs e)
         {
             RaiseEvent(e);
         }
@@ -307,7 +307,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="PropertyChangedEventArgs"/> instance containing the event data.</param>
-        private void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(ViewModel.ShowStyle))
             {
@@ -368,7 +368,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <returns>IPropertyGrid.</returns>
         public virtual IPropertyGrid ClonePropertyGrid()
         {
-            return Activator.CreateInstance(GetType()) as IPropertyGrid;
+            return (Activator.CreateInstance(GetType()) as IPropertyGrid)!;
         }
 
         /// <summary>
@@ -398,9 +398,9 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <param name="oldValue">The old value.</param>
         /// <param name="newValue">The new value.</param>
-        private void OnAllowFilterChanged(object oldValue, object newValue)
+        private void OnAllowFilterChanged(object? oldValue, object? newValue)
         {
-            headerGrid.IsVisible = (bool)newValue;
+            headerGrid.IsVisible = (bool)newValue!;
         }
 
         private static void OnNameWidthChanged(AvaloniaPropertyChangedEventArgs e)
@@ -411,9 +411,9 @@ namespace Avalonia.PropertyGrid.Controls
             }
         }
 
-        private void OnNameWidthChanged(object oldValue, object newValue)
+        private void OnNameWidthChanged(object? oldValue, object? newValue)
         {
-            this.splitterGrid.ColumnDefinitions[0].Width = new GridLength((double)newValue);
+            this.splitterGrid.ColumnDefinitions[0].Width = new GridLength((double)newValue!);
         }
 
         /// <summary>
@@ -510,7 +510,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void OnPropertyDescriptorChanged(object sender, EventArgs e)
+        private void OnPropertyDescriptorChanged(object? sender, EventArgs e)
         {
             BuildPropertiesView();
         }
@@ -521,7 +521,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void OnFilterChanged(object sender, EventArgs e)
+        private void OnFilterChanged(object? sender, EventArgs e)
         {
             RefreshVisibilities();
         }
@@ -655,7 +655,7 @@ namespace Avalonia.PropertyGrid.Controls
             object target,
             ReferencePath referencePath,
             IEnumerable<PropertyDescriptor> properties,
-            Expander expander,
+            Expander? expander,
             Grid grid,
             IPropertyGridCellInfoContainer container
             )
@@ -689,7 +689,7 @@ namespace Avalonia.PropertyGrid.Controls
             object target,
             ReferencePath referencePath,
             PropertyDescriptor propertyDescriptor,
-            Expander expander,
+            Expander? expander,
             Grid grid,
             IPropertyGridCellInfoContainer container
             )
@@ -826,11 +826,11 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="AvaloniaPropertyChangedEventArgs"/> instance containing the event data.</param>
-        private void OnColumnNamePropertyChanged(object sender, AvaloniaPropertyChangedEventArgs e)
+        private void OnColumnNamePropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
         {
             if (e.Property == TextBlock.BoundsProperty)
             {
-                double width = (sender as TextBlock).Bounds.Width;
+                double width = (sender as TextBlock)!.Bounds.Width;
 
                 SyncNameWidth(width, false);
             }
@@ -886,9 +886,9 @@ namespace Avalonia.PropertyGrid.Controls
             }
         }
 
-        private void OnCellPropertyChanged(object sender, CellPropertyChangedEventArgs e)
+        private void OnCellPropertyChanged(object? sender, CellPropertyChangedEventArgs e)
         {
-            if (e.Cell != null && e.Cell.Context.Property != null && e.Cell.Context.Property.IsDefined<ConditionTargetAttribute>())
+            if (e.Cell != null && e.Cell.Context?.Property != null && e.Cell.Context.Property.IsDefined<ConditionTargetAttribute>())
             {
                 RefreshVisibilities();
             }

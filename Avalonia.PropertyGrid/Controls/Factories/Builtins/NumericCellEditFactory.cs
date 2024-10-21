@@ -69,7 +69,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                 if(formatAttr != null)
                 {
-                    control.FormatString = formatAttr.ToString();
+                    control.FormatString = formatAttr.ToString()!;
                 }
             }
             else
@@ -87,7 +87,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                     if (formatAttr != null)
                     {
-                        control.FormatString = formatAttr.ToString();
+                        control.FormatString = formatAttr.ToString()!;
                     }
                 }                
             }
@@ -96,7 +96,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             {
                 try
                 {
-                    object value = Convert.ChangeType(control.Value, propertyDescriptor.PropertyType);
+                    var value = Convert.ChangeType(control.Value, propertyDescriptor.PropertyType);
                     SetAndRaise(context, control, value);
                 }
                 catch(Exception ex)
@@ -112,12 +112,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// Handles the property changed.
         /// </summary>
         /// <param name="context">The context.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
+        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         public override bool HandlePropertyChanged(PropertyCellContext context)
         {
             var propertyDescriptor = context.Property;
             var target = context.Target;
-            var control = context.CellEdit;
+            var control = context.CellEdit!;
 
             if (!propertyDescriptor.PropertyType.IsNumericType())
             {
@@ -128,7 +128,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (control is NumericUpDown nup)
             {
-                if(Decimal.TryParse(((double)Convert.ChangeType(propertyDescriptor.GetValue(target), typeof(double))).ToString(), out var d))
+                if(Decimal.TryParse(((double)Convert.ChangeType(propertyDescriptor.GetValue(target)!, typeof(double))).ToString(), out var d))
                 {
                     nup.Value = d;
                 }
