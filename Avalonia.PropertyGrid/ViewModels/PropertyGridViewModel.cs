@@ -123,7 +123,7 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// Gets a value indicating whether [show style type].
         /// </summary>
         /// <value><c>null</c> if [show style type] contains no value, <c>true</c> if [show style type]; otherwise, <c>false</c>.</value>
-        public bool ShowStyleType
+        public bool IsCategoryView
         {
             get => ShowStyle == PropertyGridShowStyle.Category;
             set => ShowStyle = value ? PropertyGridShowStyle.Category : PropertyGridShowStyle.Tiled;
