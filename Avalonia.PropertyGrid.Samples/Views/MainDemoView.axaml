@@ -99,11 +99,11 @@
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Grid.Column="2">
                             <TextBlock Text="{ll:Localize FirstObject}"></TextBlock>
-                            <pgc:PropertyGrid x:Name="propertyGrid_MultipleObjects0" Margin="2" DataContext="{Binding multiObject0}"></pgc:PropertyGrid>
+                            <pgc:PropertyGrid x:Name="propertyGrid_MultipleObjects0" IsReadOnly="True" Margin="2" DataContext="{Binding multiObject0}"></pgc:PropertyGrid>
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Grid.Column="4">
                             <TextBlock Text="{ll:Localize SecondObject}"></TextBlock>
-                            <pgc:PropertyGrid x:Name="propertyGrid_MultipleObjects1" Margin="2" DataContext="{Binding multiObject1}"></pgc:PropertyGrid>
+                            <pgc:PropertyGrid x:Name="propertyGrid_MultipleObjects1" IsReadOnly="True" Margin="2" DataContext="{Binding multiObject1}"></pgc:PropertyGrid>
                         </StackPanel>
                     </Grid>
                 </ScrollViewer>

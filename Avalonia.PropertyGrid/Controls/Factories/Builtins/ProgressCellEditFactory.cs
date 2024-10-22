@@ -1,4 +1,5 @@
-﻿using Avalonia.Controls;
+﻿using System;
+using Avalonia.Controls;
 using PropertyModels.ComponentModel;
 using PropertyModels.Extensions;
 
@@ -64,10 +65,17 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (control is ProgressBar progressBar)
             {
-                var value = (double)propertyDescriptor.GetValue(target)!;
+                try
+                {
+                    var value = (double)propertyDescriptor.GetValue(target)!;
 
-                progressBar.Value = value;
-
+                    progressBar.Value = value;
+                }
+                catch(Exception ex)
+                {
+                    DataValidationErrors.SetErrors(control, [ex.Message]);
+                }
+                
                 return true;
             }
 
