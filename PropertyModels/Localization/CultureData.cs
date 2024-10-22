@@ -14,6 +14,7 @@ namespace PropertyModels.Localization
         /// <summary>
         /// The local texts
         /// </summary>
+        // ReSharper disable once FieldCanBeMadeReadOnly.Global
         protected Dictionary<string, string>? LocalTexts = null;
 
         /// <summary>
