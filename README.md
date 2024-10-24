@@ -108,7 +108,7 @@ You can also directly inherit PropertyModel.ComponentModel.MiniReactiveObject, P
 ```  
 set CustomPropertyDescriptorFilter, and add your custom process.  
 ```C#
-private void OnCustomPropertyDescriptorFilter(object sender, CustomPropertyDescriptorFilterEventArgs e)
+private void OnCustomPropertyDescriptorFilter(object? sender, CustomPropertyDescriptorFilterEventArgs e)
 {
 	if(e.TargetObject is SimpleObject simpleObject&& e.PropertyDescriptor.Name == "ThreeStates2")
     {
@@ -172,10 +172,11 @@ There are two ways to provide data validation capabilities:
 1. Throw an exception directly in the setter of the property. But I personally don't recommend this method very much, because if you set this property in the code, it may cause errors by accident. like:
 
 ```C#
-    string _SourceImagePath;
+    string? _SourceImagePath;
     [Category("DataValidation")]
     [PathBrowsable(Filters = "Image Files(*.jpg;*.png;*.bmp;*.tag)|*.jpg;*.png;*.bmp;*.tag")]
-    public string SourceImagePath
+    [Watermark("This path can be validated")]
+    public string? SourceImagePath
     {
         get => _SourceImagePath;
         set
@@ -198,7 +199,7 @@ There are two ways to provide data validation capabilities:
 ```C#
     public class ValidatePlatformAttribute : ValidationAttribute
     {
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
             if (value is CheckedList<PlatformID> id)
             {
@@ -329,7 +330,7 @@ In custom AbstractCellEditFactory, there are only two methods that must be overr
 * HandleNewProperty is used to create the control you want to edit the property, 
 You need to pass the value out through the interface of the framework after the UI edits the data, so as to ensure that other related objects receive the message notification and save the undo redo command.  
 ```C#
-    public override Control HandleNewProperty(PropertyCellContext context)
+    public override Control? HandleNewProperty(PropertyCellContext context)
     {
         var propertyDescriptor = context.Property;
         var target = context.Target;
@@ -357,7 +358,7 @@ You need to pass the value out through the interface of the framework after the 
     {
         var propertyDescriptor = context.Property;
         var target = context.Target;
-        var control = context.CellEdit;
+        var control = context.CellEdit!;
 
         if (propertyDescriptor.PropertyType != typeof(bool))
         {
@@ -368,7 +369,7 @@ You need to pass the value out through the interface of the framework after the 
 
         if (control is ToggleSwitch ts)
         {
-            ts.IsChecked = (bool)propertyDescriptor.GetValue(target);
+            ts.IsChecked = (bool)propertyDescriptor.GetValue(target)!;
 
             return true;
         }
