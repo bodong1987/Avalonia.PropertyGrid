@@ -1,7 +1,7 @@
 ﻿using System.Windows.Input;
 using Avalonia.Controls.Primitives;
 
-namespace Avalonia.PropertyGrid.Controls
+namespace Avalonia.PropertyGrid.Controls.Builtins
 {
     /// <summary>
     /// Class ListElementEdit.

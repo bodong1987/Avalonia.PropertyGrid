@@ -12,7 +12,7 @@ using Avalonia.Reactive;
 using PropertyModels.ComponentModel;
 using PropertyModels.ComponentModel.DataAnnotations;
 
-namespace Avalonia.PropertyGrid.Controls
+namespace Avalonia.PropertyGrid.Controls.Builtins
 {
     /// <summary>
     /// Class ListEdit.

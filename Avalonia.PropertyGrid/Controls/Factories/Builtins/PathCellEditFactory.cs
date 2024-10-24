@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Avalonia.Controls;
+using Avalonia.PropertyGrid.Controls.Builtins;
 using Avalonia.PropertyGrid.Localization;
 using Avalonia.PropertyGrid.Utils;
 using Avalonia.VisualTree;

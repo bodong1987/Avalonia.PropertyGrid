@@ -7,6 +7,7 @@ using Avalonia.Controls;
 using Avalonia.PropertyGrid.Services;
 using PropertyModels.ComponentModel;
 using PropertyModels.Extensions;
+using Avalonia.PropertyGrid.Controls.Builtins;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {

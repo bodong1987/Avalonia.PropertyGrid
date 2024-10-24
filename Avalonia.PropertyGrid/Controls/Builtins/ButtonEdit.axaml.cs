@@ -5,7 +5,7 @@ using Avalonia.Interactivity;
 using Avalonia.Reactive;
 using PropertyModels.ComponentModel;
 
-namespace Avalonia.PropertyGrid.Controls
+namespace Avalonia.PropertyGrid.Controls.Builtins
 {
     /// <summary>
     /// Class ButtonEdit.

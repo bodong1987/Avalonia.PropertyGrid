@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using Avalonia.Controls;
 using Avalonia.Layout;
+using Avalonia.PropertyGrid.Controls.Builtins;
 using Avalonia.PropertyGrid.Utils;
 using PropertyModels.ComponentModel;
 using PropertyModels.Extensions;

@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using Avalonia.Controls;
 
-namespace Avalonia.PropertyGrid.Controls
+namespace Avalonia.PropertyGrid.Controls.Builtins
 {
     /// <summary>
     /// Class ListElementPlaceholderEdit.

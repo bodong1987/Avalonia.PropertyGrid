@@ -3,7 +3,7 @@ using System.Globalization;
 using Avalonia.Controls.Primitives;
 using Avalonia.Data.Converters;
 
-namespace Avalonia.PropertyGrid.Controls
+namespace Avalonia.PropertyGrid.Controls.Builtins
 {
     /// <summary>
     /// Class TrackableEdit.

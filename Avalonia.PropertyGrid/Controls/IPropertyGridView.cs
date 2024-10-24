@@ -30,11 +30,12 @@ public interface IPropertyGridView
     /// is show title now
     /// </summary>
     bool ShowTitle { get; set; }
-    
-    double NameWidth
-    {
-        get; set; 
-    }
+
+    /// <summary>
+    /// Gets or sets the width of the name.
+    /// </summary>
+    /// <value>The width of the name.</value>
+    double NameWidth { get; set; }
 
     /// <summary>
     /// call on enter this view state
@@ -46,8 +47,20 @@ public interface IPropertyGridView
     /// </summary>
     void OnLeaveState();
 
+    /// <summary>
+    /// Refreshes this instance.
+    /// </summary>
     void Refresh();
 
+    /// <summary>
+    /// Gets the expandable object cache.
+    /// </summary>
+    /// <returns>IExpandableObjectCache.</returns>
     IExpandableObjectCache GetExpandableObjectCache();
+
+    /// <summary>
+    /// Gets the cell information cache.
+    /// </summary>
+    /// <returns>IPropertyGridCellInfoCache.</returns>
     IPropertyGridCellInfoCache GetCellInfoCache();
 }

@@ -14,13 +14,37 @@ using PropertyModels.Extensions;
 
 namespace Avalonia.PropertyGrid.Controls;
 
+/// <summary>
+/// Class PropertyGridTiledView.
+/// Implements the <see cref="UserControl" />
+/// Implements the <see cref="Avalonia.PropertyGrid.Controls.IPropertyGridView" />
+/// </summary>
+/// <seealso cref="UserControl" />
+/// <seealso cref="Avalonia.PropertyGrid.Controls.IPropertyGridView" />
 public partial class PropertyGridTiledView : UserControl, IPropertyGridView
 {
+    /// <summary>
+    /// Gets the owner.
+    /// </summary>
+    /// <value>The owner.</value>
     public PropertyGrid? Owner { get; internal set; }
+    /// <summary>
+    /// Gets the view model.
+    /// </summary>
+    /// <value>The view model.</value>
     internal PropertyGridViewModel ViewModel => Owner!.ViewModel;
+    /// <summary>
+    /// The expandable object cache
+    /// </summary>
     private readonly IExpandableObjectCache _expandableObjectCache = new PropertyGridExpandableCache();
+    /// <summary>
+    /// The cell information cache
+    /// </summary>
     private readonly IPropertyGridCellInfoCache _cellInfoCache = new PropertyGridCellInfoCache();
-    
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PropertyGridTiledView"/> class.
+    /// </summary>
     public PropertyGridTiledView()
     {
         InitializeComponent();
@@ -28,36 +52,57 @@ public partial class PropertyGridTiledView : UserControl, IPropertyGridView
         ColumnName.PropertyChanged += OnColumnNamePropertyChanged;
     }
 
+    /// <summary>
+    /// get the view type of this instance
+    /// </summary>
+    /// <value>The type of the view.</value>
     public PropertyGridViewType ViewType => PropertyGridViewType.TiledView;
 
 
+    /// <summary>
+    /// is show title now
+    /// </summary>
+    /// <value><c>true</c> if [show title]; otherwise, <c>false</c>.</value>
     public bool ShowTitle
     {
         get => SplitterGrid.IsVisible;
         set => SplitterGrid.IsVisible = value;
     }
 
+    /// <summary>
+    /// Gets or sets the width of the name.
+    /// </summary>
+    /// <value>The width of the name.</value>
     public double NameWidth
     {
         get => SplitterGrid.ColumnDefinitions[0].Width.Value;
         set => SplitterGrid.ColumnDefinitions[0].Width = new GridLength(value);
     }
-    
+
+    /// <summary>
+    /// call on enter this view state
+    /// </summary>
     public void OnEnterState()
     {
         IsVisible = true;
     }
 
+    /// <summary>
+    /// call on leave this view state
+    /// </summary>
     public void OnLeaveState()
     {
         IsVisible = false;
     }
 
+    /// <summary>
+    /// Refreshes this instance.
+    /// </summary>
     public void Refresh()
     {
         BuildPropertiesView();
     }
-    
+
     /// <summary>
     /// Gets the expandable object cache.
     /// </summary>
@@ -127,16 +172,16 @@ public partial class PropertyGridTiledView : UserControl, IPropertyGridView
 
         SyncNameWidth(width, false);
     }
-    
-     #region Categories
-        /// <summary>
-        /// Builds the category properties view.
-        /// </summary>
-        /// <param name="target">The target.</param>
-        /// <param name="referencePath">The reference path.</param>
-        /// <param name="categoryStyle">category style.</param>
-        /// <param name="propertyOrderStyle">property style.</param>
-        protected virtual void BuildCategoryPropertiesView(object target, ReferencePath referencePath, PropertyGridOrderStyle categoryStyle, PropertyGridOrderStyle propertyOrderStyle)
+
+    #region Categories
+    /// <summary>
+    /// Builds the category properties view.
+    /// </summary>
+    /// <param name="target">The target.</param>
+    /// <param name="referencePath">The reference path.</param>
+    /// <param name="categoryStyle">category style.</param>
+    /// <param name="propertyOrderStyle">property style.</param>
+    protected virtual void BuildCategoryPropertiesView(object target, ReferencePath referencePath, PropertyGridOrderStyle categoryStyle, PropertyGridOrderStyle propertyOrderStyle)
         {
             PropertiesGrid.ColumnDefinitions.Clear();
 
@@ -192,16 +237,16 @@ public partial class PropertyGridTiledView : UserControl, IPropertyGridView
             PropertiesGrid.RowDefinitions.Add(new RowDefinition(GridLength.Star));
         }
 
-        /// <summary>
-        /// Builds the properties cell edit.
-        /// </summary>
-        /// <param name="target">The target.</param>
-        /// <param name="referencePath">The reference path.</param>
-        /// <param name="properties">The properties.</param>
-        /// <param name="expander">The expander.</param>
-        /// <param name="grid">The grid.</param>
-        /// <param name="container">The container.</param>
-        private void BuildPropertiesCellEdit(
+    /// <summary>
+    /// Builds the properties cell edit.
+    /// </summary>
+    /// <param name="target">The target.</param>
+    /// <param name="referencePath">The reference path.</param>
+    /// <param name="properties">The properties.</param>
+    /// <param name="expander">The expander.</param>
+    /// <param name="grid">The grid.</param>
+    /// <param name="container">The container.</param>
+    private void BuildPropertiesCellEdit(
             object target,
             ReferencePath referencePath,
             IEnumerable<PropertyDescriptor> properties,
@@ -226,16 +271,16 @@ public partial class PropertyGridTiledView : UserControl, IPropertyGridView
             }
         }
 
-        /// <summary>
-        /// Builds the property cell edit.
-        /// </summary>
-        /// <param name="target">The target.</param>
-        /// <param name="referencePath">The reference path.</param>
-        /// <param name="propertyDescriptor">The property descriptor.</param>
-        /// <param name="expander">The expander.</param>
-        /// <param name="grid">The grid.</param>
-        /// <param name="container">The container.</param>
-        private void BuildPropertyCellEdit(
+    /// <summary>
+    /// Builds the property cell edit.
+    /// </summary>
+    /// <param name="target">The target.</param>
+    /// <param name="referencePath">The reference path.</param>
+    /// <param name="propertyDescriptor">The property descriptor.</param>
+    /// <param name="expander">The expander.</param>
+    /// <param name="grid">The grid.</param>
+    /// <param name="container">The container.</param>
+    private void BuildPropertyCellEdit(
             object target,
             ReferencePath referencePath,
             PropertyDescriptor propertyDescriptor,
@@ -305,15 +350,15 @@ public partial class PropertyGridTiledView : UserControl, IPropertyGridView
 
             container.Add(cellInfo);
         }
-        #endregion
-        
-           #region Alpha
-        /// <summary>
-        /// Builds the alphabetic properties view.
-        /// </summary>
-        /// <param name="target">The target.</param>
-        /// <param name="referencePath">The reference path.</param>
-        protected virtual void BuildAlphabeticPropertiesView(object target, ReferencePath referencePath)
+    #endregion
+
+    #region Alpha
+    /// <summary>
+    /// Builds the alphabetic properties view.
+    /// </summary>
+    /// <param name="target">The target.</param>
+    /// <param name="referencePath">The reference path.</param>
+    protected virtual void BuildAlphabeticPropertiesView(object target, ReferencePath referencePath)
         {
             PropertiesGrid.ColumnDefinitions.Clear();
             PropertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
@@ -322,12 +367,12 @@ public partial class PropertyGridTiledView : UserControl, IPropertyGridView
             BuildPropertiesCellEdit(target, referencePath, ViewModel.AllProperties.OrderBy(x => x.DisplayName), null, PropertiesGrid, _cellInfoCache);
         }
 
-        /// <summary>
-        /// Builds the builtin properties view.
-        /// </summary>
-        /// <param name="target">The target.</param>
-        /// <param name="referencePath">The reference path.</param>
-        protected virtual void BuildBuiltinPropertiesView(object target, ReferencePath referencePath)
+    /// <summary>
+    /// Builds the builtin properties view.
+    /// </summary>
+    /// <param name="target">The target.</param>
+    /// <param name="referencePath">The reference path.</param>
+    protected virtual void BuildBuiltinPropertiesView(object target, ReferencePath referencePath)
         {
             PropertiesGrid.ColumnDefinitions.Clear();
             PropertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
@@ -335,15 +380,15 @@ public partial class PropertyGridTiledView : UserControl, IPropertyGridView
 
             BuildPropertiesCellEdit(target, referencePath, ViewModel.AllProperties, null, PropertiesGrid, _cellInfoCache);
         }
-        #endregion
+    #endregion
 
-        #region Process Widths
-        /// <summary>
-        /// Synchronizes the width of the name.
-        /// </summary>
-        /// <param name="width">The width.</param>
-        /// <param name="syncToTitle">if set to <c>true</c> [synchronize to title].</param>
-        private void SyncNameWidth(double width, bool syncToTitle)
+    #region Process Widths
+    /// <summary>
+    /// Synchronizes the width of the name.
+    /// </summary>
+    /// <param name="width">The width.</param>
+    /// <param name="syncToTitle">if set to <c>true</c> [synchronize to title].</param>
+    private void SyncNameWidth(double width, bool syncToTitle)
         {
             if (!ShowTitle)
             {
@@ -358,7 +403,12 @@ public partial class PropertyGridTiledView : UserControl, IPropertyGridView
             }
         }
 
-        private static void PropagateCellNameWidth(IEnumerable<IPropertyGridCellInfo> cells, double width)
+    /// <summary>
+    /// Propagates the width of the cell name.
+    /// </summary>
+    /// <param name="cells">The cells.</param>
+    /// <param name="width">The width.</param>
+    private static void PropagateCellNameWidth(IEnumerable<IPropertyGridCellInfo> cells, double width)
         {
             foreach (var i in cells)
             {
@@ -371,12 +421,12 @@ public partial class PropertyGridTiledView : UserControl, IPropertyGridView
             }
         }
 
-        /// <summary>
-        /// Handles the <see cref="E:ColumnNamePropertyChanged" /> event.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="AvaloniaPropertyChangedEventArgs"/> instance containing the event data.</param>
-        private void OnColumnNamePropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
+    /// <summary>
+    /// Handles the <see cref="E:ColumnNamePropertyChanged" /> event.
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="e">The <see cref="AvaloniaPropertyChangedEventArgs" /> instance containing the event data.</param>
+    private void OnColumnNamePropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e)
         {
             if (e.Property == BoundsProperty)
             {
@@ -385,10 +435,14 @@ public partial class PropertyGridTiledView : UserControl, IPropertyGridView
                 SyncNameWidth(width, false);
             }
         }
-        #endregion
-        
-        #region Property Changed
-        private void ClearPropertyChangedObservers(IEnumerable<IPropertyGridCellInfo> cells)
+    #endregion
+
+    #region Property Changed
+    /// <summary>
+    /// Clears the property changed observers.
+    /// </summary>
+    /// <param name="cells">The cells.</param>
+    private void ClearPropertyChangedObservers(IEnumerable<IPropertyGridCellInfo> cells)
         {
             foreach (var i in cells)
             {
@@ -398,7 +452,11 @@ public partial class PropertyGridTiledView : UserControl, IPropertyGridView
             }
         }
 
-        private void AddPropertyChangedObservers(IEnumerable<IPropertyGridCellInfo> cells)
+    /// <summary>
+    /// Adds the property changed observers.
+    /// </summary>
+    /// <param name="cells">The cells.</param>
+    private void AddPropertyChangedObservers(IEnumerable<IPropertyGridCellInfo> cells)
         {
             foreach (var i in cells)
             {
@@ -408,7 +466,12 @@ public partial class PropertyGridTiledView : UserControl, IPropertyGridView
             }
         }
 
-        private void OnCellPropertyChanged(object? sender, CellPropertyChangedEventArgs e)
+    /// <summary>
+    /// Handles the <see cref="E:CellPropertyChanged" /> event.
+    /// </summary>
+    /// <param name="sender">The sender.</param>
+    /// <param name="e">The <see cref="CellPropertyChangedEventArgs"/> instance containing the event data.</param>
+    private void OnCellPropertyChanged(object? sender, CellPropertyChangedEventArgs e)
         {
             if (e.Cell.Context?.Property != null && e.Cell.Context.Property.IsDefined<ConditionTargetAttribute>())
             {

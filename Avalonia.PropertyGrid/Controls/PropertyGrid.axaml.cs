@@ -534,6 +534,11 @@ namespace Avalonia.PropertyGrid.Controls
             }
         }
 
+        /// <summary>
+        /// Gets the property grid view.
+        /// </summary>
+        /// <param name="viewType">Type of the view.</param>
+        /// <returns>System.Nullable&lt;IPropertyGridView&gt;.</returns>
         protected virtual IPropertyGridView? GetPropertyGridView(PropertyGridViewType viewType)
         {
             switch (viewType)

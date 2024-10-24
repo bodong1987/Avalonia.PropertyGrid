@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:ll="clr-namespace:Avalonia.PropertyGrid.Localization;assembly=Avalonia.PropertyGrid"
 			 xmlns:lc="clr-namespace:Avalonia.PropertyGrid.Controls;assembly=Avalonia.PropertyGrid"
+             xmlns:lcb="clr-namespace:Avalonia.PropertyGrid.Controls.Builtins;assembly=Avalonia.PropertyGrid"
              mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="900"
              x:Class="Avalonia.PropertyGrid.Controls.PropertyGrid">
 	<UserControl.Resources>
@@ -12,11 +13,11 @@
 	</UserControl.Resources>
 
 	<UserControl.Styles>
-		<StyleInclude Source="/Controls/ButtonEdit.axaml"></StyleInclude>
-		<StyleInclude Source="/Controls/CheckedListEdit.axaml"></StyleInclude>
-		<StyleInclude Source="/Controls/ListElementEdit.axaml"></StyleInclude>
-		<StyleInclude Source="/Controls/ListEdit.axaml"></StyleInclude>
-		<StyleInclude Source="/Controls/TrackableEdit.axaml"></StyleInclude>
+		<StyleInclude Source="/Controls/Builtins/ButtonEdit.axaml"></StyleInclude>
+		<StyleInclude Source="/Controls/Builtins/CheckedListEdit.axaml"></StyleInclude>
+		<StyleInclude Source="/Controls/Builtins/ListElementEdit.axaml"></StyleInclude>
+		<StyleInclude Source="/Controls/Builtins/ListEdit.axaml"></StyleInclude>
+		<StyleInclude Source="/Controls/Builtins/TrackableEdit.axaml"></StyleInclude>
         <StyleInclude Source="avares://Avalonia.Controls.ColorPicker/Themes/Fluent/Fluent.xaml"/>
 		<StyleInclude Source="avares://Avalonia.Controls.ColorPicker/Themes/Simple/Simple.xaml"/>
 	</UserControl.Styles>
@@ -32,7 +33,7 @@
 			<ToggleButton Margin="2" Content="R" Grid.Column="2" IsChecked="{Binding $parent[lc:PropertyGrid].ViewModel.FilterPattern.UseRegex}" ToolTip.Tip="{ll:Localize UseRegex}"></ToggleButton>
 			<ToggleButton Margin="2" Content="K" Grid.Column="3" IsChecked="{Binding $parent[lc:PropertyGrid].ViewModel.FilterPattern.IgnoreCase}" ToolTip.Tip="{ll:Localize IgnoreCase}"></ToggleButton>
 		</Grid>
-		<lc:CheckedMask x:Name="FastFilterBox" Grid.Row="1" Model="{Binding $parent[lc:PropertyGrid].ViewModel.CategoryFilter}"></lc:CheckedMask>
+		<lcb:CheckedMask x:Name="FastFilterBox" Grid.Row="1" Model="{Binding $parent[lc:PropertyGrid].ViewModel.CategoryFilter}"></lcb:CheckedMask>
 		<lc:PropertyGridTiledView x:Name="TiledViewControl" Grid.Row="2"></lc:PropertyGridTiledView>
 	</Grid>
 </UserControl>

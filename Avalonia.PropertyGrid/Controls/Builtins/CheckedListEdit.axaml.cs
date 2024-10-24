@@ -6,7 +6,7 @@ using Avalonia.Interactivity;
 using PropertyModels.ComponentModel;
 using PropertyModels.Extensions;
 
-namespace Avalonia.PropertyGrid.Controls
+namespace Avalonia.PropertyGrid.Controls.Builtins
 {
     /// <summary>
     /// Class CheckedListEdit.
