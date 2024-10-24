@@ -65,8 +65,7 @@ namespace Avalonia.PropertyGrid.Controls
 
             InitializeComponent();
 
-            TiledViewControl.Owner = this;
-            View = TiledViewControl;
+            ToggleView(ViewType, true);
         }
 
         private void OnCustomPropertyDescriptorFilter(object? sender, CustomPropertyDescriptorFilterEventArgs e)
@@ -180,12 +179,15 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <param name="viewType">Type of the view.</param>
         /// <returns>System.Nullable&lt;IPropertyGridView&gt;.</returns>
-        protected virtual IPropertyGridView? GetPropertyGridView(PropertyGridViewType viewType)
+        protected virtual IPropertyGridView? CreatePropertyGridView(PropertyGridViewType viewType)
         {
             switch (viewType)
             {
                 case PropertyGridViewType.TiledView:
-                    return TiledViewControl;
+                    return new PropertyGridTiledView()
+                    {
+                        Owner = this
+                    };
                 default:
                     break;
             }

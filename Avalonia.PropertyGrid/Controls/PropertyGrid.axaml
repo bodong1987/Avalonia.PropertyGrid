@@ -33,7 +33,7 @@
 			<ToggleButton Margin="2" Content="R" Grid.Column="2" IsChecked="{Binding $parent[lc:PropertyGrid].ViewModel.FilterPattern.UseRegex}" ToolTip.Tip="{ll:Localize UseRegex}"></ToggleButton>
 			<ToggleButton Margin="2" Content="K" Grid.Column="3" IsChecked="{Binding $parent[lc:PropertyGrid].ViewModel.FilterPattern.IgnoreCase}" ToolTip.Tip="{ll:Localize IgnoreCase}"></ToggleButton>
 		</Grid>
-		<lcb:CheckedMask x:Name="FastFilterBox" Grid.Row="1" Model="{Binding $parent[lc:PropertyGrid].ViewModel.CategoryFilter}"></lcb:CheckedMask>
-		<lc:PropertyGridTiledView x:Name="TiledViewControl" Grid.Row="2"></lc:PropertyGridTiledView>
+		<lcb:CheckedMask x:Name="FastFilterBox" Grid.Row="1" Model="{Binding $parent[lc:PropertyGrid].ViewModel.CategoryFilter}"></lcb:CheckedMask>		
+        <Border x:Name="ViewControl" Grid.Row="2" BorderThickness="0" Padding="0"></Border>
 	</Grid>
 </UserControl>

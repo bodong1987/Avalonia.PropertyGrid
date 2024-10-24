@@ -1,9 +1,11 @@
-﻿using Avalonia.Data;
+﻿using Avalonia.Controls;
+using Avalonia.Data;
 using Avalonia.Interactivity;
 using Avalonia.PropertyGrid.ViewModels;
 using Avalonia.Reactive;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace Avalonia.PropertyGrid.Controls;
 
@@ -319,19 +321,7 @@ partial class PropertyGrid
 
     private void OnViewTypePropertyChanged(PropertyGridViewType oldValue, PropertyGridViewType newValue)
     {
-        if (View != null && View.ViewType == newValue)
-        {
-            return;
-        }
-
-        var view = GetPropertyGridView(newValue);
-
-        if (view != null)
-        {
-            View?.OnLeaveState();
-            View = view;
-            View.OnEnterState();
-        }
+        ToggleView(newValue);
     }
 
     private static void OnAllowQuickFilterChanged(AvaloniaPropertyChangedEventArgs<bool> e)
@@ -345,6 +335,36 @@ partial class PropertyGrid
     private void OnAllowQuickFilterChanged(bool oldValue, bool newValue)
     {
         FastFilterBox.IsVisible = newValue;
+    }
+
+    /// <summary>
+    /// Toggles the view.
+    /// </summary>
+    /// <param name="viewType">Type of the view.</param>
+    /// <param name="force">if set to <c>true</c> [force].</param>
+    public virtual void ToggleView(PropertyGridViewType viewType, bool force = false)
+    {
+        if(!force && ViewType == viewType)
+        {
+            return;
+        }
+
+        var view = CreatePropertyGridView(viewType);
+
+        if (view == null || view is not Control)
+        {
+            return;
+        }
+
+        if (View != null)
+        {
+            View.OnLeaveState();
+        }
+
+        View = view;
+
+        view.OnEnterState();
+        ViewControl.Child = view as Control;
     }
 
     #endregion
