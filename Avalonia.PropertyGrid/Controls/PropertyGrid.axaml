@@ -21,7 +21,7 @@
 		<StyleInclude Source="avares://Avalonia.Controls.ColorPicker/Themes/Simple/Simple.xaml"/>
 	</UserControl.Styles>
 	
-	<Grid RowDefinitions="Auto,Auto,Auto,*">
+	<Grid RowDefinitions="Auto,Auto,*">
 		<Grid x:Name="HeaderGrid"
 			  ColumnDefinitions="*,Auto, Auto, Auto"
 			  Margin="2"
@@ -33,18 +33,6 @@
 			<ToggleButton Margin="2" Content="K" Grid.Column="3" IsChecked="{Binding $parent[lc:PropertyGrid].ViewModel.FilterPattern.IgnoreCase}" ToolTip.Tip="{ll:Localize IgnoreCase}"></ToggleButton>
 		</Grid>
 		<lc:CheckedMask x:Name="FastFilterBox" Grid.Row="1" Model="{Binding $parent[lc:PropertyGrid].ViewModel.CategoryFilter}"></lc:CheckedMask>
-		<Grid x:Name="SplitterGrid" Grid.Row="2">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="180" MinWidth="60"></ColumnDefinition>
-				<ColumnDefinition Width="2"></ColumnDefinition>
-				<ColumnDefinition Width="*"></ColumnDefinition>				
-			</Grid.ColumnDefinitions>
-			<TextBlock x:Name="ColumnName" Margin="8,0,2,2" Text="{ll:Localize Name}" Grid.Column="0"></TextBlock>
-			<GridSplitter Grid.Column="1"></GridSplitter>
-			<TextBlock x:Name="ColumnProperties" Margin="6, 0, 2, 2" Text="{ll:Localize Properties}" Grid.Column="2"></TextBlock>
-		</Grid>
-		<Grid x:Name="PropertiesGrid" Grid.Row="3">
-			
-		</Grid>
+		<lc:PropertyGridTiledView x:Name="TiledViewControl" Grid.Row="2"></lc:PropertyGridTiledView>
 	</Grid>
 </UserControl>

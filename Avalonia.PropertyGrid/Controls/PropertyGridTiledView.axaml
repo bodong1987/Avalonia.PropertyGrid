@@ -1,0 +1,23 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ll="clr-namespace:Avalonia.PropertyGrid.Localization;assembly=Avalonia.PropertyGrid"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Avalonia.PropertyGrid.Controls.PropertyGridTiledView">
+    <Grid RowDefinitions="Auto, *">
+        <Grid x:Name="SplitterGrid" Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="180" MinWidth="60"></ColumnDefinition>
+                <ColumnDefinition Width="2"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>				
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="ColumnName" Margin="8,0,2,2" Text="{ll:Localize Name}" Grid.Column="0"></TextBlock>
+            <GridSplitter Grid.Column="1"></GridSplitter>
+            <TextBlock x:Name="ColumnProperties" Margin="6, 0, 2, 2" Text="{ll:Localize Properties}" Grid.Column="2"></TextBlock>
+        </Grid>
+        <Grid x:Name="PropertiesGrid" Grid.Row="1">
+			
+        </Grid>    
+    </Grid>
+</UserControl>

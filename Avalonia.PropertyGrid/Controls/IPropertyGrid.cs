@@ -64,6 +64,11 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <value>The root property grid.</value>
         IPropertyGrid? RootPropertyGrid { get; set; }
+        
+        /// <summary>
+        /// get current property grid view
+        /// </summary>
+        IPropertyGridView? View { get; }
 
         /// <summary>
         /// Occurs when [command executing].
