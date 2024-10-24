@@ -76,7 +76,7 @@ namespace Avalonia.PropertyGrid.Samples.Views
             return accessToken is TestExtendPropertyGrid;
         }
 
-        public override Control HandleNewProperty(PropertyCellContext context)
+        public override Control? HandleNewProperty(PropertyCellContext context)
         {
             var propertyDescriptor = context.Property;
             var target = context.Target;
@@ -95,7 +95,7 @@ namespace Avalonia.PropertyGrid.Samples.Views
         {
             var propertyDescriptor = context.Property;
             var target = context.Target;
-            var control = context.CellEdit;
+            var control = context.CellEdit!;
 
             if (propertyDescriptor.PropertyType != typeof(SVector3))
             {
@@ -106,14 +106,14 @@ namespace Avalonia.PropertyGrid.Samples.Views
 
             if (control is Vector3View vv)
             {
-                SVector3 vec = (SVector3)propertyDescriptor.GetValue(target);
+                SVector3 vec = (SVector3)propertyDescriptor.GetValue(target)!;
 
                 var model = new SVector3ViewModel() { _vec = vec };
                 vv.DataContext = model;
 
                 model.PropertyChanged += (s, e) =>
                 {
-                    SetAndRaise(context, context.CellEdit, model._vec);
+                    SetAndRaise(context, control, model._vec);
                 };
 
                 return true;
@@ -134,14 +134,14 @@ namespace Avalonia.PropertyGrid.Samples.Views
             return accessToken is TestExtendPropertyGrid;
         }
 
-        public override Control HandleNewProperty(PropertyCellContext context)
+        public override Control? HandleNewProperty(PropertyCellContext context)
         {
             if(context.Property.PropertyType != typeof(SelectableList<CountryInfo>))
             {
                 return null;
             }
 
-            Control control = base.HandleNewProperty(context);
+            var control = base.HandleNewProperty(context);
 
             if(control is ComboBox cb)
             {
@@ -165,7 +165,7 @@ namespace Avalonia.PropertyGrid.Samples.Views
             return accessToken is TestExtendPropertyGrid;
         }
 
-        public override Control HandleNewProperty(PropertyCellContext context)
+        public override Control? HandleNewProperty(PropertyCellContext context)
         {
             var propertyDescriptor = context.Property;
             var target = context.Target;
@@ -191,7 +191,7 @@ namespace Avalonia.PropertyGrid.Samples.Views
         {
             var propertyDescriptor = context.Property;
             var target = context.Target;
-            var control = context.CellEdit;
+            var control = context.CellEdit!;
 
             if (propertyDescriptor.PropertyType != typeof(bool))
             {
@@ -202,7 +202,7 @@ namespace Avalonia.PropertyGrid.Samples.Views
 
             if (control is ToggleSwitch ts)
             {
-                ts.IsChecked = (bool)propertyDescriptor.GetValue(target);
+                ts.IsChecked = (bool)propertyDescriptor.GetValue(target)!;
 
                 return true;
             }

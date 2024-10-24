@@ -13,14 +13,14 @@ namespace Avalonia.PropertyGrid.Samples.Models
     public class LoginInfo : MiniReactiveObject
     {
         [Watermark("Your Login Name")]
-        public string UserName { get; set; }
+        public string? UserName { get; set; }
 
         [PasswordPropertyText(true)]
         [Watermark("Your Password")]
-        public string Password { get; set; }
+        public string? Password { get; set; }
 
         [MultilineText(true)]
-        public string HelpText { get; set; } = "This is multiline Text\nTry edit me.";
+        public string? HelpText { get; set; } = "This is multiline Text\nTry edit me.";
 
         public PlatformID ServerType { get; set; } = PlatformID.Unix;
 

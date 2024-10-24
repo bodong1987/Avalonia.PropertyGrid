@@ -21,19 +21,19 @@ namespace Avalonia.PropertyGrid.Samples.Models
         /// Gets or sets the name.
         /// </summary>
         /// <value>The name.</value>
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>
         /// Gets or sets the display name.
         /// </summary>
         /// <value>The display name.</value>
-        public string DisplayName { get; set; }
+        public string? DisplayName { get; set; }
 
         /// <summary>
         /// Gets or sets the description.
         /// </summary>
         /// <value>The description.</value>
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="ScriptableObject"/> is require.
@@ -46,14 +46,14 @@ namespace Avalonia.PropertyGrid.Samples.Models
         /// </summary>
         /// <value>The type of the value.</value>
         [DependsOnProperty(nameof(Value))]
-        public Type ValueType { get; set; }
+        public Type? ValueType { get; set; }
 
-        object ValueCore;
+        object? ValueCore;
         /// <summary>
         /// Gets or sets the value.
         /// </summary>
         /// <value>The value.</value>
-        public object Value
+        public object? Value
         {
             get => ValueCore;
             set
@@ -70,12 +70,12 @@ namespace Avalonia.PropertyGrid.Samples.Models
                 {
                     if (list.Count != 0)
                     {
-                        Type type = null;
+                        Type? type = null;
                         for (int i = 0; i < list.Count; i++)
                         {
                             if (list[i] != null)
                             {
-                                type = list[i].GetType();
+                                type = list[i]?.GetType() ?? null;
                                 break;
                             }
                         }
@@ -86,10 +86,10 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
                             for (int i = 0; i < list.Count; ++i)
                             {
-                                (ValueCore as IList).Add(list[i]);
+                                (ValueCore as IList)!.Add(list[i]);
                             }
 
-                            ValueType = ValueCore.GetType();
+                            ValueType = ValueCore!.GetType();
 
                             RaisePropertyChanged(nameof(Value));
 
@@ -111,7 +111,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
             }
         }
 
-        public Attribute[] ExtraAttributes
+        public Attribute[]? ExtraAttributes
         {
             get;
             set;
@@ -132,12 +132,12 @@ namespace Avalonia.PropertyGrid.Samples.Models
         /// <returns>Attribute[].</returns>
         public Attribute[] GetAttributes()
         {
-            DisplayNameAttribute displayNameAttribute = new DisplayNameAttribute(DisplayName.IsNotNullOrEmpty() ? DisplayName : Name);
+            DisplayNameAttribute displayNameAttribute = new DisplayNameAttribute(DisplayName.IsNotNullOrEmpty() ? DisplayName : Name!);
             DescriptionAttribute descAttribute = new DescriptionAttribute(Description.IsNotNullOrEmpty() ? Description : displayNameAttribute.DisplayName);
 
             if(ExtraAttributes != null)
             {
-                return ExtraAttributes.Concat(new Attribute[] { descAttribute, displayNameAttribute }).ToArray();
+                return ExtraAttributes.Concat([descAttribute, displayNameAttribute]).ToArray();
             }
             else
             {

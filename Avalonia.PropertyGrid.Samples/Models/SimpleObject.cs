@@ -41,29 +41,29 @@ namespace Avalonia.PropertyGrid.Samples.Models
         [DisplayName("Target Path")]
         [PathBrowsable(Filters = "Image Files(*.jpg;*.png;*.bmp;*.tag)|*.jpg;*.png;*.bmp;*.tag")]
         [Watermark("Image Path")]
-        public string ImagePath { get; set; }
+        public string? ImagePath { get; set; }
 
         [Category("Path")]
         [DisplayName("User Home")]
         [PathBrowsable(PathBrowsableType.Directory, InitialFileName = "C:\\Users")]
         [Watermark("Select Home")]
-        public string UserHome { get; set; }
+        public string? UserHome { get; set; }
 
         [Category("Path")]
         [DisplayName("My Pictures")]
         [PathBrowsable(PathBrowsableType.Directory)]
-        public string MyPicturesDirectory { get; set; } = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+        public string? MyPicturesDirectory { get; set; } = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
 
         [Category("String")]
         [DisplayName("Target Name")]
         [Watermark("Your Target Name")]
         [ControlClasses("clearButton")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         [Category("String")]
         [PasswordPropertyText(true)]
         [Watermark("Input your password")]
-        public string Password { get; set; }
+        public string? Password { get; set; }
 
         [Category("Boolean")]
         public bool EncryptData { get; set; } = true;
@@ -104,11 +104,11 @@ namespace Avalonia.PropertyGrid.Samples.Models
         [Category("Selectable List")]
         public SelectableList<int> IdList { get; set; } = new SelectableList<int>(new int[] { 100, 1000, 1024 }, 1000);
 
-        string _SourceImagePath;
+        string? _SourceImagePath;
         [Category("DataValidation")]
         [PathBrowsable(Filters = "Image Files(*.jpg;*.png;*.bmp;*.tag)|*.jpg;*.png;*.bmp;*.tag")]
         [Watermark("This path can be validated")]
-        public string SourceImagePath
+        public string? SourceImagePath
         {
             get => _SourceImagePath;
             set
@@ -129,7 +129,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
         [Category("DataValidation")]
         [Required(ErrorMessage ="Can not be null")]
-        public string ValidateString { get; set; }
+        public string? ValidateString { get; set; }
 
         [Category("DataValidation")]
         [Description("Select platforms")]
@@ -335,7 +335,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
     public class ValidatePlatformAttribute : ValidationAttribute
     {
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
             if (value is CheckedList<PlatformID> id)
             {

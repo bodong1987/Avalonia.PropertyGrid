@@ -4,13 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ReactiveUI;
-using System.Globalization;
 using Avalonia.PropertyGrid.Services;
 using PropertyModels.Localization;
+using PropertyModels.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Samples.ViewModels
 {
@@ -134,8 +130,8 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
             propertyManager.Properties.Add(
                 DynamicPropertyManager<TestCustomObject>.CreateProperty<TestCustomObject, string>(
                     "StringArray0",
-                    x => x.StringArray[0],
-                    (x, v) => x.StringArray[0] = v,
+                    x => x!.StringArray[0],
+                    (x, v) => x!.StringArray[0] = v!,
                     new Attribute[]
                     {
                     }
@@ -145,8 +141,8 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
             propertyManager.Properties.Add(
                 DynamicPropertyManager<TestCustomObject>.CreateProperty<TestCustomObject, string>(
                     "StringArray1",
-                    x => x.StringArray[1],
-                    (x, v) => x.StringArray[1] = v,
+                    x => x!.StringArray[1],
+                    (x, v) => x!.StringArray[1] = v!,
                     new Attribute[]
                     {
                     }
@@ -156,8 +152,8 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
             propertyManager.Properties.Add(
                 DynamicPropertyManager<TestCustomObject>.CreateProperty<TestCustomObject, string>(
                     "StringArray2",
-                    x => x.StringArray[2],
-                    (x, v) => x.StringArray[2] = v,
+                    x => x!.StringArray[2],
+                    (x, v) => x!.StringArray[2] = v!,
                     new Attribute[]
                     {
                         new ReadOnlyAttribute(true)

@@ -8,19 +8,19 @@ namespace Avalonia.PropertyGrid.Samples.Views
     public static class AppThemeUtils
     {
         private static readonly Styles _themeStylesContainer = new();
-        private static FluentTheme _fluentTheme;
-        private static SimpleTheme _simpleTheme;
-        private static IStyle _colorPickerFluent, _colorPickerSimple;
-        private static IStyle _dataGridFluent, _dataGridSimple;
+        private static FluentTheme? _fluentTheme;
+        private static SimpleTheme? _simpleTheme;
+        private static IStyle? _colorPickerFluent, _colorPickerSimple;
+        private static IStyle? _dataGridFluent, _dataGridSimple;
 
         public static void BeforeInitialize()
         {
-            App.Current.Styles.Add(_themeStylesContainer);
+            App.Current!.Styles.Add(_themeStylesContainer);
         }
 
         public static void AfterInitialize()
         {
-            _fluentTheme = (FluentTheme)App.Current.Resources["FluentTheme"]!;
+            _fluentTheme = (FluentTheme)App.Current!.Resources["FluentTheme"]!;
             _simpleTheme = (SimpleTheme)App.Current.Resources["SimpleTheme"]!;
             _colorPickerFluent = (IStyle)App.Current.Resources["ColorPickerFluent"]!;
             _colorPickerSimple = (IStyle)App.Current.Resources["ColorPickerSimple"]!;

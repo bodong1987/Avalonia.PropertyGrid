@@ -45,7 +45,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
         /// Returns the class name of this instance of a component.
         /// </summary>
         /// <returns>The class name of the object, or <see langword="null" /> if the class does not have a name.</returns>
-        public string GetClassName()
+        public string? GetClassName()
         {
             return TypeDescriptor.GetClassName(this, true);
         }
@@ -54,7 +54,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
         /// Returns the name of this instance of a component.
         /// </summary>
         /// <returns>The name of the object, or <see langword="null" /> if the object does not have a name.</returns>
-        public string GetComponentName()
+        public string? GetComponentName()
         {
             return TypeDescriptor.GetComponentName(this, true);
         }
@@ -72,7 +72,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
         /// Returns the default event for this instance of a component.
         /// </summary>
         /// <returns>An <see cref="T:System.ComponentModel.EventDescriptor" /> that represents the default event for this object, or <see langword="null" /> if this object does not have events.</returns>
-        public EventDescriptor GetDefaultEvent()
+        public EventDescriptor? GetDefaultEvent()
         {
             return TypeDescriptor.GetDefaultEvent(this, true);
         }
@@ -81,7 +81,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
         /// Returns the default property for this instance of a component.
         /// </summary>
         /// <returns>A <see cref="T:System.ComponentModel.PropertyDescriptor" /> that represents the default property for this object, or <see langword="null" /> if this object does not have properties.</returns>
-        public PropertyDescriptor GetDefaultProperty()
+        public PropertyDescriptor? GetDefaultProperty()
         {
             return TypeDescriptor.GetDefaultProperty(this, true);
         }
@@ -91,7 +91,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
         /// </summary>
         /// <param name="editorBaseType">A <see cref="T:System.Type" /> that represents the editor for this object.</param>
         /// <returns>An <see cref="T:System.Object" /> of the specified type that is the editor for this object, or <see langword="null" /> if the editor cannot be found.</returns>
-        public object GetEditor(Type editorBaseType)
+        public object? GetEditor(Type editorBaseType)
         {
             return TypeDescriptor.GetEditor(this, editorBaseType, true);
         }
@@ -110,7 +110,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
         /// </summary>
         /// <param name="attributes">An array of type <see cref="T:System.Attribute" /> that is used as a filter.</param>
         /// <returns>An <see cref="T:System.ComponentModel.EventDescriptorCollection" /> that represents the filtered events for this component instance.</returns>
-        public EventDescriptorCollection GetEvents(Attribute[] attributes)
+        public EventDescriptorCollection GetEvents(Attribute[]? attributes)
         {
             return TypeDescriptor.GetEvents(this, attributes, true);
         }
@@ -129,7 +129,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
         /// </summary>
         /// <param name="attributes">An array of type <see cref="T:System.Attribute" /> that is used as a filter.</param>
         /// <returns>A <see cref="T:System.ComponentModel.PropertyDescriptorCollection" /> that represents the filtered properties for this component instance.</returns>
-        public PropertyDescriptorCollection GetProperties(Attribute[] attributes)
+        public PropertyDescriptorCollection GetProperties(Attribute[]? attributes)
         {
             PropertyDescriptorCollection pds = new PropertyDescriptorCollection(null);
 
@@ -148,7 +148,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
         /// </summary>
         /// <param name="pd">A <see cref="T:System.ComponentModel.PropertyDescriptor" /> that represents the property whose owner is to be found.</param>
         /// <returns>An <see cref="T:System.Object" /> that represents the owner of the specified property.</returns>
-        public object GetPropertyOwner(PropertyDescriptor pd)
+        public object GetPropertyOwner(PropertyDescriptor? pd)
         {
             return this;
         }
@@ -165,17 +165,17 @@ namespace Avalonia.PropertyGrid.Samples.Models
     internal class ScriptableObjectPropertyDescriptor : PropertyDescriptor
     {
         Type _Type;
-        string _DisplayName;
-        string _Description;
+        string? _DisplayName;
+        string? _Description;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScriptableObjectPropertyDescriptor" /> class.
         /// </summary>
         /// <param name="target">The target.</param>
         public ScriptableObjectPropertyDescriptor(ScriptableObject target) :
-            base(target.Name, target.GetAttributes())
+            base(target.Name!, target.GetAttributes())
         {
-            _Type = target.ValueType;
+            _Type = target.ValueType!;
             _DisplayName = target.DisplayName;
             _Description = target.Description;
         }
@@ -194,18 +194,18 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
         public override Type PropertyType => _Type;
 
-        public override string DisplayName => _DisplayName;
+        public override string DisplayName => _DisplayName ?? string.Empty;
 
         public override string Name => base.Name;
 
-        public override string Description => _Description;
+        public override string Description => _Description ?? string.Empty;
 
         public override bool CanResetValue(object component)
         {
             return false;
         }
 
-        public override object GetValue(object component)
+        public override object? GetValue(object? component)
         {
             if (component is ScriptableOptions options)
             {
@@ -222,7 +222,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
         }
 
-        public override void SetValue(object component, object value)
+        public override void SetValue(object? component, object? value)
         {
             if (component is ScriptableOptions options)
             {

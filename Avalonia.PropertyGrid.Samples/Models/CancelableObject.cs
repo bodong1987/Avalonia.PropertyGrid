@@ -66,7 +66,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
             RaisePropertyChanged(nameof(RedoDescription));
         }
 
-        public void OnCommandExecuted(object sender, RoutedCommandExecutedEventArgs e)
+        public void OnCommandExecuted(object? sender, RoutedCommandExecutedEventArgs e)
         {
             _Recorder.PushCommand(e.Command);
         }

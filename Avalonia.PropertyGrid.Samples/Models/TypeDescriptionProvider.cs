@@ -24,7 +24,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
     public class DynamicPropertyManager<TTarget> : IDisposable
     {
         private readonly DynamicTypeDescriptionProvider provider;
-        private readonly TTarget target;
+        private readonly TTarget? target;
 
         public DynamicPropertyManager()
         {
@@ -39,7 +39,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
             this.target = target;
 
             provider = new DynamicTypeDescriptionProvider(typeof(TTarget));
-            TypeDescriptor.AddProvider(provider, target);
+            TypeDescriptor.AddProvider(provider, target!);
         }
 
         public IList<PropertyDescriptor> Properties
@@ -62,8 +62,8 @@ namespace Avalonia.PropertyGrid.Samples.Models
         public static DynamicPropertyDescriptor<TTargetType, TPropertyType>
            CreateProperty<TTargetType, TPropertyType>(
                string displayName,
-               Func<TTargetType, TPropertyType> getter,
-               Action<TTargetType, TPropertyType> setter,
+               Func<TTargetType?, TPropertyType?> getter,
+               Action<TTargetType?, TPropertyType?> setter,
                Attribute[] attributes)
         {
             return new DynamicPropertyDescriptor<TTargetType, TPropertyType>(
@@ -73,7 +73,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
         public static DynamicPropertyDescriptor<TTargetType, TPropertyType>
            CreateProperty<TTargetType, TPropertyType>(
               string displayName,
-              Func<TTargetType, TPropertyType> getHandler,
+              Func<TTargetType?, TPropertyType?> getHandler,
               Attribute[] attributes)
         {
             return new DynamicPropertyDescriptor<TTargetType, TPropertyType>(
@@ -96,10 +96,10 @@ namespace Avalonia.PropertyGrid.Samples.Models
             get { return properties; }
         }
 
-        public override ICustomTypeDescriptor GetTypeDescriptor(Type objectType, object instance)
+        public override ICustomTypeDescriptor? GetTypeDescriptor(Type objectType, object? instance)
         {
             return new DynamicCustomTypeDescriptor(
-               this, provider.GetTypeDescriptor(objectType, instance));
+               this, provider.GetTypeDescriptor(objectType, instance)!);
         }
 
         private class DynamicCustomTypeDescriptor : CustomTypeDescriptor
@@ -118,7 +118,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
                 return GetProperties(null);
             }
 
-            public override PropertyDescriptorCollection GetProperties(Attribute[] attributes)
+            public override PropertyDescriptorCollection GetProperties(Attribute[]? attributes)
             {
                 var properties = new PropertyDescriptorCollection(null);
 
@@ -138,14 +138,14 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
     public class DynamicPropertyDescriptor<TTarget, TProperty> : PropertyDescriptor
     {
-        private readonly Func<TTarget, TProperty> getter;
-        private readonly Action<TTarget, TProperty> setter;
+        private readonly Func<TTarget?, TProperty?> getter;
+        private readonly Action<TTarget?, TProperty?> setter;
         private readonly string propertyName;
 
         public DynamicPropertyDescriptor(
            string propertyName,
-           Func<TTarget, TProperty> getter,
-           Action<TTarget, TProperty> setter,
+           Func<TTarget?, TProperty?> getter,
+           Action<TTarget?, TProperty?> setter,
            Attribute[] attributes)
               : base(propertyName, attributes ?? new Attribute[] { })
         {
@@ -154,7 +154,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
             this.propertyName = propertyName;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             var o = obj as DynamicPropertyDescriptor<TTarget, TProperty>;
             return o != null && o.propertyName.Equals(propertyName);
@@ -175,9 +175,9 @@ namespace Avalonia.PropertyGrid.Samples.Models
             get { return typeof(TTarget); }
         }
 
-        public override object GetValue(object component)
+        public override object? GetValue(object? component)
         {
-            return getter((TTarget)component);
+            return getter((TTarget?)component);
         }
 
         public override bool IsReadOnly
@@ -204,9 +204,9 @@ namespace Avalonia.PropertyGrid.Samples.Models
         {
         }
 
-        public override void SetValue(object component, object value)
+        public override void SetValue(object? component, object? value)
         {
-            setter((TTarget)component, (TProperty)value);
+            setter((TTarget?)component, (TProperty?)value);
         }
 
         public override bool ShouldSerializeValue(object component)

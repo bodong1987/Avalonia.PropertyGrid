@@ -70,7 +70,7 @@ namespace Avalonia.PropertyGrid.Samples.Views
             };
         }
 
-        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             if(e.PropertyName == nameof(MainVM.ShowStyle))
             {
@@ -107,9 +107,9 @@ namespace Avalonia.PropertyGrid.Samples.Views
             }
 		}
 
-		private void OnCommandExecuted(object sender, RoutedCommandExecutedEventArgs e)
+		private void OnCommandExecuted(object? sender, RoutedCommandExecutedEventArgs e)
         {
-            (DataContext as MainDemoViewModel).cancelableObject.OnCommandExecuted(sender, e);
+            (DataContext as MainDemoViewModel)!.cancelableObject.OnCommandExecuted(sender, e);
         }
     }
 

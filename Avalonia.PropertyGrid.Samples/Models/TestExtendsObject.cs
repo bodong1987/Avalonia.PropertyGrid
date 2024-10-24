@@ -66,7 +66,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
                 list.Add(new CountryInfo(asset));
             }
 
-            Countries = new SelectableList<CountryInfo>(list, list.Find(x => x.Code == "cn"));
+            Countries = new SelectableList<CountryInfo>(list, list.Find(x => x.Code == "cn") ?? list.FirstOrDefault()!);
         }
     }
 
@@ -102,7 +102,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
             return Name;
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if(obj is CountryInfo ci)
             {
