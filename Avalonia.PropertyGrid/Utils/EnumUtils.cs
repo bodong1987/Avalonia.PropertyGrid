@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Avalonia.PropertyGrid.Services;
 using PropertyModels.ComponentModel;
 using PropertyModels.Extensions;
+
 
 namespace Avalonia.PropertyGrid.Utils
 {
@@ -17,11 +19,26 @@ namespace Avalonia.PropertyGrid.Utils
         /// </summary>
         /// <param name="enumType">Type of the enum.</param>
         /// <returns>EnumValueWrapper[].</returns>
-        public static EnumValueWrapper[] GetEnumValues(Type enumType)
+        public static EnumValueWrapper[] GetEnumValues(Type enumType, int[] permitValues=null)
         {
             Debug.Assert(enumType is { IsEnum: true });
 
             var values = enumType.GetEnumValues();
+
+            if (permitValues != null && permitValues.Length > 0)
+            {
+                List<object> pv = new List<object>();
+                foreach (var value in values)
+                {
+                    if(permitValues.Contains((int)value))
+                    {
+                        pv.Add(value);
+                    }
+                }
+
+                values = pv.ToArray();
+                
+            }
 
             return values.Select(x =>
             {

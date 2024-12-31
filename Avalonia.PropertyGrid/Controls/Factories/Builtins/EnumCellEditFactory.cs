@@ -5,6 +5,7 @@ using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.PropertyGrid.Utils;
 using PropertyModels.ComponentModel;
+using PropertyModels.ComponentModel.DataAnnotations;
 using PropertyModels.Extensions;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
@@ -63,9 +64,14 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             }
             else
             {
+                
+                var attr= propertyDescriptor.GetCustomAttributes<EnumPermitValuesAttribute>().FirstOrDefault();
+                
                 var control = new ComboBox
                 {
-                    ItemsSource = EnumUtils.GetEnumValues(propertyDescriptor.PropertyType),
+                    //检查枚举允许的值
+                     
+                    ItemsSource = EnumUtils.GetEnumValues(propertyDescriptor.PropertyType,attr?.PermitValues),
                     HorizontalAlignment = HorizontalAlignment.Stretch
                 };
 
