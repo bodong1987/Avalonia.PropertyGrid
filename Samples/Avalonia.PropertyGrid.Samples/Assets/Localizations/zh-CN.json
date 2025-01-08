@@ -96,6 +96,7 @@
     "fValuePrecision": "设置精度的浮点数",
     "dValue": "宽浮点数",
     "i64Value": "64位整数",
+    "i64ValueBig": "64位整数(大)",
     "progressValue": "以进度条展示的数值",
     "trackableDoubleValue": "以滑动条展示的数值",
     "trackableIntValue": "可拖动整型",

@@ -151,9 +151,9 @@ namespace Avalonia.PropertyGrid.Tests.Model
     public class TestObjectWithAttributes
     {
         [EnumPermitValues<EnumPlatform>(EnumPlatform.Windows)]
-        private EnumPlatform PermittedField;
+        public EnumPlatform PermittedField;
 
         [EnumProhibitValues<EnumPlatform>(EnumPlatform.Windows)]
-        private EnumPlatform ProhibitedField;
+        public EnumPlatform ProhibitedField;
     }
 }

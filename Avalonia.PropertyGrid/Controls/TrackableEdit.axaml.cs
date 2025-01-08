@@ -2,6 +2,7 @@
 using System.Globalization;
 using Avalonia.Controls.Primitives;
 using Avalonia.Data.Converters;
+using Avalonia.PropertyGrid.Utils;
 
 namespace Avalonia.PropertyGrid.Controls
 {
@@ -82,10 +83,7 @@ namespace Avalonia.PropertyGrid.Controls
         {
             if((targetType == typeof(decimal) || targetType == typeof(decimal?)) && value != null)
             {
-                if(decimal.TryParse(value.ToString(), out var result))
-                {
-                    return result;
-                }
+                return DecimalConvertUtils.ConvertTo(value);
             }
 
             return value;

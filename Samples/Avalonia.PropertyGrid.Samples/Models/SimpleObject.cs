@@ -167,6 +167,9 @@ namespace Avalonia.PropertyGrid.Samples.Models
         public Int64 i64Value { get; set; } = 1000000000;
 
         [Category("Numeric")]
+        public Int64 i64ValueBig { get; set; } = 583792581039233983;
+
+        [Category("Numeric")]
         [ProgressAttribute]
         public double progressValue { get; set; } = 47;
 

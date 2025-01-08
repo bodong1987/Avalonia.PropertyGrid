@@ -29,7 +29,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             var propertyDescriptor = context.Property;
             // var target = context.Target;
 
-            if (propertyDescriptor.PropertyType != typeof(double) || !propertyDescriptor.IsDefined<ProgressAttribute>())
+            if ((propertyDescriptor.PropertyType != typeof(double) && propertyDescriptor.PropertyType != typeof(float)) || !propertyDescriptor.IsDefined<ProgressAttribute>())
             {
                 return null;
             }
@@ -56,7 +56,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             var target = context.Target;
             var control = context.CellEdit!;
 
-            if (propertyDescriptor.PropertyType != typeof(double) || !propertyDescriptor.IsDefined<ProgressAttribute>())
+            if ((propertyDescriptor.PropertyType != typeof(double) && propertyDescriptor.PropertyType != typeof(float)) || !propertyDescriptor.IsDefined<ProgressAttribute>())
             {
                 return false;
             }
@@ -67,9 +67,18 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             {
                 try
                 {
-                    var value = (double)propertyDescriptor.GetValue(target)!;
+                    var v = propertyDescriptor.GetValue(target)!;
 
-                    progressBar.Value = value;
+                    switch (Type.GetTypeCode(v.GetType()))
+                    {
+                        case TypeCode.Single:
+                            progressBar.Value = (float)v;
+                            break;
+                        case TypeCode.Double:
+                            progressBar.Value = (double)v;
+                            break;
+                    }
+                    
                 }
                 catch(Exception ex)
                 {
