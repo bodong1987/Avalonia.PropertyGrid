@@ -29,7 +29,7 @@ namespace PropertyModels.ComponentModel
         /// </summary>
         /// <param name="categoryName">The name of the category to check.</param>
         /// <returns><c>true</c> if the category should be collapsed; otherwise, <c>false</c>.</returns>
-        public bool ShouldAutoCollapse(string categoryName)
+        public virtual bool ShouldAutoCollapse(string categoryName)
         {
             return CategoryNames.Contains(categoryName);
         }

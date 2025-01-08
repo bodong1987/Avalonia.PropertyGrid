@@ -178,8 +178,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         public readonly ICellEditFactoryCollection Factories;
 
-        private readonly IExpandableObjectCache _expandableObjectCache = new PropertyGridExpandableCache();
-        private readonly IPropertyGridCellInfoCache _cellInfoCache = new PropertyGridCellInfoCache();
+        private readonly PropertyGridExpandableCache _expandableObjectCache = new ();
+        private readonly PropertyGridCellInfoCache _cellInfoCache = new ();
 
         /// <summary>
         /// Gets or sets the root property grid.

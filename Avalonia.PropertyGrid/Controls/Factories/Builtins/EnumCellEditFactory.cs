@@ -5,7 +5,6 @@ using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.PropertyGrid.Utils;
 using PropertyModels.ComponentModel;
-using PropertyModels.ComponentModel.DataAnnotations;
 using PropertyModels.Extensions;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
@@ -40,14 +39,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             }
 
             var isFlags = propertyDescriptor.PropertyType.IsDefined<FlagsAttribute>();
-            //Enum value = propertyDescriptor.GetValue(target) as Enum;
 
             if (isFlags)
             {
                 var control = new CheckedListEdit
                 {
-                    // ReSharper disable once CoVariantArrayConversion
-                    Items = EnumUtils.GetEnumValues(propertyDescriptor.PropertyType)
+                    Items = EnumUtils.GetEnumValues(propertyDescriptor.PropertyType, propertyDescriptor.Attributes.OfType<Attribute>())
                 };
 
                 control.SelectedItemsChanged += (s, e) =>
@@ -64,14 +61,9 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             }
             else
             {
-                
-                var attr= propertyDescriptor.GetCustomAttributes<EnumPermitValuesAttribute>().FirstOrDefault();
-                
                 var control = new ComboBox
                 {
-                    //检查枚举允许的值
-                     
-                    ItemsSource = EnumUtils.GetEnumValues(propertyDescriptor.PropertyType,attr?.PermitValues),
+                    ItemsSource = EnumUtils.GetEnumValues(propertyDescriptor.PropertyType, propertyDescriptor.Attributes.OfType<Attribute>()),
                     HorizontalAlignment = HorizontalAlignment.Stretch
                 };
 
@@ -124,8 +116,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                     try
                     {
-                        // ReSharper disable once CoVariantArrayConversion
-                        c.SelectedItems = value!.GetUniqueFlags().Where(x=> x is not null).Select(x => new EnumValueWrapper(x)).ToArray();
+                        c.SelectedItems = value!.GetUniqueFlagsExcluding().Select(x => new EnumValueWrapper(x)).ToArray();
                     }
                     finally
                     {
@@ -163,6 +154,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             {
                 return (items[0] as EnumValueWrapper)?.Value;
             }
+
             var sb = new StringBuilder();
             sb.Append((items[0] as EnumValueWrapper)?.Value);
 

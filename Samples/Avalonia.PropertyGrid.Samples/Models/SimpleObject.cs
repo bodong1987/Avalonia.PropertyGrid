@@ -86,11 +86,20 @@ namespace Avalonia.PropertyGrid.Samples.Models
         [Category("Enum")]
         public PhoneService Service { get; set; } = PhoneService.None;
 
+
+        [Category("Enum")]
+        [EnumPermitValues<PhoneService>(PhoneService.Cell, PhoneService.Fax)]
+        public PhoneService ServiceAllowCellFax { get; set; } = PhoneService.None;
+
         [Category("Enum")]
         public PlatformID CurrentPlatform => Environment.OSVersion.Platform;
 
         [Category("Enum")]
         public PlatformID Platform { get; set; } = Environment.OSVersion.Platform;
+
+        [Category("Enum")]
+        [EnumProhibitValues<PlatformID>(PlatformID.Unix)]
+        public PlatformID PlatformNoUnix { get; set; } = Environment.OSVersion.Platform;
 
         [Category("Enum")]
         public PlatformType EnumWithDisplayName { get; set; } = PlatformType.Windows;
@@ -317,7 +326,10 @@ namespace Avalonia.PropertyGrid.Samples.Models
         Cell = 2,
         Fax = 4,
         Internet = 8,
-        Other = 16
+        Other = 16,
+
+        [EnumExclude]
+        CanNotSeeThis = 32,
     }
 
     public enum PlatformType
@@ -330,7 +342,10 @@ namespace Avalonia.PropertyGrid.Samples.Models
         Ios,
 
         [EnumDisplayName("Unknown.Other")]
-        Other
+        Other,
+
+        [EnumExclude]
+        CanNotSeeThis
     }
 
     public class ValidatePlatformAttribute : ValidationAttribute
