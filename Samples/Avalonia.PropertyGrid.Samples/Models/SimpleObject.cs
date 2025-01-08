@@ -15,6 +15,7 @@ using System.Runtime.Serialization;
 
 namespace Avalonia.PropertyGrid.Samples.Models
 {
+    [AutoCollapseCategories("AutoCollapse")]
     public class SimpleObject : ReactiveObject
     {
         public readonly string Description;
@@ -315,6 +316,10 @@ namespace Avalonia.PropertyGrid.Samples.Models
         [ReadOnly(true)]
         [TypeConverter(typeof(ExpandableObjectConverter))]        
         public LoginInfo ReadonlyLoginInfo { get; set; } = new LoginInfo();
+
+        [Category("AutoCollapse")]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        public LoginInfo CollapsedLoginInfo { get; set; } = new LoginInfo();
     }
 
     [Flags]

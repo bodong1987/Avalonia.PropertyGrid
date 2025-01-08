@@ -13,6 +13,7 @@ using Avalonia.PropertyGrid.Localization;
 using Avalonia.PropertyGrid.Services;
 using Avalonia.PropertyGrid.ViewModels;
 using Avalonia.Reactive;
+using PropertyModels.ComponentModel;
 using PropertyModels.ComponentModel.DataAnnotations;
 using PropertyModels.Extensions;
 
@@ -592,6 +593,8 @@ namespace Avalonia.PropertyGrid.Controls
                 categories = categories.OrderBy(x => x.Key).ToList();
             }
 
+            var autoCollapseCategoriesAttribute = target.GetType().GetAnyCustomAttribute<AutoCollapseCategoriesAttribute>();
+
             foreach (var categoryInfo in categories)
             {
                 PropertiesGrid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
@@ -601,7 +604,7 @@ namespace Avalonia.PropertyGrid.Controls
                     ExpandDirection = ExpandDirection.Down
                 };
                 expander.SetValue(Grid.RowProperty, PropertiesGrid.RowDefinitions.Count - 1);
-                expander.IsExpanded = true;
+                expander.IsExpanded = autoCollapseCategoriesAttribute == null || !autoCollapseCategoriesAttribute.ShouldAutoCollapse(categoryInfo.Key);
                 expander.HorizontalContentAlignment = HorizontalAlignment.Stretch;
                 expander.HorizontalAlignment = HorizontalAlignment.Stretch;
                 expander.Margin = new Thickness(2);

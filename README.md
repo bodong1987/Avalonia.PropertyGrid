@@ -43,7 +43,7 @@ In addition, there are other classes that can be supported in PropertyModels.Com
 If you want to have some associations between your class properties, for example, some properties depend on other properties in implementation, then you can try to mark this dependency with PropertyModels.ComponentModel.DataAnnotations.DependsOnPropertyAttribute  
 but you need to inherit your class from PropertyModels.ComponentModel.ReactiveObject, otherwise you need to maintain this relationship by yourself, just trigger the PropertyChanged event of the target property when the dependent property changes.  
 
-```
+```C# 
 PropertyModels.ComponentModel.FloatPrecisionAttribute                               /* set float percision */  
 PropertyModels.ComponentModel.IntegerIncrementAttribute                             /* set integer increment by button*/  
 PropertyModels.ComponentModel.WatermarkAttribute                                    /* set water mark, it is text hint*/  
@@ -51,10 +51,14 @@ PropertyModels.ComponentModel.MultilineTextAttribute                            
 PropertyModels.ComponentModel.ProgressAttribute                                     /* use progress bar to dipslay numeric value property, readonly */   
 PropertyModels.ComponentModel.TrackableAttribute                                    /* use trackbar to edit numeric value property */  
 PropertyModels.ComponentModel.EnumDisplayNameAttribute                              /* set friendly name for each enum vlaues */
+PropertyModels.ComponentModel.EnumExcludeAttribute                                  /* Globally prohibit an enumerated field from appearing in the PropertyGrid. To configure it for a single property, you can use EnumPermitValuesAttribute or EnumProhibitValuesAttribute. */
+PropertyModels.ComponentModel.AutoCollapseCategoriesAttribute                       /* By configuring this Attribute for a class, some Categories can be automatically collapsed in the initial state. */
 PropertyModels.ComponentModel.DataAnnotations.DependsOnPropertyAttribute            /* mark this property is depends on the other property */  
 PropertyModels.ComponentModel.DataAnnotations.FileNameValidationAttribute           /* mark this property is filename, so control will validate the string directly */  
 PropertyModels.ComponentModel.DataAnnotations.PathBrowsableAttribute                /* mark string property is path, so it will provide a button to show path browser*/  
 PropertyModels.ComponentModel.DataAnnotations.VisibilityPropertyConditionAttribute  /* set this property will auto refresh all visiblity when this proeprty value changed. */  
+PropertyModels.ComponentModel.DataAnnotations.EnumPermitValuesAttribute<T>          /* For a single attribute configuration, force the allowed enumeration values ​​to be set */
+PropertyModels.ComponentModel.DataAnnotations.EnumProhibitValuesAttribute<T>          /* For individual attribute configurations, certain enumeration values ​​are forcibly prohibited from appearing in the candidate list */
 ```
 
 ### Supported Builtin Types
