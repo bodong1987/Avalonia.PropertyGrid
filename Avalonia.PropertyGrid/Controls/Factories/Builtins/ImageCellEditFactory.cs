@@ -2,6 +2,8 @@
 using Avalonia.Layout;
 using Avalonia.Media;
 using PropertyModels.ComponentModel;
+using PropertyModels.ComponentModel.DataAnnotations;
+using PropertyModels.Extensions;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
@@ -34,15 +36,19 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return null;
             }
 
-            if (propertyDescriptor.PropertyType != typeof(IImage))
+            if (propertyDescriptor.PropertyType != typeof(IImage) && !propertyDescriptor.PropertyType.IsImplementFrom<IImage>())
             {
                 return null;
             }
 
+            var attr = propertyDescriptor.GetCustomAttribute<ImagePreviewModeAttribute>();
+
             var control = new Image
             {
                 VerticalAlignment = VerticalAlignment.Center,
-                HorizontalAlignment = HorizontalAlignment.Center
+                HorizontalAlignment = HorizontalAlignment.Center,
+                Stretch = attr != null ? (Stretch)(int)attr.Stretch : Stretch.Uniform,
+                StretchDirection = attr != null ? (StretchDirection)(int)attr.StretchDirection : StretchDirection.Both
             };
 
             return control;
@@ -59,7 +65,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             var target = context.Target;
             var control = context.CellEdit!;
 
-            if (propertyDescriptor.PropertyType != typeof(IImage))
+            if (propertyDescriptor.PropertyType != typeof(IImage) && !propertyDescriptor.PropertyType.IsImplementFrom<IImage>())
             {
                 return false;
             }

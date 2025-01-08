@@ -42,8 +42,9 @@ namespace PropertyModels.ComponentModel
         /// <param name="name">The name.</param>
         /// <param name="index">The index.</param>
         /// <param name="elementType">Type of the element.</param>
-        public ListElementPropertyDescriptor(string name, int index, Type elementType) :
-            base(name, null)
+        /// <param name="attributes">The attributes.</param>
+        public ListElementPropertyDescriptor(string name, int index, Type elementType, Attribute[]? attributes = null) :
+            base(name, attributes)
         {
             Index = index;
             PropertyType = elementType;

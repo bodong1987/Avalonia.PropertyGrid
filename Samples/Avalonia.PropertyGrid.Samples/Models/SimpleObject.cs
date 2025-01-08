@@ -28,6 +28,15 @@ namespace Avalonia.PropertyGrid.Samples.Models
             {
                 AvaloniaBanner = new Avalonia.Media.Imaging.Bitmap(stream);
             }
+
+            foreach(var name in new string[] {"au.png", "bl.png", "ca.png", "cn.png"})
+            {
+                using (var stream = AssetLoader.Open(new Uri($"avares://{GetType().Assembly.GetName().Name}/Assets/country-flags/{name}")))
+                {
+                    var image = new Avalonia.Media.Imaging.Bitmap(stream);
+                    ImageList.Add(image);
+                }
+            }
         }
 
         public override string ToString()
@@ -36,7 +45,11 @@ namespace Avalonia.PropertyGrid.Samples.Models
         }
 
         [Category("Imaging")]
-        public Avalonia.Media.IImage AvaloniaBanner { get; set; }
+        public IImage AvaloniaBanner { get; set; }
+
+        [Category("Imaging")]
+        [ImagePreviewMode(Stretch = StretchType.None)]
+        public BindingList<IImage> ImageList { get; set; } = new BindingList<IImage>();
 
         [Category("Path")]
         [DisplayName("Target Path")]

@@ -33,6 +33,18 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         {
             var type = GetElementType(pd);
 
+            return type != null;
+        }
+
+        /// <summary>
+        /// Determines whether [is editable type] [the specified pd].
+        /// </summary>
+        /// <param name="pd">The pd.</param>
+        /// <returns><c>true</c> if [is editable type] [the specified pd]; otherwise, <c>false</c>.</returns>
+        private static bool IsEditableType(PropertyDescriptor pd)
+        {
+            var type = GetElementType(pd);
+
             return type is { IsAbstract: false };
         }
 
@@ -75,7 +87,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             var attr = context.Property.GetCustomAttribute<EditableAttribute>();
             
-            if(attr is { AllowEdit: false } || context.IsReadOnly)
+            if(attr is { AllowEdit: false } || context.IsReadOnly || !IsEditableType(context.Property))
             {
                 control.Model.IsEditable = false;
             }

@@ -5,7 +5,7 @@
 	  <LangVersion>preview</LangVersion>
 	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	  <Title>bodong.Avalonia.PropertyGrid</Title>
-	  <Version>11.2.3.2</Version>
+	  <Version>11.2.3.4</Version>
 	  <Authors>bodong</Authors>
       <Nullable>enable</Nullable>
 	  <Description>A PropertyGrid control implementation for Avalonia</Description>
@@ -38,7 +38,7 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.2.3" />
     <PackageReference Include="Avalonia.Controls.ColorPicker" Version="11.2.3" />
-    <PackageReference Include="bodong.PropertyModels" Version="11.2.3.1" />
+    <PackageReference Include="bodong.PropertyModels" Version="11.2.3.4" />
   </ItemGroup>
 
   <ItemGroup>
