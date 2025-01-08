@@ -123,7 +123,10 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (control is NumericUpDown nup)
             {
-                if(decimal.TryParse(((double)Convert.ChangeType(propertyDescriptor.GetValue(target)!, typeof(double))).ToString(CultureInfo.InvariantCulture), out var d))
+                var doubleValue = (double)Convert.ChangeType(propertyDescriptor.GetValue(target)!, typeof(double));
+                var doubleValueText = doubleValue.ToString(CultureInfo.InvariantCulture);
+
+                if (decimal.TryParse(doubleValueText, NumberStyles.Any, CultureInfo.InvariantCulture, out var d))
                 {
                     nup.Value = d;
                 }
