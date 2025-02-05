@@ -1,12 +1,11 @@
-﻿using System;
+﻿using Avalonia.PropertyGrid.Services;
+using PropertyModels.ComponentModel;
+using PropertyModels.ComponentModel.DataAnnotations;
+using PropertyModels.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using Avalonia.PropertyGrid.Services;
-using PropertyModels.ComponentModel;
-using PropertyModels.Extensions;
-using PropertyModels.ComponentModel.DataAnnotations;
 
 namespace Avalonia.PropertyGrid.Utils
 {
@@ -27,12 +26,13 @@ namespace Avalonia.PropertyGrid.Utils
 
             return enumType.GetEnumValues()
                 .Cast<Enum>()
+                .Zip(enumType.GetEnumNames(), (en, name) => new { Enum = en, Name = name })
                 .Where(x =>
                 {
-                    var fieldInfo = enumType.GetField(x.ToString());
-                    return fieldInfo != null && !fieldInfo.IsDefined<EnumExcludeAttribute>() && (attributes == null || IsValueAllowed(attributes, x));
+                    var fieldInfo = enumType.GetField(x.Name);
+                    return fieldInfo?.IsDefined<EnumExcludeAttribute>() == false && (attributes == null || IsValueAllowed(attributes, x.Enum));
                 })
-                .Select(CreateEnumValueWrapper)
+                .Select(x => CreateEnumValueWrapper(x.Enum))
                 .ToArray();
         }
 
