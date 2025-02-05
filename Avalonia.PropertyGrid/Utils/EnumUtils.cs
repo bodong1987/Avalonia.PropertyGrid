@@ -1,11 +1,11 @@
-﻿using Avalonia.PropertyGrid.Services;
-using PropertyModels.ComponentModel;
-using PropertyModels.ComponentModel.DataAnnotations;
-using PropertyModels.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Avalonia.PropertyGrid.Services;
+using PropertyModels.ComponentModel;
+using PropertyModels.ComponentModel.DataAnnotations;
+using PropertyModels.Extensions;
 
 namespace Avalonia.PropertyGrid.Utils
 {
@@ -32,7 +32,7 @@ namespace Avalonia.PropertyGrid.Utils
                     var fieldInfo = enumType.GetField(x.Name);
                     return fieldInfo?.IsDefined<EnumExcludeAttribute>() == false && (attributes == null || IsValueAllowed(attributes, x.Enum));
                 })
-                .Select(x => CreateEnumValueWrapper(x.Enum))
+                .Select(x => CreateEnumValueWrapper(x.Enum, x.Name))
                 .ToArray();
         }
 
@@ -50,10 +50,13 @@ namespace Avalonia.PropertyGrid.Utils
         /// Creates an <see cref="EnumValueWrapper"/> for the specified enum value.
         /// </summary>
         /// <param name="enumValue">The enum value.</param>
+        /// <param name="enumValueName">The text to display for the enum name.</param>
         /// <returns>The created <see cref="EnumValueWrapper"/>.</returns>
-        private static EnumValueWrapper CreateEnumValueWrapper(Enum enumValue)
+        private static EnumValueWrapper CreateEnumValueWrapper(Enum enumValue, string? enumValueName = null)
         {
-            var wrapper = new EnumValueWrapper(enumValue);
+            var wrapper = enumValueName == null
+                ? new EnumValueWrapper(enumValue)
+                : new EnumValueWrapper(enumValue, enumValueName);
 
             try
             {
@@ -61,7 +64,7 @@ namespace Avalonia.PropertyGrid.Utils
             }
             catch
             {
-                wrapper.DisplayName = enumValue.ToString()!;
+                wrapper.DisplayName = enumValueName ?? enumValue.ToString()!;
             }
 
             return wrapper;
