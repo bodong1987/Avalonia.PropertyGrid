@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
@@ -195,7 +196,7 @@ namespace Avalonia.PropertyGrid.Controls
         {
             NewElementCommand = ReactiveCommand.Create(HandleNewElement);
             ClearElementsCommand = ReactiveCommand.Create(HandleClearElements);
-            
+
             Model = new ListViewModel(ReactiveCommand.Create(HandleInsertElement), ReactiveCommand.Create(HandleRemoveElement));
         }
 
@@ -205,7 +206,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="e">The e.</param>
         private static void OnDataListChanged(AvaloniaPropertyChangedEventArgs<IList> e)
         {
-            if(e.Sender is ListEdit ble)
+            if (e.Sender is ListEdit ble)
             {
                 ble.OnDataListChanged(e.OldValue.Value, e.NewValue.Value);
             }
@@ -218,14 +219,14 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="value">The value.</param>
         private void OnDataListChanged(IList previousValue, IList value)
         {
-            if(previousValue is IBindingList pblist)
+            if (previousValue is IBindingList pblist)
             {
                 pblist.ListChanged -= OnListChanged;
             }
 
             Model.List = value;
 
-            if(value is IBindingList blist)
+            if (value is IBindingList blist)
             {
                 blist.ListChanged += OnListChanged;
             }
@@ -257,11 +258,11 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="parameter">The parameter.</param>
         private void HandleInsertElement(object? parameter)
         {
-            if(parameter is ListElementDataDesc desc)
+            if (parameter is ListElementDataDesc desc)
             {
                 var et = new ListRoutedEventArgs(InsertElementEvent, desc.List, desc.Property.Index);
                 RaiseEvent(et);
-            }            
+            }
         }
 
         /// <summary>
@@ -274,7 +275,7 @@ namespace Avalonia.PropertyGrid.Controls
             {
                 var et = new ListRoutedEventArgs(RemoveElementsEvent, desc.List, desc.Property.Index);
                 RaiseEvent(et);
-            }                
+            }
         }
 
         /// <summary>
@@ -442,7 +443,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="insertCommand">The insert command.</param>
         /// <param name="removeCommand">The remove command.</param>
         public ListViewModel(IList? list, ICommand insertCommand, ICommand removeCommand)
-        {            
+        {
             InsertCommand = insertCommand;
             RemoveCommand = removeCommand;
 
@@ -457,30 +458,34 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="e">The <see cref="PropertyChangedEventArgs"/> instance containing the event data.</param>
         private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if(e.PropertyName == nameof(List))
+            if (e.PropertyName == nameof(List))
             {
                 Debug.Assert(Collection != null);
 
                 _elements.Clear();
 
-                if(List != null)
+                if (List != null)
                 {
                     var list = List;
                     foreach (var index in Enumerable.Range(0, list.Count))
                     {
+                        var attributes = PropertyContext?.Property.Attributes.OfType<Attribute>()
+                            .Where(attr => !(attr is ValidationAttribute))
+                            .ToArray();
+
                         var pd = new ListElementPropertyDescriptor(
-                            index.ToString(), 
-                            index, 
-                            list[index]?.GetType() ?? list.GetType().GetGenericArguments()[0], 
-                            PropertyContext?.Property.Attributes.OfType<Attribute>().ToArray()
+                            index.ToString(),
+                            index,
+                            list[index]?.GetType() ?? list.GetType().GetGenericArguments()[0],
+                            attributes
                             );
 
                         var desc = new ListElementDataDesc(
-                            this, 
-                            list, 
-                            pd, 
-                            PropertyContext, 
-                            InsertCommand, 
+                            this,
+                            list,
+                            pd,
+                            PropertyContext,
+                            InsertCommand,
                             RemoveCommand
                             );
 
@@ -488,7 +493,7 @@ namespace Avalonia.PropertyGrid.Controls
                     }
                 }
 
-                RaisePropertyChanged(nameof(Elements));                
+                RaisePropertyChanged(nameof(Elements));
             }
         }
     }
@@ -565,7 +570,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="insertCommand">The insert command.</param>
         /// <param name="removeCommand">The remove command.</param>
         public ListElementDataDesc(
-            ListViewModel model, 
+            ListViewModel model,
             IList list,
             ListElementPropertyDescriptor property,
             PropertyCellContext? context,
@@ -581,10 +586,10 @@ namespace Avalonia.PropertyGrid.Controls
             InsertCommand = ReactiveCommand.Create(() => insertCommand.Execute(this));
             RemoveCommand = ReactiveCommand.Create(() => removeCommand.Execute(this));
 
-            if(list is IBindingList blist)
+            if (list is IBindingList blist)
             {
                 blist.ListChanged += OnListChanged;
-            }            
+            }
 
             model.PropertyChanged += OnPropertyChanged;
         }
@@ -596,11 +601,11 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="e">The <see cref="PropertyChangedEventArgs"/> instance containing the event data.</param>
         private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if(e.PropertyName == nameof(Model.IsEditable))
+            if (e.PropertyName == nameof(Model.IsEditable))
             {
                 RaisePropertyChanged(nameof(IsEditable));
             }
-            else if(e.PropertyName == nameof(Model.IsReadOnly))
+            else if (e.PropertyName == nameof(Model.IsReadOnly))
             {
                 RaisePropertyChanged(nameof(IsReadOnly));
             }
@@ -613,7 +618,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="e">The <see cref="ListChangedEventArgs"/> instance containing the event data.</param>
         private void OnListChanged(object? sender, ListChangedEventArgs e)
         {
-            if(e.ListChangedType != ListChangedType.ItemChanged || e.NewIndex != Property.Index)
+            if (e.ListChangedType != ListChangedType.ItemChanged || e.NewIndex != Property.Index)
             {
                 return;
             }
