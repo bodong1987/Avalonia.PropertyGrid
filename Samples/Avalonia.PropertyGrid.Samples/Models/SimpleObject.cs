@@ -116,6 +116,10 @@ namespace Avalonia.PropertyGrid.Samples.Models
         public PlatformID PlatformNoUnix { get; set; } = Environment.OSVersion.Platform;
 
         [Category("Enum")]
+        [EnumProhibitNames("None", "CannotCoupleToSelf", "CanWheelSlip")]
+        public VehicleObjectFlags VechicleObject { get; set; } = VehicleObjectFlags.AnyRoadType | VehicleObjectFlags.RackRail;
+
+        [Category("Enum")]
         public PlatformType EnumWithDisplayName { get; set; } = PlatformType.Windows;
 
         [Category("Selectable List")]
@@ -371,6 +375,32 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
         [EnumExclude]
         CanNotSeeThis
+    }
+
+    // https://github.com/bodong1987/Avalonia.PropertyGrid/issues/52
+    [Flags]
+    public enum VehicleObjectFlags 
+    {        
+        None = 0,
+        AlternatingDirection = 1 << 0,
+        TopAndTailPosition = 1 << 1,
+        JacobsBogieFront = 1 << 2,
+        JacobsBogieRear = 1 << 3,
+        unk_04 = 1 << 4,
+        CentrePosition = 1 << 5,
+        RackRail = 1 << 6,
+        AlternatingCarSprite = 1 << 7,
+        AircraftIsTailDragger = 1 << 8,
+        AnyRoadType = 1 << 9,
+
+        SpeedControl = 1 << 10,
+        CannotCoupleToSelf = 1 << 11,
+        AircraftFlaresLanding = 1 << 11,
+        MustHavePair = 1 << 12,
+        CanWheelSlip = 1 << 13,
+        AircraftIsHelicopter = 1 << 13,
+        Refittable = 1 << 14,
+        QuietInvention = 1 << 15,
     }
 
     public class ValidatePlatformAttribute : ValidationAttribute

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using Avalonia.PropertyGrid.Services;
 using PropertyModels.ComponentModel;
 using PropertyModels.ComponentModel.DataAnnotations;
@@ -24,16 +25,28 @@ namespace Avalonia.PropertyGrid.Utils
         {
             Debug.Assert(enumType is { IsEnum: true });
 
-            return enumType.GetEnumValues()
-                .Cast<Enum>()
-                .Zip(enumType.GetEnumNames(), (en, name) => new { Enum = en, Name = name })
-                .Where(x =>
+            List<EnumValueWrapper> values = new List<EnumValueWrapper>();
+
+            foreach(var name in enumType.GetEnumNames())
+            {
+                var enumValueField = enumType.GetField(name);
+                if(enumValueField != null && enumValueField.IsDefined<EnumExcludeAttribute>())
                 {
-                    var fieldInfo = enumType.GetField(x.Name);
-                    return fieldInfo?.IsDefined<EnumExcludeAttribute>() == false && (attributes == null || IsValueAllowed(attributes, x.Enum));
-                })
-                .Select(x => CreateEnumValueWrapper(x.Enum, x.Name))
-                .ToArray();
+                    continue;
+                }
+
+                var enumValue = Enum.Parse(enumType, name);
+                Debug.Assert(enumValue is Enum);
+
+                if (attributes != null && !IsValueAllowed(attributes, enumType, name, (enumValue as Enum)!))
+                {
+                    continue;
+                }
+
+                values.Add(CreateEnumValueWrapper((enumValue as Enum)!, enumValueField?.GetAnyCustomAttribute<EnumDisplayNameAttribute>()?.DisplayName));
+            }
+
+            return values.ToArray();
         }
 
         /// <summary>
@@ -83,7 +96,10 @@ namespace Avalonia.PropertyGrid.Utils
             foreach (Enum value in Enum.GetValues(enumType))
             {
                 var fieldInfo = enumType.GetField(value.ToString());
-                if (fieldInfo != null && !fieldInfo.IsDefined<EnumExcludeAttribute>() && flags.HasFlag(value) && (attributes == null || IsValueAllowed(attributes, value)))
+                if (fieldInfo != null && 
+                    !fieldInfo.IsDefined<EnumExcludeAttribute>() && 
+                    flags.HasFlag(value) && 
+                    (attributes == null || IsValueAllowed(attributes, typeof(T), fieldInfo.Name, value)))
                 {
                     yield return (T)value;
                 }
@@ -91,16 +107,18 @@ namespace Avalonia.PropertyGrid.Utils
         }
 
         /// <summary>
-        /// Determines whether the specified enum value is allowed based on attributes implementing <see cref="IEnumValueAuthorizeAttribute"/>.
+        /// Determines whether the specified enum value is allowed based on attributes implementing <see cref="IEnumValueAuthorizeAttribute" />.
         /// </summary>
         /// <param name="attributes">all attributes.</param>
+        /// <param name="enumType">Type of the enum.</param>
+        /// <param name="name">The name.</param>
         /// <param name="value">The enum value.</param>
         /// <returns><c>true</c> if the value is allowed; otherwise, <c>false</c>.</returns>
-        public static bool IsValueAllowed(IEnumerable<Attribute> attributes, Enum value)
+        public static bool IsValueAllowed(IEnumerable<Attribute> attributes, Type enumType, string name, Enum value)
         {
             foreach (var attribute in attributes.OfType<IEnumValueAuthorizeAttribute>())
             {
-                if (!attribute.AllowValue(value))
+                if (!attribute.AllowValue(enumType, name, value))
                 {
                     return false;
                 }

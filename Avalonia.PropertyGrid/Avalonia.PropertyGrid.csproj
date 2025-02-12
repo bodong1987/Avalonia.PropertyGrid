@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-      <TargetFrameworks>netstandard2.1;net6.0;net8.0</TargetFrameworks>
+      <TargetFrameworks>netstandard2.1;net6.0;net8.0;net9.0</TargetFrameworks>
 	  <LangVersion>preview</LangVersion>
 	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	  <Title>bodong.Avalonia.PropertyGrid</Title>
@@ -38,7 +38,7 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="11.2.3" />
     <PackageReference Include="Avalonia.Controls.ColorPicker" Version="11.2.3" />
-    <PackageReference Include="bodong.PropertyModels" Version="11.2.3.4" />
+    <PackageReference Include="bodong.PropertyModels" Version="11.2.3.5" />
   </ItemGroup>
 
   <ItemGroup>

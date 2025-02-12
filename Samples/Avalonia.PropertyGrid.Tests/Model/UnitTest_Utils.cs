@@ -86,24 +86,24 @@ namespace Avalonia.PropertyGrid.Tests.Model
         public void Test_EnumPermitValuesAttribute()
         {
             var testObject = new TestObjectWithAttributes();
-            var permitField = typeof(TestObjectWithAttributes).GetField("PermittedField", BindingFlags.Instance | BindingFlags.NonPublic);
+            var permitField = typeof(TestObjectWithAttributes).GetField("PermittedField");
             var permitAttribute = permitField.GetCustomAttribute<EnumPermitValuesAttribute<EnumPlatform>>();
 
             Assert.IsNotNull(permitAttribute);
-            Assert.IsTrue(permitAttribute.AllowValue(EnumPlatform.Windows));
-            Assert.IsFalse(permitAttribute.AllowValue(EnumPlatform.MacOS));
+            Assert.IsTrue(permitAttribute.AllowValue("Windows", EnumPlatform.Windows));
+            Assert.IsFalse(permitAttribute.AllowValue("MacOS", EnumPlatform.MacOS));
         }
 
         [TestMethod]
         public void Test_EnumProhibitValuesAttribute()
         {
             var testObject = new TestObjectWithAttributes();
-            var prohibitField = typeof(TestObjectWithAttributes).GetField("ProhibitedField", BindingFlags.Instance | BindingFlags.NonPublic);
+            var prohibitField = typeof(TestObjectWithAttributes).GetField("ProhibitedField");
             var prohibitAttribute = prohibitField.GetCustomAttribute<EnumProhibitValuesAttribute<EnumPlatform>>();
 
             Assert.IsNotNull(prohibitAttribute);
-            Assert.IsFalse(prohibitAttribute.AllowValue(EnumPlatform.Windows));
-            Assert.IsTrue(prohibitAttribute.AllowValue(EnumPlatform.MacOS));
+            Assert.IsFalse(prohibitAttribute.AllowValue("Windows", EnumPlatform.Windows));
+            Assert.IsTrue(prohibitAttribute.AllowValue("MacOS", EnumPlatform.MacOS));
         }
     }
 

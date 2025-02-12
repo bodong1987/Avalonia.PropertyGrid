@@ -58,7 +58,10 @@ PropertyModels.ComponentModel.DataAnnotations.FileNameValidationAttribute       
 PropertyModels.ComponentModel.DataAnnotations.PathBrowsableAttribute                /* mark string property is path, so it will provide a button to show path browser*/  
 PropertyModels.ComponentModel.DataAnnotations.VisibilityPropertyConditionAttribute  /* set this property will auto refresh all visiblity when this proeprty value changed. */  
 PropertyModels.ComponentModel.DataAnnotations.EnumPermitValuesAttribute<T>          /* For a single attribute configuration, force the allowed enumeration values ​​to be set */
+PropertyModels.ComponentModel.DataAnnotations.EnumPermitNamesAttribute              /* based on enum names */
 PropertyModels.ComponentModel.DataAnnotations.EnumProhibitValuesAttribute<T>        /* For individual attribute configurations, certain enumeration values ​​are forcibly prohibited from appearing in the candidate list */
+PropertyModels.ComponentModel.DataAnnotations.EnumProhibitNamesAttribute            /* based on enum names */
+PropertyModels.ComponentModel.DataAnnotations.IEnumValueAuthorizeAttribute          /* create your custom enum value filter based on this interface */
 PropertyModels.ComponentModel.DataAnnotations.ImagePreviewModeAttribute             /* set image display mode */
 ```
 
