@@ -8,7 +8,7 @@
 	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
 	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
 	  <Nullable>enable</Nullable>
-	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+      <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">True</GeneratePackageOnBuild>
 	  <PackageId>bodong.$(AssemblyName)</PackageId>
 	  <Title>bodong.$(AssemblyName)</Title>
 	  <Description>Some simple object model class libraries, originally used in the Avalonia.PropertyGrid project, were later split into an independent package in order to achieve the separation of data and presentation.</Description>
@@ -17,6 +17,7 @@
 	  <RepositoryType>git</RepositoryType>
 	  <PackageTags>Avalonia;PropertyGrid;AvaloniaControls;ObjectModel;ComponentModel</PackageTags>
 	  <PackageReadmeFile>README_PropertyModels.md</PackageReadmeFile>
+	  <Configurations>Debug;Release;Development</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
