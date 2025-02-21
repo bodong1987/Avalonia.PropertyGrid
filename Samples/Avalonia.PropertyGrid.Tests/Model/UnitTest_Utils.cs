@@ -8,7 +8,7 @@ using Avalonia.PropertyGrid.Utils;
 using PropertyModels.ComponentModel.DataAnnotations;
 using System.Reflection;
 
-namespace Avalonia.PropertyGrid.Tests.Model
+namespace Avalonia.PropertyGrid.UnitTests.Model
 {
     [TestClass]
     public class UnitTest_Utils

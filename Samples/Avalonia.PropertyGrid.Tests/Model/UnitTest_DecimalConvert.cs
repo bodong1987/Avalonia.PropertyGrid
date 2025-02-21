@@ -3,7 +3,7 @@ using System.Globalization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Avalonia.PropertyGrid.Utils;
 
-namespace Avalonia.PropertyGrid.Tests.Model
+namespace Avalonia.PropertyGrid.UnitTests.Model
 {
     [TestClass]
     public class UnitTest_DecimalConvertUtils
