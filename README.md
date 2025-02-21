@@ -431,6 +431,3 @@ v11.1.4.1
 v11.1.4.2  
 
 * Enable Nullable
-
-v11.2.4
-* Enable WebBrowser Support
