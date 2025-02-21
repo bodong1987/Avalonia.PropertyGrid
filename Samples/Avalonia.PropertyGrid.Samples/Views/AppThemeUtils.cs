@@ -5,6 +5,12 @@ using Avalonia.Themes.Simple;
 
 namespace Avalonia.PropertyGrid.Samples.Views
 {
+    public enum ThemeType
+    {
+        Fluent,
+        Simple
+    }
+
     public static class AppThemeUtils
     {
         private static readonly Styles _themeStylesContainer = new();

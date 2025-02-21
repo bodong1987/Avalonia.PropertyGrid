@@ -1,4 +1,4 @@
-﻿using Avalonia.Controls;
+using Avalonia.Controls;
 
 namespace Avalonia.PropertyGrid.Samples.Views;
 

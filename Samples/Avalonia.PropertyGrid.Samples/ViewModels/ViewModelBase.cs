@@ -1,8 +1,7 @@
 ﻿using PropertyModels.ComponentModel;
 
-namespace Avalonia.PropertyGrid.Samples.ViewModels
+namespace Avalonia.PropertyGrid.Samples.ViewModels;
+
+public abstract class ViewModelBase : MiniReactiveObject
 {
-    public class ViewModelBase : MiniReactiveObject
-    {
-    }
 }

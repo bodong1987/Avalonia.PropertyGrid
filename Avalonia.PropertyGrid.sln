@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.PropertyGrid", "Sources/Avalonia.PropertyGrid\Avalonia.PropertyGrid.csproj", "{26EA879C-1190-4C16-9FDF-7A63B2FA3A15}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.PropertyGrid", "Sources\Avalonia.PropertyGrid\Avalonia.PropertyGrid.csproj", "{26EA879C-1190-4C16-9FDF-7A63B2FA3A15}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PropertyModels", "Sources/PropertyModels\PropertyModels.csproj", "{75A4BDAD-C971-484B-9C73-F8E65CE7B812}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PropertyModels", "Sources\PropertyModels\PropertyModels.csproj", "{75A4BDAD-C971-484B-9C73-F8E65CE7B812}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PropertyGrid", "PropertyGrid", "{2F4556E9-4CFD-43C3-908B-5D411EE41619}"
 EndProject
@@ -17,7 +17,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.PropertyGrid.UnitT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.PropertyGrid.Samples", "Samples\Avalonia.PropertyGrid.Samples\Avalonia.PropertyGrid.Samples.csproj", "{FF770310-EBD8-4B95-B31D-CFD373B08FA1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.ProperyGrid.NugetSamples", "Samples\Avalonia.ProperyGrid.NugetSamples\Avalonia.ProperyGrid.NugetSamples.csproj", "{2EBA8143-4EB0-4941-9253-A3903797663F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.PropertyGrid.Samples.Desktop", "Samples\Avalonia.PropertyGrid.Samples.Desktop\Avalonia.PropertyGrid.Samples.Desktop.csproj", "{46DC52E6-A14E-492E-AC79-6FD80F906284}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.PropertyGrid.Samples.Android", "Samples\Avalonia.PropertyGrid.Samples.Android\Avalonia.PropertyGrid.Samples.Android.csproj", "{19D33EE3-E835-4EBF-9DBD-8447468FC748}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.PropertyGrid.Samples.iOS", "Samples\Avalonia.PropertyGrid.Samples.iOS\Avalonia.PropertyGrid.Samples.iOS.csproj", "{58383792-3713-49C5-AC28-F76485F23495}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Avalonia.PropertyGrid.Samples.Browser", "Samples\Avalonia.PropertyGrid.Samples.Browser\Avalonia.PropertyGrid.Samples.Browser.csproj", "{B61AA7F3-DF7A-45EB-AF87-F2BDC39BE908}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +47,26 @@ Global
 		{FF770310-EBD8-4B95-B31D-CFD373B08FA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF770310-EBD8-4B95-B31D-CFD373B08FA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF770310-EBD8-4B95-B31D-CFD373B08FA1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2EBA8143-4EB0-4941-9253-A3903797663F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2EBA8143-4EB0-4941-9253-A3903797663F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2EBA8143-4EB0-4941-9253-A3903797663F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2EBA8143-4EB0-4941-9253-A3903797663F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46DC52E6-A14E-492E-AC79-6FD80F906284}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46DC52E6-A14E-492E-AC79-6FD80F906284}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46DC52E6-A14E-492E-AC79-6FD80F906284}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46DC52E6-A14E-492E-AC79-6FD80F906284}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19D33EE3-E835-4EBF-9DBD-8447468FC748}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19D33EE3-E835-4EBF-9DBD-8447468FC748}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19D33EE3-E835-4EBF-9DBD-8447468FC748}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{19D33EE3-E835-4EBF-9DBD-8447468FC748}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19D33EE3-E835-4EBF-9DBD-8447468FC748}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19D33EE3-E835-4EBF-9DBD-8447468FC748}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{58383792-3713-49C5-AC28-F76485F23495}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58383792-3713-49C5-AC28-F76485F23495}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58383792-3713-49C5-AC28-F76485F23495}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{58383792-3713-49C5-AC28-F76485F23495}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58383792-3713-49C5-AC28-F76485F23495}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58383792-3713-49C5-AC28-F76485F23495}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{B61AA7F3-DF7A-45EB-AF87-F2BDC39BE908}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B61AA7F3-DF7A-45EB-AF87-F2BDC39BE908}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B61AA7F3-DF7A-45EB-AF87-F2BDC39BE908}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B61AA7F3-DF7A-45EB-AF87-F2BDC39BE908}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,7 +76,10 @@ Global
 		{75A4BDAD-C971-484B-9C73-F8E65CE7B812} = {2F4556E9-4CFD-43C3-908B-5D411EE41619}
 		{4EE1842A-F3F7-4E8A-9278-B1F1A96D627C} = {37180D91-5EA1-457A-9907-D4304889EB39}
 		{FF770310-EBD8-4B95-B31D-CFD373B08FA1} = {27094F4D-5BF1-4940-9726-D583AC395C69}
-		{2EBA8143-4EB0-4941-9253-A3903797663F} = {27094F4D-5BF1-4940-9726-D583AC395C69}
+		{46DC52E6-A14E-492E-AC79-6FD80F906284} = {27094F4D-5BF1-4940-9726-D583AC395C69}
+		{19D33EE3-E835-4EBF-9DBD-8447468FC748} = {27094F4D-5BF1-4940-9726-D583AC395C69}
+		{58383792-3713-49C5-AC28-F76485F23495} = {27094F4D-5BF1-4940-9726-D583AC395C69}
+		{B61AA7F3-DF7A-45EB-AF87-F2BDC39BE908} = {27094F4D-5BF1-4940-9726-D583AC395C69}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {17C0E5EE-D41B-4A3A-A626-4CF865CC6D71}
