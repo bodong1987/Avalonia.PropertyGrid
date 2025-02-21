@@ -11,6 +11,13 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Avalonia.PropertyGrid.Samples.ViewModels;
 
+public enum ThemeType
+{
+    Fluent,
+    Simple
+}
+
+
 public partial class MainViewModel : ViewModelBase
 {
     readonly SimpleObject _SimpleObject = new SimpleObject("SimpleTests");

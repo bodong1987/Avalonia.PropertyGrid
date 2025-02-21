@@ -193,8 +193,8 @@
                 <TextBlock Text="{ll:Localize Theme}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="2" ></TextBlock>
                 <ComboBox x:Name="ThemeBox" Width="125" Padding="4" SelectedIndex="0">
                     <ComboBox.Items>
-                        <lv:ThemeType>Fluent</lv:ThemeType>
-                        <lv:ThemeType>Simple</lv:ThemeType>
+                        <vm:ThemeType>Fluent</vm:ThemeType>
+                        <vm:ThemeType>Simple</vm:ThemeType>
                     </ComboBox.Items>
                 </ComboBox>
                 <TextBlock Text="{ll:Localize ThemeVariants}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="2"></TextBlock>

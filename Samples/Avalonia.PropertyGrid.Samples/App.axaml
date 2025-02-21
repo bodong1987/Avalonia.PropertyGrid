@@ -10,7 +10,6 @@
 
     <Application.Resources>
         <ResourceDictionary>
-            <!-- Resources used only in the control catalog -->
             <ResourceDictionary.ThemeDictionaries>
                 <ResourceDictionary x:Key="Default">
                     <Color x:Key="CatalogBaseLowColor">#33000000</Color>
@@ -26,8 +25,8 @@
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
 
-            <FluentTheme x:Key="FluentTheme">
-            </FluentTheme>
+            <!-- Styles attached dynamically depending on current theme (simple or fluent) -->
+            <FluentTheme x:Key="FluentTheme"/>
             <SimpleTheme x:Key="SimpleTheme" />
             <StyleInclude x:Key="DataGridFluent" Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
             <StyleInclude x:Key="DataGridSimple" Source="avares://Avalonia.Controls.DataGrid/Themes/Simple.xaml" />

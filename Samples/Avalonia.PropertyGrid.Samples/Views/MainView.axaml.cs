@@ -19,12 +19,12 @@ public partial class MainView : UserControl
 
         InitializeComponent();
 
-        ThemeBox.SelectedItem = AppThemeUtils.CurrentTheme;
+        ThemeBox.SelectedItem = App.CurrentTheme;
         ThemeBox.SelectionChanged += (sender, e) =>
         {
             if (ThemeBox.SelectedItem is ThemeType theme)
             {
-                AppThemeUtils.SetTheme(theme);
+                App.SetThemes(theme);
             }
         };
 
