@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{2709
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{37180D91-5EA1-457A-9907-D4304889EB39}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.PropertyGrid.UnitTests", "Samples\Avalonia.PropertyGrid.UnitTests\Avalonia.PropertyGrid.UnitTests.csproj", "{4EE1842A-F3F7-4E8A-9278-B1F1A96D627C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.PropertyGrid.UnitTests", "UnitTests\Avalonia.PropertyGrid.UnitTests\Avalonia.PropertyGrid.UnitTests.csproj", "{4EE1842A-F3F7-4E8A-9278-B1F1A96D627C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Avalonia.PropertyGrid.Samples", "Samples\Avalonia.PropertyGrid.Samples\Avalonia.PropertyGrid.Samples.csproj", "{FF770310-EBD8-4B95-B31D-CFD373B08FA1}"
 EndProject
