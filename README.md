@@ -24,6 +24,9 @@ Use the source code of this project directly or use NUGet Packages:
     https://www.nuget.org/packages/bodong.Avalonia.PropertyGrid   
 Then add PropertyGrid to your project, and bind the object to be displayed and edited to the `DataContext` property. If you want to bind multiple objects, just bind IEnumerable<T> directly
 
+## How to Debug
+Open `Avalonia.PropertyGrid.sln`, change config to Development, Build it and run samples.  
+
 ## Detail Description
 ### Data Modeling
 If you want to edit an object in PropertyGrid, you only need to directly set this object to the `DataContext` property of PropertyGrid, PropertyGrid will automatically analyze the properties that can support editing, and edit it with the corresponding CellEdit. At the same time, you can also use Attributes in System.ComponentModel and System.ComponentModel.DataAnnotations to mark these properties, so that these properties have some special characteristics.  
@@ -404,12 +407,6 @@ If you select Unix in Platform and input anything in UnixVersion, you can edit t
 ![RedoUndo](./Docs/Images/undoredo.png)
 This example shows how to implement undo and redo functions based on the built-in undo-redo framework.
 
-### Self's Properties
-![Self's Properties](./Docs/Images/self-properties.png)
-Show PropertyGrid's properties.  
-
-## Avalonia.PropertyGrid.NugetSamples
-This example shows how to use PropertyGrid through the Nuget package. 
 
 ### Major changes  
 v11.0.4.1  
@@ -435,3 +432,5 @@ v11.1.4.2
 
 * Enable Nullable
 
+v11.2.4
+* Enable WebBrowser Support

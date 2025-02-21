@@ -20,6 +20,13 @@
       <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Avalonia.Themes.Simple" />
-    <PackageReference Include="bodong.Avalonia.PropertyGrid" />
   </ItemGroup>
+
+    <ItemGroup Condition="'$(Configuration)' != 'Development'">
+        <PackageReference Include="bodong.Avalonia.PropertyGrid" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(Configuration)' == 'Development'">
+      <ProjectReference Include="..\..\Sources\Avalonia.PropertyGrid\Avalonia.PropertyGrid.csproj" />
+    </ItemGroup>
 </Project>
