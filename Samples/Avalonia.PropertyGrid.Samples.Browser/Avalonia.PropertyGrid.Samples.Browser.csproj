@@ -5,7 +5,15 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <Nullable>enable</Nullable>
     <Configurations>Debug;Release;Development</Configurations>
+      <RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
+      <PublishTrimmed>false</PublishTrimmed>      
   </PropertyGroup>
+
+    <ItemGroup>
+        <TrimmerRootAssembly Include="Avalonia.PropertyGrid" />
+        <TrimmerRootAssembly Include="Avalonia.PropertyGrid.Samples" />
+        <TrimmerRootAssembly Include="PropertyModels" />
+    </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Avalonia.Browser" />

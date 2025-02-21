@@ -13,7 +13,11 @@ public partial class App : Application
 {
     public override void Initialize()
     {
+        AppThemeUtils.BeforeInitialize();
+
         AvaloniaXamlLoader.Load(this);
+
+        AppThemeUtils.AfterInitialize();
     }
 
     public override void OnFrameworkInitializationCompleted()

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Avalonia.PropertyGrid.Samples.ViewModels;
 
@@ -43,6 +44,8 @@ public partial class MainViewModel : ViewModelBase
     readonly List<ICultureData> _AllCultures = new List<ICultureData>();
 
     public ICultureData[] AllCultures => _AllCultures.ToArray();
+
+    public string Version => $"v{typeof(Avalonia.PropertyGrid.Utils.FontUtils).Assembly.GetName().Version?.ToString() ?? "Unknown Version"}";
 
     public ICultureData CurrentCulture
     {

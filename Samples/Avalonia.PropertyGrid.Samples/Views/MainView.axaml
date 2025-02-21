@@ -41,12 +41,11 @@
                             x:Name="propertyGrid_Styles"
                             Margin="2"
                             DataContext="{Binding simpleObject}"
-                            AllowFilter="{Binding AllowFilter}"
-                            ShowStyle="{Binding ShowStyle, Mode=TwoWay}"
-                            ShowTitle="{Binding IsShowTitle, Mode=TwoWay}"
-                            AllowQuickFilter="{Binding AllowQuickFilter, Mode=TwoWay}"
-                            NameWidth="280"
-                        >
+                            AllowFilter="{Binding DataContext.AllowFilter, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            ShowStyle="{Binding DataContext.ShowStyle, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
+                            ShowTitle="{Binding DataContext.IsShowTitle, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
+                            AllowQuickFilter="{Binding DataContext.AllowQuickFilter, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
+                            NameWidth="280">
                         </pgc:PropertyGrid>
                     </ScrollViewer>
                     <StackPanel Orientation="Horizontal" Grid.Row="1">
@@ -179,33 +178,45 @@
 
             </TabItem>
         </TabControl>
-        <StackPanel Margin="4" Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right">
-            <TextBlock Text="{ll:Localize Theme}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="2" ></TextBlock>
-            <ComboBox x:Name="ThemeBox" Width="125" Padding="4" SelectedIndex="0">
-                <ComboBox.Items>
-                    <lv:ThemeType>Fluent</lv:ThemeType>
-                    <lv:ThemeType>Simple</lv:ThemeType>
-                </ComboBox.Items>
-            </ComboBox>
-            <TextBlock Text="{ll:Localize ThemeVariants}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="2"></TextBlock>
-            <ComboBox x:Name="ThemeVariantsBox"
-                      Width="125"
-                      Padding="4"
-                      DisplayMemberBinding="{Binding Key, x:DataType=ThemeVariant}"
-                      SelectedIndex="0">
-                <ComboBox.Items>
-                    <ThemeVariant>Default</ThemeVariant>
-                    <ThemeVariant>Light</ThemeVariant>
-                    <ThemeVariant>Dark</ThemeVariant>
-                </ComboBox.Items>
-            </ComboBox>
-            <TextBlock Text="{ll:Localize Language}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="2"></TextBlock>
-            <ComboBox Width="125"
-                      Padding="4"
-                      ItemsSource="{Binding AllCultures}"
-                      SelectedItem="{Binding CurrentCulture}"
+        <Grid Margin="4" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>                
+                <ColumnDefinition Width="Auto"/>                
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="{Binding Version}"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       Padding="2"/>
+
+            <StackPanel Margin="4" Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right">
+                <TextBlock Text="{ll:Localize Theme}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="2" ></TextBlock>
+                <ComboBox x:Name="ThemeBox" Width="125" Padding="4" SelectedIndex="0">
+                    <ComboBox.Items>
+                        <lv:ThemeType>Fluent</lv:ThemeType>
+                        <lv:ThemeType>Simple</lv:ThemeType>
+                    </ComboBox.Items>
+                </ComboBox>
+                <TextBlock Text="{ll:Localize ThemeVariants}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="2"></TextBlock>
+                <ComboBox x:Name="ThemeVariantsBox"
+                          Width="125"
+                          Padding="4"
+                          DisplayMemberBinding="{Binding Key, x:DataType=ThemeVariant}"
+                          SelectedIndex="0">
+                    <ComboBox.Items>
+                        <ThemeVariant>Default</ThemeVariant>
+                        <ThemeVariant>Light</ThemeVariant>
+                        <ThemeVariant>Dark</ThemeVariant>
+                    </ComboBox.Items>
+                </ComboBox>
+                <TextBlock Text="{ll:Localize Language}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="2"></TextBlock>
+                <ComboBox Width="125"
+                          Padding="4"
+                          ItemsSource="{Binding AllCultures}"
+                          SelectedItem="{Binding CurrentCulture}"
                 ></ComboBox>
-        </StackPanel>
+            </StackPanel>
+        </Grid>
     </Grid>
 
 
