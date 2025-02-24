@@ -6,7 +6,7 @@
         "environmentVariables": {
           "ASPNETCORE_ENVIRONMENT": "Development"
         },
-        "applicationUrl": "https://localhost:7177;http://localhost:5277",
+        "applicationUrl": "https://localhost:7178;http://localhost:5278",
         "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}"
       }
     }
