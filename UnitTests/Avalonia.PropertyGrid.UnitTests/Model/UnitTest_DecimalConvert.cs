@@ -2,6 +2,7 @@
 using System.Globalization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Avalonia.PropertyGrid.Utils;
+using PropertyModels.Utils;
 
 namespace Avalonia.PropertyGrid.UnitTests.Model
 {

@@ -3,6 +3,7 @@ using System.Globalization;
 using Avalonia.Controls.Primitives;
 using Avalonia.Data.Converters;
 using Avalonia.PropertyGrid.Utils;
+using PropertyModels.Utils;
 
 namespace Avalonia.PropertyGrid.Controls
 {

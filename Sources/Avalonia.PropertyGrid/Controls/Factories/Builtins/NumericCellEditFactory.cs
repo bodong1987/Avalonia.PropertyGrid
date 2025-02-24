@@ -1,10 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
 using Avalonia.Controls;
-using Avalonia.PropertyGrid.Utils;
 using PropertyModels.ComponentModel;
 using PropertyModels.Extensions;
+using PropertyModels.Utils;
 
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
@@ -43,8 +42,9 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (attr != null)
             {
-                control.Minimum = (decimal)(double)Convert.ChangeType(attr.Minimum, typeof(double));
-                control.Maximum = (decimal)(double)Convert.ChangeType(attr.Maximum, typeof(double));
+                var values = DecimalConvertUtils.GetDecimalRange(attr);
+                control.Minimum = values.Min;
+                control.Maximum = values.Max;
             }
 
             var formatAttr = propertyDescriptor.GetCustomAttribute<FormatStringAttribute>();
