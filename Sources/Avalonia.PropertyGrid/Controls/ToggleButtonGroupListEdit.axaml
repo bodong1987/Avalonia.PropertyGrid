@@ -2,10 +2,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="using:Avalonia.PropertyGrid.Controls">
   <Design.PreviewWith>
-    <controls:RadioButtonListEdit />
+    <controls:ToggleButtonGroupListEdit />
   </Design.PreviewWith>
 
-  <Style Selector="controls|RadioButtonListEdit">
+  <Style Selector="controls|ToggleButtonGroupListEdit">
     <!-- Set Defaults -->
     <Setter Property="Template">
       <ControlTemplate>

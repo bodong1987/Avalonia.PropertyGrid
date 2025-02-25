@@ -89,7 +89,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 }
                 else
                 {
-                    var control = new RadioButtonListEdit()
+                    var control = new ToggleButtonGroupListEdit()
                     {
                         Items = EnumUtils.GetEnumValues(propertyDescriptor.PropertyType,
                             propertyDescriptor.Attributes.OfType<Attribute>()).Cast<object>().ToArray()
@@ -160,7 +160,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 cb.SelectedItem = new EnumValueWrapper(value!);
                 return true;
             }
-            else if (control is RadioButtonListEdit rb)
+            else if (control is ToggleButtonGroupListEdit rb)
             {
                 var value = propertyDescriptor.GetValue(target) as Enum;
                 rb.CheckedItem = new EnumValueWrapper(value!);
