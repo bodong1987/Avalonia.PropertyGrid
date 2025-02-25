@@ -38,53 +38,110 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return null;
             }
 
-            var control = new ComboBox();
-
             var list = (propertyDescriptor.GetValue(target) as ISelectableList);
 
-            control.ItemsSource = list?.Values;
-            control.HorizontalAlignment = HorizontalAlignment.Stretch;
+            var attr = propertyDescriptor.GetCustomAttribute<SingleSelectionModeAttribute>();
 
-            control.SelectionChanged += (s, e) =>
+            if (attr == null || attr.Mode == SingleSelectionMode.ComboBox)
             {
-                var item = control.SelectedItem;
-
-                if (list != null && (list.SelectedValue == null || !list.SelectedValue.Equals(item)))
+                var control = new ComboBox
                 {
-                    var oldValue = list.SelectedValue;
+                    ItemsSource = list?.Values,
+                    HorizontalAlignment = HorizontalAlignment.Stretch
+                };
 
-                    var command = new GenericCancelableCommand(
-                        string.Format(LocalizationService.Default["Change {0} selection from {1} to {2}"], context.Property.DisplayName, oldValue!=null?oldValue.ToString():"null", item!=null?item.ToString():"null"),
-                        () =>
-                        {
-                            list.SelectedValue = item;
-                            return true;
-                        },
-                        () =>
-                        {
-                            list.SelectedValue = oldValue;
-                            return true;
-                        }
+                control.SelectionChanged += (s, e) =>
+                {
+                    var item = control.SelectedItem;
+
+                    if (list != null && (list.SelectedValue == null || !list.SelectedValue.Equals(item)))
+                    {
+                        var oldValue = list.SelectedValue;
+
+                        var command = new GenericCancelableCommand(
+                            string.Format(LocalizationService.Default["Change {0} selection from {1} to {2}"], context.Property.DisplayName, oldValue!=null?oldValue.ToString():"null", item!=null?item.ToString():"null"),
+                            () =>
+                            {
+                                list.SelectedValue = item;
+                                return true;
+                            },
+                            () =>
+                            {
+                                list.SelectedValue = oldValue;
+                                return true;
+                            }
                         );
 
-                    ExecuteCommand(command, context, list, list, oldValue);
+                        ExecuteCommand(command, context, list, list, oldValue);
 
-                    HandleRaiseEvent(control, context);
-                }
-            };
-
-            if(list != null)
-            {
-                list.SelectionChanged += (s, e) =>
-                {
-                    if(!CheckEqual(control.SelectedItem, list.SelectedValue))
-                    {
-                        control.SelectedItem = list.SelectedValue;
-                    }                    
+                        HandleRaiseEvent(control, context);
+                    }
                 };
-            }            
 
-            return control;
+                if(list != null)
+                {
+                    list.SelectionChanged += (s, e) =>
+                    {
+                        if(!CheckEqual(control.SelectedItem, list.SelectedValue))
+                        {
+                            control.SelectedItem = list.SelectedValue;
+                        }                    
+                    };
+                }            
+
+                return control;
+            }
+            else
+            {
+                ICheckableListEdit control = attr.Mode == SingleSelectionMode.ToggleButtonGroup ? new ToggleButtonGroupListEdit()
+                {
+                    Items = list?.Values ?? []
+                } : new RadioButtonListEdit()
+                {
+                    Items = list?.Values ?? []
+                };
+
+                control.CheckChanged += (s, e) =>
+                {
+                    var item = control.CheckedItem;
+
+                    if (list != null && (list.SelectedValue == null || !list.SelectedValue.Equals(item)))
+                    {
+                        var oldValue = list.SelectedValue;
+
+                        var command = new GenericCancelableCommand(
+                            string.Format(LocalizationService.Default["Change {0} selection from {1} to {2}"], context.Property.DisplayName, oldValue!=null?oldValue.ToString():"null", item!=null?item.ToString():"null"),
+                            () =>
+                            {
+                                list.SelectedValue = item;
+                                return true;
+                            },
+                            () =>
+                            {
+                                list.SelectedValue = oldValue;
+                                return true;
+                            }
+                        );
+
+                        ExecuteCommand(command, context, list, list, oldValue);
+
+                        HandleRaiseEvent((control as Control)!, context);
+                    }
+                };
+                
+                if(list != null)
+                {
+                    list.SelectionChanged += (s, e) =>
+                    {
+                        if(!CheckEqual(control.CheckedItem, list.SelectedValue))
+                        {
+                            control.CheckedItem = list.SelectedValue;
+                        }                    
+                    };
+                }  
+
+                return control as Control;
+            }
         }
 
         /// <summary>
@@ -117,6 +174,23 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 if(!CheckEqual(cb.SelectedItem, list?.SelectedValue))
                 {
                     cb.SelectedItem = list?.SelectedValue;
+                }                
+
+                return true;
+            }
+            
+            if (control is ICheckableListEdit ce)
+            {
+                var list = propertyDescriptor.GetValue(target) as ISelectableList;
+
+                if(!CheckEquals(ce.Items, list?.Values))
+                {
+                    ce.Items = list?.Values ?? [];
+                }
+                
+                if(!CheckEqual(ce.CheckedItem, list?.SelectedValue))
+                {
+                    ce.CheckedItem = list?.SelectedValue;
                 }                
 
                 return true;

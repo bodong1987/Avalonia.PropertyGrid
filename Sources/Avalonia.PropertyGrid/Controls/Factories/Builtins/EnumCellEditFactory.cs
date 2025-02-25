@@ -59,58 +59,61 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                 return control;
             }
+
+            var attr = propertyDescriptor.GetCustomAttribute<SingleSelectionModeAttribute>();
+
+            if (attr == null || attr.Mode == SingleSelectionMode.ComboBox)
+            {
+                var control = new ComboBox
+                {
+                    ItemsSource = EnumUtils.GetEnumValues(propertyDescriptor.PropertyType, propertyDescriptor.Attributes.OfType<Attribute>()),
+                    HorizontalAlignment = HorizontalAlignment.Stretch
+                };
+
+                control.SelectionChanged += (s, e) =>
+                {
+                    var item = control.SelectedItem;
+
+                    if (item != null)
+                    {
+                        var v = (item as EnumValueWrapper)!.Value;
+
+                        if (!Equals(v, propertyDescriptor.GetValue(target) as Enum))
+                        {
+                            SetAndRaise(context, control, v);
+                        }
+                    }
+                };
+                return control;
+            }
             else
             {
-                var attr = propertyDescriptor.GetCustomAttribute<SingleSelectionModeAttribute>();
-
-                if (attr == null || attr.Mode == SingleSelectionMode.ComboBox)
+                var items = EnumUtils.GetEnumValues(propertyDescriptor.PropertyType,
+                    propertyDescriptor.Attributes.OfType<Attribute>()).Cast<object>().ToArray();
+                    
+                ICheckableListEdit control = attr.Mode == SingleSelectionMode.ToggleButtonGroup ? new ToggleButtonGroupListEdit()
                 {
-                    var control = new ComboBox
-                    {
-                        ItemsSource = EnumUtils.GetEnumValues(propertyDescriptor.PropertyType, propertyDescriptor.Attributes.OfType<Attribute>()),
-                        HorizontalAlignment = HorizontalAlignment.Stretch
-                    };
-
-                    control.SelectionChanged += (s, e) =>
-                    {
-                        var item = control.SelectedItem;
-
-                        if (item != null)
-                        {
-                            var v = (item as EnumValueWrapper)!.Value;
-
-                            if (!Equals(v, propertyDescriptor.GetValue(target) as Enum))
-                            {
-                                SetAndRaise(context, control, v);
-                            }
-                        }
-                    };
-                    return control;
-                }
-                else
+                    Items = items
+                } : new RadioButtonListEdit()
                 {
-                    var control = new ToggleButtonGroupListEdit()
-                    {
-                        Items = EnumUtils.GetEnumValues(propertyDescriptor.PropertyType,
-                            propertyDescriptor.Attributes.OfType<Attribute>()).Cast<object>().ToArray()
-                    };
+                    Items = items
+                };
 
-                    control.CheckChanged += (s, e) =>
+                control.CheckChanged += (s, e) =>
+                {
+                    var item = control.CheckedItem;
+                    if (item != null)
                     {
-                        var item = control.CheckedItem;
-                        if (item != null)
+                        var v = (item as EnumValueWrapper)!.Value;
+
+                        if (!Equals(v, propertyDescriptor.GetValue(target) as Enum))
                         {
-                            var v = (item as EnumValueWrapper)!.Value;
-
-                            if (!Equals(v, propertyDescriptor.GetValue(target) as Enum))
-                            {
-                                SetAndRaise(context, control, v);
-                            }
+                            SetAndRaise(context, (control as Control)!, v);
                         }
-                    };
+                    }
+                };
 
-                    return control;
-                }
+                return control as Control;
             }
         }
 
@@ -160,7 +163,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 cb.SelectedItem = new EnumValueWrapper(value!);
                 return true;
             }
-            else if (control is ToggleButtonGroupListEdit rb)
+            else if (control is ICheckableListEdit rb)
             {
                 var value = propertyDescriptor.GetValue(target) as Enum;
                 rb.CheckedItem = new EnumValueWrapper(value!);

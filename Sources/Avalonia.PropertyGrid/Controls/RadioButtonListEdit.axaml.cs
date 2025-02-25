@@ -7,17 +7,43 @@ using Avalonia.PropertyGrid.ViewModels;
 namespace Avalonia.PropertyGrid.Controls
 {
     /// <summary>
-    /// Class ToggleButtonGroupListEdit.
+    /// base interface
+    /// </summary>
+    public interface ICheckableListEdit
+    {
+        /// <summary>
+        /// get checked item
+        /// </summary>
+        object? CheckedItem { get; set; }
+        
+        /// <summary>
+        /// get target items
+        /// </summary>
+        object[] Items { get; set; }
+        
+        /// <summary>
+        /// used to disable event trigger
+        /// </summary>
+        bool EnableRaiseCheckedItemChangedEvent { get; set; }
+
+        /// <summary>
+        /// check changed event
+        /// </summary>
+        event EventHandler<RoutedEventArgs> CheckChanged;
+    }
+   
+    /// <summary>
+    /// Class RadioButtonListEdit.
     /// Implements the <see cref="TemplatedControl" />
     /// </summary>
     /// <seealso cref="TemplatedControl" />
-    public class ToggleButtonGroupListEdit : TemplatedControl, ICheckableListEdit
+    public class RadioButtonListEdit : TemplatedControl, ICheckableListEdit
     {
         /// <summary>
         /// The checked items changed event
         /// </summary>
         public static readonly RoutedEvent<RoutedEventArgs> CheckChangedEvent =
-            RoutedEvent.Register<ToggleButtonGroupListEdit, RoutedEventArgs>(nameof(CheckChanged), RoutingStrategies.Bubble);
+            RoutedEvent.Register<RadioButtonListEdit, RoutedEventArgs>(nameof(CheckChanged), RoutingStrategies.Bubble);
 
         /// <summary>
         /// Occurs when [checked items changed].
@@ -31,8 +57,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The items property
         /// </summary>
-        public static readonly DirectProperty<ToggleButtonGroupListEdit, object[]> ItemsProperty =
-            AvaloniaProperty.RegisterDirect<ToggleButtonGroupListEdit, object[]>(
+        public static readonly DirectProperty<RadioButtonListEdit, object[]> ItemsProperty =
+            AvaloniaProperty.RegisterDirect<RadioButtonListEdit, object[]>(
                 nameof(Items),
                 o => o.Items,
                 (o, v) => o.Items = v
@@ -82,9 +108,9 @@ namespace Avalonia.PropertyGrid.Controls
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ToggleButtonGroupListEdit"/> class.
+        /// Initializes a new instance of the <see cref="RadioButtonListEdit"/> class.
         /// </summary>
-        public ToggleButtonGroupListEdit()
+        public RadioButtonListEdit()
         {
             Model.CheckChanged += OnCheckedItemChanged;
         }

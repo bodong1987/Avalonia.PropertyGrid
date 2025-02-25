@@ -159,7 +159,7 @@
     "ReadonlySelectableList": "只读可选列表",
     "ReadonlyPlatforms": "只读可选列表",
     "ReadonlyLoginInfo": "只读登录信息",
-    "LoginName2": "登录名2",
+    "LoginNameNoDefault": "登录名[无默认选择]",
     "VehicleObject": "载具对象[测试枚举隐藏]",
     "PlatformNoUnix": "平台[没Unix]",
     "ServiceAllowCellFax": "服务[有限制]",
@@ -167,5 +167,10 @@
     "CollapsedLoginInfo": "自动折叠的登录信息",
     "Policy": "策略",
     "PaddingMode": "Padding模式",
-    "ImagingList": "图像列表"
+    "ImagingList": "图像列表",
+    "LoginNameRadioMode": "登录名[单选模式]",
+    "LoginNameToggleGroupMode": "登录名[开关组模式]",
+    "GenderDefaultView" : "性别",
+    "GenderRadioView": "性别[单选模式]",
+    "GenderToggleGroupView": "性别[开关组模式]"
 }
