@@ -100,7 +100,18 @@ namespace Avalonia.PropertyGrid.Samples.Models
         [Category("Enum")]
         public PhoneService Service { get; set; } = PhoneService.None;
 
-
+        [Category("Enum")]
+        [SingleSelectionMode(SingleSelectionMode.Default)]
+        public GenderType GenderDefaultView { get; set; } = GenderType.Unknown;
+        
+        [Category("Enum")]
+        [SingleSelectionMode(SingleSelectionMode.RadioButton)]
+        public GenderType GenderRadioView { get; set; } = GenderType.Male;
+        
+        [Category("Enum")]
+        [SingleSelectionMode(SingleSelectionMode.ToggleButtonGroup)]
+        public GenderType GenderToggleGroupView { get; set; } = GenderType.Female;
+        
         [Category("Enum")]
         [EnumPermitValues<PhoneService>(PhoneService.Cell, PhoneService.Fax)]
         public PhoneService ServiceAllowCellFax { get; set; } = PhoneService.None;
@@ -409,6 +420,13 @@ namespace Avalonia.PropertyGrid.Samples.Models
         AircraftIsHelicopter = 1 << 13,
         Refittable = 1 << 14,
         QuietInvention = 1 << 15,
+    }
+
+    public enum GenderType
+    {
+        Unknown,
+        Male,
+        Female,
     }
 
     public class ValidatePlatformAttribute : ValidationAttribute

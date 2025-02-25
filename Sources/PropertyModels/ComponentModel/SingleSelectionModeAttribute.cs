@@ -16,13 +16,13 @@ public enum SingleSelectionMode
     /// </summary>
     ComboBox = Default,
     /// <summary>
-    /// radio
-    /// </summary>
-    Radio,
-    /// <summary>
-    /// radio button
+    /// radio 
     /// </summary>
     RadioButton,
+    /// <summary>
+    /// toggle button group
+    /// </summary>
+    ToggleButtonGroup,
 }
 
 /// <summary>
