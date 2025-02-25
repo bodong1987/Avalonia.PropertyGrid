@@ -19,7 +19,9 @@ namespace PropertyModels.Extensions
         /// <returns><c>true</c> if [contains] [the specified to check]; otherwise, <c>false</c>.</returns>
         public static bool Contains(this string? source, string? toCheck, StringComparison comp)
         {
+#pragma warning disable CA2249
             return source != null && toCheck != null && source.IndexOf(toCheck, comp) >= 0;
+#pragma warning restore CA2249
         }
 
         /// <summary>

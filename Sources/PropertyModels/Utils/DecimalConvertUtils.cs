@@ -89,14 +89,12 @@ public static class DecimalConvertUtils
         if (rangeAttr.OperandType == null)
             throw new ArgumentException("OperandType is not initialized");
 
-        // 处理int/double直接类型转换
         if (rangeAttr.OperandType == typeof(int) || rangeAttr.OperandType == typeof(double))
             return (
                 Convert.ToDecimal(rangeAttr.Minimum, CultureInfo.InvariantCulture),
                 Convert.ToDecimal(rangeAttr.Maximum, CultureInfo.InvariantCulture)
             );
 
-        // 处理字符串类型转换（含文化设置）
         var converter = TypeDescriptor.GetConverter(rangeAttr.OperandType);
         var conversionCulture = rangeAttr.ParseLimitsInInvariantCulture
             ? CultureInfo.InvariantCulture

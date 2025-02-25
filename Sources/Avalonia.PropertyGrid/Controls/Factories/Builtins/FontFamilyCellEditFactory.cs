@@ -40,7 +40,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             {
                 ItemsSource = FontManager.Current.SystemFonts.ToArray(),
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                ItemTemplate = new FuncDataTemplate<FontFamily>((value, namescope) =>            
+                ItemTemplate = new FuncDataTemplate<FontFamily>((value, nameScope) =>            
                     new TextBlock
                     {
                         [!TextBlock.TextProperty] = new Binding("Name"),

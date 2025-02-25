@@ -52,9 +52,6 @@
     "StringArray0": "字符串数组0",
     "StringArray1": "字符串数组1",
     "StringArray2": "字符串数组2",
-
-
-    // sample property name
     "IsShowPath": "是否显示路径",
     "Path": "路径",
     "Platform": "平台",
@@ -146,5 +143,29 @@
     "PropertyOrder": "属性顺序",
     "User Home": "用户主页",
     "My Pictures": "我的图片",
-    "AutoCollapse": "自动折叠"
+    "AutoCollapse": "自动折叠",
+    "decValue": "高精度数值",
+    "decValueWithRange": "高精度数值(带范围精度)",
+    "LengthLimitedList":"带长度限制数组",
+    "ReadonlyPath": "只读路径",
+    "ReadonlyString": "只读字符串",
+    "ReadonlyBoolean": "只读布尔值",
+    "ReadonlyPhoneService": "只读枚举[标记]",
+    "ReadonlyPlatformType": "只读枚举",
+    "ReadonlyInt32": "只读整数",
+    "ReadonlyFloat": "只读浮点数",
+    "ReadonlyIntArray": "只读整数数组",
+    "ReadonlyStringArray": "只读字符串数组",
+    "ReadonlySelectableList": "只读可选列表",
+    "ReadonlyPlatforms": "只读可选列表",
+    "ReadonlyLoginInfo": "只读登录信息",
+    "LoginName2": "登录名2",
+    "VehicleObject": "载具对象[测试枚举隐藏]",
+    "PlatformNoUnix": "平台[没Unix]",
+    "ServiceAllowCellFax": "服务[有限制]",
+    "ReadonlyVector3": "只读Vector3",
+    "CollapsedLoginInfo": "自动折叠的登录信息",
+    "Policy": "策略",
+    "PaddingMode": "Padding模式",
+    "ImagingList": "图像列表"
 }

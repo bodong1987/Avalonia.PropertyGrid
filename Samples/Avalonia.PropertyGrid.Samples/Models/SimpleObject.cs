@@ -47,7 +47,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
         [Category("Imaging")]
         public IImage AvaloniaBanner { get; set; }
 
-        [Category("Imaging")]
+        [Category("ImagingList")]
         [ImagePreviewMode(Stretch = StretchType.None)]
         public BindingList<IImage> ImageList { get; set; } = new BindingList<IImage>();
 
@@ -117,7 +117,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
         [Category("Enum")]
         [EnumProhibitNames("None", "CannotCoupleToSelf", "CanWheelSlip")]
-        public VehicleObjectFlags VechicleObject { get; set; } = VehicleObjectFlags.AnyRoadType | VehicleObjectFlags.RackRail;
+        public VehicleObjectFlags VehicleObject { get; set; } = VehicleObjectFlags.AnyRoadType | VehicleObjectFlags.RackRail;
 
         [Category("Enum")]
         public PlatformType EnumWithDisplayName { get; set; } = PlatformType.Windows;
@@ -185,6 +185,14 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
         [Category("Numeric")]
         public Int64 i64ValueBig { get; set; } = 583792581039233983;
+        
+        [Category("Numeric")]
+        public Decimal decValue { get; set; } = 100.00M;
+        
+        [Category("Numeric")]
+        [Range(typeof(Decimal), "10.00001", "1000.9999")]
+        [FloatPrecision(3)]
+        public Decimal decValueWithRange { get; set; } = 100.00M;
 
         [Category("Numeric")]
         [ProgressAttribute]
