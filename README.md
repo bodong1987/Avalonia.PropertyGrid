@@ -69,6 +69,7 @@ PropertyModels.ComponentModel.DataAnnotations.EnumProhibitValuesAttribute<T>    
 PropertyModels.ComponentModel.DataAnnotations.EnumProhibitNamesAttribute            /* based on enum names */
 PropertyModels.ComponentModel.DataAnnotations.IEnumValueAuthorizeAttribute          /* create your custom enum value filter based on this interface */
 PropertyModels.ComponentModel.DataAnnotations.ImagePreviewModeAttribute             /* set image display mode */
+PropertyModels.ComponentModel.SingleSelectionModeAttribute                          /* set enum/selectablelist view mode, use combobox/togglebutton group/radiobox group */
 ```
 
 ### Supported Builtin Types
