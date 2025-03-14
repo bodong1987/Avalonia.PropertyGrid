@@ -1,17 +1,12 @@
-﻿using PropertyModels.ComponentModel;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
+using PropertyModels.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Samples.Models
 {
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public class Vector3 : MiniReactiveObject
     {
-        public double _X,_Y, _Z;
+        public double _X, _Y, _Z;
 
         public double X
         {
@@ -22,7 +17,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
         public double Y
         {
             get => _Y;
-            set => this.RaiseAndSetIfChanged( ref _Y, value);
+            set => this.RaiseAndSetIfChanged(ref _Y, value);
         }
 
         public double Z
@@ -42,9 +37,6 @@ namespace Avalonia.PropertyGrid.Samples.Models
             Z = z;
         }
 
-        public override string ToString()
-        {
-            return $"{X},{Y},{Z}";
-        }
+        public override string ToString() => $"{X},{Y},{Z}";
     }
 }

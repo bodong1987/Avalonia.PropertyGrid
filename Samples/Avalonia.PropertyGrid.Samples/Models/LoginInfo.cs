@@ -1,12 +1,8 @@
-﻿using PropertyModels.ComponentModel;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Net.Security;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
+using PropertyModels.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Samples.Models
 {
@@ -20,7 +16,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
         public string? Password { get; set; }
 
         [MultilineText(true)]
-        public string? HelpText { get; set; } = "This is multiline Text\nTry edit me.";
+        public string? HelpText { get; set; } = $"This is multiline Text{Environment.NewLine}Try edit me.";
 
         public PlatformID ServerType { get; set; } = PlatformID.Unix;
 

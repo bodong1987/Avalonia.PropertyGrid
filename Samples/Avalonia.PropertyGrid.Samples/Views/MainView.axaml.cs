@@ -1,16 +1,16 @@
+using System.ComponentModel;
 using Avalonia.Controls;
 using Avalonia.PropertyGrid.Controls;
 using Avalonia.PropertyGrid.Samples.Models;
 using Avalonia.PropertyGrid.Samples.ViewModels;
 using Avalonia.PropertyGrid.ViewModels;
 using Avalonia.Styling;
-using System.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Samples.Views;
 
 public partial class MainView : UserControl
 {
-    MainViewModel MainVM;
+    private MainViewModel MainVM;
 
     public MainView()
     {
@@ -95,16 +95,13 @@ public partial class MainView : UserControl
 
     private void OnCustomPropertyDescriptorFilter(object sender, CustomPropertyDescriptorFilterEventArgs e)
     {
-        if (e.TargetObject is SimpleObject simpleObject && e.PropertyDescriptor.Name == "ThreeStates2")
+        if (e.TargetObject is SimpleObject && e.PropertyDescriptor.Name == "ThreeStates2")
         {
             e.IsVisible = true;
             e.Handled = true;
         }
     }
 
-    private void OnCommandExecuted(object? sender, RoutedCommandExecutedEventArgs e)
-    {
-        (DataContext as MainViewModel)!.cancelableObject.OnCommandExecuted(sender, e);
-    }
+    private void OnCommandExecuted(object? sender, RoutedCommandExecutedEventArgs e) => (DataContext as MainViewModel)!.cancelableObject.OnCommandExecuted(sender, e);
 
 }

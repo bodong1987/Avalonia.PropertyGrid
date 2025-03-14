@@ -1,26 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using PropertyModels.Extensions;
 
 namespace Avalonia.PropertyGrid.Samples.Models
 {
     public class TestCustomObject
     {
-        public string First { get; set; } = "";
+        public string First { get; set; } = string.Empty;
 
-        public string Second { get; set; } = "";
+        public string Second { get; set; } = string.Empty;
 
         [Browsable(false)]
-        public string[] StringArray { get; set; } = new string[3] { "ABC", "DEF", "HJK" };
+        public string[] StringArray { get; set; } = ["ABC", "DEF", "HJK"];
     }
 
     #region Helpers
+
     public class DynamicPropertyManager<TTarget> : IDisposable
     {
         private readonly DynamicTypeDescriptionProvider provider;
@@ -28,7 +24,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
         public DynamicPropertyManager()
         {
-            Type type = typeof(TTarget);
+            var type = typeof(TTarget);
 
             provider = new DynamicTypeDescriptionProvider(type);
             TypeDescriptor.AddProvider(provider, type);
@@ -42,81 +38,54 @@ namespace Avalonia.PropertyGrid.Samples.Models
             TypeDescriptor.AddProvider(provider, target!);
         }
 
-        public IList<PropertyDescriptor> Properties
-        {
-            get { return provider.Properties; }
-        }
+        public IList<PropertyDescriptor> Properties => provider.Properties;
 
         public void Dispose()
         {
-            if (ReferenceEquals(target, null))
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
             {
-                TypeDescriptor.RemoveProvider(provider, typeof(TTarget));
-            }
-            else
-            {
-                TypeDescriptor.RemoveProvider(provider, target);
+                TypeDescriptor.RemoveProvider(provider, target ?? (object)typeof(TTarget));
             }
         }
 
-        public static DynamicPropertyDescriptor<TTargetType, TPropertyType>
-           CreateProperty<TTargetType, TPropertyType>(
-               string displayName,
-               Func<TTargetType?, TPropertyType?> getter,
-               Action<TTargetType?, TPropertyType?> setter,
-               Attribute[] attributes)
-        {
-            return new DynamicPropertyDescriptor<TTargetType, TPropertyType>(
-               displayName, getter, setter, attributes);
-        }
+        public static DynamicPropertyDescriptor<TTargetType, TPropertyType> CreateProperty<TTargetType, TPropertyType>(
+            string displayName,
+            Func<TTargetType?, TPropertyType?> getter,
+            Action<TTargetType?, TPropertyType?> setter,
+            Attribute[] attributes) => new(displayName, getter, setter, attributes);
 
-        public static DynamicPropertyDescriptor<TTargetType, TPropertyType>
-           CreateProperty<TTargetType, TPropertyType>(
-              string displayName,
-              Func<TTargetType?, TPropertyType?> getHandler,
-              Attribute[] attributes)
-        {
-            return new DynamicPropertyDescriptor<TTargetType, TPropertyType>(
-               displayName, getHandler, (t, p) => { }, attributes);
-        }
+        public static DynamicPropertyDescriptor<TTargetType, TPropertyType> CreateProperty<TTargetType, TPropertyType>(
+            string displayName,
+            Func<TTargetType?, TPropertyType?> getHandler,
+            Attribute[] attributes) => new(displayName, getHandler, (t, p) => { }, attributes);
     }
 
     public class DynamicTypeDescriptionProvider : TypeDescriptionProvider
     {
         private readonly TypeDescriptionProvider provider;
-        private readonly List<PropertyDescriptor> properties = new List<PropertyDescriptor>();
+        private readonly List<PropertyDescriptor> properties = [];
 
-        public DynamicTypeDescriptionProvider(Type type)
-        {
-            provider = TypeDescriptor.GetProvider(type);
-        }
+        public DynamicTypeDescriptionProvider(Type type) => provider = TypeDescriptor.GetProvider(type);
 
-        public IList<PropertyDescriptor> Properties
-        {
-            get { return properties; }
-        }
+        public IList<PropertyDescriptor> Properties => properties;
 
         public override ICustomTypeDescriptor? GetTypeDescriptor(Type objectType, object? instance)
-        {
-            return new DynamicCustomTypeDescriptor(
-               this, provider.GetTypeDescriptor(objectType, instance)!);
-        }
+            => new DynamicCustomTypeDescriptor(this, provider.GetTypeDescriptor(objectType, instance)!);
 
         private class DynamicCustomTypeDescriptor : CustomTypeDescriptor
         {
             private readonly DynamicTypeDescriptionProvider provider;
 
-            public DynamicCustomTypeDescriptor(DynamicTypeDescriptionProvider provider,
-               ICustomTypeDescriptor descriptor)
-                  : base(descriptor)
-            {
-                this.provider = provider;
-            }
+            public DynamicCustomTypeDescriptor(DynamicTypeDescriptionProvider provider, ICustomTypeDescriptor descriptor)
+                  : base(descriptor) => this.provider = provider;
 
-            public override PropertyDescriptorCollection GetProperties()
-            {
-                return GetProperties(null);
-            }
+            public override PropertyDescriptorCollection GetProperties() => GetProperties(null);
 
             public override PropertyDescriptorCollection GetProperties(Attribute[]? attributes)
             {
@@ -127,10 +96,11 @@ namespace Avalonia.PropertyGrid.Samples.Models
                     properties.Add(property);
                 }
 
-                foreach (PropertyDescriptor property in provider.Properties)
+                foreach (var property in provider.Properties)
                 {
                     properties.Add(property);
                 }
+
                 return properties;
             }
         }
@@ -147,7 +117,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
            Func<TTarget?, TProperty?> getter,
            Action<TTarget?, TProperty?> setter,
            Attribute[] attributes)
-              : base(propertyName, attributes ?? new Attribute[] { })
+              : base(propertyName, attributes ?? [])
         {
             this.setter = setter;
             this.getter = getter;
@@ -155,64 +125,40 @@ namespace Avalonia.PropertyGrid.Samples.Models
         }
 
         public override bool Equals(object? obj)
-        {
-            var o = obj as DynamicPropertyDescriptor<TTarget, TProperty>;
-            return o != null && o.propertyName.Equals(propertyName);
-        }
+            => obj is DynamicPropertyDescriptor<TTarget, TProperty> o
+            && o.propertyName.Equals(propertyName, StringComparison.Ordinal);
 
-        public override int GetHashCode()
-        {
-            return propertyName.GetHashCode();
-        }
+        public override int GetHashCode() => propertyName.GetHashCode();
 
-        public override bool CanResetValue(object component)
-        {
-            return true;
-        }
+        public override bool CanResetValue(object component) => true;
 
-        public override Type ComponentType
-        {
-            get { return typeof(TTarget); }
-        }
+        public override Type ComponentType => typeof(TTarget);
 
-        public override object? GetValue(object? component)
-        {
-            return getter((TTarget?)component);
-        }
+        public override object? GetValue(object? component) => getter((TTarget?)component);
 
         public override bool IsReadOnly
         {
-            get 
-            { 
-                if(setter == null)
+            get
+            {
+                if (setter == null)
                 {
                     return true;
                 }
 
                 var attr = this.GetCustomAttribute<ReadOnlyAttribute>();
-
-                return attr != null && attr.IsReadOnly;
+                return attr?.IsReadOnly == true;
             }
         }
 
-        public override Type PropertyType
-        {
-            get { return typeof(TProperty); }
-        }
+        public override Type PropertyType => typeof(TProperty);
 
         public override void ResetValue(object component)
-        {
-        }
+        { }
 
-        public override void SetValue(object? component, object? value)
-        {
-            setter((TTarget?)component, (TProperty?)value);
-        }
+        public override void SetValue(object? component, object? value) => setter((TTarget?)component, (TProperty?)value);
 
-        public override bool ShouldSerializeValue(object component)
-        {
-            return true;
-        }
+        public override bool ShouldSerializeValue(object component) => true;
     }
+
     #endregion
 }

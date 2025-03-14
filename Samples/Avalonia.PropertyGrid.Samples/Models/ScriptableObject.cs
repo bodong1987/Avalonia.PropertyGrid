@@ -1,14 +1,9 @@
-﻿using PropertyModels.ComponentModel;
+﻿using System;
+using System.Collections;
+using System.ComponentModel;
+using PropertyModels.ComponentModel;
 using PropertyModels.ComponentModel.DataAnnotations;
 using PropertyModels.Extensions;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Avalonia.PropertyGrid.Samples.Models
 {
@@ -48,7 +43,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
         [DependsOnProperty(nameof(Value))]
         public Type? ValueType { get; set; }
 
-        object? ValueCore;
+        private object? ValueCore;
         /// <summary>
         /// Gets or sets the value.
         /// </summary>
@@ -71,7 +66,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
                     if (list.Count != 0)
                     {
                         Type? type = null;
-                        for (int i = 0; i < list.Count; i++)
+                        for (var i = 0; i < list.Count; i++)
                         {
                             if (list[i] != null)
                             {
@@ -84,7 +79,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
                         {
                             ValueCore = Activator.CreateInstance(typeof(BindingList<>).MakeGenericType(type));
 
-                            for (int i = 0; i < list.Count; ++i)
+                            for (var i = 0; i < list.Count; ++i)
                             {
                                 (ValueCore as IList)!.Add(list[i]);
                             }
@@ -106,7 +101,6 @@ namespace Avalonia.PropertyGrid.Samples.Models
                     ValueType = ValueCore.GetType();
                 }
 
-
                 RaisePropertyChanged(nameof(Value));
             }
         }
@@ -121,10 +115,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
         /// Returns a <see cref="string" /> that represents this instance.
         /// </summary>
         /// <returns>A <see cref="string" /> that represents this instance.</returns>
-        public override string ToString()
-        {
-            return (DisplayName.IsNotNullOrEmpty() ? DisplayName : Name) + "=" + (Value?.ToString() ?? "None");
-        }
+        public override string ToString() => (DisplayName.IsNotNullOrEmpty() ? DisplayName : Name) + "=" + (Value?.ToString() ?? "None");
 
         /// <summary>
         /// Gets the attributes.
@@ -132,16 +123,16 @@ namespace Avalonia.PropertyGrid.Samples.Models
         /// <returns>Attribute[].</returns>
         public Attribute[] GetAttributes()
         {
-            DisplayNameAttribute displayNameAttribute = new DisplayNameAttribute(DisplayName.IsNotNullOrEmpty() ? DisplayName : Name!);
-            DescriptionAttribute descAttribute = new DescriptionAttribute(Description.IsNotNullOrEmpty() ? Description : displayNameAttribute.DisplayName);
+            var displayNameAttribute = new DisplayNameAttribute(DisplayName.IsNotNullOrEmpty() ? DisplayName : Name!);
+            var descAttribute = new DescriptionAttribute(Description.IsNotNullOrEmpty() ? Description : displayNameAttribute.DisplayName);
 
-            if(ExtraAttributes != null)
+            if (ExtraAttributes != null)
             {
-                return ExtraAttributes.Concat([descAttribute, displayNameAttribute]).ToArray();
+                return [.. ExtraAttributes, descAttribute, displayNameAttribute];
             }
             else
             {
-                return new Attribute[] { descAttribute, displayNameAttribute };
+                return [descAttribute, displayNameAttribute];
             }
         }
     }

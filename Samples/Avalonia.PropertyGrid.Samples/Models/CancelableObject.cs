@@ -1,18 +1,13 @@
-﻿using Avalonia.PropertyGrid.Controls;
-using PropertyModels.ComponentModel;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 using System.Windows.Input;
+using Avalonia.PropertyGrid.Controls;
+using PropertyModels.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Samples.Models
 {
     public class CancelableObject : SimpleObject
     {
-        CancelableCommandRecorder _Recorder = new CancelableCommandRecorder();
+        private readonly CancelableCommandRecorder _Recorder = new();
 
         [Browsable(false)]
         public bool CanUndo => _Recorder.CanUndo;
@@ -37,20 +32,9 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
         public CancelableObject(string description) : base(description)
         {
-            UndoCommand = ReactiveCommand.Create(() =>
-            {
-                _Recorder.Undo();
-            });
-
-            RedoCommand = ReactiveCommand.Create(() =>
-            {
-                _Recorder.Redo();
-            });
-
-            ClearCommand = ReactiveCommand.Create(() =>
-            {
-                _Recorder.Clear();
-            });
+            UndoCommand = ReactiveCommand.Create(() => _Recorder.Undo());
+            RedoCommand = ReactiveCommand.Create(() => _Recorder.Redo());
+            ClearCommand = ReactiveCommand.Create(_Recorder.Clear);
 
             _Recorder.OnNewCommandAdded += (s, e) => RefreshFlags();
             _Recorder.OnCommandCanceled += (s, e) => RefreshFlags();
@@ -66,9 +50,6 @@ namespace Avalonia.PropertyGrid.Samples.Models
             RaisePropertyChanged(nameof(RedoDescription));
         }
 
-        public void OnCommandExecuted(object? sender, RoutedCommandExecutedEventArgs e)
-        {
-            _Recorder.PushCommand(e.Command);
-        }
+        public void OnCommandExecuted(object? sender, RoutedCommandExecutedEventArgs e) => _Recorder.PushCommand(e.Command);
     }
 }
