@@ -71,7 +71,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 {
                     var obj = propertyDescriptor.GetValue(target);
 
-                    if( obj != null)
+                    if (obj != null)
                     {
                         ts.IsChecked = (bool)obj;
                     }

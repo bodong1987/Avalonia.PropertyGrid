@@ -65,7 +65,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 {
                     var file = files.FirstOrDefault();
 
-                    if (file != propertyDescriptor.GetValue(target) as string)
+                    if (file != (propertyDescriptor.GetValue(target) as string))
                     {
                         SetAndRaise(context, control, file);
                         control.Text = file;
@@ -75,7 +75,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             control.TextChanged += (s, e) =>
             {
-                if (control.Text != propertyDescriptor.GetValue(target) as string)
+                if (control.Text != (propertyDescriptor.GetValue(target) as string))
                 {
                     SetAndRaise(context, control, control.Text);
                 }

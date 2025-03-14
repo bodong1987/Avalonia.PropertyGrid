@@ -50,7 +50,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 var items = control.SelectedItems;
                 var oldItems = list.Items;
 
-                if(!CheckEquals(oldItems, items))
+                if (!CheckEquals(oldItems, items))
                 {
                     var command = new GenericCancelableCommand(
                         string.Format(LocalizationService.Default["Change {0} selection from {1} to {2}"], context.Property.DisplayName, ArrayToString(oldItems), ArrayToString(items)),
@@ -70,7 +70,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                         }
                         );
 
-                    ExecuteCommand(command, context, list, list, oldItems);
+                    _ = ExecuteCommand(command, context, list, list, oldItems);
                 }
             };
 
@@ -78,12 +78,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             {
                 var cItems = control.Items;
                 var lItems = list.Items;
-                
-                if(CheckEquals(cItems, lItems))
+
+                if (CheckEquals(cItems, lItems))
                 {
                     return;
                 }
-                
+
                 var old = control.EnableRaiseSelectedItemsChangedEvent;
                 try
                 {

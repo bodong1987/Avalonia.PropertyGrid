@@ -6,98 +6,103 @@ using PropertyModels.Extensions;
 
 namespace Avalonia.PropertyGrid.Controls.Implements
 {
-    /// <summary>
-    /// Class CellEditFactoryCollection.
-    /// Implements the <see cref="Avalonia.PropertyGrid.Controls.ICellEditFactoryCollection" />
-    /// </summary>
-    /// <seealso cref="Avalonia.PropertyGrid.Controls.ICellEditFactoryCollection" />
-    internal class CellEditFactoryCollection : ICellEditFactoryCollection
-    {
-        /// <summary>
-        /// The factories
-        /// </summary>
-        private readonly List<ICellEditFactory> _factories = [];
+	/// <summary>
+	/// Class CellEditFactoryCollection.
+	/// Implements the <see cref="Avalonia.PropertyGrid.Controls.ICellEditFactoryCollection" />
+	/// </summary>
+	/// <seealso cref="Avalonia.PropertyGrid.Controls.ICellEditFactoryCollection" />
+	internal class CellEditFactoryCollection : ICellEditFactoryCollection
+	{
+		/// <summary>
+		/// The factories
+		/// </summary>
+		private readonly List<ICellEditFactory> _factories = [];
 
-        /// <summary>
-        /// Gets the factories.
-        /// </summary>
-        /// <value>The factories.</value>
-        public IEnumerable<ICellEditFactory> Factories => [.. _factories];
+		/// <summary>
+		/// Gets the factories.
+		/// </summary>
+		/// <value>The factories.</value>
+		public IEnumerable<ICellEditFactory> Factories => [.. _factories];
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CellEditFactoryCollection"/> class.
-        /// </summary>
-        public CellEditFactoryCollection()
-        {
-        }
+		/// <summary>
+		/// Initializes a new instance of the <see cref="CellEditFactoryCollection"/> class.
+		/// </summary>
+		public CellEditFactoryCollection()
+		{
+		}
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CellEditFactoryCollection"/> class.
-        /// </summary>
-        /// <param name="factories">The factories.</param>
-        public CellEditFactoryCollection(IEnumerable<ICellEditFactory> factories)
-        {
-            _factories.AddRange(factories);
-            _factories.Sort((x, y) => Comparer<int>.Default.Compare(y.ImportPriority, x.ImportPriority));
+		/// <summary>
+		/// Initializes a new instance of the <see cref="CellEditFactoryCollection"/> class.
+		/// </summary>
+		/// <param name="factories">The factories.</param>
+		public CellEditFactoryCollection(IEnumerable<ICellEditFactory> factories)
+		{
+			_factories.AddRange(factories);
+			_factories.Sort((x, y) => Comparer<int>.Default.Compare(y.ImportPriority, x.ImportPriority));
 
-            foreach (var factory in _factories)
-            {
-                factory.Collection = this;
-            }
-        }
+			foreach (var factory in _factories)
+			{
+				factory.Collection = this;
+			}
+		}
 
-        /// <summary>
-        /// Clones the factories.
-        /// </summary>
-        /// <param name="accessToken">The access token.</param>
-        /// <returns>IEnumerable&lt;ICellEditFactory&gt;.</returns>
-        public IEnumerable<ICellEditFactory> CloneFactories(object accessToken) => _factories.FindAll(x => x.Accept(accessToken)).Select(x => x.Clone()).Where(x => x != null).Select(x => x!);
+		/// <summary>
+		/// Clones the factories.
+		/// </summary>
+		/// <param name="accessToken">The access token.</param>
+		/// <returns>IEnumerable&lt;ICellEditFactory&gt;.</returns>
+		public IEnumerable<ICellEditFactory> CloneFactories(object accessToken)
+			=> _factories
+			.FindAll(x => x.Accept(accessToken))
+			.Select(x => x.Clone())
+			.Where(x => x != null)
+			.Select(x => x!);
 
-        /// <summary>
-        /// Adds the factory.
-        /// </summary>
-        /// <param name="factory">The factory.</param>
-        public void AddFactory(ICellEditFactory factory)
-        {
-            factory.Collection = this;
-            _factories.Add(factory);
-            _factories.Sort((x, y) => Comparer<int>.Default.Compare(y.ImportPriority, x.ImportPriority));
-        }
+		/// <summary>
+		/// Adds the factory.
+		/// </summary>
+		/// <param name="factory">The factory.</param>
+		public void AddFactory(ICellEditFactory factory)
+		{
+			factory.Collection = this;
+			_factories.Add(factory);
+			_factories.Sort((x, y) => Comparer<int>.Default.Compare(y.ImportPriority, x.ImportPriority));
+		}
 
-        /// <summary>
-        /// Removes the factory.
-        /// </summary>
-        /// <param name="factory">The factory.</param>
-        public void RemoveFactory(ICellEditFactory factory) => _ = _factories.Remove(factory);
+		/// <summary>
+		/// Removes the factory.
+		/// </summary>
+		/// <param name="factory">The factory.</param>
+		public void RemoveFactory(ICellEditFactory factory) => _ = _factories.Remove(factory);
 
-        /// <summary>
-        /// Builds the property control.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns>Control.</returns>
-        public Control? BuildPropertyControl(PropertyCellContext context)
-        {
-            foreach (var factory in _factories)
-            {
-                var control = factory.HandleNewProperty(context);
+		/// <summary>
+		/// Builds the property control.
+		/// </summary>
+		/// <param name="context">The context.</param>
+		/// <returns>Control.</returns>
+		public Control? BuildPropertyControl(PropertyCellContext context)
+		{
+			foreach (var factory in _factories)
+			{
+				var control = factory.HandleNewProperty(context);
 
-                if (control != null)
-                {
-                    var classesAttributes = context.Property.GetCustomAttributes<ControlClassesAttribute>();
-                    if (classesAttributes.Length > 0)
-                    {
-                        var classes = classesAttributes.SelectMany(a => a.Classes).Distinct();
-                        control.Classes.AddRange(classes);
-                    }
+				if (control != null)
+				{
+					var classesAttributes = context.Property.GetCustomAttributes<ControlClassesAttribute>();
+					if (classesAttributes.Length > 0)
+					{
+						var classes = classesAttributes.SelectMany(a => a.Classes).Distinct();
+						control.Classes.AddRange(classes);
+					}
 
-                    context.CellEdit = control;
-                    context.Factory = factory;
+					context.CellEdit = control;
+					context.Factory = factory;
 
-                    return control;
-                }
-            }
+					return control;
+				}
+			}
 
-            return null;
-        }
-    }
+			return null;
+		}
+	}
 }

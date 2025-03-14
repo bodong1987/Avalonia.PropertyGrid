@@ -34,17 +34,13 @@ namespace Avalonia.PropertyGrid.Controls
                 );
 
         /// <summary>
-        /// The data list
-        /// </summary>
-        private IList? _dataList;
-        /// <summary>
         /// Gets or sets the data list.
         /// </summary>
         /// <value>The data list.</value>
         public IList? DataList
         {
-            get => _dataList;
-            set => SetAndRaise(DataListProperty!, ref _dataList, value);
+            get;
+            set => SetAndRaise(DataListProperty!, ref field, value);
         }
         #endregion
 
@@ -60,17 +56,13 @@ namespace Avalonia.PropertyGrid.Controls
                 );
 
         /// <summary>
-        /// The new element command
-        /// </summary>
-        private ICommand? _newElementCommand;
-        /// <summary>
         /// Creates new element command.
         /// </summary>
         /// <value>The new element command.</value>
         public ICommand? NewElementCommand
         {
-            get => _newElementCommand;
-            set => SetAndRaise(NewElementCommandProperty!, ref _newElementCommand, value);
+            get;
+            set => SetAndRaise(NewElementCommandProperty!, ref field, value);
         }
 
         /// <summary>
@@ -84,17 +76,13 @@ namespace Avalonia.PropertyGrid.Controls
                 );
 
         /// <summary>
-        /// The clear elements command
-        /// </summary>
-        private ICommand? _clearElementsCommand;
-        /// <summary>
         /// Gets or sets the clear elements command.
         /// </summary>
         /// <value>The clear elements command.</value>
         public ICommand? ClearElementsCommand
         {
-            get => _clearElementsCommand;
-            set => SetAndRaise(ClearElementsCommandProperty!, ref _clearElementsCommand, value);
+            get;
+            set => SetAndRaise(ClearElementsCommandProperty!, ref field, value);
         }
         #endregion
 
@@ -235,7 +223,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="parameter">The parameter.</param>
         private void HandleNewElement(object? parameter)
         {
-            var et = new ListRoutedEventArgs(NewElementEvent, _dataList, -1);
+            var et = new ListRoutedEventArgs(NewElementEvent, DataList, -1);
             RaiseEvent(et);
         }
 
@@ -245,7 +233,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="parameter">The parameter.</param>
         private void HandleClearElements(object? parameter)
         {
-            var et = new ListRoutedEventArgs(ClearElementsEvent, _dataList, -1);
+            var et = new ListRoutedEventArgs(ClearElementsEvent, DataList, -1);
             RaiseEvent(et);
         }
 
@@ -356,17 +344,13 @@ namespace Avalonia.PropertyGrid.Controls
         public PropertyCellContext? PropertyContext { get; set; }
 
         /// <summary>
-        /// The list
-        /// </summary>
-        private IList? _list;
-        /// <summary>
         /// Gets or sets the list.
         /// </summary>
         /// <value>The list.</value>
         public IList? List
         {
-            get => _list;
-            set => this.RaiseAndSetIfChanged(ref _list, value);
+            get;
+            set => this.RaiseAndSetIfChanged(ref field, value);
         }
 
         /// <summary>
@@ -385,7 +369,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <value>The title.</value>
         [DependsOnProperty(nameof(List))]
-        public string Title => string.Format(LocalizationService.Default["{0} Elements"], _list?.Count ?? 0);
+        public string Title => string.Format(LocalizationService.Default["{0} Elements"], List?.Count ?? 0);
 
         /// <summary>
         /// Gets the insert command.
@@ -399,28 +383,23 @@ namespace Avalonia.PropertyGrid.Controls
         public ICommand RemoveCommand { get; }
 
         /// <summary>
-        /// The is editable
-        /// </summary>
-        private bool _isEditable = true;
-        /// <summary>
         /// Gets or sets a value indicating whether this instance is editable.
         /// </summary>
         /// <value><c>true</c> if this instance is editable; otherwise, <c>false</c>.</value>
         public bool IsEditable
         {
-            get => _isEditable;
-            set => this.RaiseAndSetIfChanged(ref _isEditable, value);
-        }
+            get;
+            set => this.RaiseAndSetIfChanged(ref field, value);
+        } = true;
 
-        private bool _isReadOnly;
         /// <summary>
         /// Gets or sets a value indicating whether this instance is readonly.
         /// </summary>
         /// <value><c>true</c> if this instance is readonly; otherwise, <c>false</c>.</value>
         public bool IsReadOnly
         {
-            get => _isReadOnly;
-            set => this.RaiseAndSetIfChanged(ref _isReadOnly, value);
+            get;
+            set => this.RaiseAndSetIfChanged(ref field, value);
         }
 
         /// <summary>

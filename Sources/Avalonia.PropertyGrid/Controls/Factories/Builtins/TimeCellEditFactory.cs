@@ -26,10 +26,10 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         {
             var propertyDescriptor = context.Property;
             // var target = context.Target;
-            
+
             var propertyType = propertyDescriptor.PropertyType;
 
-            if(propertyType != typeof(TimeSpan) && propertyType != typeof(TimeSpan?))
+            if (propertyType != typeof(TimeSpan) && propertyType != typeof(TimeSpan?))
             {
                 return null;
             }
@@ -72,17 +72,17 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return false;
             }
 
-            if(control is TimePicker tp)
+            if (control is TimePicker tp)
             {
-                if(propertyType ==  typeof(TimeSpan?))
+                if (propertyType == typeof(TimeSpan?))
                 {
                     tp.SelectedTime = propertyDescriptor.GetValue(target) as TimeSpan?;
                 }
-                else if(propertyType == typeof(TimeSpan))
+                else if (propertyType == typeof(TimeSpan))
                 {
                     var value = propertyDescriptor.GetValue(target);
 
-                    if(value != null)
+                    if (value != null)
                     {
                         tp.SelectedTime = (TimeSpan)value;
                     }

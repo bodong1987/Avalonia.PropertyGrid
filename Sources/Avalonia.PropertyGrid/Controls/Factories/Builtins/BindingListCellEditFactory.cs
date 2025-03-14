@@ -86,8 +86,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             };
 
             var attr = context.Property.GetCustomAttribute<EditableAttribute>();
-            
-            if(attr is { AllowEdit: false } || context.IsReadOnly || !IsEditableType(context.Property))
+
+            if (attr is { AllowEdit: false } || context.IsReadOnly || !IsEditableType(context.Property))
             {
                 control.Model.IsEditable = false;
             }
@@ -194,12 +194,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     },
                     () => e.Index >= 0 && e.Index < value.Count,
                     () => e.Index >= 0 && e.Index < value.Count)
-                { 
+                {
                     Tag = "Remove"
                 };
 
-                ExecuteCommand(command, context, value, value, oldElement);                
-            }            
+                _ = ExecuteCommand(command, context, value, value, oldElement);
+            }
         }
 
         /// <summary>
@@ -231,7 +231,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 {
                     foreach (var l in list)
                     {
-                        value.Add(l);
+                        _ = value.Add(l);
                     }
 
                     HandleRaiseEvent(context.CellEdit!, context);
@@ -242,7 +242,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 Tag = "Clear"
             };
 
-            ExecuteCommand(command, context, value, value, list);
+            _ = ExecuteCommand(command, context, value, value, list);
         }
 
         /// <summary>
@@ -286,7 +286,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 Tag = "Insert"
             };
 
-            ExecuteCommand(command, context, value, value, newElement);     
+            _ = ExecuteCommand(command, context, value, value, newElement);
         }
 
         /// <summary>
@@ -308,7 +308,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 LocalizationService.Default["Insert a new element at the end of the array"],
                 () =>
                 {
-                    value.Add(newElement);
+                    _ = value.Add(newElement);
 
                     HandleRaiseEvent(context.CellEdit!, context);
 
@@ -329,7 +329,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 Tag = "NewElement"
             };
 
-            ExecuteCommand(command, context, value, value, newElement);    
+            _ = ExecuteCommand(command, context, value, value, newElement);
         }
 
         /// <summary>

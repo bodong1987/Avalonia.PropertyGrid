@@ -37,9 +37,9 @@ namespace Avalonia.PropertyGrid.Controls
         /// <value>The model.</value>
         public CheckedMaskModel Model
         {
-            get 
+            get
             {
-                Debug.Assert(_model != null); 
+                Debug.Assert(_model != null);
                 return _model;
             }
 

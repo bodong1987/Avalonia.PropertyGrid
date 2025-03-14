@@ -15,12 +15,12 @@ namespace Avalonia.PropertyGrid.Controls
         /// get checked item
         /// </summary>
         object? CheckedItem { get; set; }
-        
+
         /// <summary>
         /// get target items
         /// </summary>
         object[] Items { get; set; }
-        
+
         /// <summary>
         /// used to disable event trigger
         /// </summary>
@@ -31,7 +31,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         event EventHandler<RoutedEventArgs> CheckChanged;
     }
-   
+
     /// <summary>
     /// Class RadioButtonListEdit.
     /// Implements the <see cref="TemplatedControl" />
@@ -53,7 +53,7 @@ namespace Avalonia.PropertyGrid.Controls
             add => AddHandler(CheckChangedEvent, value);
             remove => RemoveHandler(CheckChangedEvent, value);
         }
-        
+
         /// <summary>
         /// The items property
         /// </summary>
@@ -70,10 +70,10 @@ namespace Avalonia.PropertyGrid.Controls
         /// <value>The items.</value>
         public object[] Items
         {
-            get => Model.Items.Select(x=>x.Value!).ToArray();
+            get => Model.Items.Select(x => x.Value!).ToArray();
             set
             {
-                if(Model.Items != value)
+                if (Model.Items != value)
                 {
                     Model.ResetItems(value);
                     Model.RaisePropertyChanged(nameof(Items));

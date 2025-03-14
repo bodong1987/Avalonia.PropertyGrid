@@ -30,7 +30,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         {
             var propertyDescriptor = context.Property;
             var target = context.Target;
-            
+
             if (!propertyDescriptor.PropertyType.IsImplementFrom<ISelectableList>() ||
                 propertyDescriptor.GetValue(target) == null
                 )
@@ -38,7 +38,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return null;
             }
 
-            var list = (propertyDescriptor.GetValue(target) as ISelectableList);
+            var list = propertyDescriptor.GetValue(target) as ISelectableList;
 
             var attr = propertyDescriptor.GetCustomAttribute<SingleSelectionModeAttribute>();
 
@@ -59,7 +59,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                         var oldValue = list.SelectedValue;
 
                         var command = new GenericCancelableCommand(
-                            string.Format(LocalizationService.Default["Change {0} selection from {1} to {2}"], context.Property.DisplayName, oldValue!=null?oldValue.ToString():"null", item!=null?item.ToString():"null"),
+                            string.Format(LocalizationService.Default["Change {0} selection from {1} to {2}"], context.Property.DisplayName, oldValue != null ? oldValue.ToString() : "null", item != null ? item.ToString() : "null"),
                             () =>
                             {
                                 list.SelectedValue = item;
@@ -72,22 +72,22 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                             }
                         );
 
-                        ExecuteCommand(command, context, list, list, oldValue);
+                        _ = ExecuteCommand(command, context, list, list, oldValue);
 
                         HandleRaiseEvent(control, context);
                     }
                 };
 
-                if(list != null)
+                if (list != null)
                 {
                     list.SelectionChanged += (s, e) =>
                     {
-                        if(!CheckEqual(control.SelectedItem, list.SelectedValue))
+                        if (!CheckEqual(control.SelectedItem, list.SelectedValue))
                         {
                             control.SelectedItem = list.SelectedValue;
-                        }                    
+                        }
                     };
-                }            
+                }
 
                 return control;
             }
@@ -110,7 +110,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                         var oldValue = list.SelectedValue;
 
                         var command = new GenericCancelableCommand(
-                            string.Format(LocalizationService.Default["Change {0} selection from {1} to {2}"], context.Property.DisplayName, oldValue!=null?oldValue.ToString():"null", item!=null?item.ToString():"null"),
+                            string.Format(LocalizationService.Default["Change {0} selection from {1} to {2}"], context.Property.DisplayName, oldValue != null ? oldValue.ToString() : "null", item != null ? item.ToString() : "null"),
                             () =>
                             {
                                 list.SelectedValue = item;
@@ -123,22 +123,22 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                             }
                         );
 
-                        ExecuteCommand(command, context, list, list, oldValue);
+                        _ = ExecuteCommand(command, context, list, list, oldValue);
 
                         HandleRaiseEvent((control as Control)!, context);
                     }
                 };
-                
-                if(list != null)
+
+                if (list != null)
                 {
                     list.SelectionChanged += (s, e) =>
                     {
-                        if(!CheckEqual(control.CheckedItem, list.SelectedValue))
+                        if (!CheckEqual(control.CheckedItem, list.SelectedValue))
                         {
                             control.CheckedItem = list.SelectedValue;
-                        }                    
+                        }
                     };
-                }  
+                }
 
                 return control as Control;
             }
@@ -166,32 +166,32 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             {
                 var list = propertyDescriptor.GetValue(target) as ISelectableList;
 
-                if(!CheckEquals(cb.ItemsSource as object[], list?.Values))
+                if (!CheckEquals(cb.ItemsSource as object[], list?.Values))
                 {
                     cb.ItemsSource = list?.Values;
                 }
-                
-                if(!CheckEqual(cb.SelectedItem, list?.SelectedValue))
+
+                if (!CheckEqual(cb.SelectedItem, list?.SelectedValue))
                 {
                     cb.SelectedItem = list?.SelectedValue;
-                }                
+                }
 
                 return true;
             }
-            
+
             if (control is ICheckableListEdit ce)
             {
                 var list = propertyDescriptor.GetValue(target) as ISelectableList;
 
-                if(!CheckEquals(ce.Items, list?.Values))
+                if (!CheckEquals(ce.Items, list?.Values))
                 {
                     ce.Items = list?.Values ?? [];
                 }
-                
-                if(!CheckEqual(ce.CheckedItem, list?.SelectedValue))
+
+                if (!CheckEqual(ce.CheckedItem, list?.SelectedValue))
                 {
                     ce.CheckedItem = list?.SelectedValue;
-                }                
+                }
 
                 return true;
             }

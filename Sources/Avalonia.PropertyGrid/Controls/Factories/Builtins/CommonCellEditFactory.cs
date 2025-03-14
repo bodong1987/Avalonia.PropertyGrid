@@ -43,7 +43,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             {
                 VerticalContentAlignment = VerticalAlignment.Center,
                 FontFamily = FontUtils.DefaultFontFamily,
-                IsEnabled = converter.CanConvertFrom(typeof(string)) && 
+                IsEnabled = converter.CanConvertFrom(typeof(string)) &&
                             converter.CanConvertTo(typeof(string))
             };
 
@@ -111,11 +111,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             {
                 var value = propertyDescriptor.GetValue(target);
 
-                if(value != null)
+                if (value != null)
                 {
                     var converter = TypeDescriptor.GetConverter(propertyDescriptor.PropertyType);
 
-                    if(converter.CanConvertFrom(typeof(string)) && converter.CanConvertTo(typeof(string)))
+                    if (converter.CanConvertFrom(typeof(string)) && converter.CanConvertTo(typeof(string)))
                     {
                         try
                         {

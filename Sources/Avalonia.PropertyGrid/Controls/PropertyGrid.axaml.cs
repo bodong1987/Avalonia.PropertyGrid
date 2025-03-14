@@ -158,12 +158,12 @@ namespace Avalonia.PropertyGrid.Controls
         /// The IsReadOnly property
         /// </summary>
         public static readonly StyledProperty<bool> IsReadOnlyProperty = AvaloniaProperty.Register<PropertyGrid, bool>(nameof(IsReadOnly));
-                
+
         /// <summary>
         /// Gets or sets Is Readonly flag
         /// </summary>
         /// <value><c>true</c> if [readonly]; otherwise, <c>false</c>.</value>
-        public bool IsReadOnly 
+        public bool IsReadOnly
         {
             get => GetValue(IsReadOnlyProperty);
             set => SetValue(IsReadOnlyProperty, value);
@@ -179,8 +179,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         public readonly ICellEditFactoryCollection Factories;
 
-        private readonly PropertyGridExpandableCache _expandableObjectCache = new ();
-        private readonly PropertyGridCellInfoCache _cellInfoCache = new ();
+        private readonly PropertyGridExpandableCache _expandableObjectCache = new();
+        private readonly PropertyGridCellInfoCache _cellInfoCache = new();
 
         /// <summary>
         /// Gets or sets the root property grid.
@@ -241,14 +241,14 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         static PropertyGrid()
         {
-            AllowFilterProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnAllowFilterChanged));
-            AllowQuickFilterProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnAllowQuickFilterChanged));
-            ShowStyleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<PropertyGridShowStyle>>(OnShowStyleChanged));
-            CategoryOrderStyleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<PropertyGridOrderStyle>>(OnCategoryOrderStyleChanged));
-            PropertyOrderStyleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<PropertyGridOrderStyle>>(OnPropertyOrderStyleChanged));
-            ShowTitleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnShowTitleChanged));
-            NameWidthProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<double>>(OnNameWidthChanged));
-            IsReadOnlyProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnIsReadOnyPropertyChanged));
+            _ = AllowFilterProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnAllowFilterChanged));
+            _ = AllowQuickFilterProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnAllowQuickFilterChanged));
+            _ = ShowStyleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<PropertyGridShowStyle>>(OnShowStyleChanged));
+            _ = CategoryOrderStyleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<PropertyGridOrderStyle>>(OnCategoryOrderStyleChanged));
+            _ = PropertyOrderStyleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<PropertyGridOrderStyle>>(OnPropertyOrderStyleChanged));
+            _ = ShowTitleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnShowTitleChanged));
+            _ = NameWidthProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<double>>(OnNameWidthChanged));
+            _ = IsReadOnlyProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnIsReadOnyPropertyChanged));
         }
 
         /// <summary>
@@ -305,17 +305,17 @@ namespace Avalonia.PropertyGrid.Controls
                 ShowStyle = ViewModel.ShowStyle;
                 BuildPropertiesView();
             }
-            else if(e.PropertyName == nameof(ViewModel.CategoryOrderStyle))
+            else if (e.PropertyName == nameof(ViewModel.CategoryOrderStyle))
             {
                 CategoryOrderStyle = ViewModel.CategoryOrderStyle;
                 BuildPropertiesView();
             }
-            else if(e.PropertyName == nameof(ViewModel.PropertyOrderStyle))
+            else if (e.PropertyName == nameof(ViewModel.PropertyOrderStyle))
             {
                 PropertyOrderStyle = ViewModel.PropertyOrderStyle;
                 BuildPropertiesView();
             }
-            else if(e.PropertyName == nameof(ViewModel.IsReadOnly))
+            else if (e.PropertyName == nameof(ViewModel.IsReadOnly))
             {
                 IsReadOnly = ViewModel.IsReadOnly;
                 BuildPropertiesView();
@@ -440,7 +440,7 @@ namespace Avalonia.PropertyGrid.Controls
 
         private static void OnIsReadOnyPropertyChanged(AvaloniaPropertyChangedEventArgs<bool> e)
         {
-            if(e.Sender is PropertyGrid sender)
+            if (e.Sender is PropertyGrid sender)
             {
                 sender.OnIsReadOnyPropertyChanged(e.OldValue.Value, e.NewValue.Value);
             }
@@ -505,8 +505,8 @@ namespace Avalonia.PropertyGrid.Controls
                 if (ViewModel.ShowStyle == PropertyGridShowStyle.Category)
                 {
                     BuildCategoryPropertiesView(target, referencePath, ViewModel.CategoryOrderStyle, ViewModel.PropertyOrderStyle);
-                }                
-                else if(ViewModel.PropertyOrderStyle == PropertyGridOrderStyle.Alphabetic)
+                }
+                else if (ViewModel.PropertyOrderStyle == PropertyGridOrderStyle.Alphabetic)
                 {
                     BuildAlphabeticPropertiesView(target, referencePath);
                 }
@@ -558,7 +558,7 @@ namespace Avalonia.PropertyGrid.Controls
                 {
                     ExpandDirection = ExpandDirection.Down
                 };
-                expander.SetValue(Grid.RowProperty, PropertiesGrid.RowDefinitions.Count - 1);
+                _ = expander.SetValue(Grid.RowProperty, PropertiesGrid.RowDefinitions.Count - 1);
                 expander.IsExpanded = autoCollapseCategoriesAttribute?.ShouldAutoCollapse(categoryInfo.Key) != true;
                 expander.HorizontalContentAlignment = HorizontalAlignment.Stretch;
                 expander.HorizontalAlignment = HorizontalAlignment.Stretch;

@@ -2,7 +2,6 @@
 using System.Globalization;
 using Avalonia.Controls.Primitives;
 using Avalonia.Data.Converters;
-using Avalonia.PropertyGrid.Utils;
 using PropertyModels.Utils;
 
 namespace Avalonia.PropertyGrid.Controls
@@ -33,7 +32,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The format string property
         /// </summary>
-        public static readonly StyledProperty<string> FormatStringProperty = 
+        public static readonly StyledProperty<string> FormatStringProperty =
             AvaloniaProperty.Register<TrackableEdit, string>(nameof(FormatString), "{0:0.00}");
 
         /// <summary>
@@ -82,7 +81,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// treated as an application exception.</remarks>
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
-            if((targetType == typeof(decimal) || targetType == typeof(decimal?)) && value != null)
+            if ((targetType == typeof(decimal) || targetType == typeof(decimal?)) && value != null)
             {
                 return DecimalConvertUtils.ConvertTo(value);
             }
@@ -103,13 +102,13 @@ namespace Avalonia.PropertyGrid.Controls
         /// treated as an application exception.</remarks>
         public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
-            if(value != null)
+            if (value != null)
             {
                 try
                 {
                     var v = System.Convert.ChangeType(value, targetType);
 
-                    if(v != null)
+                    if (v != null)
                     {
                         return v;
                     }
