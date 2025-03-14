@@ -11,6 +11,7 @@ csharp_style_expression_bodied_operators = true
 csharp_style_unused_value_assignment_preference = discard_variable
 
 dotnet_sort_system_directives_first = true
+dotnet_diagnostic.IDE0046.severity = none
 
 # resharper_convert_to_primary_constructor_highlighting = none
 csharp_style_prefer_primary_constructors = false
