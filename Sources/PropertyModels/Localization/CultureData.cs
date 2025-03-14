@@ -85,9 +85,7 @@ namespace PropertyModels.Localization
         {
             var dict = new Dictionary<string, string>();
 
-            var configs = json.Split('\r', '\n');
-
-            foreach (var line in configs)
+            foreach (var line in json.Split('\r', '\n'))
             {
                 var configLine = line.Trim();
 

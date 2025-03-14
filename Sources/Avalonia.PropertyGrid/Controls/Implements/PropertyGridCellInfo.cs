@@ -100,10 +100,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
             }
         } = true;
 
-        public PropertyGridCellInfo(PropertyCellContext? context)
-        {
-            Context = context;
-        }
+        public PropertyGridCellInfo(PropertyCellContext? context) => Context = context;
 
         public override void Clear()
         {

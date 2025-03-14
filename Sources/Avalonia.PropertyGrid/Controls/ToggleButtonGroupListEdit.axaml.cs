@@ -84,10 +84,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="ToggleButtonGroupListEdit"/> class.
         /// </summary>
-        public ToggleButtonGroupListEdit()
-        {
-            Model.CheckChanged += OnCheckedItemChanged;
-        }
+        public ToggleButtonGroupListEdit() => Model.CheckChanged += OnCheckedItemChanged;
 
         /// <summary>
         /// Handles the <see cref="E:SelectedItemChanged" /> event.

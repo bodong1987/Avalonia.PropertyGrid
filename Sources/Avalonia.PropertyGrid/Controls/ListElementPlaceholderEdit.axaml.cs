@@ -16,10 +16,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="ListElementPlaceholderEdit"/> class.
         /// </summary>
-        public ListElementPlaceholderEdit()
-        {
-            InitializeComponent();
-        }
+        public ListElementPlaceholderEdit() => InitializeComponent();
 
         /// <summary>
         /// Called when [property changed].

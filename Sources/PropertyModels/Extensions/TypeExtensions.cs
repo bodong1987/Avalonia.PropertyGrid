@@ -29,9 +29,7 @@ namespace PropertyModels.Extensions
 
             if (attrs.Length > 0)
             {
-                var attr = attrs[0] as T;
-
-                return attr;
+                return attrs[0] as T;
             }
 
             return null;
@@ -48,7 +46,6 @@ namespace PropertyModels.Extensions
             where T : Attribute
         {
             var attrs = memberInfo.GetCustomAttributes(typeof(T), inherit);
-
             return attrs.Length > 0 ? attrs.Cast<T>().ToArray() : [];
         }
 
@@ -118,10 +115,7 @@ namespace PropertyModels.Extensions
                     ((PropertyInfo)memberInfo).SetValue(target, value, null);
                     return true;
                 default:
-                    throw new ArgumentException
-                    (
-                     "Input MemberInfo must be if type FieldInfo, or PropertyInfo"
-                    );
+                    throw new ArgumentException("Input MemberInfo must be if type FieldInfo, or PropertyInfo");
             }
         }
 
@@ -198,7 +192,6 @@ namespace PropertyModels.Extensions
         public static bool IsImplementFrom(this Type type, Type interfaceType)
         {
             Debug.Assert(interfaceType.IsInterface);
-
             return type.GetInterfaces().Contains(interfaceType);
         }
 
@@ -239,8 +232,7 @@ namespace PropertyModels.Extensions
         /// <returns>Returns <c>true</c> if the type was found; otherwise <c>false</c>.</returns>
         private static bool TryGetTypeByName(string typeName, out Type? type, params Assembly[] customAssemblies)
         {
-            if (typeName.Contains("Version=")
-                && !typeName.Contains('`'))
+            if (typeName.Contains("Version=") && !typeName.Contains('`'))
             {
                 // remove full qualified assembly type name
                 typeName = typeName[..typeName.IndexOf(',')];
@@ -249,8 +241,7 @@ namespace PropertyModels.Extensions
             type = Type.GetType(typeName) ?? GetTypeFromAssemblies(typeName, customAssemblies);
 
             // try get generic types
-            if (type == null
-                && typeName.Contains('`'))
+            if (type == null && typeName.Contains('`'))
             {
                 var match = Regex.Match(typeName, @"(?<MainType>.+`(?<ParamCount>[0-9]+))\[(?<Types>.*)\]");
 
@@ -300,35 +291,8 @@ namespace PropertyModels.Extensions
         /// <param name="customAssemblies">The custom assemblies.</param>
         /// <returns>Type.</returns>
         private static Type? GetTypeFromAssemblies(string typeName, params Assembly[] customAssemblies)
-        {
-            Type? type = null;
-
-            if (customAssemblies.Length > 0)
-            {
-                foreach (var assembly in customAssemblies)
-                {
-                    type = assembly.GetType(typeName);
-
-                    if (type != null)
-                    {
-                        return type;
-                    }
-                }
-            }
-
-            var loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
-            foreach (var assembly in loadedAssemblies)
-            {
-                type = assembly.GetType(typeName);
-
-                if (type != null)
-                {
-                    return type;
-                }
-            }
-
-            return type;
-        }
+            => customAssemblies.Select(x => x.GetType(typeName)).SingleOrDefault()
+                ?? AppDomain.CurrentDomain.GetAssemblies().Select(x => x.GetType(typeName)).FirstOrDefault();
 
         /// <summary>
         /// Gets the type.
@@ -343,16 +307,7 @@ namespace PropertyModels.Extensions
                 return type;
             }
 
-            foreach (var a in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                type = a.GetType(typeName);
-                if (type != null)
-                {
-                    return type;
-                }
-            }
-
-            return null;
+            return AppDomain.CurrentDomain.GetAssemblies().Select(x => x.GetType(typeName)).FirstOrDefault();
         }
 
         /// <summary>
@@ -404,7 +359,6 @@ namespace PropertyModels.Extensions
         public static string GetDisplayName(this PropertyInfo propertyInfo)
         {
             var attr = propertyInfo.GetAnyCustomAttribute<DisplayNameAttribute>();
-
             return attr?.DisplayName ?? propertyInfo.Name;
         }
 
@@ -416,7 +370,6 @@ namespace PropertyModels.Extensions
         public static bool IsReadOnly(this PropertyInfo propertyInfo)
         {
             var attr = propertyInfo.GetAnyCustomAttribute<ReadOnlyAttribute>();
-
             return attr is { IsReadOnly: true };
         }
 
@@ -428,11 +381,11 @@ namespace PropertyModels.Extensions
         public static bool IsBrowsable(this PropertyInfo propertyInfo)
         {
             var attr = propertyInfo.GetAnyCustomAttribute<BrowsableAttribute>();
-
             return attr?.Browsable != false;
         }
 
         #region For ProeprtyDescriptor
+
         /// <summary>
         /// Determines whether the specified property descriptor is defined an attribute.
         /// </summary>
@@ -447,18 +400,7 @@ namespace PropertyModels.Extensions
         /// <typeparam name="T"></typeparam>
         /// <param name="propertyDescriptor">The property descriptor.</param>
         /// <returns>T.</returns>
-        public static T? GetCustomAttribute<T>(this PropertyDescriptor propertyDescriptor) where T : Attribute
-        {
-            foreach (var attr in propertyDescriptor.Attributes)
-            {
-                if (attr is T t)
-                {
-                    return t;
-                }
-            }
-
-            return null;
-        }
+        public static T? GetCustomAttribute<T>(this PropertyDescriptor propertyDescriptor) where T : Attribute => propertyDescriptor.Attributes.OfType<T>().FirstOrDefault();
 
         /// <summary>
         /// Gets the custom attributes.
@@ -466,19 +408,7 @@ namespace PropertyModels.Extensions
         /// <typeparam name="T"></typeparam>
         /// <param name="propertyDescriptor">The property descriptor.</param>
         /// <returns>T[].</returns>
-        public static T[] GetCustomAttributes<T>(this PropertyDescriptor propertyDescriptor) where T : Attribute
-        {
-            var list = new List<T>();
-            foreach (var attr in propertyDescriptor.Attributes)
-            {
-                if (attr is T t)
-                {
-                    list.Add(t);
-                }
-            }
-
-            return [.. list];
-        }
+        public static T[] GetCustomAttributes<T>(this PropertyDescriptor propertyDescriptor) where T : Attribute => propertyDescriptor.Attributes.OfType<T>().ToArray();
 
         /// <summary>
         /// Sets and raise event.
@@ -518,7 +448,6 @@ namespace PropertyModels.Extensions
             }
 
             property.SetValue(component, value);
-
             RaiseEvent(property, component);
 
             return true;
@@ -566,6 +495,7 @@ namespace PropertyModels.Extensions
                 }
             }
         }
+
         #endregion
     }
 }

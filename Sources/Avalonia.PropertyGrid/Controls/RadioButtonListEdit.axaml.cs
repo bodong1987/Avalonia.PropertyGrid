@@ -110,10 +110,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="RadioButtonListEdit"/> class.
         /// </summary>
-        public RadioButtonListEdit()
-        {
-            Model.CheckChanged += OnCheckedItemChanged;
-        }
+        public RadioButtonListEdit() => Model.CheckChanged += OnCheckedItemChanged;
 
         /// <summary>
         /// Handles the <see cref="E:SelectedItemChanged" /> event.

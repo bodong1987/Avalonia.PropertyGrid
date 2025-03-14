@@ -142,18 +142,12 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Initializes static members of the <see cref="ButtonEdit"/> class.
         /// </summary>
-        static ButtonEdit()
-        {
-            TextProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<string>>(OnTextPropertyChanged));
-        }
+        static ButtonEdit() => TextProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<string>>(OnTextPropertyChanged));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ButtonEdit"/> class.
         /// </summary>
-        public ButtonEdit()
-        {
-            ButtonClickedCommand = ReactiveCommand.Create(OnButtonClicked);
-        }
+        public ButtonEdit() => ButtonClickedCommand = ReactiveCommand.Create(OnButtonClicked);
 
         /// <summary>
         /// Called when [button clicked].

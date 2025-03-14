@@ -66,18 +66,12 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Initializes static members of the <see cref="CheckedMask"/> class.
         /// </summary>
-        static CheckedMask()
-        {
-            ModelProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<CheckedMaskModel>>(OnModelChanged));
-        }
+        static CheckedMask() => ModelProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<CheckedMaskModel>>(OnModelChanged));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CheckedMask"/> class.
         /// </summary>
-        public CheckedMask()
-        {
-            InitializeComponent();
-        }
+        public CheckedMask() => InitializeComponent();
 
         /// <summary>
         /// Called when [model changed].

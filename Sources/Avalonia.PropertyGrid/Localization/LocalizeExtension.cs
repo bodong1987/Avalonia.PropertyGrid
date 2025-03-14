@@ -30,10 +30,7 @@ namespace Avalonia.PropertyGrid.Localization
         /// Initializes a new instance of the <see cref="LocalizeExtension"/> class.
         /// </summary>
         /// <param name="key">The key.</param>
-        public LocalizeExtension(string key)
-        {
-            Key = key;
-        }
+        public LocalizeExtension(string key) => Key = key;
 
         /// <summary>
         /// Provides the value.

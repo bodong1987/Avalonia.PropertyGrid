@@ -12,6 +12,9 @@ csharp_style_unused_value_assignment_preference = discard_variable
 
 dotnet_sort_system_directives_first = true
 
+dotnet_diagnostic.IDE0290.severity = none
+resharper_convert_to_primary_constructor_highlighting = none
+
 resharper_member_can_be_private_global_highlighting = none
 resharper_loop_can_be_converted_to_query_highlighting = none
 resharper_foreach_can_be_partly_converted_to_query_using_another_get_enumerator_highlighting = none
@@ -31,4 +34,3 @@ resharper_virtual_member_never_overridden_global_highlighting = none
 resharper_arrange_redundant_parentheses_highlighting = none
 resharper_unused_parameter_local_highlighting = none
 resharper_unused_parameter_global_highlighting = none
-resharper_convert_to_primary_constructor_highlighting = none

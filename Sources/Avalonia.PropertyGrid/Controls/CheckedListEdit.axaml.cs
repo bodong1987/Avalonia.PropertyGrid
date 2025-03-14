@@ -87,10 +87,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="CheckedListEdit"/> class.
         /// </summary>
-        public CheckedListEdit()
-        {
-            Model.SelectedItemsChanged += OnSelectedItemChanged;
-        }
+        public CheckedListEdit() => Model.SelectedItemsChanged += OnSelectedItemChanged;
 
         /// <summary>
         /// Handles the <see cref="E:SelectedItemChanged" /> event.
@@ -156,10 +153,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Initializes a new instance of the <see cref="CheckedListViewModel"/> class.
         /// </summary>
         /// <param name="items">The items.</param>
-        public CheckedListViewModel(IEnumerable<object> items)
-        {
-            AddRange(items);
-        }
+        public CheckedListViewModel(IEnumerable<object> items) => AddRange(items);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CheckedListViewModel"/> class.

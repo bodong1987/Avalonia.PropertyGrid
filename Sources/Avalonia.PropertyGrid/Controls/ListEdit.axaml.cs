@@ -184,10 +184,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Initializes static members of the <see cref="ListEdit"/> class.
         /// </summary>
-        static ListEdit()
-        {
-            DataListProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<IList>>(OnDataListChanged));
-        }
+        static ListEdit() => DataListProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<IList>>(OnDataListChanged));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ListEdit"/> class.

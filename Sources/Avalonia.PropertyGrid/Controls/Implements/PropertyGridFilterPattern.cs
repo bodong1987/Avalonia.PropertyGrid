@@ -38,10 +38,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
             set => this.RaiseAndSetIfChanged(ref field, value);
         }
 
-        public PropertyGridFilterPattern()
-        {
-            PropertyChanged += OnPropertyChanged;
-        }
+        public PropertyGridFilterPattern() => PropertyChanged += OnPropertyChanged;
 
         private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
