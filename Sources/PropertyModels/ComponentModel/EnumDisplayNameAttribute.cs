@@ -45,7 +45,7 @@ namespace PropertyModels.ComponentModel
         /// </summary>
         // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
         public Enum Value { get; set; }
-        
+
         /// <summary>
         /// The display name
         /// </summary>
@@ -74,7 +74,7 @@ namespace PropertyModels.ComponentModel
         /// </summary>
         /// <param name="value">The value.</param>
         /// <param name="displayName">The display name.</param>
-        public EnumValueWrapper(Enum value, string displayName) 
+        public EnumValueWrapper(Enum value, string displayName)
         {
             Debug.Assert(value != null);
 
@@ -86,10 +86,7 @@ namespace PropertyModels.ComponentModel
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public override string ToString()
-        {
-            return DisplayName;
-        }
+        public override string ToString() => DisplayName;
 
         /// <summary>
         /// Determines whether the specified <see cref="System.Object" /> is equal to this instance.
@@ -98,7 +95,7 @@ namespace PropertyModels.ComponentModel
         /// <returns><c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.</returns>
         public override bool Equals(object? obj)
         {
-            if(obj is EnumValueWrapper evw)
+            if (obj is EnumValueWrapper evw)
             {
                 return Value.Equals(evw.Value);
             }
@@ -110,10 +107,8 @@ namespace PropertyModels.ComponentModel
         /// Returns a hash code for this instance.
         /// </summary>
         /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-        public override int GetHashCode()
-        {
+        public override int GetHashCode() =>
             // ReSharper disable once NonReadonlyMemberInGetHashCode
-            return Value.GetHashCode();
-        }
+            Value.GetHashCode();
     }
 }

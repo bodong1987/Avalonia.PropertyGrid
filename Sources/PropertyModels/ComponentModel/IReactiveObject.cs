@@ -31,10 +31,7 @@ namespace PropertyModels.ComponentModel
         /// Raises the property changed.
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
-        public void RaisePropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        public void RaisePropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         #endregion
     }
@@ -62,7 +59,7 @@ namespace PropertyModels.ComponentModel
         }
 
         [NonSerialized]
-        private static readonly Dictionary<Type, Dictionary<string, List<string>>?> MetaCaches = new();
+        private static readonly Dictionary<Type, Dictionary<string, List<string>>?> MetaCaches = [];
 
         /// <summary>
         /// Automatics the collect dependency information.
@@ -70,12 +67,12 @@ namespace PropertyModels.ComponentModel
         private void AutoCollectDependencyInfo()
         {
             var type = GetType();
-            if (MetaCaches.TryGetValue(type, out var cache))
+            if (MetaCaches.TryGetValue(type, out _))
             {
                 return;
             }
 
-            cache = new Dictionary<string, List<string>>();
+            Dictionary<string, List<string>>? cache = [];
 
             foreach (var property in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
@@ -111,7 +108,7 @@ namespace PropertyModels.ComponentModel
         /// <returns>Dictionary&lt;System.String, List&lt;System.String&gt;&gt;.</returns>
         private static Dictionary<string, List<string>>? GetCache(Type type)
         {
-            MetaCaches.TryGetValue(type, out var cache);
+            _ = MetaCaches.TryGetValue(type, out var cache);
             return cache;
         }
         #endregion
@@ -144,7 +141,7 @@ namespace PropertyModels.ComponentModel
                 }
                 finally
                 {
-                    _processStack.Pop();
+                    _ = _processStack.Pop();
                 }
             }
         }

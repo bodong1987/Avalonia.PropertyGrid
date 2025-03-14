@@ -8,37 +8,27 @@ namespace Avalonia.PropertyGrid.Controls.Implements
 
         public void Add(object? target)
         {
-            if(!_targets.Contains(target))
+            if (!_targets.Contains(target))
             {
                 _targets.Add(target);
-            }            
+            }
         }
 
-        public void Clear()
-        {
-            _targets.Clear();
-        }
+        public void Clear() => _targets.Clear();
 
-        public bool IsExists(object? target)
-        {
-            return _targets.Contains(target);
-        }
+        public bool IsExists(object? target) => _targets.Contains(target);
 
         public void Merge(IExpandableObjectCache cache)
         {
-            if(cache is PropertyGridExpandableCache c)
+            if (cache is PropertyGridExpandableCache c)
             {
-                foreach(var target in c._targets)
+                foreach (var target in c._targets)
                 {
                     Add(target);
                 }
             }
         }
 
-        public void Remove(object? target)
-        {
-            _targets.Remove(target);
-        }
-
+        public void Remove(object? target) => _ = _targets.Remove(target);
     }
 }

@@ -14,17 +14,17 @@ namespace Avalonia.PropertyGrid.Controls.Implements
 
         public virtual void Add(IPropertyGridCellInfo cellInfo)
         {
-            if(!_children.Contains(cellInfo))
+            if (!_children.Contains(cellInfo))
             {
                 _children.Add(cellInfo);
 
                 cellInfo.AddPropertyChangedObserver();
-            }            
+            }
         }
 
         public virtual void Clear()
         {
-            foreach(var child in _children)
+            foreach (var child in _children)
             {
                 child.Clear();
             }
@@ -36,7 +36,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         {
             cellInfo.RemovePropertyChangedObserver();
 
-            _children.Remove(cellInfo);
+            _ = _children.Remove(cellInfo);
         }
 
         public int Count => _children.Count;
@@ -71,39 +71,35 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         /// </summary>
         public event EventHandler<CellPropertyChangedEventArgs>? CellPropertyChanged;
 
-        public override string ToString()
-        {
-            return ReferencePath ?? string.Empty;
-        }
+        public override string ToString() => ReferencePath ?? string.Empty;
 
-        private bool _isVisible = true;
         public bool IsVisible
         {
-            get => _isVisible;
+            get;
             set
             {
-                if (_isVisible != value)
+                if (field != value)
                 {
-                    if(NameControl != null)
+                    if (NameControl != null)
                     {
                         NameControl.IsVisible = value;
                     }
 
-                    if(CellEdit != null)
+                    if (CellEdit != null)
                     {
                         CellEdit.IsVisible = value;
                     }
 
-                    if(Container != null && CellEdit == null && NameControl == null)
+                    if (Container != null && CellEdit == null && NameControl == null)
                     {
                         Container.IsVisible = value;
                     }
 
-                    _isVisible = value;
+                    field = value;
 
                 }
             }
-        }
+        } = true;
 
         public PropertyGridCellInfo(PropertyCellContext? context)
         {
@@ -154,7 +150,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
             {
                 Debug.Assert(Context != null);
 
-                Factory?.HandlePropertyChanged(Context);
+                _ = (Factory?.HandlePropertyChanged(Context));
 
                 CellPropertyChanged?.Invoke(this, new CellPropertyChangedEventArgs(this));
             }

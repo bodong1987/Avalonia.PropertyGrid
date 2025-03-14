@@ -60,10 +60,7 @@ namespace PropertyModels.Extensions
         /// <param name="inherit">if set to <c>true</c> [inherit].</param>
         /// <returns><c>true</c> if the specified inherit is defined; otherwise, <c>false</c>.</returns>
         public static bool IsDefined<T>(this MemberInfo memberInfo, bool inherit = true)
-            where T : Attribute
-        {
-            return memberInfo.IsDefined(typeof(T), inherit);
-        }
+            where T : Attribute => memberInfo.IsDefined(typeof(T), inherit);
 
         /// <summary>
         /// Gets the type of the underlying.
@@ -196,10 +193,7 @@ namespace PropertyModels.Extensions
         /// </summary>
         /// <param name="info">The information.</param>
         /// <returns><c>true</c> if the specified information is constant; otherwise, <c>false</c>.</returns>
-        public static bool IsConstant(this MemberInfo info)
-        {
-            return info is FieldInfo { IsInitOnly: true };
-        }
+        public static bool IsConstant(this MemberInfo info) => info is FieldInfo { IsInitOnly: true };
 
         /// <summary>
         /// check if this type implement form target interface
@@ -234,10 +228,7 @@ namespace PropertyModels.Extensions
         /// <param name="type">The type.</param>
         /// <returns><c>true</c> if [is child of] [the specified type]; otherwise, <c>false</c>.</returns>
         public static bool IsChildOf<T>(this Type type)
-            where T : class
-        {
-            return typeof(T).IsAssignableFrom(type);
-        }
+            where T : class => typeof(T).IsAssignableFrom(type);
 
         /// <summary>
         /// Determines whether [is child of] [the specified base type].
@@ -245,10 +236,7 @@ namespace PropertyModels.Extensions
         /// <param name="type">The type.</param>
         /// <param name="baseType">Type of the base.</param>
         /// <returns><c>true</c> if [is child of] [the specified base type]; otherwise, <c>false</c>.</returns>
-        public static bool IsChildOf(this Type type, Type baseType)
-        {
-            return baseType.IsAssignableFrom(type);
-        }
+        public static bool IsChildOf(this Type type, Type baseType) => baseType.IsAssignableFrom(type);
 
         /// <summary>
         /// Gets the type of the converter.
@@ -257,7 +245,7 @@ namespace PropertyModels.Extensions
         /// <returns>System.Type.</returns>
         public static Type? GetConverterType(this TypeConverterAttribute attribute)
         {
-            TryGetTypeByName(attribute.ConverterTypeName, out var result, AppDomain.CurrentDomain.GetAssemblies());
+            _ = TryGetTypeByName(attribute.ConverterTypeName, out var result, AppDomain.CurrentDomain.GetAssemblies());
             return result;
         }
 
@@ -341,7 +329,9 @@ namespace PropertyModels.Extensions
                     type = assembly.GetType(typeName);
 
                     if (type != null)
+                    {
                         return type;
+                    }
                 }
             }
 
@@ -351,7 +341,9 @@ namespace PropertyModels.Extensions
                 type = assembly.GetType(typeName);
 
                 if (type != null)
+                {
                     return type;
+                }
             }
 
             return type;
@@ -470,10 +462,7 @@ namespace PropertyModels.Extensions
         /// <typeparam name="T"></typeparam>
         /// <param name="propertyDescriptor">The property descriptor.</param>
         /// <returns><c>true</c> if the specified property descriptor is defined an attribute; otherwise, <c>false</c>.</returns>
-        public static bool IsDefined<T>(this PropertyDescriptor propertyDescriptor) where T : Attribute
-        {
-            return propertyDescriptor.Attributes.OfType<T>().Any();
-        }
+        public static bool IsDefined<T>(this PropertyDescriptor propertyDescriptor) where T : Attribute => propertyDescriptor.Attributes.OfType<T>().Any();
 
         /// <summary>
         /// Gets the custom attribute.
@@ -520,10 +509,7 @@ namespace PropertyModels.Extensions
         /// <param name="property">The property.</param>
         /// <param name="component">The component.</param>
         /// <param name="value">The value.</param>
-        public static void SetAndRaiseEvent(this PropertyDescriptor property, object? component, object? value)
-        {
-            SetAndRaiseEvent(property, component, value, out _);
-        }
+        public static void SetAndRaiseEvent(this PropertyDescriptor property, object? component, object? value) => SetAndRaiseEvent(property, component, value, out _);
 
         /// <summary>
         /// Sets and raise event.
@@ -537,7 +523,7 @@ namespace PropertyModels.Extensions
         // ReSharper disable once OutParameterValueIsAlwaysDiscarded.Global
         public static bool SetAndRaiseEvent(this PropertyDescriptor property, object? component, object? value, out object? oldValue)
         {
-            if(!IsPropertyChanged(property, component, value, out oldValue))
+            if (!IsPropertyChanged(property, component, value, out oldValue))
             {
                 return false;
             }

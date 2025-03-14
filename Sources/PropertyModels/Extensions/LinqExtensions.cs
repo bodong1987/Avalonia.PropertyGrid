@@ -25,7 +25,9 @@ namespace PropertyModels.Extensions
             foreach (var element in source)
             {
                 if (predicate(element))
+                {
                     return i;
+                }
 
                 ++i;
             }
@@ -56,7 +58,9 @@ namespace PropertyModels.Extensions
                 }
 
                 if (predicate(element))
+                {
                     return i;
+                }
 
                 ++i;
             }
@@ -150,7 +154,9 @@ namespace PropertyModels.Extensions
         public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> predicate)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException(nameof(source));
+            }
 
             return source
                 .GroupBy(predicate)
@@ -163,10 +169,7 @@ namespace PropertyModels.Extensions
         /// <typeparam name="T"></typeparam>
         /// <param name="source">The source.</param>
         /// <returns>BindingList&lt;T&gt;.</returns>
-        public static BindingList<T> ToBindingList<T>(this IEnumerable<T> source)
-        {
-            return new BindingList<T>(source.ToList());
-        }
+        public static BindingList<T> ToBindingList<T>(this IEnumerable<T> source) => new BindingList<T>(source.ToList());
 
         /// <summary>
         /// Selects the specified selector.

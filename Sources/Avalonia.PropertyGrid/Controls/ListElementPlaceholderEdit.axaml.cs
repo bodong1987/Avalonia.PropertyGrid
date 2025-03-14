@@ -40,11 +40,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// Called when the <see cref="P:Avalonia.StyledElement.DataContext" /> property changes.
         /// </summary>
         /// <param name="e">The event args.</param>
-        protected override void OnDataContextChanged(EventArgs e)
-        {
-            base.OnDataContextChanged(e);
-        }
-     
+        protected override void OnDataContextChanged(EventArgs e) => base.OnDataContextChanged(e);
+
         private void OnDataDescPropertyChanged(ListElementDataDesc? oldValue, ListElementDataDesc? value)
         {
             if(oldValue != null)

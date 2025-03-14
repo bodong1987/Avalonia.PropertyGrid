@@ -128,7 +128,7 @@ namespace PropertyModels.ComponentModel
 
             var command = CommandQueue.Last();
 
-            command.Cancel();
+            _ = command.Cancel();
 
             // remove last one...
             CommandQueue.RemoveAt(CommandQueue.Count - 1);

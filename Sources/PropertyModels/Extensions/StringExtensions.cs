@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
-using System.Diagnostics.CodeAnalysis;
 
 namespace PropertyModels.Extensions
 {
@@ -17,12 +17,11 @@ namespace PropertyModels.Extensions
         /// <param name="toCheck">To check.</param>
         /// <param name="comp">The comp.</param>
         /// <returns><c>true</c> if [contains] [the specified to check]; otherwise, <c>false</c>.</returns>
-        public static bool Contains(this string? source, string? toCheck, StringComparison comp)
-        {
+        public static bool Contains(this string? source, string? toCheck, StringComparison comp) =>
 #pragma warning disable CA2249
-            return source != null && toCheck != null && source.IndexOf(toCheck, comp) >= 0;
+            source != null && toCheck != null && source.IndexOf(toCheck, comp) >= 0;
 #pragma warning restore CA2249
-        }
+
 
         /// <summary>
         /// Lefts the specified length.
@@ -77,10 +76,7 @@ namespace PropertyModels.Extensions
         /// <param name="value">The value.</param>
         /// <returns><c>true</c> if the specified value is valid; otherwise, <c>false</c>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsNotNullOrEmpty([NotNullWhen(true)] this string? value)
-        {
-            return !string.IsNullOrEmpty(value);
-        }
+        public static bool IsNotNullOrEmpty([NotNullWhen(true)] this string? value) => !string.IsNullOrEmpty(value);
 
         /// <summary>
         /// Determines whether [is null or empty] [the specified value].
@@ -88,10 +84,7 @@ namespace PropertyModels.Extensions
         /// <param name="value">The value.</param>
         /// <returns><c>true</c> if [is null or empty] [the specified value]; otherwise, <c>false</c>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsNullOrEmpty([NotNullWhen(false)] this string? value)
-        {
-            return string.IsNullOrEmpty(value);
-        }
+        public static bool IsNullOrEmpty([NotNullWhen(false)] this string? value) => string.IsNullOrEmpty(value);
 
         /// <summary>
         /// is the equal.
@@ -208,7 +201,7 @@ namespace PropertyModels.Extensions
                     {
                         c += (char)('a' - 'A');
                     }
-                    h = 31 * h + c;
+                    h = (31 * h) + c;
                 }
             }
             return h;
@@ -238,7 +231,7 @@ namespace PropertyModels.Extensions
                     {
                         c += (char)('a' - 'A');
                     }
-                    h = 31 * h + c;
+                    h = (31 * h) + c;
                 }
             }
             return h;
@@ -275,10 +268,7 @@ namespace PropertyModels.Extensions
         /// <param name="s">The s.</param>
         /// <param name="predicate">The predicate.</param>
         /// <returns>System.Int32.</returns>
-        public static int IndexOf(this string s, Predicate<char> predicate)
-        {
-            return IndexOf(s, 0, predicate);
-        }
+        public static int IndexOf(this string s, Predicate<char> predicate) => IndexOf(s, 0, predicate);
 
         /// <summary>
         /// Indexes the of.

@@ -237,10 +237,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <param name="item">The item.</param>
         /// <returns><c>true</c> if the specified item is checked; otherwise, <c>false</c>.</returns>
-        public bool IsChecked(CheckedListItemViewModel item)
-        {
-            return _selectedItems.Contains(item);
-        }
+        public bool IsChecked(CheckedListItemViewModel item) => _selectedItems.Contains(item);
 
         /// <summary>
         /// Sets the checked.
@@ -325,10 +322,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns><c>true</c> if the specified value is value; otherwise, <c>false</c>.</returns>
-        public bool IsValue(object value)
-        {
-            return Value == value || (Value != null && Value.Equals(value));
-        }
+        public bool IsValue(object value) => Value == value || (Value != null && Value.Equals(value));
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is checked.

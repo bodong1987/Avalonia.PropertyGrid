@@ -81,7 +81,7 @@ namespace PropertyModels.ComponentModel.DataAnnotations
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
         /// <param name="visibleValue">The visible value.</param>
-        public VisibilityPropertyConditionAttribute(string propertyName, object visibleValue) 
+        public VisibilityPropertyConditionAttribute(string propertyName, object visibleValue)
         {
             PropertyName = propertyName;
             VisibleValue = visibleValue;
@@ -94,12 +94,12 @@ namespace PropertyModels.ComponentModel.DataAnnotations
         /// <returns><c>true</c> if visible, <c>false</c> otherwise.</returns>
         public override bool CheckVisibility(object? component)
         {
-            if(component == null)
+            if (component == null)
             {
                 return false;
             }
 
-            if(component is ICustomTypeDescriptor ctd)
+            if (component is ICustomTypeDescriptor ctd)
             {
                 var pd = ctd.GetProperties().Find(PropertyName, true);
 

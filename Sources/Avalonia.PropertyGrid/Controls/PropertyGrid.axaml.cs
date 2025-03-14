@@ -280,10 +280,7 @@ namespace Avalonia.PropertyGrid.Controls
             }
         }
 
-        private void BroadcastCustomPropertyDescriptorFilterEvent(object? sender, CustomPropertyDescriptorFilterEventArgs e)
-        {
-            RaiseEvent(e);
-        }
+        private void BroadcastCustomPropertyDescriptorFilterEvent(object? sender, CustomPropertyDescriptorFilterEventArgs e) => RaiseEvent(e);
 
 #if DEBUG
         /// <summary>
@@ -342,37 +339,25 @@ namespace Avalonia.PropertyGrid.Controls
         /// Gets the cell edit factory collection.
         /// </summary>
         /// <returns>ICellEditFactoryCollection.</returns>
-        public ICellEditFactoryCollection GetCellEditFactoryCollection()
-        {
-            return Factories;
-        }
+        public ICellEditFactoryCollection GetCellEditFactoryCollection() => Factories;
 
         /// <summary>
         /// Gets the expandable object cache.
         /// </summary>
         /// <returns>IExpandableObjectCache.</returns>
-        public IExpandableObjectCache GetExpandableObjectCache()
-        {
-            return _expandableObjectCache;
-        }
+        public IExpandableObjectCache GetExpandableObjectCache() => _expandableObjectCache;
 
         /// <summary>
         /// Clones the property grid.
         /// </summary>
         /// <returns>IPropertyGrid.</returns>
-        public virtual IPropertyGrid ClonePropertyGrid()
-        {
-            return (Activator.CreateInstance(GetType()) as IPropertyGrid)!;
-        }
+        public virtual IPropertyGrid ClonePropertyGrid() => (Activator.CreateInstance(GetType()) as IPropertyGrid)!;
 
         /// <summary>
         /// Gets the cell information cache.
         /// </summary>
         /// <returns>IPropertyGridCellInfoCache.</returns>
-        public IPropertyGridCellInfoCache GetCellInfoCache()
-        {
-            return _cellInfoCache;
-        }
+        public IPropertyGridCellInfoCache GetCellInfoCache() => _cellInfoCache;
 
         #region Styled Properties Handler
         /// <summary>
@@ -392,10 +377,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <param name="oldValue">The old value.</param>
         /// <param name="newValue">The new value.</param>
-        private void OnAllowFilterChanged(object? oldValue, object? newValue)
-        {
-            HeaderGrid.IsVisible = (bool)newValue!;
-        }
+        private void OnAllowFilterChanged(object? oldValue, object? newValue) => HeaderGrid.IsVisible = (bool)newValue!;
 
         private static void OnNameWidthChanged(AvaloniaPropertyChangedEventArgs e)
         {
@@ -405,10 +387,7 @@ namespace Avalonia.PropertyGrid.Controls
             }
         }
 
-        private void OnNameWidthChanged(object? oldValue, object? newValue)
-        {
-            SplitterGrid.ColumnDefinitions[0].Width = new GridLength((double)newValue!);
-        }
+        private void OnNameWidthChanged(object? oldValue, object? newValue) => SplitterGrid.ColumnDefinitions[0].Width = new GridLength((double)newValue!);
 
         /// <summary>
         /// Called when [show style changed].
@@ -427,10 +406,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <param name="oldValue">The old value.</param>
         /// <param name="newValue">The new value.</param>
-        private void OnShowStyleChanged(Optional<PropertyGridShowStyle> oldValue, BindingValue<PropertyGridShowStyle> newValue)
-        {
-            ViewModel.ShowStyle = newValue.Value;
-        }
+        private void OnShowStyleChanged(Optional<PropertyGridShowStyle> oldValue, BindingValue<PropertyGridShowStyle> newValue) => ViewModel.ShowStyle = newValue.Value;
 
         private static void OnCategoryOrderStyleChanged(AvaloniaPropertyChangedEventArgs<PropertyGridOrderStyle> e)
         {
@@ -440,10 +416,7 @@ namespace Avalonia.PropertyGrid.Controls
             }
         }
 
-        private void OnCategoryOrderStyleChanged(Optional<PropertyGridOrderStyle> oldValue, BindingValue<PropertyGridOrderStyle> newValue)
-        {
-            ViewModel.CategoryOrderStyle = newValue.Value;
-        }
+        private void OnCategoryOrderStyleChanged(Optional<PropertyGridOrderStyle> oldValue, BindingValue<PropertyGridOrderStyle> newValue) => ViewModel.CategoryOrderStyle = newValue.Value;
 
         private static void OnPropertyOrderStyleChanged(AvaloniaPropertyChangedEventArgs<PropertyGridOrderStyle> e)
         {
@@ -453,10 +426,7 @@ namespace Avalonia.PropertyGrid.Controls
             }
         }
 
-        private void OnPropertyOrderStyleChanged(Optional<PropertyGridOrderStyle> oldValue, BindingValue<PropertyGridOrderStyle> newValue)
-        {
-            ViewModel.PropertyOrderStyle = newValue.Value;
-        }
+        private void OnPropertyOrderStyleChanged(Optional<PropertyGridOrderStyle> oldValue, BindingValue<PropertyGridOrderStyle> newValue) => ViewModel.PropertyOrderStyle = newValue.Value;
 
         private static void OnShowTitleChanged(AvaloniaPropertyChangedEventArgs<bool> e)
         {
@@ -466,10 +436,7 @@ namespace Avalonia.PropertyGrid.Controls
             }
         }
 
-        private void OnShowTitleChanged(bool oldValue, bool newValue)
-        {
-            SplitterGrid.IsVisible = newValue;
-        }
+        private void OnShowTitleChanged(bool oldValue, bool newValue) => SplitterGrid.IsVisible = newValue;
 
         private static void OnIsReadOnyPropertyChanged(AvaloniaPropertyChangedEventArgs<bool> e)
         {
@@ -479,10 +446,7 @@ namespace Avalonia.PropertyGrid.Controls
             }
         }
 
-        private void OnIsReadOnyPropertyChanged(bool oldValue, bool newValue)
-        {
-            ViewModel.IsReadOnly = newValue;
-        }
+        private void OnIsReadOnyPropertyChanged(bool oldValue, bool newValue) => ViewModel.IsReadOnly = newValue;
 
         private static void OnAllowQuickFilterChanged(AvaloniaPropertyChangedEventArgs<bool> e)
         {
@@ -491,11 +455,8 @@ namespace Avalonia.PropertyGrid.Controls
                 sender.OnAllowQuickFilterChanged(e.OldValue.Value, e.NewValue.Value);
             }
         }
-        
-        private void OnAllowQuickFilterChanged(bool oldValue, bool newValue)
-        {
-            FastFilterBox.IsVisible = newValue;
-        }
+
+        private void OnAllowQuickFilterChanged(bool oldValue, bool newValue) => FastFilterBox.IsVisible = newValue;
 
         #endregion
 
@@ -504,10 +465,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void OnPropertyDescriptorChanged(object? sender, EventArgs e)
-        {
-            BuildPropertiesView();
-        }
+        private void OnPropertyDescriptorChanged(object? sender, EventArgs e) => BuildPropertiesView();
 
 
         /// <summary>
@@ -515,10 +473,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void OnFilterChanged(object? sender, EventArgs e)
-        {
-            RefreshVisibilities();
-        }
+        private void OnFilterChanged(object? sender, EventArgs e) => RefreshVisibilities();
 
         /// <summary>
         /// Builds the properties view.
@@ -839,10 +794,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Refreshes the visibilities.
         /// </summary>
-        private void RefreshVisibilities()
-        {
-            FilterCells(ViewModel);
-        }
+        private void RefreshVisibilities() => FilterCells(ViewModel);
 
         /// <summary>
         /// Filters the cells.

@@ -17,7 +17,7 @@ namespace PropertyModels.Utils
         /// </summary>
         // ReSharper disable once MemberCanBePrivate.Global
         public readonly bool IsMultipleObjects;
-        
+
         /// <summary>
         /// The target
         /// </summary>
@@ -35,7 +35,7 @@ namespace PropertyModels.Utils
                 throw new ArgumentNullException(nameof(target));
             }
 
-            if(target is IEnumerable enumerable)
+            if (target is IEnumerable enumerable)
             {
                 IsMultipleObjects = true;
                 Target = enumerable;
@@ -51,10 +51,7 @@ namespace PropertyModels.Utils
         /// Gets the properties.
         /// </summary>
         /// <returns>PropertyDescriptorCollection.</returns>
-        public PropertyDescriptorCollection GetProperties()
-        {
-            return IsMultipleObjects ? GetMultipleProperties((Target as IEnumerable)!) : GetProperties(Target);
-        }
+        public PropertyDescriptorCollection GetProperties() => IsMultipleObjects ? GetMultipleProperties((Target as IEnumerable)!) : GetProperties(Target);
 
         /// <summary>
         /// Gets the properties.
@@ -63,7 +60,7 @@ namespace PropertyModels.Utils
         /// <returns>PropertyDescriptorCollection.</returns>
         private static PropertyDescriptorCollection GetProperties(object target)
         {
-            if(target is ICustomTypeDescriptor ctd)
+            if (target is ICustomTypeDescriptor ctd)
             {
                 return ctd.GetProperties();
             }
@@ -79,12 +76,12 @@ namespace PropertyModels.Utils
         private static PropertyDescriptorCollection GetMultipleProperties(IEnumerable targets)
         {
             var collections = new List<PropertyDescriptorCollection>();
-            foreach(var target in targets)
+            foreach (var target in targets)
             {
                 collections.Add(GetProperties(target));
             }
 
-            if(collections.Count == 0)
+            if (collections.Count == 0)
             {
                 return new PropertyDescriptorCollection(null);
             }
@@ -104,11 +101,11 @@ namespace PropertyModels.Utils
                 var isMatched = true;
                 var propertyDescriptors = new List<PropertyDescriptor>(collections.Count) { propertyDescriptor };
 
-                foreach(var collection in multiCollections)
+                foreach (var collection in multiCollections)
                 {
                     var pd = collection.Find(propertyDescriptor.Name, false);
 
-                    if(pd == null || !pd.Equals(propertyDescriptor))
+                    if (pd == null || !pd.Equals(propertyDescriptor))
                     {
                         isMatched = false;
                         break;
@@ -117,7 +114,7 @@ namespace PropertyModels.Utils
                     propertyDescriptors.Add(pd);
                 }
 
-                if(!isMatched)
+                if (!isMatched)
                 {
                     continue;
                 }

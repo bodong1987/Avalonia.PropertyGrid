@@ -6,7 +6,7 @@ namespace PropertyModels.ComponentModel;
 /// Defines the Classes of generated control. 
 /// </summary>
 [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
-public class ControlClassesAttribute: Attribute
+public class ControlClassesAttribute : Attribute
 {
     /// <summary>
     /// The Classes to be injected to generated control. 

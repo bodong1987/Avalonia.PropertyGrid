@@ -27,7 +27,7 @@ namespace Avalonia.PropertyGrid.Localization
                 Path = nameof(source.Value)
             };
 
-            control.Bind(property, binding);
+            _ = control.Bind(property, binding);
             control.DataContext = source;
         }
     }
@@ -56,9 +56,6 @@ namespace Avalonia.PropertyGrid.Localization
             localizeService.OnCultureChanged += OnCultureChanged;
         }
 
-        private void OnCultureChanged(object? sender, EventArgs e)
-        {
-            RaisePropertyChanged(nameof(Value));
-        }
+        private void OnCultureChanged(object? sender, EventArgs e) => RaisePropertyChanged(nameof(Value));
     }
 }

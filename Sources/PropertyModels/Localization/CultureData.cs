@@ -74,10 +74,7 @@ namespace PropertyModels.Localization
         /// Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public override string ToString()
-        {
-            return Culture.NativeName;
-        }
+        public override string ToString() => Culture.NativeName;
 
 
         /// <summary>
@@ -91,25 +88,25 @@ namespace PropertyModels.Localization
 
             var configs = json.Split('\r', '\n');
 
-            foreach(var line in configs)
+            foreach (var line in configs)
             {
                 var configLine = line.Trim();
 
-                if(!configLine.Contains(':') || configLine.StartsWith('\\'))
+                if (!configLine.Contains(':') || configLine.StartsWith('\\'))
                 {
                     continue;
                 }
 
                 var key = PickStringToken(configLine, 0, out var endPos);
 
-                if(key == null)
+                if (key == null)
                 {
                     continue;
                 }
 
                 var value = PickStringToken(configLine, endPos + 1, out _);
 
-                if(value == null)
+                if (value == null)
                 {
                     continue;
                 }
@@ -126,17 +123,17 @@ namespace PropertyModels.Localization
             var escape = -1;
             endPos = -1;
 
-            for(var i=startPos; i < line.Length; ++i)
+            for (var i = startPos; i < line.Length; ++i)
             {
                 var ch = line[i];
 
-                if(ch == '"')
+                if (ch == '"')
                 {
-                    if(escape == i-1 && escape != -1)
+                    if (escape == i - 1 && escape != -1)
                     {
                         escape = -1;
                     }
-                    else if(begin == -1)
+                    else if (begin == -1)
                     {
                         begin = i;
                     }
@@ -147,7 +144,7 @@ namespace PropertyModels.Localization
                         return line.Substring(begin + 1, endPos - begin - 1);
                     }
                 }
-                else if(ch == '\\')
+                else if (ch == '\\')
                 {
                     escape = i;
                 }

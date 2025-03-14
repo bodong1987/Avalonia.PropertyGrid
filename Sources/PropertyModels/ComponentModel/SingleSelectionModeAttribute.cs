@@ -28,7 +28,7 @@ public enum SingleSelectionMode
 /// <summary>
 /// set select mode
 /// </summary>
-[AttributeUsage(AttributeTargets.Property|AttributeTargets.Field, AllowMultiple = false)]
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
 public class SingleSelectionModeAttribute : Attribute
 {
     /// <summary>

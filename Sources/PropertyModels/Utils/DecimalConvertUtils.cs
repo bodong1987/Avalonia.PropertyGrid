@@ -21,7 +21,10 @@ public static class DecimalConvertUtils
         Debug.Assert(value != null);
 
         // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-        if (value == null) return 0;
+        if (value == null)
+        {
+            return 0;
+        }
 
         var type = value.GetType();
 
@@ -87,13 +90,17 @@ public static class DecimalConvertUtils
     public static (decimal Min, decimal Max) GetDecimalRange(RangeAttribute rangeAttr)
     {
         if (rangeAttr.OperandType == null)
+        {
             throw new ArgumentException("OperandType is not initialized");
+        }
 
         if (rangeAttr.OperandType == typeof(int) || rangeAttr.OperandType == typeof(double))
+        {
             return (
                 Convert.ToDecimal(rangeAttr.Minimum, CultureInfo.InvariantCulture),
                 Convert.ToDecimal(rangeAttr.Maximum, CultureInfo.InvariantCulture)
             );
+        }
 
         var converter = TypeDescriptor.GetConverter(rangeAttr.OperandType);
         var conversionCulture = rangeAttr.ParseLimitsInInvariantCulture

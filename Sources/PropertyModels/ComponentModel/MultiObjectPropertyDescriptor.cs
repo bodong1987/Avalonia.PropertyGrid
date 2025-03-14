@@ -85,9 +85,9 @@ namespace PropertyModels.ComponentModel
                         }
                     }
 
-                    _attributesTable ??= new Hashtable();
+                    _attributesTable ??= [];
                     _attributesTable[attributeType] = a;
-                    
+
                     return a;
                 }
             }
@@ -145,20 +145,14 @@ namespace PropertyModels.ComponentModel
         /// Creates a collection of attributes using the array of attributes passed to the constructor.
         /// </summary>
         /// <returns>A new <see cref="T:System.ComponentModel.AttributeCollection" /> that contains the <see cref="P:System.ComponentModel.MemberDescriptor.AttributeArray" /> attributes.</returns>
-        protected override AttributeCollection CreateAttributeCollection()
-        {
-            return new MultiObjectAttributes(this);
-        }
+        protected override AttributeCollection CreateAttributeCollection() => new MultiObjectAttributes(this);
 
         /// <summary>
         /// Gets an editor of the specified type.
         /// </summary>
         /// <param name="editorBaseType">The base type of editor, which is used to differentiate between multiple editors that a property supports.</param>
         /// <returns>An instance of the requested editor type, or <see langword="null" /> if an editor cannot be found.</returns>
-        public override object? GetEditor(Type editorBaseType)
-        {
-            return Descriptors[0].GetEditor(editorBaseType);
-        }
+        public override object? GetEditor(Type editorBaseType) => Descriptors[0].GetEditor(editorBaseType);
 
         /// <summary>
         /// When overridden in a derived class, returns whether resetting an object changes its value.
@@ -362,10 +356,7 @@ namespace PropertyModels.ComponentModel
             return result;
         }
 
-        private static object GetPropertyOwner(PropertyDescriptor pd, object component)
-        {
-            return component is not ICustomTypeDescriptor typeDescriptor ? component : typeDescriptor.GetPropertyOwner(pd)!;
-        }
+        private static object GetPropertyOwner(PropertyDescriptor pd, object component) => component is not ICustomTypeDescriptor typeDescriptor ? component : typeDescriptor.GetPropertyOwner(pd)!;
 
         /// <summary>
         /// When overridden in a derived class, determines a value indicating whether the value of this property needs to be persisted.
@@ -405,7 +396,9 @@ namespace PropertyModels.ComponentModel
             var componentsArray = (object[])components;
 
             if (valuesArray.Length != Descriptors.Length || valuesArray.Length != componentsArray.Length)
+            {
                 throw new ArgumentOutOfRangeException();
+            }
 
             for (var i = 0; i < Descriptors.Length; i++)
             {
@@ -435,10 +428,7 @@ namespace PropertyModels.ComponentModel
         /// Returns an enumerator that iterates through a collection.
         /// </summary>
         /// <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
         #endregion
     }
 }

@@ -1,4 +1,17 @@
 [*.cs]
+indent_style = space
+indent_size = 4
+
+csharp_style_expression_bodied_methods = true
+csharp_style_expression_bodied_properties = when_on_single_line
+csharp_style_expression_bodied_accessors = true
+csharp_style_expression_bodied_indexers = true
+csharp_style_expression_bodied_lambdas = true
+csharp_style_expression_bodied_operators = true
+csharp_style_unused_value_assignment_preference = discard_variable
+
+dotnet_sort_system_directives_first = true
+
 resharper_member_can_be_private_global_highlighting = none
 resharper_loop_can_be_converted_to_query_highlighting = none
 resharper_foreach_can_be_partly_converted_to_query_using_another_get_enumerator_highlighting = none

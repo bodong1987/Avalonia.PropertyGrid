@@ -339,11 +339,9 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <param name="e">The <see cref="ListRoutedEventArgs"/> instance containing the event data.</param>
         /// <param name="context">The context.</param>
         /// <param name="control">The control.</param>
-        protected virtual void HandleElementValueChanged(object? s, ListRoutedEventArgs e, PropertyCellContext context, ListEdit control)
-        {
+        protected virtual void HandleElementValueChanged(object? s, ListRoutedEventArgs e, PropertyCellContext context, ListEdit control) =>
             // element has been changed
             // we just raise event, so property grid can refresh ui...
             context.Property.RaiseEvent(context.Target);
-        }
     }
 }

@@ -36,7 +36,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         /// </summary>
         /// <param name="factories">The factories.</param>
         public CellEditFactoryCollection(IEnumerable<ICellEditFactory> factories)
-        {            
+        {
             _factories.AddRange(factories);
             _factories.Sort((x, y) => Comparer<int>.Default.Compare(y.ImportPriority, x.ImportPriority));
 
@@ -52,10 +52,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         /// </summary>
         /// <param name="accessToken">The access token.</param>
         /// <returns>IEnumerable&lt;ICellEditFactory&gt;.</returns>
-        public IEnumerable<ICellEditFactory> CloneFactories(object accessToken)
-        {
-            return _factories.FindAll(x=>x.Accept(accessToken)).Select(x=>x.Clone()).Where(x=> x != null).Select(x=>x!);
-        }
+        public IEnumerable<ICellEditFactory> CloneFactories(object accessToken) => _factories.FindAll(x => x.Accept(accessToken)).Select(x => x.Clone()).Where(x => x != null).Select(x => x!);
 
         /// <summary>
         /// Adds the factory.
@@ -72,10 +69,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         /// Removes the factory.
         /// </summary>
         /// <param name="factory">The factory.</param>
-        public void RemoveFactory(ICellEditFactory factory)
-        {            
-            _factories.Remove(factory);
-        }
+        public void RemoveFactory(ICellEditFactory factory) => _ = _factories.Remove(factory);
 
         /// <summary>
         /// Builds the property control.
@@ -87,7 +81,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
             foreach (var factory in _factories)
             {
                 var control = factory.HandleNewProperty(context);
-                
+
                 if (control != null)
                 {
                     var classesAttributes = context.Property.GetCustomAttributes<ControlClassesAttribute>();
@@ -96,7 +90,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
                         var classes = classesAttributes.SelectMany(a => a.Classes).Distinct();
                         control.Classes.AddRange(classes);
                     }
-                    
+
                     context.CellEdit = control;
                     context.Factory = factory;
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace PropertyModels.ComponentModel
 {
@@ -29,9 +28,6 @@ namespace PropertyModels.ComponentModel
         /// </summary>
         /// <param name="categoryName">The name of the category to check.</param>
         /// <returns><c>true</c> if the category should be collapsed; otherwise, <c>false</c>.</returns>
-        public virtual bool ShouldAutoCollapse(string categoryName)
-        {
-            return CategoryNames.Contains(categoryName);
-        }
+        public virtual bool ShouldAutoCollapse(string categoryName) => CategoryNames.Contains(categoryName);
     }
 }
