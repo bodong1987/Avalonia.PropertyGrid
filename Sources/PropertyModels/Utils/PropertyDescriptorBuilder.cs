@@ -91,7 +91,7 @@ namespace PropertyModels.Utils
 
             var multiCollections = collections.Skip(1).ToList();
 
-            foreach (PropertyDescriptor propertyDescriptor in collections.First())
+            foreach (PropertyDescriptor propertyDescriptor in collections[0])
             {
                 if (!AllowMerge(propertyDescriptor))
                 {
@@ -105,7 +105,7 @@ namespace PropertyModels.Utils
                 {
                     var pd = collection.Find(propertyDescriptor.Name, false);
 
-                    if (pd == null || !pd.Equals(propertyDescriptor))
+                    if (pd?.Equals(propertyDescriptor) != true)
                     {
                         isMatched = false;
                         break;
@@ -119,11 +119,11 @@ namespace PropertyModels.Utils
                     continue;
                 }
 
-                descriptors.Add(new MultiObjectPropertyDescriptor(propertyDescriptors.ToArray()));
+                descriptors.Add(new MultiObjectPropertyDescriptor([.. propertyDescriptors]));
             }
 
             // ReSharper disable once CoVariantArrayConversion
-            return new PropertyDescriptorCollection(descriptors.ToArray());
+            return new PropertyDescriptorCollection([.. descriptors]);
         }
 
         /// <summary>

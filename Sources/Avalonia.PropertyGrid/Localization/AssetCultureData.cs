@@ -8,8 +8,8 @@ namespace Avalonia.PropertyGrid.Localization
 {
     internal class AssetCultureData : AbstractCultureData
     {
-        public AssetCultureData(Uri uri, bool autoLoad = false) :
-            base(uri)
+        public AssetCultureData(Uri uri, bool autoLoad = false)
+            : base(uri)
         {
             if (autoLoad)
             {
@@ -36,6 +36,5 @@ namespace Avalonia.PropertyGrid.Localization
                 return false;
             }
         }
-
     }
 }

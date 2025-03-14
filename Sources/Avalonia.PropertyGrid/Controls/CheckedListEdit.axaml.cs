@@ -126,13 +126,13 @@ namespace Avalonia.PropertyGrid.Controls
         /// Gets the items.
         /// </summary>
         /// <value>The items.</value>
-        public CheckedListItemViewModel[] Items => _items.ToArray();
+        public CheckedListItemViewModel[] Items => [.. _items];
 
         /// <summary>
         /// Gets the selected items.
         /// </summary>
         /// <value>The selected items.</value>
-        public CheckedListItemViewModel[] SelectedItems => _selectedItems.ToArray();
+        public CheckedListItemViewModel[] SelectedItems => [.. _selectedItems];
 
         /// <summary>
         /// Occurs when [selected items changed].
@@ -322,7 +322,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns><c>true</c> if the specified value is value; otherwise, <c>false</c>.</returns>
-        public bool IsValue(object value) => Value == value || (Value != null && Value.Equals(value));
+        public bool IsValue(object value) => Value == value || (Value?.Equals(value) == true);
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is checked.

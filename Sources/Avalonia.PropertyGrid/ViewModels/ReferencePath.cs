@@ -30,9 +30,9 @@ namespace Avalonia.PropertyGrid.ViewModels
 		public void EndScope() => _ = Paths.Pop();
 
 		/// <summary>
-		/// Returns a <see cref="System.String" /> that represents this instance.
+		/// Returns a <see cref="string" /> that represents this instance.
 		/// </summary>
-		/// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-		public override string ToString() => string.Join(", ", Paths.ToArray());
+		/// <returns>A <see cref="string" /> that represents this instance.</returns>
+		public override string ToString() => string.Join(", ", [.. Paths]);
 	}
 }

@@ -381,7 +381,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Gets the elements.
         /// </summary>
         /// <value>The elements.</value>
-        public ListElementDataDesc[] Elements => _elements.ToArray();
+        public ListElementDataDesc[] Elements => [.. _elements];
 
         /// <summary>
         /// Gets the title.

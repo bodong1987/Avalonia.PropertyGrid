@@ -162,7 +162,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyCellContext" /> class.
         /// </summary>
-        /// <param name="parentContext">The parent context.</param>        
+        /// <param name="parentContext">The parent context.</param>
         /// <param name="target">The target.</param>
         /// <param name="property">The property.</param>
         public PropertyCellContext(PropertyCellContext parentContext, object target, PropertyDescriptor property)
@@ -175,9 +175,9 @@ namespace Avalonia.PropertyGrid.Controls
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string" /> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        /// <returns>A <see cref="string" /> that represents this instance.</returns>
         public override string ToString() => DisplayName;
     }
 }

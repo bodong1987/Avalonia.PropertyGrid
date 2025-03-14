@@ -10,7 +10,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
     {
         private readonly List<IPropertyGridCellInfo> _children = [];
 
-        public IPropertyGridCellInfo[] Children => _children.ToArray();
+        public IPropertyGridCellInfo[] Children => [.. _children];
 
         public virtual void Add(IPropertyGridCellInfo cellInfo)
         {
@@ -96,7 +96,6 @@ namespace Avalonia.PropertyGrid.Controls.Implements
                     }
 
                     field = value;
-
                 }
             }
         } = true;
@@ -105,7 +104,6 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         {
             Context = context;
         }
-
 
         public override void Clear()
         {

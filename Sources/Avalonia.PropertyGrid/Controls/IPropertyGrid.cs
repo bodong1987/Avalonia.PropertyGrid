@@ -166,8 +166,8 @@ namespace Avalonia.PropertyGrid.Controls
             PropertyDescriptor property,
             object? oldValue,
             object? newValue,
-            object? context) :
-            base(routedEvent)
+            object? context)
+            : base(routedEvent)
         {
             Command = command;
             Target = target;
@@ -209,8 +209,8 @@ namespace Avalonia.PropertyGrid.Controls
             PropertyDescriptor property,
             object? oldValue,
             object? newValue,
-            object? context) :
-            base(routedEvent, command, target, property, oldValue, newValue, context)
+            object? context)
+            : base(routedEvent, command, target, property, oldValue, newValue, context)
         {
         }
     }

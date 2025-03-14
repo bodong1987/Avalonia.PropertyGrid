@@ -19,7 +19,7 @@ namespace PropertyModels.ComponentModel
         /// Gets the masks.
         /// </summary>
         /// <value>The masks.</value>
-        public string[] Masks => _masks.OrderBy(x => x).ToArray();
+        public string[] Masks => [.. _masks.OrderBy(x => x)];
 
         /// <summary>
         /// Gets all.

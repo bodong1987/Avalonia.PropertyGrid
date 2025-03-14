@@ -70,6 +70,7 @@ namespace PropertyModels.ComponentModel
                             return a;
                         }
                     }
+
                     a = _parentAttributes[0][attributeType];
                     if (a == null)
                     {
@@ -235,7 +236,7 @@ namespace PropertyModels.ComponentModel
             for (var i = 0; i < Descriptors.Length; i++)
             {
                 var temp = GetValue(Descriptors[i], GetOwner(list, i)!);
-                if (res != temp && res != null && !res.Equals(temp))
+                if (res != temp && res?.Equals(temp) == false)
                 {
                     return null;
                 }

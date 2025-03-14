@@ -22,7 +22,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         /// Gets the factories.
         /// </summary>
         /// <value>The factories.</value>
-        public IEnumerable<ICellEditFactory> Factories => _factories.ToArray();
+        public IEnumerable<ICellEditFactory> Factories => [.. _factories];
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CellEditFactoryCollection"/> class.
@@ -44,7 +44,6 @@ namespace Avalonia.PropertyGrid.Controls.Implements
             {
                 factory.Collection = this;
             }
-
         }
 
         /// <summary>

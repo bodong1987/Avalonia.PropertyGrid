@@ -160,6 +160,7 @@ namespace Avalonia.PropertyGrid.Utils
                 var storage = await storageProvider.OpenFolderPickerAsync(options);
                 return storage.Select(x => x.Path.LocalPath).ToArray();
             }
+
             if (type is PathBrowsableType.File or PathBrowsableType.MultipleFiles)
             {
                 var options = new FilePickerOpenOptions();

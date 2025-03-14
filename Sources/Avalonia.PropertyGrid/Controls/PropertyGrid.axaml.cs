@@ -545,7 +545,7 @@ namespace Avalonia.PropertyGrid.Controls
 
             if (categoryStyle == PropertyGridOrderStyle.Alphabetic)
             {
-                categories = categories.OrderBy(x => x.Key).ToList();
+                categories = [.. categories.OrderBy(x => x.Key)];
             }
 
             var autoCollapseCategoriesAttribute = target.GetType().GetAnyCustomAttribute<AutoCollapseCategoriesAttribute>();
@@ -559,7 +559,7 @@ namespace Avalonia.PropertyGrid.Controls
                     ExpandDirection = ExpandDirection.Down
                 };
                 expander.SetValue(Grid.RowProperty, PropertiesGrid.RowDefinitions.Count - 1);
-                expander.IsExpanded = autoCollapseCategoriesAttribute == null || !autoCollapseCategoriesAttribute.ShouldAutoCollapse(categoryInfo.Key);
+                expander.IsExpanded = autoCollapseCategoriesAttribute?.ShouldAutoCollapse(categoryInfo.Key) != true;
                 expander.HorizontalContentAlignment = HorizontalAlignment.Stretch;
                 expander.HorizontalAlignment = HorizontalAlignment.Stretch;
                 expander.Margin = new Thickness(2);
@@ -583,7 +583,7 @@ namespace Avalonia.PropertyGrid.Controls
 
                 _cellInfoCache.Add(cellInfo);
 
-                var properties = propertyOrderStyle == PropertyGridOrderStyle.Builtin ? categoryInfo.Value : categoryInfo.Value.OrderBy(x => x.DisplayName).ToList();
+                var properties = propertyOrderStyle == PropertyGridOrderStyle.Builtin ? categoryInfo.Value : [.. categoryInfo.Value.OrderBy(x => x.DisplayName)];
 
                 BuildPropertiesCellEdit(target, referencePath, properties, expander, grid, cellInfo);
 

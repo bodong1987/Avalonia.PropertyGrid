@@ -95,13 +95,13 @@ namespace PropertyModels.Collections
         /// Gets the items.
         /// </summary>
         /// <value>The items.</value>
-        public T[] Items => _itemsCore.ToArray();
+        public T[] Items => [.. _itemsCore];
 
         /// <summary>
         /// Gets the source items.
         /// </summary>
         /// <value>The source items.</value>
-        public T[] SourceItems => _sourceItemsCore.ToArray();
+        public T[] SourceItems => [.. _sourceItemsCore];
 
         /// <summary>
         /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.
@@ -139,7 +139,7 @@ namespace PropertyModels.Collections
             {
                 List<object> list = [.. _itemsCore];
 
-                return list.ToArray();
+                return [.. list];
             }
         }
 
@@ -154,7 +154,7 @@ namespace PropertyModels.Collections
                 List<object> list = [];
                 list.AddRange(_sourceItemsCore.Select(item => item!).Cast<object>());
 
-                return list.ToArray();
+                return [.. list];
             }
         }
 
@@ -179,10 +179,10 @@ namespace PropertyModels.Collections
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object" /> is equal to this instance.
+        /// Determines whether the specified <see cref="object" /> is equal to this instance.
         /// </summary>
         /// <param name="obj">The object to compare with the current object.</param>
-        /// <returns><c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the specified <see cref="object" /> is equal to this instance; otherwise, <c>false</c>.</returns>
         public override bool Equals(object? obj)
         {
             if (obj is CheckedList<T> other)
@@ -423,5 +423,4 @@ namespace PropertyModels.Collections
         /// <param name="items">The items.</param>
         void ICheckedList.SelectRange(IEnumerable<object> items) => SelectRange(items.Cast<T>());
     }
-
 }

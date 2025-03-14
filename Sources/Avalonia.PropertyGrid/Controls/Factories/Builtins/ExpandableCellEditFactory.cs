@@ -37,14 +37,14 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             var attr = property.GetCustomAttribute<TypeConverterAttribute>();
 
-            if(attr != null && attr.GetConverterType()!.IsChildOf<ExpandableObjectConverter>())
+            if(attr?.GetConverterType()!.IsChildOf<ExpandableObjectConverter>() == true)
             {
                 return true;
             }
 
             attr = property.PropertyType.GetCustomAttribute<TypeConverterAttribute>();
 
-            return attr != null && attr.GetConverterType()!.IsChildOf<ExpandableObjectConverter>();
+            return attr?.GetConverterType()!.IsChildOf<ExpandableObjectConverter>() == true;
         }
 
         /// <summary>

@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using PropertyModels.Extensions;
 
 namespace PropertyModels.ComponentModel.DataAnnotations
 {
@@ -21,7 +20,10 @@ namespace PropertyModels.ComponentModel.DataAnnotations
         /// </summary>
         /// <param name="validationResult">The validation result.</param>
         /// <returns><c>true</c> if the specified validation result is failure; otherwise, <c>false</c>.</returns>
-        public static bool IsFailure(this ValidationResult? validationResult) => validationResult != null && validationResult != ValidationResult.Success && validationResult.ErrorMessage.IsNotNullOrEmpty();
+        public static bool IsFailure(this ValidationResult? validationResult)
+            => validationResult != null
+            && validationResult != ValidationResult.Success
+            && !string.IsNullOrEmpty(validationResult.ErrorMessage);
 
         /// <summary>
         /// Gets the display message.

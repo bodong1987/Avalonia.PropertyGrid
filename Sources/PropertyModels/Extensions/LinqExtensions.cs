@@ -78,8 +78,8 @@ namespace PropertyModels.Extensions
         /// <exception cref="InvalidOperationException">Empty List</exception>
         public static T? MaxElement<T>(this IEnumerable<T> list, Converter<T, int> projection)
         {
-            var enumerable = list as T[] ?? list.ToArray();
-            if (!enumerable.Any())
+            var enumerable = list as T[] ?? [.. list];
+            if (enumerable.Length == 0)
             {
                 throw new InvalidOperationException("Empty List");
             }
@@ -140,7 +140,6 @@ namespace PropertyModels.Extensions
             return false;
         }
 
-
         /// <summary>
         /// Distinct the target enumerable data.
         /// </summary>
@@ -169,7 +168,7 @@ namespace PropertyModels.Extensions
         /// <typeparam name="T"></typeparam>
         /// <param name="source">The source.</param>
         /// <returns>BindingList&lt;T&gt;.</returns>
-        public static BindingList<T> ToBindingList<T>(this IEnumerable<T> source) => new BindingList<T>(source.ToList());
+        public static BindingList<T> ToBindingList<T>(this IEnumerable<T> source) => new(source.ToList());
 
         /// <summary>
         /// Selects the specified selector.
@@ -186,5 +185,4 @@ namespace PropertyModels.Extensions
             }
         }
     }
-
 }

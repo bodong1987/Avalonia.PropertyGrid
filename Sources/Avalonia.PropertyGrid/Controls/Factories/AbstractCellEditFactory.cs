@@ -203,7 +203,6 @@ namespace Avalonia.PropertyGrid.Controls.Factories
             }
         }
 
-
         /// <summary>
         /// Validates the property.
         /// </summary>

@@ -70,25 +70,15 @@ namespace PropertyModels.Extensions
         /// <exception cref="System.ArgumentException">Input MemberInfo must be if type EventInfo, FieldInfo, MethodInfo, or PropertyInfo</exception>
         public static Type GetUnderlyingType(this MemberInfo memberInfo)
         {
-            // ReSharper disable once ConvertSwitchStatementToSwitchExpression
             // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
-            switch (memberInfo.MemberType)
+            return memberInfo.MemberType switch
             {
-                case MemberTypes.Event:
-                    // ReSharper disable once RedundantSuppressNullableWarningExpression
-                    return ((EventInfo)memberInfo).EventHandlerType!;
-                case MemberTypes.Field:
-                    return ((FieldInfo)memberInfo).FieldType;
-                case MemberTypes.Method:
-                    return ((MethodInfo)memberInfo).ReturnType;
-                case MemberTypes.Property:
-                    return ((PropertyInfo)memberInfo).PropertyType;
-                default:
-                    throw new ArgumentException
-                    (
-                     "Input MemberInfo must be if type EventInfo, FieldInfo, MethodInfo, or PropertyInfo"
-                    );
-            }
+                MemberTypes.Event => ((EventInfo)memberInfo).EventHandlerType!, // ReSharper disable once RedundantSuppressNullableWarningExpression
+                MemberTypes.Field => ((FieldInfo)memberInfo).FieldType,
+                MemberTypes.Method => ((MethodInfo)memberInfo).ReturnType,
+                MemberTypes.Property => ((PropertyInfo)memberInfo).PropertyType,
+                _ => throw new ArgumentException("Input MemberInfo must be if type EventInfo, FieldInfo, MethodInfo, or PropertyInfo"),
+            };
         }
 
         /// <summary>
@@ -99,22 +89,13 @@ namespace PropertyModels.Extensions
         /// <returns>System.Object.</returns>
         /// <exception cref="System.ArgumentException">Input MemberInfo must be if type FieldInfo, or PropertyInfo</exception>
         public static object? GetUnderlyingValue(this MemberInfo memberInfo, object? target)
-        {
-            // ReSharper disable once ConvertSwitchStatementToSwitchExpression
             // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
-            switch (memberInfo.MemberType)
+            => memberInfo.MemberType switch
             {
-                case MemberTypes.Field:
-                    return ((FieldInfo)memberInfo).GetValue(target);
-                case MemberTypes.Property:
-                    return ((PropertyInfo)memberInfo).GetValue(target, null);
-                default:
-                    throw new ArgumentException
-                    (
-                     "Input MemberInfo must be if type FieldInfo, or PropertyInfo"
-                    );
-            }
-        }
+                MemberTypes.Field => ((FieldInfo)memberInfo).GetValue(target),
+                MemberTypes.Property => ((PropertyInfo)memberInfo).GetValue(target, null),
+                _ => throw new ArgumentException("Input MemberInfo must be if type FieldInfo, or PropertyInfo"),
+            };
 
         /// <summary>
         /// Sets the underlying value.
@@ -361,6 +342,7 @@ namespace PropertyModels.Extensions
             {
                 return type;
             }
+
             foreach (var a in AppDomain.CurrentDomain.GetAssemblies())
             {
                 type = a.GetType(typeName);
@@ -379,27 +361,22 @@ namespace PropertyModels.Extensions
         /// <param name="type">The type.</param>
         /// <returns><c>true</c> if [is numeric type] [the specified type]; otherwise, <c>false</c>.</returns>
         public static bool IsNumericType(this Type type)
-        {
-            // ReSharper disable once ConvertSwitchStatementToSwitchExpression
             // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
-            switch (Type.GetTypeCode(type))
+            => Type.GetTypeCode(type) switch
             {
-                case TypeCode.Byte:
-                case TypeCode.SByte:
-                case TypeCode.UInt16:
-                case TypeCode.UInt32:
-                case TypeCode.UInt64:
-                case TypeCode.Int16:
-                case TypeCode.Int32:
-                case TypeCode.Int64:
-                case TypeCode.Decimal:
-                case TypeCode.Double:
-                case TypeCode.Single:
-                    return true;
-                default:
-                    return false;
-            }
-        }
+                TypeCode.Byte
+                or TypeCode.SByte
+                or TypeCode.UInt16
+                or TypeCode.UInt32
+                or TypeCode.UInt64
+                or TypeCode.Int16
+                or TypeCode.Int32
+                or TypeCode.Int64
+                or TypeCode.Decimal
+                or TypeCode.Double
+                or TypeCode.Single => true,
+                _ => false,
+            };
 
         /// <summary>
         /// Gets the unique flags.
@@ -452,7 +429,7 @@ namespace PropertyModels.Extensions
         {
             var attr = propertyInfo.GetAnyCustomAttribute<BrowsableAttribute>();
 
-            return attr == null || attr.Browsable;
+            return attr?.Browsable != false;
         }
 
         #region For ProeprtyDescriptor
@@ -500,7 +477,7 @@ namespace PropertyModels.Extensions
                 }
             }
 
-            return list.ToArray();
+            return [.. list];
         }
 
         /// <summary>
@@ -591,5 +568,4 @@ namespace PropertyModels.Extensions
         }
         #endregion
     }
-
 }

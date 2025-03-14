@@ -5,7 +5,6 @@ using PropertyModels.ComponentModel;
 
 namespace Avalonia.PropertyGrid.ViewModels
 {
-
 	/// <summary>
 	/// Class SingleSelectListViewModel.
 	/// Implements the <see cref="MiniReactiveObject" />
@@ -22,7 +21,7 @@ namespace Avalonia.PropertyGrid.ViewModels
 		/// Gets the items.
 		/// </summary>
 		/// <value>The items.</value>
-		public SingleSelectListItemViewModel[] Items => _items.ToArray();
+		public SingleSelectListItemViewModel[] Items => [.. _items];
 
 		/// <summary>
 		/// Gets the checked item.
@@ -125,6 +124,7 @@ namespace Avalonia.PropertyGrid.ViewModels
 		public void SetChecked(SingleSelectListItemViewModel item, bool value)
 		{
 			CheckedItem = item;
+			CheckedItem.IsChecked = value;
 
 			RaiseSelectedItemsChangedEvent();
 			RefreshItemsCheckStates();
@@ -186,7 +186,7 @@ namespace Avalonia.PropertyGrid.ViewModels
 		/// </summary>
 		/// <param name="value">The value.</param>
 		/// <returns><c>true</c> if the specified value is value; otherwise, <c>false</c>.</returns>
-		public bool IsValue(object? value) => Value == value || (Value != null && Value.Equals(value));
+		public bool IsValue(object? value) => Value == value || (Value?.Equals(value) == true);
 
 		/// <summary>
 		/// Gets or sets a value indicating whether this instance is checked.
