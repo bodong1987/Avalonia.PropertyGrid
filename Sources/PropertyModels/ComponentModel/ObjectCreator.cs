@@ -13,10 +13,7 @@ namespace PropertyModels.ComponentModel
         /// <typeparam name="T"></typeparam>
         /// <param name="args">The arguments.</param>
         /// <returns>T.</returns>
-        public static T? Create<T>(params object[] args)
-        {
-            return (T?)Create(typeof(T), args);
-        }
+        public static T? Create<T>(params object[] args) => (T?)Create(typeof(T), args);
 
         /// <summary>
         /// Creates the specified type.

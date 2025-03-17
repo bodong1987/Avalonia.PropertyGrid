@@ -37,19 +37,13 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         /// </summary>
         /// <param name="accessToken">The access token.</param>
         /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
-        public virtual bool Accept(object accessToken)
-        {
-            return accessToken is PropertyGrid;
-        }
+        public virtual bool Accept(object accessToken) => accessToken is PropertyGrid;
 
         /// <summary>
         /// Clones this instance.
         /// </summary>
         /// <returns>ICellEditFactory.</returns>
-        public virtual ICellEditFactory? Clone()
-        {
-            return Activator.CreateInstance(GetType()) as ICellEditFactory;
-        }
+        public virtual ICellEditFactory? Clone() => Activator.CreateInstance(GetType()) as ICellEditFactory;
 
         /// <summary>
         /// Handles the new property.
@@ -71,12 +65,10 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         /// <param name="control">control.</param>
         /// <param name="readOnly">readonly flag</param>
         /// <returns>Control.</returns>
-        public virtual void HandleReadOnlyStateChanged(Control control, bool readOnly)
-        {
+        public virtual void HandleReadOnlyStateChanged(Control control, bool readOnly) =>
             // default operation, set IsEnabled flag
             // you can override this method to change this default operation
             control.IsEnabled = !readOnly;
-        }
 
         /// <summary>
         /// Sets the and raise.
@@ -84,9 +76,9 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         /// <param name="context">The context.</param>
         /// <param name="sourceControl">The source control.</param>
         /// <param name="value">The value.</param>
-        protected virtual void SetAndRaise(PropertyCellContext context, Control sourceControl, object? value) 
+        protected virtual void SetAndRaise(PropertyCellContext context, Control sourceControl, object? value)
         {
-            if(context.Property.IsPropertyChanged(context.Target, value, out var oldValue))
+            if (context.Property.IsPropertyChanged(context.Target, value, out var oldValue))
             {
                 var command = new GenericCancelableCommand(
                     string.Format(LocalizationService.Default["Change {0} form {1} to {2}"], context.Property.DisplayName, oldValue != null ? oldValue.ToString() : "null", value != null ? value.ToString() : "null"),
@@ -105,7 +97,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories
                     Tag = "CommonEvent"
                 };
 
-                ExecuteCommand(command, context, oldValue, value, value);
+                _ = ExecuteCommand(command, context, oldValue, value, value);
             }
         }
 
@@ -132,7 +124,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories
 
             (propertyContext.Owner as Interactive)?.RaiseEvent(evt);
 
-            if(evt.Canceled)
+            if (evt.Canceled)
             {
                 return false;
             }
@@ -149,7 +141,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories
                 }
             }
 
-            if(!command.Execute())
+            if (!command.Execute())
             {
                 return false;
             }
@@ -211,7 +203,6 @@ namespace Avalonia.PropertyGrid.Controls.Factories
             }
         }
 
-
         /// <summary>
         /// Validates the property.
         /// </summary>
@@ -237,10 +228,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         /// <param name="context">The context.</param>
         /// <param name="filterContext">The filter context.</param>
         /// <returns>System.Nullable&lt;PropertyVisibility&gt;.</returns>
-        public virtual PropertyVisibility? HandlePropagateVisibility(object? target, PropertyCellContext context, IPropertyGridFilterContext filterContext)
-        {
-            return null;
-        }
+        public virtual PropertyVisibility? HandlePropagateVisibility(object? target, PropertyCellContext context, IPropertyGridFilterContext filterContext) => null;
 
         /// <summary>
         /// Checks the equal.

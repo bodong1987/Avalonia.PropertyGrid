@@ -65,7 +65,7 @@ namespace PropertyModels.ComponentModel.DataAnnotations
                 var results = new List<ValidationResult>();
                 var value = property.GetValue(component);
 
-                if(value != null)
+                if (value != null)
                 {
                     if (!Validator.TryValidateValue(
                     value,
@@ -87,21 +87,21 @@ namespace PropertyModels.ComponentModel.DataAnnotations
                     var builder = new StringBuilder();
                     var hasError = false;
 
-                    foreach(var attr in property.GetCustomAttributes<ValidationAttribute>())
+                    foreach (var attr in property.GetCustomAttributes<ValidationAttribute>())
                     {
                         if (!attr.IsValid(value))
                         {
                             hasError = true;
-                            builder.AppendLine(attr.FormatErrorMessage(property.DisplayName));
+                            _ = builder.AppendLine(attr.FormatErrorMessage(property.DisplayName));
                         }
                     }
 
-                    if(hasError)
+                    if (hasError)
                     {
                         message = builder.ToString().Trim();
                         return false;
                     }
-                }                
+                }
             }
 
             message = string.Empty;

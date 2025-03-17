@@ -9,30 +9,24 @@ namespace Avalonia.PropertyGrid.Controls.Implements
 {
     internal class PropertyGridFilterPattern : MiniReactiveObject, IFilterPattern
     {
-        private string? _filterText;
         private Regex? _cachedRegex;
-        private ICheckedMaskModel? _quickFilter;
 
         public string? FilterText
         {
-            get => _filterText;
-            set => this.RaiseAndSetIfChanged(ref _filterText, value);
+            get;
+            set => this.RaiseAndSetIfChanged(ref field, value);
         }
-
-        private bool _useRegex;
 
         public bool UseRegex
         {
-            get => _useRegex;
-            set => this.RaiseAndSetIfChanged(ref _useRegex, value);
+            get;
+            set => this.RaiseAndSetIfChanged(ref field, value);
         }
-
-        private bool _ignoreCase = true;
         public bool IgnoreCase
         {
-            get => _ignoreCase;
-            set => this.RaiseAndSetIfChanged( ref _ignoreCase, value);
-        }
+            get;
+            set => this.RaiseAndSetIfChanged(ref field, value);
+        } = true;
 
         /// <summary>
         /// Gets the quick filter.
@@ -40,18 +34,15 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         /// <value>The quick filter.</value>
         public ICheckedMaskModel? QuickFilter
         {
-            get => _quickFilter;
-            set => this.RaiseAndSetIfChanged(ref _quickFilter, value);
+            get;
+            set => this.RaiseAndSetIfChanged(ref field, value);
         }
 
-        public PropertyGridFilterPattern()
-        {
-            PropertyChanged += OnPropertyChanged;
-        }
+        public PropertyGridFilterPattern() => PropertyChanged += OnPropertyChanged;
 
         private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if(e.PropertyName == nameof(FilterText) && _useRegex && FilterText.IsNotNullOrEmpty())
+            if (e.PropertyName == nameof(FilterText) && UseRegex && FilterText.IsNotNullOrEmpty())
             {
                 _cachedRegex = null;
                 try
@@ -69,7 +60,7 @@ namespace Avalonia.PropertyGrid.Controls.Implements
         {
             var displayName = LocalizationService.Default[propertyDescriptor.DisplayName];
 
-            if(UseRegex && _cachedRegex != null)
+            if (UseRegex && _cachedRegex != null)
             {
                 return _cachedRegex.IsMatch(displayName);
             }

@@ -32,7 +32,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         {
             var propertyDescriptor = context.Property;
             var target = context.Target;
-            
+
             if (propertyDescriptor.PropertyType != typeof(string))
             {
                 return null;
@@ -71,7 +71,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             {
                 if (e.Property == TextBox.TextProperty)
                 {
-                    if (e.NewValue as string != propertyDescriptor.GetValue(target) as string)
+                    if ((e.NewValue as string) != (propertyDescriptor.GetValue(target) as string))
                     {
                         SetAndRaise(context, control, e.NewValue);
                     }
@@ -116,14 +116,14 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <returns>Control.</returns>
         public override void HandleReadOnlyStateChanged(Control control, bool readOnly)
         {
-            if(control is TextBox textBox)
+            if (control is TextBox textBox)
             {
                 textBox.IsReadOnly = readOnly;
             }
             else
             {
                 base.HandleReadOnlyStateChanged(control, readOnly);
-            }            
+            }
         }
     }
 }

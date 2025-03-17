@@ -1,11 +1,7 @@
-﻿using PropertyModels.ComponentModel;
-using PropertyModels.ComponentModel.DataAnnotations;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PropertyModels.ComponentModel;
+using PropertyModels.ComponentModel.DataAnnotations;
 using PropertyModels.Extensions;
 
 namespace Avalonia.PropertyGrid.Samples.Models
@@ -17,14 +13,14 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
         [VisibilityPropertyCondition(nameof(IsShowPath), true)]
         [PathBrowsable(Filters = "Image Files(*.jpg;*.png;*.bmp;*.tag)|*.jpg;*.png;*.bmp;*.tag")]
-        public string Path { get; set; } = "";
+        public string Path { get; set; } = string.Empty;
 
         [ConditionTarget]
         public PlatformID Platform { get; set; } = PlatformID.Win32NT;
 
         [VisibilityPropertyCondition(nameof(Platform), PlatformID.Unix)]
         [ConditionTarget]
-        public string UnixVersion { get; set; } = "";
+        public string UnixVersion { get; set; } = string.Empty;
 
         // show more complex conditions...
         [Browsable(false)]

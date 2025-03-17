@@ -16,20 +16,17 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="ListElementPlaceholderEdit"/> class.
         /// </summary>
-        public ListElementPlaceholderEdit()
-        {
-            InitializeComponent();
-        }
+        public ListElementPlaceholderEdit() => InitializeComponent();
 
         /// <summary>
         /// Called when [property changed].
         /// </summary>
         /// <param name="change">The change.</param>
         protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
-        {        
+        {
             base.OnPropertyChanged(change);
 
-            if(change.Property == DataContextProperty)
+            if (change.Property == DataContextProperty)
             {
                 OnDataDescPropertyChanged(change.OldValue as ListElementDataDesc, change.NewValue as ListElementDataDesc);
             }
@@ -40,14 +37,11 @@ namespace Avalonia.PropertyGrid.Controls
         /// Called when the <see cref="P:Avalonia.StyledElement.DataContext" /> property changes.
         /// </summary>
         /// <param name="e">The event args.</param>
-        protected override void OnDataContextChanged(EventArgs e)
-        {
-            base.OnDataContextChanged(e);
-        }
-     
+        protected override void OnDataContextChanged(EventArgs e) => base.OnDataContextChanged(e);
+
         private void OnDataDescPropertyChanged(ListElementDataDesc? oldValue, ListElementDataDesc? value)
         {
-            if(oldValue != null)
+            if (oldValue != null)
             {
                 oldValue.ValueChanged -= OnElementValueChanged;
             }
@@ -62,14 +56,14 @@ namespace Avalonia.PropertyGrid.Controls
             value.ValueChanged += OnElementValueChanged;
 
             Debug.Assert(value.Context != null);
-            Debug.Assert(value.Context.Root!=null);
+            Debug.Assert(value.Context.Root != null);
 
             _context = new PropertyCellContext(value.Context, value.List, value.Property);
 
             var control = _context.GetCellEditFactoryCollection().BuildPropertyControl(_context);
             if (control != null)
             {
-                control.Margin = new Thickness(2,2);
+                control.Margin = new Thickness(2, 2);
 
                 MainBorder.Child = control;
 
@@ -77,24 +71,24 @@ namespace Avalonia.PropertyGrid.Controls
 
                 _context.Factory!.HandleReadOnlyStateChanged(control, _context.IsReadOnly || value.IsReadOnly);
 
-                _context.Factory.HandlePropertyChanged(_context);
+                _ = _context.Factory.HandlePropertyChanged(_context);
             }
         }
 
 
         private void OnElementValueChanged(object? sender, EventArgs e)
         {
-            if(DataContext is not ListElementDataDesc)
+            if (DataContext is not ListElementDataDesc)
             {
                 return;
             }
 
-            if(_context is { Factory: not null })
+            if (_context is { Factory: not null })
             {
-                Debug.Assert(_context!=null);
+                Debug.Assert(_context != null);
                 Debug.Assert(_context!.CellEdit != null);
 
-                _context.Factory.HandlePropertyChanged(_context);
+                _ = _context.Factory.HandlePropertyChanged(_context);
             }
         }
     }

@@ -81,10 +81,7 @@ namespace PropertyModels.ComponentModel
         /// Determines whether this instance can execute.
         /// </summary>
         /// <returns><c>true</c> if this instance can execute; otherwise, <c>false</c>.</returns>
-        public virtual bool CanExecute()
-        {
-            return true;
-        }
+        public virtual bool CanExecute() => true;
 
         /// <summary>
         /// Executes this instance.
@@ -93,13 +90,10 @@ namespace PropertyModels.ComponentModel
         public abstract bool Execute();
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string" /> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public override string ToString()
-        {
-            return Name;
-        }
+        /// <returns>A <see cref="string" /> that represents this instance.</returns>
+        public override string ToString() => Name;
     }
 
     /// <summary>
@@ -120,7 +114,7 @@ namespace PropertyModels.ComponentModel
         /// <param name="canExecuteFunc">The can execute function.</param>
         public GenericCommand(string name, Func<bool>? executeFunc, Func<bool>? canExecuteFunc = null) :
             base(name)
-        {            
+        {
             _executeFunc = executeFunc;
             _canExecuteFunc = canExecuteFunc;
         }
@@ -129,19 +123,13 @@ namespace PropertyModels.ComponentModel
         /// Determines whether this instance can execute.
         /// </summary>
         /// <returns><c>true</c> if this instance can execute; otherwise, <c>false</c>.</returns>
-        public override bool CanExecute()
-        {
-            return _canExecuteFunc?.Invoke() ?? base.CanExecute();
-        }
+        public override bool CanExecute() => _canExecuteFunc?.Invoke() ?? base.CanExecute();
 
         /// <summary>
         /// Executes this instance.
         /// </summary>
         /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
-        public override bool Execute()
-        {
-            return _executeFunc != null && _executeFunc();
-        }
+        public override bool Execute() => _executeFunc != null && _executeFunc();
     }
 
     /// <summary>
@@ -166,10 +154,7 @@ namespace PropertyModels.ComponentModel
         /// Determines whether this instance can cancel.
         /// </summary>
         /// <returns><c>true</c> if this instance can cancel; otherwise, <c>false</c>.</returns>
-        public virtual bool CanCancel()
-        {
-            return true;
-        }
+        public virtual bool CanCancel() => true;
 
         /// <summary>
         /// Cancels this instance.
@@ -206,8 +191,8 @@ namespace PropertyModels.ComponentModel
         /// <param name="canExecuteFunc">The can execute function.</param>
         /// <param name="canCancelFunc">The can cancel function.</param>
         public GenericCancelableCommand(
-            string name, 
-            Func<bool>? executeFunc, 
+            string name,
+            Func<bool>? executeFunc,
             Func<bool>? cancelFunc,
             Func<bool>? canExecuteFunc = null,
             Func<bool>? canCancelFunc = null
@@ -224,36 +209,24 @@ namespace PropertyModels.ComponentModel
         /// Cancels this instance.
         /// </summary>
         /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
-        public override bool Cancel()
-        {
-            return _cancelFunc != null && _cancelFunc();
-        }
+        public override bool Cancel() => _cancelFunc != null && _cancelFunc();
 
         /// <summary>
         /// Executes this instance.
         /// </summary>
         /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
-        public override bool Execute()
-        {
-            return _executeFunc != null && _executeFunc();
-        }
+        public override bool Execute() => _executeFunc != null && _executeFunc();
 
         /// <summary>
         /// Determines whether this instance can cancel.
         /// </summary>
         /// <returns><c>true</c> if this instance can cancel; otherwise, <c>false</c>.</returns>
-        public override bool CanCancel()
-        {
-            return _canCancelFunc?.Invoke() ?? base.CanCancel();
-        }
+        public override bool CanCancel() => _canCancelFunc?.Invoke() ?? base.CanCancel();
 
         /// <summary>
         /// Determines whether this instance can execute.
         /// </summary>
         /// <returns><c>true</c> if this instance can execute; otherwise, <c>false</c>.</returns>
-        public override bool CanExecute()
-        {
-            return _canExecuteFunc?.Invoke() ?? base.CanExecute();
-        }
+        public override bool CanExecute() => _canExecuteFunc?.Invoke() ?? base.CanExecute();
     }
 }

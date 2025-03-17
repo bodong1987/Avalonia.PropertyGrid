@@ -25,7 +25,9 @@ namespace PropertyModels.Extensions
             foreach (var element in source)
             {
                 if (predicate(element))
+                {
                     return i;
+                }
 
                 ++i;
             }
@@ -56,7 +58,9 @@ namespace PropertyModels.Extensions
                 }
 
                 if (predicate(element))
+                {
                     return i;
+                }
 
                 ++i;
             }
@@ -74,8 +78,8 @@ namespace PropertyModels.Extensions
         /// <exception cref="InvalidOperationException">Empty List</exception>
         public static T? MaxElement<T>(this IEnumerable<T> list, Converter<T, int> projection)
         {
-            var enumerable = list as T[] ?? list.ToArray();
-            if (!enumerable.Any())
+            var enumerable = list as T[] ?? [.. list];
+            if (enumerable.Length == 0)
             {
                 throw new InvalidOperationException("Empty List");
             }
@@ -136,7 +140,6 @@ namespace PropertyModels.Extensions
             return false;
         }
 
-
         /// <summary>
         /// Distinct the target enumerable data.
         /// </summary>
@@ -150,7 +153,9 @@ namespace PropertyModels.Extensions
         public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> predicate)
         {
             if (source == null)
+            {
                 throw new ArgumentNullException(nameof(source));
+            }
 
             return source
                 .GroupBy(predicate)
@@ -163,10 +168,7 @@ namespace PropertyModels.Extensions
         /// <typeparam name="T"></typeparam>
         /// <param name="source">The source.</param>
         /// <returns>BindingList&lt;T&gt;.</returns>
-        public static BindingList<T> ToBindingList<T>(this IEnumerable<T> source)
-        {
-            return new BindingList<T>(source.ToList());
-        }
+        public static BindingList<T> ToBindingList<T>(this IEnumerable<T> source) => new(source.ToList());
 
         /// <summary>
         /// Selects the specified selector.
@@ -183,5 +185,4 @@ namespace PropertyModels.Extensions
             }
         }
     }
-
 }

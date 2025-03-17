@@ -1,9 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
-using Avalonia.Interactivity;
-using Avalonia.PropertyGrid.Controls;
-using System.Windows.Input;
+﻿using Avalonia.Controls.Primitives;
 
 namespace Avalonia.PropertyGrid.Samples.Views
 {

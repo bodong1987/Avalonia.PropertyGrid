@@ -8,7 +8,7 @@ namespace PropertyModels.ComponentModel
     /// Implements the <see cref="Attribute" />
     /// </summary>
     /// <seealso cref="Attribute" />
-    [AttributeUsage(AttributeTargets.Property|AttributeTargets.Field)]
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
     public class FloatPrecisionAttribute : Attribute
     {
         /// <summary>
@@ -28,7 +28,7 @@ namespace PropertyModels.ComponentModel
         public FloatPrecisionAttribute(int precision = 2)
         {
             decimal v = 1;
-            for(var i=0; i < precision; ++i)
+            for (var i = 0; i < precision; ++i)
             {
                 v *= (decimal)0.1;
             }
@@ -50,12 +50,12 @@ namespace PropertyModels.ComponentModel
             FormatString = formatString;
         }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="FloatPrecisionAttribute"/> class.
-		/// </summary>
-		/// <param name="increment">The increment.</param>
-		/// <param name="formatString">The format string.</param>
-		public FloatPrecisionAttribute(double increment, string formatString) :
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FloatPrecisionAttribute"/> class.
+        /// </summary>
+        /// <param name="increment">The increment.</param>
+        /// <param name="formatString">The format string.</param>
+        public FloatPrecisionAttribute(double increment, string formatString) :
             this((decimal)increment, formatString)
         {
         }

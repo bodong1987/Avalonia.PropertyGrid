@@ -138,10 +138,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Initializes a new instance of the <see cref="CellPropertyChangedEventArgs"/> class.
         /// </summary>
         /// <param name="cell">The cell.</param>
-        public CellPropertyChangedEventArgs(IPropertyGridCellInfo cell)
-        {
-            Cell = cell;
-        }
+        public CellPropertyChangedEventArgs(IPropertyGridCellInfo cell) => Cell = cell;
     }
 
     /// <summary>

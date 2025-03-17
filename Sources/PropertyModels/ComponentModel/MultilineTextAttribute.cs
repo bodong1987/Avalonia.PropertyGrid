@@ -7,7 +7,7 @@ namespace PropertyModels.ComponentModel
     /// Implements the <see cref="Attribute" />
     /// </summary>
     /// <seealso cref="Attribute" />
-    [AttributeUsage(AttributeTargets.Property|AttributeTargets.Field)]
+    [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
     public class MultilineTextAttribute : Attribute
     {
         /// <summary>

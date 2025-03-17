@@ -50,13 +50,13 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                 var incrementAttr = context.Property.GetCustomAttribute<IntegerIncrementAttribute>();
 
-                if(incrementAttr != null)
+                if (incrementAttr != null)
                 {
                     control.Increment = incrementAttr.Increment;
                 }
                 else
                 {
-                    if((int)attr.Increment != 0)
+                    if ((int)attr.Increment != 0)
                     {
                         control.Increment = (int)attr.Increment;
                     }
@@ -86,7 +86,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             control.ValueChanged += (s, e) =>
             {
                 try
-                {                    
+                {
                     var value = Convert.ChangeType(e.NewValue, context.Property.PropertyType);
                     SetAndRaise(context, control, value);
                 }
@@ -111,9 +111,9 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return false;
             }
 
-            if(context.CellEdit is TrackableEdit te)
+            if (context.CellEdit is TrackableEdit te)
             {
-                if(double.TryParse(context.GetValue()?.ToString(), out var d))
+                if (double.TryParse(context.GetValue()?.ToString(), out var d))
                 {
                     te.Value = d;
                 }
@@ -123,7 +123,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     {
                         te.Value = (double)Convert.ChangeType(context.GetValue()!, typeof(double));
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         DataValidationErrors.SetErrors(context.CellEdit, [ex.Message]);
                     }

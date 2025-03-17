@@ -82,7 +82,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     return false;
                 }
 
-                if(imageData is IImage iImage)
+                if (imageData is IImage iImage)
                 {
                     imageControl.Source = iImage;
                 }

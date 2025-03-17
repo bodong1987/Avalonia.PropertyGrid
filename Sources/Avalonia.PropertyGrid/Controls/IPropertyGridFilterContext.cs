@@ -37,7 +37,6 @@ namespace Avalonia.PropertyGrid.Controls
         Default = PropertyCondition | Category | Filter | Factory
     }
 
-
     /// <summary>
     /// Interface IPropertyGridFilterContext
     /// </summary>

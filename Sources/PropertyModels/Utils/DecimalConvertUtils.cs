@@ -21,45 +21,32 @@ public static class DecimalConvertUtils
         Debug.Assert(value != null);
 
         // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-        if (value == null) return 0;
+        if (value == null)
+        {
+            return 0;
+        }
 
         var type = value.GetType();
 
         try
         {
             // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
-            // ReSharper disable once ConvertSwitchStatementToSwitchExpression
-            switch (Type.GetTypeCode(type))
+            return Type.GetTypeCode(type) switch
             {
-                case TypeCode.Byte:
-                    return Convert.ToDecimal((byte)value);
-                case TypeCode.SByte:
-                    return Convert.ToDecimal((sbyte)value);
-                case TypeCode.UInt16:
-                    return Convert.ToDecimal((ushort)value);
-                case TypeCode.UInt32:
-                    return Convert.ToDecimal((uint)value);
-                case TypeCode.UInt64:
-                    return Convert.ToDecimal((ulong)value);
-                case TypeCode.Int16:
-                    return Convert.ToDecimal((short)value);
-                case TypeCode.Int32:
-                    return Convert.ToDecimal((int)value);
-                case TypeCode.Int64:
-                    return Convert.ToDecimal((long)value);
-                case TypeCode.Decimal:
-                    return (decimal)value;
-                case TypeCode.Double:
-                    return Convert.ToDecimal((double)value, CultureInfo.CurrentCulture);
-                case TypeCode.Single:
-                    return Convert.ToDecimal((float)value, CultureInfo.CurrentCulture);
-                case TypeCode.String:
-                    return decimal.TryParse(value as string, NumberStyles.Any, CultureInfo.CurrentCulture, out var v)
-                        ? v
-                        : 0;
-                default:
-                    return 0;
-            }
+                TypeCode.Byte => Convert.ToDecimal((byte)value),
+                TypeCode.SByte => Convert.ToDecimal((sbyte)value),
+                TypeCode.UInt16 => Convert.ToDecimal((ushort)value),
+                TypeCode.UInt32 => Convert.ToDecimal((uint)value),
+                TypeCode.UInt64 => Convert.ToDecimal((ulong)value),
+                TypeCode.Int16 => Convert.ToDecimal((short)value),
+                TypeCode.Int32 => Convert.ToDecimal((int)value),
+                TypeCode.Int64 => Convert.ToDecimal((long)value),
+                TypeCode.Decimal => (decimal)value,
+                TypeCode.Double => Convert.ToDecimal((double)value, CultureInfo.CurrentCulture),
+                TypeCode.Single => Convert.ToDecimal((float)value, CultureInfo.CurrentCulture),
+                TypeCode.String => decimal.TryParse(value as string, NumberStyles.Any, CultureInfo.CurrentCulture, out var v) ? v : 0,
+                _ => 0,
+            };
         }
         catch (OverflowException)
         {
@@ -87,13 +74,17 @@ public static class DecimalConvertUtils
     public static (decimal Min, decimal Max) GetDecimalRange(RangeAttribute rangeAttr)
     {
         if (rangeAttr.OperandType == null)
+        {
             throw new ArgumentException("OperandType is not initialized");
+        }
 
         if (rangeAttr.OperandType == typeof(int) || rangeAttr.OperandType == typeof(double))
+        {
             return (
                 Convert.ToDecimal(rangeAttr.Minimum, CultureInfo.InvariantCulture),
                 Convert.ToDecimal(rangeAttr.Maximum, CultureInfo.InvariantCulture)
             );
+        }
 
         var converter = TypeDescriptor.GetConverter(rangeAttr.OperandType);
         var conversionCulture = rangeAttr.ParseLimitsInInvariantCulture

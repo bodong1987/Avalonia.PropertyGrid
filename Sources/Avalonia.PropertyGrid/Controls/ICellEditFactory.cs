@@ -126,10 +126,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Gets the value.
         /// </summary>
         /// <returns>System.Object.</returns>
-        public object? GetValue()
-        {
-            return Property.GetValue(Target);
-        }
+        public object? GetValue() => Property.GetValue(Target);
 
         /// <summary>
         /// Gets the cell edit factory collection.
@@ -151,7 +148,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="target">The target.</param>
         /// <param name="property">The property.</param>
         /// <param name="cellEdit">The cell edit.</param>
-        public PropertyCellContext(PropertyCellContext? parentContext, IPropertyGrid root, IPropertyGrid owner, object target, PropertyDescriptor property, Control? cellEdit = null) 
+        public PropertyCellContext(PropertyCellContext? parentContext, IPropertyGrid root, IPropertyGrid owner, object target, PropertyDescriptor property, Control? cellEdit = null)
         {
             ParentContext = parentContext;
             Root = root;
@@ -165,7 +162,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertyCellContext" /> class.
         /// </summary>
-        /// <param name="parentContext">The parent context.</param>        
+        /// <param name="parentContext">The parent context.</param>
         /// <param name="target">The target.</param>
         /// <param name="property">The property.</param>
         public PropertyCellContext(PropertyCellContext parentContext, object target, PropertyDescriptor property)
@@ -178,12 +175,9 @@ namespace Avalonia.PropertyGrid.Controls
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// Returns a <see cref="string" /> that represents this instance.
         /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public override string ToString()
-        {
-            return DisplayName;
-        }
+        /// <returns>A <see cref="string" /> that represents this instance.</returns>
+        public override string ToString() => DisplayName;
     }
 }

@@ -37,7 +37,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             var control = new ProgressBar();
 
             var attr = propertyDescriptor.GetCustomAttribute<ProgressAttribute>()!;
-            control.Minimum = attr.Minimum; 
+            control.Minimum = attr.Minimum;
             control.Maximum = attr.Maximum;
             control.ProgressTextFormat = attr.FormatString;
             control.ShowProgressText = attr.ShowProgressText;
@@ -78,13 +78,13 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                             progressBar.Value = (double)v;
                             break;
                     }
-                    
+
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     DataValidationErrors.SetErrors(control, [ex.Message]);
                 }
-                
+
                 return true;
             }
 

@@ -33,9 +33,6 @@ namespace PropertyModels.ComponentModel.DataAnnotations
         /// <param name="filename">The filename.</param>
         /// <returns><c>true</c> if [is valid file name] [the specified filename]; otherwise, <c>false</c>.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsValidFileName(string filename)
-        {
-            return !(filename.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0);
-        }
+        public static bool IsValidFileName(string filename) => !(filename.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0);
     }
 }

@@ -33,18 +33,18 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             if (!property.PropertyType.IsClass)
             {
                 return false;
-            }    
+            }
 
             var attr = property.GetCustomAttribute<TypeConverterAttribute>();
 
-            if(attr != null && attr.GetConverterType()!.IsChildOf<ExpandableObjectConverter>())
+            if (attr?.GetConverterType()!.IsChildOf<ExpandableObjectConverter>() == true)
             {
                 return true;
             }
 
             attr = property.PropertyType.GetCustomAttribute<TypeConverterAttribute>();
 
-            return attr != null && attr.GetConverterType()!.IsChildOf<ExpandableObjectConverter>();
+            return attr?.GetConverterType()!.IsChildOf<ExpandableObjectConverter>() == true;
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             // avoid recursive expansion
             Debug.Assert(context.Root != null);
 
-            var value = propertyDescriptor.GetValue(target);            
+            var value = propertyDescriptor.GetValue(target);
             if (context.Root.GetExpandableObjectCache().IsExists(value))
             {
                 return null;
@@ -128,7 +128,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return false;
             }
 
-            if(control is Border { Child: PropertyGrid pg })
+            if (control is Border { Child: PropertyGrid pg })
             {
                 var value = propertyDescriptor.GetValue(target);
 
@@ -149,7 +149,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <returns>System.Nullable&lt;PropertyVisibility&gt;.</returns>
         public override PropertyVisibility? HandlePropagateVisibility(object? target, PropertyCellContext context, IPropertyGridFilterContext filterContext)
         {
-            if(!IsExpandableType(context.Property))
+            if (!IsExpandableType(context.Property))
             {
                 return null;
             }

@@ -101,10 +101,7 @@ namespace Avalonia.PropertyGrid.Utils
             return files?.FirstOrDefault();
         }
 
-        private static IStorageProvider? GetStorageProvider(Window parentWindow)
-        {
-            return TopLevel.GetTopLevel(parentWindow)?.StorageProvider;
-        }
+        private static IStorageProvider? GetStorageProvider(Window parentWindow) => TopLevel.GetTopLevel(parentWindow)?.StorageProvider;
 
         /// <summary>
         /// Show dialog as an asynchronous operation.
@@ -163,6 +160,7 @@ namespace Avalonia.PropertyGrid.Utils
                 var storage = await storageProvider.OpenFolderPickerAsync(options);
                 return storage.Select(x => x.Path.LocalPath).ToArray();
             }
+
             if (type is PathBrowsableType.File or PathBrowsableType.MultipleFiles)
             {
                 var options = new FilePickerOpenOptions();
@@ -195,7 +193,7 @@ namespace Avalonia.PropertyGrid.Utils
         /// <returns>List&lt;FileDialogFilter&gt;.</returns>
         public static List<FilePickerFileType> ConvertToFilterList(string? filters)
         {
-            if(filters == null)
+            if (filters == null)
             {
                 return [];
             }
@@ -206,8 +204,8 @@ namespace Avalonia.PropertyGrid.Utils
 
             for (var i = 0; i < results.Length / 2; ++i)
             {
-                var name = results[i * 2 + 0];
-                var extensions = results[i * 2 + 1];
+                var name = results[(i * 2) + 0];
+                var extensions = results[(i * 2) + 1];
 
                 var filter = new FilePickerFileType(name.Trim())
                 {

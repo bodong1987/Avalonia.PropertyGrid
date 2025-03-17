@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using Avalonia.PropertyGrid.Services;
 using PropertyModels.ComponentModel;
 using PropertyModels.ComponentModel.DataAnnotations;
@@ -25,12 +24,12 @@ namespace Avalonia.PropertyGrid.Utils
         {
             Debug.Assert(enumType is { IsEnum: true });
 
-            List<EnumValueWrapper> values = new List<EnumValueWrapper>();
+            List<EnumValueWrapper> values = [];
 
-            foreach(var name in enumType.GetEnumNames())
+            foreach (var name in enumType.GetEnumNames())
             {
                 var enumValueField = enumType.GetField(name);
-                if(enumValueField != null && enumValueField.IsDefined<EnumExcludeAttribute>())
+                if (enumValueField?.IsDefined<EnumExcludeAttribute>() == true)
                 {
                     continue;
                 }
@@ -46,7 +45,7 @@ namespace Avalonia.PropertyGrid.Utils
                 values.Add(CreateEnumValueWrapper((enumValue as Enum)!, enumValueField?.GetAnyCustomAttribute<EnumDisplayNameAttribute>()?.DisplayName));
             }
 
-            return values.ToArray();
+            return [.. values];
         }
 
         /// <summary>
@@ -54,10 +53,7 @@ namespace Avalonia.PropertyGrid.Utils
         /// </summary>
         /// <typeparam name="T">The enum type.</typeparam>
         /// <returns>EnumValueWrapper[].</returns>
-        public static EnumValueWrapper[] GetEnumValues<T>() where T : Enum
-        {
-            return GetEnumValues(typeof(T));
-        }
+        public static EnumValueWrapper[] GetEnumValues<T>() where T : Enum => GetEnumValues(typeof(T));
 
         /// <summary>
         /// Creates an <see cref="EnumValueWrapper"/> for the specified enum value.
@@ -96,9 +92,8 @@ namespace Avalonia.PropertyGrid.Utils
             foreach (Enum value in Enum.GetValues(enumType))
             {
                 var fieldInfo = enumType.GetField(value.ToString());
-                if (fieldInfo != null && 
-                    !fieldInfo.IsDefined<EnumExcludeAttribute>() && 
-                    flags.HasFlag(value) && 
+                if (fieldInfo?.IsDefined<EnumExcludeAttribute>() == false &&
+                    flags.HasFlag(value) &&
                     (attributes == null || IsValueAllowed(attributes, typeof(T), fieldInfo.Name, value)))
                 {
                     yield return (T)value;

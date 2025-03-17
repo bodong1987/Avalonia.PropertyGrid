@@ -1,255 +1,238 @@
-﻿using Avalonia.PropertyGrid.Samples.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using Avalonia.PropertyGrid.Samples.Models;
 using Avalonia.PropertyGrid.Services;
 using Avalonia.PropertyGrid.ViewModels;
 using PropertyModels.ComponentModel;
 using PropertyModels.Localization;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
-using System;
-using System.Diagnostics.CodeAnalysis;
 
-namespace Avalonia.PropertyGrid.Samples.ViewModels;
-
-public enum ThemeType
+namespace Avalonia.PropertyGrid.Samples.ViewModels
 {
-    Fluent,
-    Simple
-}
-
-
-public partial class MainViewModel : ViewModelBase
-{
-    readonly SimpleObject _SimpleObject = new SimpleObject("SimpleTests");
-
-    public SimpleObject simpleObject => _SimpleObject;
-
-    readonly SimpleObject _SyncObject = new SimpleObject("SyncTests");
-    public SimpleObject syncObject => _SyncObject;
-
-    readonly SimpleObject _MultiObj0 = new SimpleObject("MultiObject0");
-    readonly SimpleObject _MultiObj1 = new SimpleObject("MultiObject1");
-
-    public SimpleObject multiObject0 => _MultiObj0;
-    public SimpleObject multiObject1 => _MultiObj1;
-
-    public IEnumerable<SimpleObject> multiObjects => new SimpleObject[] { multiObject0, multiObject1 };
-
-    readonly ScriptableOptions _Options = new ScriptableOptions();
-    public ScriptableOptions customOptions => _Options;
-
-    readonly DynamicVisibilityObject _DynamicVisiblityObject = new DynamicVisibilityObject();
-    public DynamicVisibilityObject dynamicVisiblity => _DynamicVisiblityObject;
-
-    readonly TestExtendsObject _extendsObject = new TestExtendsObject();
-    public TestExtendsObject extendsObject => _extendsObject;
-
-    readonly CancelableObject _cancelableObject = new CancelableObject("Cancelable");
-
-    public CancelableObject cancelableObject => _cancelableObject;
-
-    readonly List<ICultureData> _AllCultures = new List<ICultureData>();
-
-    public ICultureData[] AllCultures => _AllCultures.ToArray();
-
-    public string Version => $"v{typeof(Avalonia.PropertyGrid.Utils.FontUtils).Assembly.GetName().Version?.ToString() ?? "Unknown Version"}";
-
-    public ICultureData CurrentCulture
+    public enum ThemeType
     {
-        get => LocalizationService.Default.CultureData;
-        set
-        {
-            if (value != null)
-            {
-                LocalizationService.Default.SelectCulture(value.Culture.Name);
+        Fluent,
+        Simple
+    }
 
-                this.RaisePropertyChanged(nameof(CurrentCulture));
+    public partial class MainViewModel : ViewModelBase
+    {
+        public SimpleObject simpleObject { get; } = new SimpleObject("SimpleTests");
+
+        public SimpleObject syncObject { get; } = new SimpleObject("SyncTests");
+
+        public SimpleObject multiObject0 { get; } = new SimpleObject("MultiObject0");
+        public SimpleObject multiObject1 { get; } = new SimpleObject("MultiObject1");
+
+        public IEnumerable<SimpleObject> multiObjects => [multiObject0, multiObject1];
+
+        public ScriptableOptions customOptions { get; } = new ScriptableOptions();
+
+        public DynamicVisibilityObject dynamicVisiblity { get; } = new DynamicVisibilityObject();
+
+        public TestExtendsObject extendsObject { get; } = new TestExtendsObject();
+
+        public CancelableObject cancelableObject { get; } = new CancelableObject("Cancelable");
+
+        private readonly List<ICultureData> _AllCultures = [];
+
+        public ICultureData[] AllCultures => [.. _AllCultures];
+
+        public static string Version => $"v{typeof(Utils.FontUtils).Assembly.GetName().Version?.ToString() ?? "Unknown Version"}";
+
+        public ICultureData CurrentCulture
+        {
+            get => LocalizationService.Default.CultureData;
+            set
+            {
+                if (value != null)
+                {
+                    LocalizationService.Default.SelectCulture(value.Culture.Name);
+
+                    this.RaisePropertyChanged(nameof(CurrentCulture));
+                }
             }
         }
-    }
 
-    TestCustomObject _CustomObject2 = new TestCustomObject();
-    public TestCustomObject customObject
-    {
-        get => _CustomObject2;
-        set => this.RaiseAndSetIfChanged(ref _CustomObject2, value);
-    }
-
-    #region View
-    PropertyGridShowStyle _ShowStyle = PropertyGridShowStyle.Category;
-
-    public PropertyGridShowStyle ShowStyle
-    {
-        get => _ShowStyle;
-        set
+        private TestCustomObject _CustomObject2 = new();
+        public TestCustomObject customObject
         {
-            if (_ShowStyle != value)
+            get => _CustomObject2;
+            set => this.RaiseAndSetIfChanged(ref _CustomObject2, value);
+        }
+
+        #region View
+        private PropertyGridShowStyle _ShowStyle = PropertyGridShowStyle.Category;
+
+        public PropertyGridShowStyle ShowStyle
+        {
+            get => _ShowStyle;
+            set
             {
-                this.RaiseAndSetIfChanged(ref _ShowStyle, value);
+                if (_ShowStyle != value)
+                {
+                    this.RaiseAndSetIfChanged(ref _ShowStyle, value);
+                }
             }
         }
-    }
 
-    bool _AllowFilter = true;
-    public bool AllowFilter
-    {
-        get => _AllowFilter;
-        set => this.RaiseAndSetIfChanged(ref _AllowFilter, value);
-    }
+        private bool _AllowFilter = true;
+        public bool AllowFilter
+        {
+            get => _AllowFilter;
+            set => this.RaiseAndSetIfChanged(ref _AllowFilter, value);
+        }
 
-    bool _AllowQuickFilter = true;
-    public bool AllowQuickFilter
-    {
-        get => _AllowQuickFilter;
-        set => this.RaiseAndSetIfChanged(ref _AllowQuickFilter, value);
-    }
+        private bool _AllowQuickFilter = true;
+        public bool AllowQuickFilter
+        {
+            get => _AllowQuickFilter;
+            set => this.RaiseAndSetIfChanged(ref _AllowQuickFilter, value);
+        }
 
-    bool _IsShowTitle = true;
-    public bool IsShowTitle
-    {
-        get => _IsShowTitle;
-        set => this.RaiseAndSetIfChanged(ref _IsShowTitle, value);
-    }
+        private bool _IsShowTitle = true;
+        public bool IsShowTitle
+        {
+            get => _IsShowTitle;
+            set => this.RaiseAndSetIfChanged(ref _IsShowTitle, value);
+        }
 
-    bool _IsReadOnly = false;
-    public bool IsReadOnly
-    {
-        get => _IsReadOnly;
-        set => this.RaiseAndSetIfChanged(ref _IsReadOnly, value);
-    }
+        private bool _IsReadOnly = false;
+        public bool IsReadOnly
+        {
+            get => _IsReadOnly;
+            set => this.RaiseAndSetIfChanged(ref _IsReadOnly, value);
+        }
 
-    double _DefaultNameWidth = 280;
-    public double DefaultNameWidth
-    {
-        get => _DefaultNameWidth;
-        set => this.RaiseAndSetIfChanged(ref _DefaultNameWidth, value);
-    }
-    #endregion
+        private double _DefaultNameWidth = 280;
+        public double DefaultNameWidth
+        {
+            get => _DefaultNameWidth;
+            set => this.RaiseAndSetIfChanged(ref _DefaultNameWidth, value);
+        }
+        #endregion
 
-    public MainViewModel()
-    {
-        LocalizationService.Default.AddExtraService(new SampleLocalizationService());
+        public MainViewModel()
+        {
+            LocalizationService.Default.AddExtraService(new SampleLocalizationService());
 
-        GenOptions();
+            GenOptions();
 
-        _AllCultures.AddRange(LocalizationService.Default.GetCultures());
+            _AllCultures.AddRange(LocalizationService.Default.GetCultures());
 
-        DynamicPropertyManager<TestCustomObject> propertyManager = new DynamicPropertyManager<TestCustomObject>();
-        propertyManager.Properties.Add(
-            DynamicPropertyManager<TestCustomObject>.CreateProperty<TestCustomObject, string>(
-                "StringArray0",
-                x => x!.StringArray[0],
-                (x, v) => x!.StringArray[0] = v!,
-                new Attribute[]
-                {
-                }
-                )
-            );
+            var propertyManager = new DynamicPropertyManager<TestCustomObject>();
+            propertyManager.Properties.Add(
+                DynamicPropertyManager<TestCustomObject>.CreateProperty<TestCustomObject, string>(
+                    "StringArray0",
+                    x => x!.StringArray[0],
+                    (x, v) => x!.StringArray[0] = v!,
+                    []
+                    )
+                );
 
-        propertyManager.Properties.Add(
-            DynamicPropertyManager<TestCustomObject>.CreateProperty<TestCustomObject, string>(
-                "StringArray1",
-                x => x!.StringArray[1],
-                (x, v) => x!.StringArray[1] = v!,
-                new Attribute[]
-                {
-                }
-                )
-            );
+            propertyManager.Properties.Add(
+                DynamicPropertyManager<TestCustomObject>.CreateProperty<TestCustomObject, string>(
+                    "StringArray1",
+                    x => x!.StringArray[1],
+                    (x, v) => x!.StringArray[1] = v!,
+                    []
+                    )
+                );
 
-        propertyManager.Properties.Add(
-            DynamicPropertyManager<TestCustomObject>.CreateProperty<TestCustomObject, string>(
-                "StringArray2",
-                x => x!.StringArray[2],
-                (x, v) => x!.StringArray[2] = v!,
-                new Attribute[]
-                {
+            propertyManager.Properties.Add(
+                DynamicPropertyManager<TestCustomObject>.CreateProperty<TestCustomObject, string>(
+                    "StringArray2",
+                    x => x!.StringArray[2],
+                    (x, v) => x!.StringArray[2] = v!,
+                    [
                         new ReadOnlyAttribute(true)
-                }
-                )
-            );
+                    ]
+                    )
+                );
+        }
+
+        #region Gen Custom Object Properties
+        private void GenOptions()
+        {
+            customOptions.AddProperty(new ScriptableObject()
+            {
+                Name = "IntValue",
+                DisplayName = "Int Value",
+                Description = "Custom type = int",
+                Value = 1024
+            });
+
+            customOptions.AddProperty(new ScriptableObject()
+            {
+                Name = "BooleanValue",
+                DisplayName = "Boolean Value",
+                Description = "Custom type = boolean",
+                Value = true
+            });
+
+            customOptions.AddProperty(new ScriptableObject()
+            {
+                Name = "ThreeBooleanValue",
+                DisplayName = "Three Boolean Value",
+                Description = "Custom type = boolean?",
+                Value = null,
+                ValueType = typeof(bool?)
+            });
+
+            customOptions.AddProperty(new ScriptableObject()
+            {
+                Name = "StringValue",
+                DisplayName = "String Value",
+                Description = "Custom type = string",
+                Value = "bodong"
+            });
+
+            customOptions.AddProperty(new ScriptableObject()
+            {
+                Name = "EnumValue",
+                DisplayName = "Enum Value",
+                Description = "Custom type = Enum",
+                Value = Environment.OSVersion.Platform,
+                ExtraAttributes = [new ValidatePlatformAttribute()]
+            });
+
+            customOptions.AddProperty(new ScriptableObject()
+            {
+                Name = "EnumValueR",
+                DisplayName = "Enum Value(Readonly)",
+                Description = "Custom type = Enum",
+                Value = Environment.OSVersion.Platform,
+                ExtraAttributes = [new ReadOnlyAttribute(true)]
+            });
+
+            customOptions.AddProperty(new ScriptableObject()
+            {
+                Name = "BindingList",
+                DisplayName = "BindingList Value",
+                Description = "Custom type = BindingList",
+                Value = new BindingList<int>() { 1024, 2048, 4096 },
+                ExtraAttributes = [new CategoryAttribute("Array")]
+            });
+
+            customOptions.AddProperty(new ScriptableObject()
+            {
+                Name = "BindingListNotEditable",
+                DisplayName = "Not Editable List",
+                Description = "Custom type = BindingList(Not Editable)",
+                Value = new BindingList<int>() { 1024, 2048, 4096 },
+                ExtraAttributes = [new CategoryAttribute("Array"), new EditableAttribute(false)]
+            });
+
+            customOptions.AddProperty(new ScriptableObject()
+            {
+                Name = "BindingListReadOnly",
+                DisplayName = "ReadOnly List",
+                Description = "Custom type = BindingList(Readonly)",
+                Value = new BindingList<int>() { 1024, 2048, 4096 },
+                ExtraAttributes = [new CategoryAttribute("Array"), new ReadOnlyAttribute(true)]
+            });
+        }
+        #endregion
     }
-
-    #region Gen Custom Object Properties
-    private void GenOptions()
-    {
-        _Options.AddProperty(new ScriptableObject()
-        {
-            Name = "IntValue",
-            DisplayName = "Int Value",
-            Description = "Custom type = int",
-            Value = 1024
-        });
-
-        _Options.AddProperty(new ScriptableObject()
-        {
-            Name = "BooleanValue",
-            DisplayName = "Boolean Value",
-            Description = "Custom type = boolean",
-            Value = true
-        });
-
-        _Options.AddProperty(new ScriptableObject()
-        {
-            Name = "ThreeBooleanValue",
-            DisplayName = "Three Boolean Value",
-            Description = "Custom type = boolean?",
-            Value = null,
-            ValueType = typeof(bool?)
-        });
-
-        _Options.AddProperty(new ScriptableObject()
-        {
-            Name = "StringValue",
-            DisplayName = "String Value",
-            Description = "Custom type = string",
-            Value = "bodong"
-        });
-
-        _Options.AddProperty(new ScriptableObject()
-        {
-            Name = "EnumValue",
-            DisplayName = "Enum Value",
-            Description = "Custom type = Enum",
-            Value = Environment.OSVersion.Platform,
-            ExtraAttributes = new Attribute[] { new ValidatePlatformAttribute() }
-        });
-
-        _Options.AddProperty(new ScriptableObject()
-        {
-            Name = "EnumValueR",
-            DisplayName = "Enum Value(Readonly)",
-            Description = "Custom type = Enum",
-            Value = Environment.OSVersion.Platform,
-            ExtraAttributes = new Attribute[] { new ReadOnlyAttribute(true) }
-        });
-
-        _Options.AddProperty(new ScriptableObject()
-        {
-            Name = "BindingList",
-            DisplayName = "BindingList Value",
-            Description = "Custom type = BindingList",
-            Value = new BindingList<int>() { 1024, 2048, 4096 },
-            ExtraAttributes = new Attribute[] { new CategoryAttribute("Array") }
-        });
-
-        _Options.AddProperty(new ScriptableObject()
-        {
-            Name = "BindingListNotEditable",
-            DisplayName = "Not Editable List",
-            Description = "Custom type = BindingList(Not Editable)",
-            Value = new BindingList<int>() { 1024, 2048, 4096 },
-            ExtraAttributes = new Attribute[] { new CategoryAttribute("Array"), new EditableAttribute(false) }
-        });
-
-        _Options.AddProperty(new ScriptableObject()
-        {
-            Name = "BindingListReadOnly",
-            DisplayName = "ReadOnly List",
-            Description = "Custom type = BindingList(Readonly)",
-            Value = new BindingList<int>() { 1024, 2048, 4096 },
-            ExtraAttributes = new Attribute[] { new CategoryAttribute("Array"), new ReadOnlyAttribute(true) }
-        });
-    }
-    #endregion
 }

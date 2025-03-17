@@ -95,13 +95,13 @@ namespace PropertyModels.Collections
         /// Gets the items.
         /// </summary>
         /// <value>The items.</value>
-        public T[] Items => _itemsCore.ToArray();
+        public T[] Items => [.. _itemsCore];
 
         /// <summary>
         /// Gets the source items.
         /// </summary>
         /// <value>The source items.</value>
-        public T[] SourceItems => _sourceItemsCore.ToArray();
+        public T[] SourceItems => [.. _sourceItemsCore];
 
         /// <summary>
         /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1" />.
@@ -139,7 +139,7 @@ namespace PropertyModels.Collections
             {
                 List<object> list = [.. _itemsCore];
 
-                return list.ToArray();
+                return [.. list];
             }
         }
 
@@ -154,7 +154,7 @@ namespace PropertyModels.Collections
                 List<object> list = [];
                 list.AddRange(_sourceItemsCore.Select(item => item!).Cast<object>());
 
-                return list.ToArray();
+                return [.. list];
             }
         }
 
@@ -179,10 +179,10 @@ namespace PropertyModels.Collections
         }
 
         /// <summary>
-        /// Determines whether the specified <see cref="System.Object" /> is equal to this instance.
+        /// Determines whether the specified <see cref="object" /> is equal to this instance.
         /// </summary>
         /// <param name="obj">The object to compare with the current object.</param>
-        /// <returns><c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the specified <see cref="object" /> is equal to this instance; otherwise, <c>false</c>.</returns>
         public override bool Equals(object? obj)
         {
             if (obj is CheckedList<T> other)
@@ -197,15 +197,9 @@ namespace PropertyModels.Collections
         /// Returns a hash code for this instance.
         /// </summary>
         /// <returns>A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.</returns>
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
+        public override int GetHashCode() => base.GetHashCode();
 
-        private void BeginUpdate()
-        {
-            _isUpdating = true;
-        }
+        private void BeginUpdate() => _isUpdating = true;
 
         private void EndUpdate()
         {
@@ -224,10 +218,10 @@ namespace PropertyModels.Collections
             {
                 _itemsCore.Add(item);
 
-                if(!_isUpdating)
+                if (!_isUpdating)
                 {
                     SelectionChanged?.Invoke(this, EventArgs.Empty);
-                }                
+                }
             }
         }
 
@@ -240,10 +234,10 @@ namespace PropertyModels.Collections
             {
                 _itemsCore.Clear();
 
-                if(!_isUpdating)
+                if (!_isUpdating)
                 {
                     SelectionChanged?.Invoke(this, EventArgs.Empty);
-                }                
+                }
             }
         }
 
@@ -252,20 +246,14 @@ namespace PropertyModels.Collections
         /// </summary>
         /// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1" />.</param>
         /// <returns><see langword="true" /> if <paramref name="item" /> is found in the <see cref="T:System.Collections.Generic.ICollection`1" />; otherwise, <see langword="false" />.</returns>
-        public bool Contains(T item)
-        {
-            return _itemsCore.Contains(item);
-        }
+        public bool Contains(T item) => _itemsCore.Contains(item);
 
         /// <summary>
         /// Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1" /> to an <see cref="T:System.Array" />, starting at a particular <see cref="T:System.Array" /> index.
         /// </summary>
         /// <param name="array">The one-dimensional <see cref="T:System.Array" /> that is the destination of the elements copied from <see cref="T:System.Collections.Generic.ICollection`1" />. The <see cref="T:System.Array" /> must have zero-based indexing.</param>
         /// <param name="arrayIndex">The zero-based index in <paramref name="array" /> at which copying begins.</param>
-        public void CopyTo(T[] array, int arrayIndex)
-        {
-            _itemsCore.CopyTo(array, arrayIndex);
-        }
+        public void CopyTo(T[] array, int arrayIndex) => _itemsCore.CopyTo(array, arrayIndex);
 
         /// <summary>
         /// Copies to.
@@ -273,19 +261,13 @@ namespace PropertyModels.Collections
         /// <param name="array">The array.</param>
         /// <param name="index">The index.</param>
         /// <exception cref="System.NotImplementedException"></exception>
-        public void CopyTo(Array array, int index)
-        {
-            ((ICollection)_itemsCore).CopyTo(array, index);
-        }
+        public void CopyTo(Array array, int index) => ((ICollection)_itemsCore).CopyTo(array, index);
 
         /// <summary>
         /// Returns an enumerator that iterates through the collection.
         /// </summary>
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>
-        public IEnumerator<T> GetEnumerator()
-        {
-            return _itemsCore.GetEnumerator();
-        }
+        public IEnumerator<T> GetEnumerator() => _itemsCore.GetEnumerator();
 
         /// <summary>
         /// Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1" />.
@@ -296,11 +278,11 @@ namespace PropertyModels.Collections
         {
             if (_itemsCore.Remove(item))
             {
-                if(!_isUpdating)
+                if (!_isUpdating)
                 {
                     SelectionChanged?.Invoke(this, EventArgs.Empty);
                 }
-                
+
                 return true;
             }
 
@@ -311,20 +293,14 @@ namespace PropertyModels.Collections
         /// Returns an enumerator that iterates through a collection.
         /// </summary>
         /// <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return _itemsCore.GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => _itemsCore.GetEnumerator();
 
         /// <summary>
         /// Determines whether the specified item is checked.
         /// </summary>
         /// <param name="item">The item.</param>
         /// <returns><c>true</c> if the specified item is checked; otherwise, <c>false</c>.</returns>
-        bool ICheckedList.IsChecked(object item)
-        {
-            return _itemsCore.Contains((T)item);
-        }
+        bool ICheckedList.IsChecked(object item) => _itemsCore.Contains((T)item);
 
         void ICheckedList.SetChecked(object item, bool @checked)
         {
@@ -339,20 +315,14 @@ namespace PropertyModels.Collections
         /// </summary>
         /// <param name="items">The items.</param>
         /// <param name="checked">if set to <c>true</c> [checked].</param>
-        void ICheckedList.SetRangeChecked(IEnumerable<object> items, bool @checked)
-        {
-            SetRangeChecked(items.Cast<T>(), @checked);
-        }
+        void ICheckedList.SetRangeChecked(IEnumerable<object> items, bool @checked) => SetRangeChecked(items.Cast<T>(), @checked);
 
         /// <summary>
         /// Determines whether the specified item is checked.
         /// </summary>
         /// <param name="item">The item.</param>
         /// <returns><c>true</c> if the specified item is checked; otherwise, <c>false</c>.</returns>
-        public bool IsChecked(T item)
-        {
-            return _itemsCore.Contains(item);
-        }
+        public bool IsChecked(T item) => _itemsCore.Contains(item);
 
         /// <summary>
         /// Sets the checked.
@@ -367,7 +337,7 @@ namespace PropertyModels.Collections
             }
             else
             {
-                Remove(item);
+                _ = Remove(item);
             }
         }
 
@@ -390,7 +360,7 @@ namespace PropertyModels.Collections
             finally
             {
                 EndUpdate();
-            }            
+            }
         }
 
         /// <summary>
@@ -441,20 +411,16 @@ namespace PropertyModels.Collections
         /// <param name="item">The item.</param>
         void ICheckedList.Select(object item)
         {
-            if(item is T t)
+            if (item is T t)
             {
                 Select(t);
-            }            
+            }
         }
 
         /// <summary>
         /// Selects the range.
         /// </summary>
         /// <param name="items">The items.</param>
-        void ICheckedList.SelectRange(IEnumerable<object> items)
-        {
-            SelectRange(items.Cast<T>());
-        }
+        void ICheckedList.SelectRange(IEnumerable<object> items) => SelectRange(items.Cast<T>());
     }
-
 }

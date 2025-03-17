@@ -63,10 +63,7 @@ namespace PropertyModels.ComponentModel.DataAnnotations
         /// <param name="fieldName">Name of the filed.</param>
         /// <param name="value">The enum value to check.</param>
         /// <returns><c>true</c> if the value is allowed; otherwise, <c>false</c>.</returns>
-        public virtual bool AllowValue(string fieldName, T value)
-        {
-            return PermitValues.Contains(value);
-        }
+        public virtual bool AllowValue(string fieldName, T value) => PermitValues.Contains(value);
 
         bool IEnumValueAuthorizeAttribute.AllowValue(Type enumType, string fieldName, object fieldValue)
         {
@@ -107,10 +104,7 @@ namespace PropertyModels.ComponentModel.DataAnnotations
         /// <param name="fieldName">Name of the filed.</param>
         /// <param name="fieldValue">The field value.</param>
         /// <returns><c>true</c> if the value is allowed; otherwise, <c>false</c>.</returns>
-        public virtual bool AllowValue(Type enumType, string fieldName, object fieldValue)
-        {
-            return PermitNames.Contains(fieldName);
-        }
+        public virtual bool AllowValue(Type enumType, string fieldName, object fieldValue) => PermitNames.Contains(fieldName);
     }
 
 
@@ -143,10 +137,7 @@ namespace PropertyModels.ComponentModel.DataAnnotations
         /// <param name="fieldName">Name of the filed.</param>
         /// <param name="value">The enum value to check.</param>
         /// <returns><c>true</c> if the value is allowed; otherwise, <c>false</c>.</returns>
-        public virtual bool AllowValue(string fieldName, T value)
-        {
-            return !ProhibitValues.Contains(value);
-        }
+        public virtual bool AllowValue(string fieldName, T value) => !ProhibitValues.Contains(value);
 
         bool IEnumValueAuthorizeAttribute.AllowValue(Type enumType, string fieldName, object fieldValue)
         {
@@ -187,9 +178,6 @@ namespace PropertyModels.ComponentModel.DataAnnotations
         /// <param name="fieldName">Name of the filed.</param>
         /// <param name="fieldValue">The field value.</param>
         /// <returns><c>true</c> if the value is allowed; otherwise, <c>false</c>.</returns>
-        public virtual bool AllowValue(Type enumType, string fieldName, object fieldValue)
-        {
-            return !ProhibitNames.Contains(fieldName);
-        }
+        public virtual bool AllowValue(Type enumType, string fieldName, object fieldValue) => !ProhibitNames.Contains(fieldName);
     }
 }

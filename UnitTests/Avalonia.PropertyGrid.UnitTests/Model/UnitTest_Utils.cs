@@ -1,12 +1,8 @@
-﻿using System;
-using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Avalonia.Platform;
-using PropertyModels.ComponentModel;
-using PropertyModels.Utils;
+﻿using System.Reflection;
 using Avalonia.PropertyGrid.Utils;
+using PropertyModels.ComponentModel;
 using PropertyModels.ComponentModel.DataAnnotations;
-using System.Reflection;
+using PropertyModels.Utils;
 
 namespace Avalonia.PropertyGrid.UnitTests.Model
 {
@@ -16,14 +12,14 @@ namespace Avalonia.PropertyGrid.UnitTests.Model
         [TestMethod]
         public void Test_PropertyDescriptorBuilder()
         {
-            PropertyDescriptorBuilder builder1 = new PropertyDescriptorBuilder(new TestObject());
+            var builder1 = new PropertyDescriptorBuilder(new TestObject());
 
             var properties = builder1.GetProperties();
 
             Assert.IsNotNull(properties);
             Assert.AreEqual(2, properties.Count);
 
-            PropertyDescriptorBuilder builder2 = new PropertyDescriptorBuilder(new TestObject[] { new TestObject() { ivalue = 100, str = "str0" }, new TestObject() { ivalue = 20, str = "str1" } });
+            var builder2 = new PropertyDescriptorBuilder(new TestObject[] { new() { ivalue = 100, str = "str0" }, new() { ivalue = 20, str = "str1" } });
             var properties2 = builder2.GetProperties();
 
             Assert.IsNotNull(properties2);
@@ -53,7 +49,7 @@ namespace Avalonia.PropertyGrid.UnitTests.Model
         public void Test_EnumValueWrapper_UndefinedValue()
         {
             // Create an enum value that is not defined in EnumPlatform
-            EnumPlatform undefinedValue = (EnumPlatform)999;
+            const EnumPlatform undefinedValue = (EnumPlatform)999;
             var wrapper = new EnumValueWrapper(undefinedValue);
 
             // The display name should fall back to the value's ToString()
@@ -73,7 +69,7 @@ namespace Avalonia.PropertyGrid.UnitTests.Model
         [TestMethod]
         public void Test_GetUniqueFlagsExcluding()
         {
-            var flags = EnumFlags.OptionA | EnumFlags.OptionB | EnumFlags.OptionC;
+            const EnumFlags flags = EnumFlags.OptionA | EnumFlags.OptionB | EnumFlags.OptionC;
             var uniqueFlags = flags.GetUniqueFlagsExcluding().ToArray();
 
             Assert.IsNotNull(uniqueFlags);
@@ -85,7 +81,7 @@ namespace Avalonia.PropertyGrid.UnitTests.Model
         [TestMethod]
         public void Test_EnumPermitValuesAttribute()
         {
-            var testObject = new TestObjectWithAttributes();
+            _ = new TestObjectWithAttributes();
             var permitField = typeof(TestObjectWithAttributes).GetField("PermittedField");
             var permitAttribute = permitField.GetCustomAttribute<EnumPermitValuesAttribute<EnumPlatform>>();
 
@@ -97,7 +93,7 @@ namespace Avalonia.PropertyGrid.UnitTests.Model
         [TestMethod]
         public void Test_EnumProhibitValuesAttribute()
         {
-            var testObject = new TestObjectWithAttributes();
+            _ = new TestObjectWithAttributes();
             var prohibitField = typeof(TestObjectWithAttributes).GetField("ProhibitedField");
             var prohibitAttribute = prohibitField.GetCustomAttribute<EnumProhibitValuesAttribute<EnumPlatform>>();
 

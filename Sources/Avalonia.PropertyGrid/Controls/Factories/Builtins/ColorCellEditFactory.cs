@@ -44,7 +44,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         {
             var propertyDescriptor = context.Property;
             //var target = context.Target;
-            
+
             if (!IsAvailableColorType(propertyDescriptor))
             {
                 return null;
@@ -60,20 +60,20 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             colorPicker.ColorChanged += (s, e) =>
             {
-                if(type == typeof(Color))
+                if (type == typeof(Color))
                 {
                     var c = Color.FromArgb(e.NewColor.A, e.NewColor.R, e.NewColor.G, e.NewColor.B);
                     SetAndRaise(context, colorPicker, c);
                 }
-                else if(type == typeof(Media.Color))
+                else if (type == typeof(Media.Color))
                 {
                     SetAndRaise(context, colorPicker, e.NewColor);
                 }
-                else if(type == typeof(HslColor))
+                else if (type == typeof(HslColor))
                 {
                     SetAndRaise(context, colorPicker, e.NewColor.ToHsl());
                 }
-                else if(type == typeof(HsvColor))
+                else if (type == typeof(HsvColor))
                 {
                     SetAndRaise(context, colorPicker, e.NewColor.ToHsv());
                 }

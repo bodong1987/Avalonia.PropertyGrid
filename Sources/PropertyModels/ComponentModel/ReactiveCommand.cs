@@ -31,20 +31,14 @@ namespace PropertyModels.ComponentModel
         public Action? ExecuteDelegateNoParam;
 
         // ReSharper disable once UnusedMember.Local
-        private void OnCanExecuteChanged()
-        {
-            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
-        }
+        private void OnCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
 
         /// <summary>
         /// Defines the method that determines whether the command can execute in its current state.
         /// </summary>
         /// <param name="parameter">Data used by the command.  If the command does not require data to be passed, this object can be set to <see langword="null" />.</param>
         /// <returns><see langword="true" /> if this command can be executed; otherwise, <see langword="false" />.</returns>
-        public bool CanExecute(object? parameter)
-        {
-            return CanExecuteDelegate == null || CanExecuteDelegate(parameter);
-        }
+        public bool CanExecute(object? parameter) => CanExecuteDelegate == null || CanExecuteDelegate(parameter);
 
         /// <summary>
         /// Defines the method to be called when the command is invoked.

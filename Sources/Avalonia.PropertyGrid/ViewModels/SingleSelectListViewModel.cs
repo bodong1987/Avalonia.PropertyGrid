@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using PropertyModels.ComponentModel;
 
-namespace Avalonia.PropertyGrid.ViewModels;
-
-/// <summary>
+namespace Avalonia.PropertyGrid.ViewModels
+{
+    /// <summary>
     /// Class SingleSelectListViewModel.
     /// Implements the <see cref="MiniReactiveObject" />
     /// </summary>
@@ -21,7 +21,7 @@ namespace Avalonia.PropertyGrid.ViewModels;
         /// Gets the items.
         /// </summary>
         /// <value>The items.</value>
-        public SingleSelectListItemViewModel[] Items => _items.ToArray();
+        public SingleSelectListItemViewModel[] Items => [.. _items];
 
         /// <summary>
         /// Gets the checked item.
@@ -51,10 +51,7 @@ namespace Avalonia.PropertyGrid.ViewModels;
         /// Initializes a new instance of the <see cref="SingleSelectListViewModel"/> class.
         /// </summary>
         /// <param name="items">The items.</param>
-        public SingleSelectListViewModel(IEnumerable<object> items)
-        {
-            AddRange(items);
-        }
+        public SingleSelectListViewModel(IEnumerable<object> items) => AddRange(items);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SingleSelectListViewModel"/> class.
@@ -114,10 +111,7 @@ namespace Avalonia.PropertyGrid.ViewModels;
         /// </summary>
         /// <param name="item">The item.</param>
         /// <returns><c>true</c> if the specified item is checked; otherwise, <c>false</c>.</returns>
-        public bool IsChecked(SingleSelectListItemViewModel item)
-        {
-            return CheckedItem == item;
-        }
+        public bool IsChecked(SingleSelectListItemViewModel item) => CheckedItem == item;
 
         /// <summary>
         /// Sets the checked.
@@ -127,7 +121,8 @@ namespace Avalonia.PropertyGrid.ViewModels;
         public void SetChecked(SingleSelectListItemViewModel item, bool value)
         {
             CheckedItem = item;
-            
+            CheckedItem.IsChecked = value;
+
             RaiseSelectedItemsChangedEvent();
             RefreshItemsCheckStates();
         }
@@ -137,10 +132,10 @@ namespace Avalonia.PropertyGrid.ViewModels;
         /// </summary>
         private void RaiseSelectedItemsChangedEvent()
         {
-            if(EnableRaiseCheckedItemChangedEvent)
+            if (EnableRaiseCheckedItemChangedEvent)
             {
                 CheckChanged?.Invoke(this, EventArgs.Empty);
-            }            
+            }
         }
 
         /// <summary>
@@ -148,7 +143,7 @@ namespace Avalonia.PropertyGrid.ViewModels;
         /// </summary>
         public void RefreshItemsCheckStates()
         {
-            foreach(var item in _items)
+            foreach (var item in _items)
             {
                 item.RaisePropertyChanged(nameof(item.IsChecked));
             }
@@ -188,10 +183,7 @@ namespace Avalonia.PropertyGrid.ViewModels;
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns><c>true</c> if the specified value is value; otherwise, <c>false</c>.</returns>
-        public bool IsValue(object? value)
-        {
-            return Value == value || (Value != null && Value.Equals(value));
-        }
+        public bool IsValue(object? value) => Value == value || (Value?.Equals(value) == true);
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is checked.
@@ -216,3 +208,4 @@ namespace Avalonia.PropertyGrid.ViewModels;
         /// <value>The name.</value>
         public string Name => Value?.ToString() ?? string.Empty;
     }
+}

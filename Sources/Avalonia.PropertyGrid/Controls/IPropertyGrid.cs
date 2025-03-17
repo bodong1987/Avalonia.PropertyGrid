@@ -166,8 +166,8 @@ namespace Avalonia.PropertyGrid.Controls
             PropertyDescriptor property,
             object? oldValue,
             object? newValue,
-            object? context) :
-            base(routedEvent)
+            object? context)
+            : base(routedEvent)
         {
             Command = command;
             Target = target;
@@ -184,7 +184,7 @@ namespace Avalonia.PropertyGrid.Controls
     /// </summary>
     /// <seealso cref="Avalonia.PropertyGrid.Controls.RoutedCommandExecutedEventArgs" />
     public class RoutedCommandExecutingEventArgs : RoutedCommandExecutedEventArgs
-    {   
+    {
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="RoutedCommandExecutingEventArgs"/> is canceled.
         /// </summary>
@@ -203,14 +203,14 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="newValue">The new value.</param>
         /// <param name="context">The context.</param>
         public RoutedCommandExecutingEventArgs(
-            RoutedEvent routedEvent, 
-            ICancelableCommand command, 
-            object target, 
-            PropertyDescriptor property, 
-            object? oldValue, 
-            object? newValue, 
-            object? context) :
-            base(routedEvent, command, target, property, oldValue, newValue, context)
+            RoutedEvent routedEvent,
+            ICancelableCommand command,
+            object target,
+            PropertyDescriptor property,
+            object? oldValue,
+            object? newValue,
+            object? context)
+            : base(routedEvent, command, target, property, oldValue, newValue, context)
         {
         }
     }

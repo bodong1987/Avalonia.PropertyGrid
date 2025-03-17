@@ -50,17 +50,17 @@ namespace Avalonia.PropertyGrid.Localization
             get => _assetCultureData.SelectedValue;
             set
             {
-                if(_assetCultureData.SelectedValue != value)
+                if (_assetCultureData.SelectedValue != value)
                 {
                     _assetCultureData.SelectedValue = value;
 
                     RaisePropertyChanged(nameof(CultureData));
-                }                
+                }
             }
         }
 
         /// <summary>
-        /// Gets the <see cref="System.String"/> with the specified key.
+        /// Gets the <see cref="string"/> with the specified key.
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns>System.String.</returns>
@@ -68,16 +68,16 @@ namespace Avalonia.PropertyGrid.Localization
         {
             get
             {
-                foreach(var service in _extraServices)
+                foreach (var service in _extraServices)
                 {
                     var value = service[key];
 
-                    if(value.IsNotNullOrEmpty() && value != key)
+                    if (value.IsNotNullOrEmpty() && value != key)
                     {
                         return value;
                     }
                 }
-                                
+
                 if (_assetCultureData.SelectedValue[key] is { } text)
                 {
                     return text;
@@ -91,8 +91,8 @@ namespace Avalonia.PropertyGrid.Localization
         /// Initializes a new instance of the <see cref="AssemblyJsonAssetLocalizationService"/> class.
         /// </summary>
         /// <param name="assembly">The assembly.</param>
-        public AssemblyJsonAssetLocalizationService(Assembly assembly) :
-            this(new Uri($"avares://{assembly.GetName().Name}/Assets/Localizations"))
+        public AssemblyJsonAssetLocalizationService(Assembly assembly)
+            : this(new Uri($"avares://{assembly.GetName().Name}/Assets/Localizations"))
         {
         }
 
@@ -104,10 +104,10 @@ namespace Avalonia.PropertyGrid.Localization
         {
             var assets = AssetLoader.GetAssets(assetDirectoryUri, null);
 
-            foreach(var asset in assets)
+            foreach (var asset in assets)
             {
                 var assetCultureData = new AssetCultureData(asset);
-             
+
                 AvailableCultures.Add(assetCultureData);
             }
 
@@ -122,23 +122,23 @@ namespace Avalonia.PropertyGrid.Localization
         /// <returns>ICultureData[].</returns>
         public ICultureData[] GetCultures()
         {
-            Dictionary<string, ICultureData> values = new();
-            foreach(var i in _assetCultureData)
+            Dictionary<string, ICultureData> values = [];
+            foreach (var i in _assetCultureData)
             {
-                values.TryAdd(i.Culture.Name, i);
+                _ = values.TryAdd(i.Culture.Name, i);
             }
 
-            foreach(var i in _extraServices)
+            foreach (var i in _extraServices)
             {
                 var extraCultures = i.GetCultures();
 
-                foreach(var extra in extraCultures)
+                foreach (var extra in extraCultures)
                 {
-                    values.TryAdd(extra.Culture.Name, extra);
+                    _ = values.TryAdd(extra.Culture.Name, extra);
                 }
             }
 
-            return values.Values.ToArray();
+            return [.. values.Values];
         }
 
         /// <summary>
@@ -147,26 +147,26 @@ namespace Avalonia.PropertyGrid.Localization
         /// <param name="cultureName">Name of the culture.</param>
         public void SelectCulture(string cultureName)
         {
-            foreach(var i in _extraServices)
+            foreach (var i in _extraServices)
             {
                 i.SelectCulture(cultureName);
             }
 
             var cultureData = _assetCultureData.ToList().Find(x => x.Culture.Name == cultureName) ?? _assetCultureData.ToList().Find(x => x.Culture.Name == "en-US");
 
-            if(cultureData != null)
+            if (cultureData != null)
             {
                 CultureData = cultureData;
 
-                if(!cultureData.IsLoaded)
+                if (!cultureData.IsLoaded)
                 {
-                    cultureData.Reload();
+                    _ = cultureData.Reload();
                 }
             }
         }
 
         private void OnSelectionChanged(object? sender, EventArgs e)
-        {            
+        {
             // all bind in xaml can be refreshed
             RaisePropertyChanged("Item");
             RaisePropertyChanged("Item[]");
@@ -180,28 +180,19 @@ namespace Avalonia.PropertyGrid.Localization
         /// Adds the extra service.
         /// </summary>
         /// <param name="service">The service.</param>
-        public void AddExtraService(ILocalizationService service)
-        {
-            _extraServices.Add(service);
-        }
+        public void AddExtraService(ILocalizationService service) => _extraServices.Add(service);
 
         /// <summary>
         /// Removes the extra service.
         /// </summary>
         /// <param name="service">The service.</param>
-        public void RemoveExtraService(ILocalizationService service)
-        {
-            _extraServices.Remove(service);
-        }
+        public void RemoveExtraService(ILocalizationService service) => _ = _extraServices.Remove(service);
 
         /// <summary>
         /// Gets the extra services.
         /// </summary>
         /// <returns>ILocalizationService[].</returns>
-        public ILocalizationService[] GetExtraServices()
-        {
-            return _extraServices.ToArray();
-        }
+        public ILocalizationService[] GetExtraServices() => [.. _extraServices];
         #endregion
     }
 }

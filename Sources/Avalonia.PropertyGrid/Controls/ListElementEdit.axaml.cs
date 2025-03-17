@@ -19,16 +19,14 @@ namespace Avalonia.PropertyGrid.Controls
                 o => o.InsertCommand!,
                 (o, v) => o.InsertCommand = v);
 
-        private ICommand? _insertCommand;
-
         /// <summary>
         /// Gets or sets the insert command.
         /// </summary>
         /// <value>The insert command.</value>
         public ICommand? InsertCommand
         {
-            get => _insertCommand;
-            set => SetAndRaise(InsertCommandProperty!, ref _insertCommand, value);
+            get;
+            set => SetAndRaise(InsertCommandProperty!, ref field, value);
         }
 
         /// <summary>
@@ -40,16 +38,14 @@ namespace Avalonia.PropertyGrid.Controls
                 o => o.RemoveCommand!,
                 (o, v) => o.RemoveCommand = v);
 
-        private ICommand? _removeCommand;
-
         /// <summary>
         /// Gets or sets the remove command.
         /// </summary>
         /// <value>The remove command.</value>
         public ICommand? RemoveCommand
         {
-            get => _removeCommand;
-            set => SetAndRaise(RemoveCommandProperty!, ref _removeCommand, value);
+            get;
+            set => SetAndRaise(RemoveCommandProperty!, ref field, value);
         }
 
         /// <summary>

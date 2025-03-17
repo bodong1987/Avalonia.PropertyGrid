@@ -90,7 +90,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             {
                 var items = EnumUtils.GetEnumValues(propertyDescriptor.PropertyType,
                     propertyDescriptor.Attributes.OfType<Attribute>()).Cast<object>().ToArray();
-                    
+
                 ICheckableListEdit control = attr.Mode == SingleSelectionMode.ToggleButtonGroup ? new ToggleButtonGroupListEdit()
                 {
                     Items = items
@@ -167,7 +167,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             {
                 var value = propertyDescriptor.GetValue(target) as Enum;
                 rb.CheckedItem = new EnumValueWrapper(value!);
-                
+
                 return true;
             }
 
@@ -193,12 +193,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             }
 
             var sb = new StringBuilder();
-            sb.Append((items[0] as EnumValueWrapper)?.Value);
+            _ = sb.Append((items[0] as EnumValueWrapper)?.Value);
 
             foreach (var i in items.Skip(1))
             {
-                sb.Append(", ");
-                sb.Append((i as EnumValueWrapper)?.Value);
+                _ = sb.Append(", ");
+                _ = sb.Append((i as EnumValueWrapper)?.Value);
             }
 
             return (Enum)Enum.Parse(enumType, sb.ToString());

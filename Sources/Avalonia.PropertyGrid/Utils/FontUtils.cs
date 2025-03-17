@@ -14,6 +14,6 @@ namespace Avalonia.PropertyGrid.Utils
         /// </summary>
         /// <value>The default font family.</value>
         // ReSharper disable once StringLiteralTypo
-        public static FontFamily DefaultFontFamily => new ("Microsoft YaHei,Simsun,苹方-简,宋体-简");
+        public static FontFamily DefaultFontFamily => new("Microsoft YaHei,Simsun,苹方-简,宋体-简");
     }
 }

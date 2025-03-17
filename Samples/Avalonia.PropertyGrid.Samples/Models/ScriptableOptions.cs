@@ -1,10 +1,7 @@
-﻿using PropertyModels.ComponentModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PropertyModels.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Samples.Models
 {
@@ -20,109 +17,76 @@ namespace Avalonia.PropertyGrid.Samples.Models
         /// <summary>
         /// The properties
         /// </summary>
-        public readonly List<ScriptableObject> Properties = new List<ScriptableObject>();
+        public readonly List<ScriptableObject> Properties = [];
 
         /// <summary>
         /// Adds the property.
         /// </summary>
         /// <param name="property">The property.</param>
-        public void AddProperty(ScriptableObject property)
-        {
-            Properties.Add(property);
-        }
+        public void AddProperty(ScriptableObject property) => Properties.Add(property);
 
         #region Custom Type Descriptor Interfaces
         /// <summary>
         /// Returns a collection of custom attributes for this instance of a component.
         /// </summary>
         /// <returns>An <see cref="T:System.ComponentModel.AttributeCollection" /> containing the attributes for this object.</returns>
-        public AttributeCollection GetAttributes()
-        {
-            return TypeDescriptor.GetAttributes(this, true);
-        }
+        public AttributeCollection GetAttributes() => TypeDescriptor.GetAttributes(this, true);
 
         /// <summary>
         /// Returns the class name of this instance of a component.
         /// </summary>
         /// <returns>The class name of the object, or <see langword="null" /> if the class does not have a name.</returns>
-        public string? GetClassName()
-        {
-            return TypeDescriptor.GetClassName(this, true);
-        }
+        public string? GetClassName() => TypeDescriptor.GetClassName(this, true);
 
         /// <summary>
         /// Returns the name of this instance of a component.
         /// </summary>
         /// <returns>The name of the object, or <see langword="null" /> if the object does not have a name.</returns>
-        public string? GetComponentName()
-        {
-            return TypeDescriptor.GetComponentName(this, true);
-        }
+        public string? GetComponentName() => TypeDescriptor.GetComponentName(this, true);
 
         /// <summary>
         /// Returns a type converter for this instance of a component.
         /// </summary>
         /// <returns>A <see cref="T:System.ComponentModel.TypeConverter" /> that is the converter for this object, or <see langword="null" /> if there is no <see cref="T:System.ComponentModel.TypeConverter" /> for this object.</returns>
-        public TypeConverter GetConverter()
-        {
-            return TypeDescriptor.GetConverter(this, true);
-        }
+        public TypeConverter GetConverter() => TypeDescriptor.GetConverter(this, true);
 
         /// <summary>
         /// Returns the default event for this instance of a component.
         /// </summary>
         /// <returns>An <see cref="T:System.ComponentModel.EventDescriptor" /> that represents the default event for this object, or <see langword="null" /> if this object does not have events.</returns>
-        public EventDescriptor? GetDefaultEvent()
-        {
-            return TypeDescriptor.GetDefaultEvent(this, true);
-        }
+        public EventDescriptor? GetDefaultEvent() => TypeDescriptor.GetDefaultEvent(this, true);
 
         /// <summary>
         /// Returns the default property for this instance of a component.
         /// </summary>
         /// <returns>A <see cref="T:System.ComponentModel.PropertyDescriptor" /> that represents the default property for this object, or <see langword="null" /> if this object does not have properties.</returns>
-        public PropertyDescriptor? GetDefaultProperty()
-        {
-            return TypeDescriptor.GetDefaultProperty(this, true);
-        }
+        public PropertyDescriptor? GetDefaultProperty() => TypeDescriptor.GetDefaultProperty(this, true);
 
         /// <summary>
         /// Returns an editor of the specified type for this instance of a component.
         /// </summary>
         /// <param name="editorBaseType">A <see cref="T:System.Type" /> that represents the editor for this object.</param>
         /// <returns>An <see cref="T:System.Object" /> of the specified type that is the editor for this object, or <see langword="null" /> if the editor cannot be found.</returns>
-        public object? GetEditor(Type editorBaseType)
-        {
-            return TypeDescriptor.GetEditor(this, editorBaseType, true);
-        }
+        public object? GetEditor(Type editorBaseType) => TypeDescriptor.GetEditor(this, editorBaseType, true);
 
         /// <summary>
         /// Returns the events for this instance of a component.
         /// </summary>
         /// <returns>An <see cref="T:System.ComponentModel.EventDescriptorCollection" /> that represents the events for this component instance.</returns>
-        public EventDescriptorCollection GetEvents()
-        {
-            return TypeDescriptor.GetEvents(this, true);
-        }
+        public EventDescriptorCollection GetEvents() => TypeDescriptor.GetEvents(this, true);
 
         /// <summary>
         /// Returns the events for this instance of a component using the specified attribute array as a filter.
         /// </summary>
         /// <param name="attributes">An array of type <see cref="T:System.Attribute" /> that is used as a filter.</param>
         /// <returns>An <see cref="T:System.ComponentModel.EventDescriptorCollection" /> that represents the filtered events for this component instance.</returns>
-        public EventDescriptorCollection GetEvents(Attribute[]? attributes)
-        {
-            return TypeDescriptor.GetEvents(this, attributes, true);
-        }
+        public EventDescriptorCollection GetEvents(Attribute[]? attributes) => TypeDescriptor.GetEvents(this, attributes, true);
 
         /// <summary>
         /// Returns the properties for this instance of a component.
         /// </summary>
         /// <returns>A <see cref="T:System.ComponentModel.PropertyDescriptorCollection" /> that represents the properties for this component instance.</returns>
-        public PropertyDescriptorCollection GetProperties()
-        {
-            return GetProperties(null);
-        }
+        public PropertyDescriptorCollection GetProperties() => GetProperties(null);
 
         /// <summary>
         /// Returns the properties for this instance of a component using the attribute array as a filter.
@@ -131,7 +95,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
         /// <returns>A <see cref="T:System.ComponentModel.PropertyDescriptorCollection" /> that represents the filtered properties for this component instance.</returns>
         public PropertyDescriptorCollection GetProperties(Attribute[]? attributes)
         {
-            PropertyDescriptorCollection pds = new PropertyDescriptorCollection(null);
+            var pds = new PropertyDescriptorCollection(null);
 
             foreach (var property in Properties)
             {
@@ -148,15 +112,12 @@ namespace Avalonia.PropertyGrid.Samples.Models
         /// </summary>
         /// <param name="pd">A <see cref="T:System.ComponentModel.PropertyDescriptor" /> that represents the property whose owner is to be found.</param>
         /// <returns>An <see cref="T:System.Object" /> that represents the owner of the specified property.</returns>
-        public object GetPropertyOwner(PropertyDescriptor? pd)
-        {
-            return this;
-        }
+        public object GetPropertyOwner(PropertyDescriptor? pd) => this;
         #endregion
     }
 
-
     #region Property Descriptor
+
     /// <summary>
     /// Class ScriptableObjectPropertyDescriptor.
     /// Implements the <see cref="PropertyDescriptor" />
@@ -164,16 +125,16 @@ namespace Avalonia.PropertyGrid.Samples.Models
     /// <seealso cref="PropertyDescriptor" />
     internal class ScriptableObjectPropertyDescriptor : PropertyDescriptor
     {
-        Type _Type;
-        string? _DisplayName;
-        string? _Description;
+        private readonly Type _Type;
+        private readonly string? _DisplayName;
+        private readonly string? _Description;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScriptableObjectPropertyDescriptor" /> class.
         /// </summary>
         /// <param name="target">The target.</param>
-        public ScriptableObjectPropertyDescriptor(ScriptableObject target) :
-            base(target.Name!, target.GetAttributes())
+        public ScriptableObjectPropertyDescriptor(ScriptableObject target)
+            : base(target.Name!, target.GetAttributes())
         {
             _Type = target.ValueType!;
             _DisplayName = target.DisplayName;
@@ -182,15 +143,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
         public override Type ComponentType => typeof(ScriptableOptions);
 
-        public override bool IsReadOnly
-        {
-            get
-            {
-                var attr = this.Attributes[typeof(ReadOnlyAttribute)] as ReadOnlyAttribute;
-
-                return attr != null && attr.IsReadOnly;
-            }
-        }
+        public override bool IsReadOnly => Attributes[typeof(ReadOnlyAttribute)] is ReadOnlyAttribute attr && attr.IsReadOnly;
 
         public override Type PropertyType => _Type;
 
@@ -200,10 +153,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
         public override string Description => _Description ?? string.Empty;
 
-        public override bool CanResetValue(object component)
-        {
-            return false;
-        }
+        public override bool CanResetValue(object component) => false;
 
         public override object? GetValue(object? component)
         {
@@ -218,9 +168,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
         }
 
         public override void ResetValue(object component)
-        {
-
-        }
+        { }
 
         public override void SetValue(object? component, object? value)
         {
@@ -237,11 +185,9 @@ namespace Avalonia.PropertyGrid.Samples.Models
             }
         }
 
-        public override bool ShouldSerializeValue(object component)
-        {
-            throw new NotImplementedException();
-        }
+        public override bool ShouldSerializeValue(object component) => throw new NotImplementedException();
     }
+
     #endregion
 
 }

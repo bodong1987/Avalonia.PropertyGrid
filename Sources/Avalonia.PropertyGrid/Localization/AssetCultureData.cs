@@ -8,27 +8,25 @@ namespace Avalonia.PropertyGrid.Localization
 {
     internal class AssetCultureData : AbstractCultureData
     {
-        public AssetCultureData(Uri uri, bool autoLoad = false) : 
-            base(uri)
+        public AssetCultureData(Uri uri, bool autoLoad = false)
+            : base(uri)
         {
-            if(autoLoad)
+            if (autoLoad)
             {
-                Reload();
+                _ = Reload();
             }
         }
 
-        public sealed override bool Reload()        
+        public sealed override bool Reload()
         {
             try
             {
                 using (var stream = AssetLoader.Open(Path))
                 {
-                    using (var sr = new StreamReader(stream, Encoding.UTF8))
-                    {
-                        var tempDict = ReadJsonStringDictionary(sr.ReadToEnd());
+                    using var sr = new StreamReader(stream, Encoding.UTF8);
+                    var tempDict = ReadJsonStringDictionary(sr.ReadToEnd());
 
-                        LocalTexts = tempDict;
-                    }
+                    LocalTexts = tempDict;
                 }
 
                 return LocalTexts != null;
@@ -36,8 +34,7 @@ namespace Avalonia.PropertyGrid.Localization
             catch
             {
                 return false;
-            }            
+            }
         }
-
     }
 }

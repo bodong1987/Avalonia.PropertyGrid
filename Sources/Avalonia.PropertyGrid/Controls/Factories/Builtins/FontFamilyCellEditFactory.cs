@@ -40,7 +40,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             {
                 ItemsSource = FontManager.Current.SystemFonts.ToArray(),
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                ItemTemplate = new FuncDataTemplate<FontFamily>((value, nameScope) =>            
+                ItemTemplate = new FuncDataTemplate<FontFamily>((value, nameScope) =>
                     new TextBlock
                     {
                         [!TextBlock.TextProperty] = new Binding("Name"),
@@ -54,8 +54,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 var item = control.SelectedItem;
 
                 if (item is FontFamily ff)
-                {                    
-                    if (ff != propertyDescriptor.GetValue(target) as FontFamily)
+                {
+                    if (ff != (propertyDescriptor.GetValue(target) as FontFamily))
                     {
                         SetAndRaise(context, control, ff);
                     }

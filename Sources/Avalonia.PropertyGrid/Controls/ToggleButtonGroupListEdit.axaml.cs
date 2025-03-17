@@ -27,7 +27,7 @@ namespace Avalonia.PropertyGrid.Controls
             add => AddHandler(CheckChangedEvent, value);
             remove => RemoveHandler(CheckChangedEvent, value);
         }
-        
+
         /// <summary>
         /// The items property
         /// </summary>
@@ -44,10 +44,10 @@ namespace Avalonia.PropertyGrid.Controls
         /// <value>The items.</value>
         public object[] Items
         {
-            get => Model.Items.Select(x=>x.Value!).ToArray();
+            get => Model.Items.Select(x => x.Value!).ToArray();
             set
             {
-                if(Model.Items != value)
+                if (Model.Items != value)
                 {
                     Model.ResetItems(value);
                     Model.RaisePropertyChanged(nameof(Items));
@@ -84,10 +84,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="ToggleButtonGroupListEdit"/> class.
         /// </summary>
-        public ToggleButtonGroupListEdit()
-        {
-            Model.CheckChanged += OnCheckedItemChanged;
-        }
+        public ToggleButtonGroupListEdit() => Model.CheckChanged += OnCheckedItemChanged;
 
         /// <summary>
         /// Handles the <see cref="E:SelectedItemChanged" /> event.

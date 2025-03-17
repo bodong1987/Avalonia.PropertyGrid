@@ -19,7 +19,7 @@ namespace PropertyModels.ComponentModel
         /// Gets the masks.
         /// </summary>
         /// <value>The masks.</value>
-        public string[] Masks => _masks.OrderBy(x=>x).ToArray();
+        public string[] Masks => [.. _masks.OrderBy(x => x)];
 
         /// <summary>
         /// Gets all.
@@ -54,10 +54,10 @@ namespace PropertyModels.ComponentModel
         public CheckedMaskModel(IEnumerable<string> masks, string all)
         {
             All = all;
-            
-            foreach(var mask in masks)
+
+            foreach (var mask in masks)
             {
-                _masks.Add(mask);
+                _ = _masks.Add(mask);
             }
         }
 
@@ -66,10 +66,7 @@ namespace PropertyModels.ComponentModel
         /// </summary>
         /// <param name="mask">The mask.</param>
         /// <returns><c>true</c> if the specified mask is checked; otherwise, <c>false</c>.</returns>
-        public bool IsChecked(string mask)
-        {
-            return IsAllChecked || CheckedValues.Contains(mask);
-        }
+        public bool IsChecked(string mask) => IsAllChecked || CheckedValues.Contains(mask);
 
         /// <summary>
         /// Begins the update.
@@ -91,7 +88,7 @@ namespace PropertyModels.ComponentModel
 
             _isUpdating = false;
 
-            if(_isDirty)
+            if (_isDirty)
             {
                 CheckChanged?.Invoke(this, EventArgs.Empty);
                 _isDirty = false;
@@ -100,7 +97,7 @@ namespace PropertyModels.ComponentModel
 
         private void RaiseChangedEvent()
         {
-            if(!_isUpdating)
+            if (!_isUpdating)
             {
                 CheckChanged?.Invoke(this, EventArgs.Empty);
             }
@@ -116,7 +113,7 @@ namespace PropertyModels.ComponentModel
         /// <param name="mask">The mask.</param>
         public void Check(string mask)
         {
-            if(mask == All)
+            if (mask == All)
             {
                 IsAllChecked = true;
 
@@ -139,7 +136,7 @@ namespace PropertyModels.ComponentModel
         /// <param name="mask">The mask.</param>
         public void UnCheck(string mask)
         {
-            if(mask == All)
+            if (mask == All)
             {
                 IsAllChecked = false;
 
@@ -147,12 +144,12 @@ namespace PropertyModels.ComponentModel
                 return;
             }
 
-            if(CheckedValues.Contains(mask))
+            if (CheckedValues.Contains(mask))
             {
-                CheckedValues.Remove(mask);
+                _ = CheckedValues.Remove(mask);
 
                 RaiseChangedEvent();
-            }            
+            }
         }
     }
 }

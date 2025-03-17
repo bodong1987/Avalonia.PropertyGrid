@@ -25,18 +25,13 @@ namespace Avalonia.PropertyGrid.Controls
                 );
 
         /// <summary>
-        /// The button clicked command
-        /// </summary>
-        private ICommand? _buttonClickedCommand;
-
-        /// <summary>
         /// Gets or sets the button clicked command.
         /// </summary>
         /// <value>The button clicked command.</value>
         public ICommand? ButtonClickedCommand
         {
-            get => _buttonClickedCommand;
-            set => SetAndRaise(ButtonClickedCommandProperty!, ref _buttonClickedCommand, value);
+            get;
+            set => SetAndRaise(ButtonClickedCommandProperty!, ref field, value);
         }
 
         /// <summary>
@@ -49,16 +44,13 @@ namespace Avalonia.PropertyGrid.Controls
                 (o, v) => o.IsReadOnly = v
                 );
 
-
-        private bool _isReadOnly;
-
         /// <summary>
         /// Gets or sets Is ReadOnly Flags.
         /// </summary>
         public bool IsReadOnly
         {
-            get => _isReadOnly;
-            set => SetAndRaise(IsReadOnlyProperty, ref _isReadOnly, value);
+            get;
+            set => SetAndRaise(IsReadOnlyProperty, ref field, value);
         }
 
         /// <summary>
@@ -72,17 +64,13 @@ namespace Avalonia.PropertyGrid.Controls
                 );
 
         /// <summary>
-        /// The text
-        /// </summary>
-        private string? _text;
-        /// <summary>
         /// Gets or sets the text.
         /// </summary>
         /// <value>The text.</value>
         public string? Text
         {
-            get => _text;
-            set => SetAndRaise(TextProperty!, ref _text, value);
+            get;
+            set => SetAndRaise(TextProperty!, ref field, value);
         }
 
         /// <summary>
@@ -95,16 +83,14 @@ namespace Avalonia.PropertyGrid.Controls
                 (o, v) => o.Watermark = v
                 );
 
-        private string? _watermark;
-
         /// <summary>
         /// Gets or sets the Watermark.
         /// </summary>
         /// <value>The Watermark.</value>
         public string? Watermark
         {
-            get => _watermark;
-            set=> SetAndRaise(WatermarkProperty!, ref _watermark, value);
+            get;
+            set => SetAndRaise(WatermarkProperty!, ref field, value);
         }
 
         #region Events
@@ -142,18 +128,12 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Initializes static members of the <see cref="ButtonEdit"/> class.
         /// </summary>
-        static ButtonEdit()
-        {
-            TextProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<string>>(OnTextPropertyChanged));
-        }
+        static ButtonEdit() => TextProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<string>>(OnTextPropertyChanged));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ButtonEdit"/> class.
         /// </summary>
-        public ButtonEdit()
-        {
-            ButtonClickedCommand = ReactiveCommand.Create(OnButtonClicked);
-        }
+        public ButtonEdit() => ButtonClickedCommand = ReactiveCommand.Create(OnButtonClicked);
 
         /// <summary>
         /// Called when [button clicked].
@@ -171,7 +151,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="e">The e.</param>
         private static void OnTextPropertyChanged(AvaloniaPropertyChangedEventArgs<string> e)
         {
-            if(e.Sender is ButtonEdit be)
+            if (e.Sender is ButtonEdit be)
             {
                 be.OnTextPropertyChanged(e.NewValue.Value);
             }

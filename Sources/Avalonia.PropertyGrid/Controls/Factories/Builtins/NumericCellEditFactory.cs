@@ -30,7 +30,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         {
             var propertyDescriptor = context.Property;
             // var target = context.Target;
-            
+
             if (!propertyDescriptor.PropertyType.IsNumericType())
             {
                 return null;
@@ -63,7 +63,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                 control.Increment = incrementAttr?.Increment ?? 1;
 
-                if(formatAttr != null)
+                if (formatAttr != null)
                 {
                     control.FormatString = formatAttr.ToString()!;
                 }
@@ -71,7 +71,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             else
             {
                 var precisionAttr = propertyDescriptor.GetCustomAttribute<FloatPrecisionAttribute>();
-                if(precisionAttr != null)
+                if (precisionAttr != null)
                 {
                     control.Increment = precisionAttr.Increment;
                     control.FormatString = precisionAttr.FormatString;
@@ -85,7 +85,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     {
                         control.FormatString = formatAttr.ToString()!;
                     }
-                }                
+                }
             }
 
             control.ValueChanged += (s, e) =>
@@ -95,7 +95,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     var value = Convert.ChangeType(control.Value, propertyDescriptor.PropertyType);
                     SetAndRaise(context, control, value);
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     DataValidationErrors.SetErrors(control, [ex.Message]);
                 }

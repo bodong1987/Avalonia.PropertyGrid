@@ -1,28 +1,24 @@
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Data.Core;
-using Avalonia.Data.Core.Plugins;
+using System;
 using System.Linq;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
+using Avalonia.Platform;
 using Avalonia.PropertyGrid.Samples.ViewModels;
 using Avalonia.PropertyGrid.Samples.Views;
 using Avalonia.Styling;
 using Avalonia.Themes.Fluent;
 using Avalonia.Themes.Simple;
-using Avalonia.Platform;
-using System;
 
 namespace Avalonia.PropertyGrid.Samples;
 
 public partial class App : Application
 {
-    private readonly Styles _themeStylesContainer = new();
+    private readonly Styles _themeStylesContainer = [];
     private FluentTheme? _fluentTheme;
     private SimpleTheme? _simpleTheme;
     private IStyle? _colorPickerFluent, _colorPickerSimple;
     private IStyle? _dataGridFluent, _dataGridSimple;
-
-
 
     public override void Initialize()
     {
@@ -46,7 +42,7 @@ public partial class App : Application
         {
             // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
             // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
-            DisableAvaloniaDataAnnotationValidation();
+            App.DisableAvaloniaDataAnnotationValidation();
             desktop.MainWindow = new MainWindow
             {
                 DataContext = new MainViewModel()
@@ -71,7 +67,7 @@ public partial class App : Application
         base.OnFrameworkInitializationCompleted();
     }
 
-    private void DisableAvaloniaDataAnnotationValidation()
+    private static void DisableAvaloniaDataAnnotationValidation()
     {
         // Get an array of plugins to remove
         var dataValidationPluginsToRemove =

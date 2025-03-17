@@ -55,10 +55,7 @@ namespace PropertyModels.ComponentModel
         /// </summary>
         /// <param name="component">The component to test for reset capability.</param>
         /// <returns><see langword="true" /> if resetting the component changes its value; otherwise, <see langword="false" />.</returns>
-        public override bool CanResetValue(object component)
-        {
-            return false;
-        }
+        public override bool CanResetValue(object component) => false;
 
         /// <summary>
         /// When overridden in a derived class, gets the current value of the property on a component.
@@ -77,10 +74,7 @@ namespace PropertyModels.ComponentModel
         /// </summary>
         /// <param name="component">The component with the property value that is to be reset to the default value.</param>
         /// <exception cref="System.NotImplementedException"></exception>
-        public override void ResetValue(object component)
-        {
-            throw new NotImplementedException();
-        }
+        public override void ResetValue(object component) => throw new NotImplementedException();
 
         /// <summary>
         /// When overridden in a derived class, sets the value of the component to a different value.
@@ -99,10 +93,7 @@ namespace PropertyModels.ComponentModel
         /// </summary>
         /// <param name="component">The component with the property to be examined for persistence.</param>
         /// <returns><see langword="true" /> if the property should be persisted; otherwise, <see langword="false" />.</returns>
-        public override bool ShouldSerializeValue(object component)
-        {
-            return false;
-        }
+        public override bool ShouldSerializeValue(object component) => false;
     }
 
 }
