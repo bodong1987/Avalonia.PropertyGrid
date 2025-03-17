@@ -231,7 +231,7 @@ namespace PropertyModels.ComponentModel
         /// <returns>The value of a property for a given component.</returns>
         public override object? GetValue(object? component)
         {
-            var list = (object[])component!;
+            var list = (component as IEnumerable)!.Cast<object>().ToArray();
             var res = GetValue(Descriptors[0], GetOwner(list, 0)!);
             for (var i = 0; i < Descriptors.Length; i++)
             {
