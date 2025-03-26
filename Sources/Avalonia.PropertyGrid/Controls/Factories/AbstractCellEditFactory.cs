@@ -78,8 +78,10 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         /// <param name="value">The value.</param>
         protected virtual void SetAndRaise(PropertyCellContext context, Control sourceControl, object? value)
         {
+            // If the cell value has changed compared to the associated value...
             if (context.Property.IsPropertyChanged(context.Target, value, out var oldValue))
             {
+                // ...we execute the 'HandleSetValue' command to update the associated value and the view.
                 var command = new GenericCancelableCommand(
                     string.Format(LocalizationService.Default["Change {0} form {1} to {2}"], context.Property.DisplayName, oldValue != null ? oldValue.ToString() : "null", value != null ? value.ToString() : "null"),
                     () =>
@@ -98,6 +100,13 @@ namespace Avalonia.PropertyGrid.Controls.Factories
                 };
 
                 _ = ExecuteCommand(command, context, oldValue, value, value);
+            }
+            else
+            {
+                // ...otherwise we validate the associated property value (again).
+                //
+                // Info: This is necessary so that any existing validation messages are updated correctly.
+                ValidateProperty(sourceControl, context.Property, context.Target);
             }
         }
 
