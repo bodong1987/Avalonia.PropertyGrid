@@ -804,14 +804,14 @@ namespace Avalonia.PropertyGrid.Controls
         /// <returns>PropertyVisibility.</returns>
         public PropertyVisibility FilterCells(IPropertyGridFilterContext context, FilterCategory category = FilterCategory.Default)
         {
-            var atleastOneVisible = false;
+            var atLeastOneVisible = false;
 
             foreach (var info in _cellInfoCache.Children)
             {
-                atleastOneVisible |= context.PropagateVisibility(info, category) == PropertyVisibility.AlwaysVisible;
+                atLeastOneVisible |= context.PropagateVisibility(info, category) == PropertyVisibility.AlwaysVisible;
             }
 
-            return atleastOneVisible ? PropertyVisibility.AlwaysVisible : PropertyVisibility.HiddenByNoVisibleChildren;
+            return atLeastOneVisible ? PropertyVisibility.AlwaysVisible : PropertyVisibility.HiddenByNoVisibleChildren;
         }
         #endregion
 
