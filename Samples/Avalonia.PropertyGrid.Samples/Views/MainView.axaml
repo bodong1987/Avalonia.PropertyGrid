@@ -42,6 +42,7 @@
                             Margin="2"
                             DataContext="{Binding simpleObject}"
                             AllowFilter="{Binding DataContext.AllowFilter, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            DisplayMode="{Binding DataContext.DisplayMode, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
                             ShowStyle="{Binding DataContext.ShowStyle, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
                             ShowTitle="{Binding DataContext.IsShowTitle, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
                             AllowQuickFilter="{Binding DataContext.AllowQuickFilter, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
@@ -49,6 +50,13 @@
                         </pgc:PropertyGrid>
                     </ScrollViewer>
                     <StackPanel Orientation="Horizontal" Grid.Row="1">
+                        <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Display_Mode}"></TextBlock>
+                        <ComboBox x:Name="DisplayModeComboBox" Margin="4" VerticalAlignment="Center" SelectedIndex="0">
+                            <ComboBox.Items>
+                                <apv:PropertyGridDisplayMode>Tree</apv:PropertyGridDisplayMode>
+								<apv:PropertyGridDisplayMode>Inline</apv:PropertyGridDisplayMode>
+                            </ComboBox.Items>
+                        </ComboBox>
                         <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Show_Style}"></TextBlock>
                         <ComboBox x:Name="ShowStyleComboBox" Margin="4" VerticalAlignment="Center" SelectedIndex="0">
                             <ComboBox.Items>

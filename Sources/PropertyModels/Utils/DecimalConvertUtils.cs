@@ -94,13 +94,13 @@ public static class DecimalConvertUtils
         var minValue = converter.ConvertFromString(
             null,
             conversionCulture,
-            rangeAttr.Minimum.ToString()!
+            Convert.ToString(rangeAttr.Minimum, conversionCulture)!
         );
 
         var maxValue = converter.ConvertFromString(
             null,
             conversionCulture,
-            rangeAttr.Maximum.ToString()!
+            Convert.ToString(rangeAttr.Maximum, conversionCulture)!
         );
 
         // 数值类型安全转换

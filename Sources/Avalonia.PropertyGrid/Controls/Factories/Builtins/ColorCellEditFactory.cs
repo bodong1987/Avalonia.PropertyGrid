@@ -100,33 +100,16 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             ValidateProperty(control, propertyDescriptor, target);
 
-            var type = propertyDescriptor.PropertyType;
-
             if (control is ColorPicker colorPicker)
             {
-                if (type == typeof(Color))
+                colorPicker.Color = propertyDescriptor.GetValue(target) switch
                 {
-                    var color = (Color)propertyDescriptor.GetValue(target)!;
-                    colorPicker.Color = Media.Color.FromArgb(color.A, color.R, color.G, color.B);
-                }
-                else if (type == typeof(Media.Color))
-                {
-                    var color = (Media.Color)propertyDescriptor.GetValue(target)!;
-
-                    colorPicker.Color = color;
-                }
-                else if (type == typeof(HslColor))
-                {
-                    var color = (HslColor)propertyDescriptor.GetValue(target)!;
-
-                    colorPicker.Color = color.ToRgb();
-                }
-                else if (type == typeof(HsvColor))
-                {
-                    var color = (HsvColor)propertyDescriptor.GetValue(target)!;
-
-                    colorPicker.Color = color.ToRgb();
-                }
+                    Color color => Media.Color.FromArgb(color.A, color.R, color.G, color.B),
+                    Media.Color color => color,
+                    HslColor color => color.ToRgb(),
+                    HsvColor color => color.ToRgb(),
+                    _ => colorPicker.Color
+                };
 
                 return true;
             }

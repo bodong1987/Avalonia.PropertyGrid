@@ -88,6 +88,22 @@ namespace Avalonia.PropertyGrid.Controls
         }
 
         /// <summary>
+        /// The display mode property
+        /// </summary>
+        public static readonly StyledProperty<PropertyGridDisplayMode> DisplayModeProperty = AvaloniaProperty.Register<PropertyGrid, PropertyGridDisplayMode>(nameof(DisplayMode));
+
+        /// <summary>
+        /// Gets or sets the display mode.
+        /// </summary>
+        /// <value>The display mode.</value>
+        [Category("Views")]
+        public PropertyGridDisplayMode DisplayMode
+        {
+            get => GetValue(DisplayModeProperty);
+            set => SetValue(DisplayModeProperty, value);
+        }
+
+        /// <summary>
         /// The show style property
         /// </summary>
         public static readonly StyledProperty<PropertyGridShowStyle> ShowStyleProperty = AvaloniaProperty.Register<PropertyGrid, PropertyGridShowStyle>(nameof(ShowStyle));
@@ -300,7 +316,12 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="e">The <see cref="PropertyChangedEventArgs"/> instance containing the event data.</param>
         private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(ViewModel.ShowStyle))
+            if (e.PropertyName == nameof(ViewModel.DisplayMode))
+            {
+                DisplayMode = ViewModel.DisplayMode;
+                BuildPropertiesView();
+            }
+            else if (e.PropertyName == nameof(ViewModel.ShowStyle))
             {
                 ShowStyle = ViewModel.ShowStyle;
                 BuildPropertiesView();
@@ -388,6 +409,25 @@ namespace Avalonia.PropertyGrid.Controls
         }
 
         private void OnNameWidthChanged(object? oldValue, object? newValue) => SplitterGrid.ColumnDefinitions[0].Width = new GridLength((double)newValue!);
+
+        /// <summary>
+        /// Called when [display mode changed].
+        /// </summary>
+        /// <param name="e">The e.</param>
+        private static void OnDisplayModeChanged(AvaloniaPropertyChangedEventArgs<PropertyGridDisplayMode> e)
+        {
+            if (e.Sender is PropertyGrid sender)
+            {
+                sender.OnDisplayModeChanged(e.OldValue, e.NewValue);
+            }
+        }
+
+        /// <summary>
+        /// Called when [display mode changed].
+        /// </summary>
+        /// <param name="oldValue">The old value.</param>
+        /// <param name="newValue">The new value.</param>
+        private void OnDisplayModeChanged(Optional<PropertyGridDisplayMode> oldValue, BindingValue<PropertyGridDisplayMode> newValue) => ViewModel.DisplayMode = newValue.Value;
 
         /// <summary>
         /// Called when [show style changed].
