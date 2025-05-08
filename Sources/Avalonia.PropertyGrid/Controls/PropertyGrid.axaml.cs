@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Data;
@@ -13,6 +14,7 @@ using Avalonia.PropertyGrid.Localization;
 using Avalonia.PropertyGrid.Services;
 using Avalonia.PropertyGrid.ViewModels;
 using Avalonia.Reactive;
+using Avalonia.VisualTree;
 using PropertyModels.ComponentModel;
 using PropertyModels.ComponentModel.DataAnnotations;
 using PropertyModels.Extensions;
@@ -507,7 +509,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void OnPropertyDescriptorChanged(object? sender, EventArgs e) => BuildPropertiesView();
-
+        
 
         /// <summary>
         /// Handles the <see cref="E:FilterChanged" /> event.
@@ -603,8 +605,8 @@ namespace Avalonia.PropertyGrid.Controls
                 expander.IsExpanded = autoCollapseCategoriesAttribute?.ShouldAutoCollapse(categoryInfo.Key) != true;
                 expander.HorizontalContentAlignment = HorizontalAlignment.Stretch;
                 expander.HorizontalAlignment = HorizontalAlignment.Stretch;
-                expander.Margin = new Thickness(2);
-                expander.Padding = new Thickness(2);
+                expander.Margin = new Thickness(this.DisplayMode == PropertyGridDisplayMode.Inline ? 0 : 2);
+                expander.Padding = new Thickness(this.DisplayMode == PropertyGridDisplayMode.Inline ? 0 : 2);
 
                 // expander.Header = categoryInfo.Key;
                 expander.SetLocalizeBinding(HeaderedContentControl.HeaderProperty, categoryInfo.Key);
@@ -707,34 +709,52 @@ namespace Avalonia.PropertyGrid.Controls
             Debug.Assert(context.CellEdit == control);
 
             var factory = context.Factory;
-
+            factory.HandlePropertyChanged(context);
             grid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
 
             var nameBlock = new TextBlock();
-            nameBlock.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
-            nameBlock.SetValue(Grid.ColumnProperty, 0);
-            nameBlock.VerticalAlignment = VerticalAlignment.Center;
-            nameBlock.Margin = new Thickness(4);
-
-            // nameBlock.Text = LocalizationService.Default[property.DisplayName];
-            nameBlock.SetLocalizeBinding(TextBlock.TextProperty, property.DisplayName);
-
-            if (property.GetCustomAttribute<DescriptionAttribute>() is { } descriptionAttribute && descriptionAttribute.Description.IsNotNullOrEmpty())
+            var shouldUseInlineMode = this.DisplayMode == PropertyGridDisplayMode.Inline && this.IsExpandableType(property);
+            switch (shouldUseInlineMode)
             {
-                // nameBlock.SetValue(ToolTip.TipProperty, LocalizationService.Default[descriptionAttribute.Description]);
-                nameBlock.SetLocalizeBinding(ToolTip.TipProperty, descriptionAttribute.Description);
+                case true:
+                    var propertyGrid = control.GetVisualChildren().OfType<PropertyGrid>().FirstOrDefault();
+                    var innerGrid = propertyGrid?.LogicalChildren.OfType<Grid>().FirstOrDefault();
+                    var innerPropertyGrid = innerGrid?.GetVisualChildren().OfType<Grid>()
+                        .FirstOrDefault(item => item.Name == "PropertiesGrid");
+                    var innerExpander = innerPropertyGrid?.Children.OfType<Expander>().FirstOrDefault();
+
+                    if (innerExpander != null)
+                    {
+                        innerExpander.Header = property.DisplayName;
+                    }
+                    break;
+
+                case false:
+                    nameBlock.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
+                    nameBlock.SetValue(Grid.ColumnProperty, 0);
+                    nameBlock.VerticalAlignment = VerticalAlignment.Center;
+                    nameBlock.Margin = new Thickness(4);
+
+                    // nameBlock.Text = LocalizationService.Default[property.DisplayName];
+                    nameBlock.SetLocalizeBinding(TextBlock.TextProperty, property.DisplayName);
+
+                    if (property.GetCustomAttribute<DescriptionAttribute>() is { } descriptionAttribute && descriptionAttribute.Description.IsNotNullOrEmpty())
+                    {
+                        // nameBlock.SetValue(ToolTip.TipProperty, LocalizationService.Default[descriptionAttribute.Description]);
+                        nameBlock.SetLocalizeBinding(ToolTip.TipProperty, descriptionAttribute.Description);
+                    }
+
+                    grid.Children.Add(nameBlock);
+                    break;
             }
 
-            grid.Children.Add(nameBlock);
-
             control.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
-            control.SetValue(Grid.ColumnProperty, 1);
-            control.Margin = new Thickness(4);
+            control.SetValue(Grid.ColumnProperty, shouldUseInlineMode ? 0 : 1);
+            control.SetValue(Grid.ColumnSpanProperty, shouldUseInlineMode ? 2 : 1);
+            control.Margin = new Thickness(shouldUseInlineMode ? 0 : 4);
             factory.HandleReadOnlyStateChanged(control, context.IsReadOnly);
 
             grid.Children.Add(control);
-
-            factory.HandlePropertyChanged(context);
 
             var cellInfo = new PropertyGridCellInfo(context)
             {
@@ -749,6 +769,31 @@ namespace Avalonia.PropertyGrid.Controls
 
             container.Add(cellInfo);
         }
+
+        /// <summary>
+        /// Determines whether [is expandable type] [the specified property].
+        /// </summary>
+        /// <param name="property">The property.</param>
+        /// <returns><c>true</c> if [is expandable type] [the specified property]; otherwise, <c>false</c>.</returns>
+        private bool IsExpandableType(PropertyDescriptor property)
+        {
+            if (!property.PropertyType.IsClass)
+            {
+                return false;
+            }
+
+            var attr = property.GetCustomAttribute<TypeConverterAttribute>();
+
+            if (attr?.GetConverterType()!.IsChildOf<ExpandableObjectConverter>() == true)
+            {
+                return true;
+            }
+
+            attr = property.PropertyType.GetCustomAttribute<TypeConverterAttribute>();
+
+            return attr?.GetConverterType()!.IsChildOf<ExpandableObjectConverter>() == true;
+        }
+
         #endregion
 
         #region Alpha

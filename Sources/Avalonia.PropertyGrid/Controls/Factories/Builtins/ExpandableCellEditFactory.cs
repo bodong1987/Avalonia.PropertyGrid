@@ -79,7 +79,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             var border = new Border
             {
                 BorderBrush = Brushes.Gray,
-                BorderThickness = new Thickness(0.5),
+                BorderThickness = new Thickness(context.Root.DisplayMode == PropertyGridDisplayMode.Inline ? 0 : 0.5),
                 CornerRadius = new CornerRadius(0, 0, 5, 5),
                 Margin = new Thickness(0)
             };
@@ -92,6 +92,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             Debug.Assert(propertyGrid.RootPropertyGrid != null);
             Debug.Assert(!Equals(propertyGrid.RootPropertyGrid, propertyGrid));
 
+            propertyGrid.DisplayMode = context.Root.DisplayMode;
             propertyGrid.ShowStyle = context.Root.ShowStyle;
             propertyGrid.AllowFilter = false;
             propertyGrid.AllowQuickFilter = false;
