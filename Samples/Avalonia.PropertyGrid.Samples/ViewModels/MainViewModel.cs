@@ -64,7 +64,6 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
 
         #region View
         private PropertyGridDisplayMode _DisplayMode = PropertyGridDisplayMode.Tree;
-
         public PropertyGridDisplayMode DisplayMode
         {
             get => _DisplayMode;
@@ -76,9 +75,8 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
                 }
             }
         }
-
+        
         private PropertyGridShowStyle _ShowStyle = PropertyGridShowStyle.Category;
-
         public PropertyGridShowStyle ShowStyle
         {
             get => _ShowStyle;
