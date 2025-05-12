@@ -57,9 +57,13 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Propagates the visibility.
         /// </summary>
-        /// <param name="info">The information.</param>
+        /// <param name="cellInfo">The information.</param>
         /// <param name="category">The category.</param>
+        /// <param name="filterText">The filter text.</param>
         /// <returns>PropertyVisibility.</returns>
-        PropertyVisibility PropagateVisibility(IPropertyGridCellInfo info, FilterCategory category = FilterCategory.Default);
+        PropertyVisibility PropagateVisibility(
+            IPropertyGridCellInfo cellInfo, 
+            FilterCategory category = FilterCategory.Default,
+            string? filterText = null);
     }
 }

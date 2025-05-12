@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
+using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.PropertyGrid.Controls;
 using Avalonia.PropertyGrid.Controls.Implements;
 using PropertyModels.ComponentModel;
@@ -259,7 +261,7 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// Occurs when [filter changed].
         /// it means we need show or hide some property
         /// </summary>
-        public event EventHandler? FilterChanged;
+        public event EventHandler<FilterChangedEventArgs>? FilterChanged;
 
         /// <summary>
         /// Occurs when [custom property descriptor filter].
@@ -297,7 +299,7 @@ namespace Avalonia.PropertyGrid.ViewModels
             }
             else if (sender == FilterPattern)
             {
-                FilterChanged?.Invoke(this, EventArgs.Empty);
+                FilterChanged?.Invoke(this, new FilterChangedEventArgs(FilterPattern.FilterText));
             }
         }
 
@@ -316,30 +318,71 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// <summary>
         /// Propagates the visibility.
         /// </summary>
-        /// <param name="info">The information.</param>
+        /// <param name="cellInfo">The information.</param>
         /// <param name="category">The category.</param>
-        public PropertyVisibility PropagateVisibility(IPropertyGridCellInfo info, FilterCategory category = FilterCategory.Default)
+        /// <param name="filterText">The filter text.</param>
+        /// <returns>
+        /// The <see cref="PropertyVisibility"/> containing the result.
+        /// </returns>
+        public PropertyVisibility PropagateVisibility(
+            IPropertyGridCellInfo cellInfo, 
+            FilterCategory category = FilterCategory.Default, 
+            string? filterText = null)
         {
-            if (info.CellType == PropertyGridCellType.Category)
+            if (cellInfo.CellType == PropertyGridCellType.Category)
             {
-                var atLeastOneVisible = false;
-
-                foreach (var child in info.Children)
+                bool filterMatchesCategory = false;
+                if (filterText.IsNotNullOrEmpty())
                 {
-                    var v = PropagateVisibility(child, child.Target, category);
-
-                    atLeastOneVisible |= v == PropertyVisibility.AlwaysVisible;
+                    filterMatchesCategory = cellInfo.Category?.Contains(filterText, StringComparison.CurrentCultureIgnoreCase) ?? false;
                 }
 
-                info.IsVisible = atLeastOneVisible;
+                var atLeastOneVisible = false;
+                foreach (var child in cellInfo.Children)
+                {
+                    var v = PropagateVisibility(child, child.Target, category, filterText);
+                    switch (filterMatchesCategory && !v.HasFlag(PropertyVisibility.HiddenByCategoryFilter))
+                    {
+                        case true:
+                            child.IsVisible = true;
+                            atLeastOneVisible = true;
+                            break;
+                        case false:
+                            atLeastOneVisible |= v == PropertyVisibility.AlwaysVisible;
+                            break;
+                    }
+                }
+
+                if (cellInfo.Container is { Presenter.Parent.Parent: DockPanel dockPanel } && 
+                    dockPanel.Children.FirstOrDefault(item => item is ToggleButton) is 
+                        ToggleButton { Presenter.Child: HighlightedTextBlock textBlock })
+                {
+                    textBlock.HighlightedText = filterText;
+                }
+
+                cellInfo.IsVisible = atLeastOneVisible;
 
                 return atLeastOneVisible ? PropertyVisibility.AlwaysVisible : PropertyVisibility.HiddenByNoVisibleChildren;
             }
 
-            return PropagateVisibility(info, info.Target, category);
+            return PropagateVisibility(cellInfo, cellInfo.Target, category);
         }
 
-        private PropertyVisibility PropagateVisibility(IPropertyGridCellInfo cellInfo, object? target, FilterCategory category = FilterCategory.Default)
+        /// <summary>
+        /// Propagates the visibility.
+        /// </summary>
+        /// <param name="cellInfo">The information.</param>
+        /// <param name="target">The target.</param>
+        /// <param name="category">The category.</param>
+        /// <param name="filterText">The filter text.</param>
+        /// <returns>
+        /// The <see cref="PropertyVisibility"/> containing the result.
+        /// </returns>
+        private PropertyVisibility PropagateVisibility(
+            IPropertyGridCellInfo cellInfo, 
+            object? target, 
+            FilterCategory category = FilterCategory.Default,
+            string? filterText = null)
         {
             var visibility = PropertyVisibility.AlwaysVisible;
 
@@ -401,6 +444,11 @@ namespace Avalonia.PropertyGrid.ViewModels
             }
 
             cellInfo.IsVisible = visibility == PropertyVisibility.AlwaysVisible;
+
+            if (cellInfo.NameControl is HighlightedTextBlock textBlock)
+            {
+                textBlock.HighlightedText = filterText;
+            }
 
             return visibility;
         }
@@ -465,7 +513,7 @@ namespace Avalonia.PropertyGrid.ViewModels
         {
             FilterProperties();
 
-            FilterChanged?.Invoke(this, EventArgs.Empty);
+            FilterChanged?.Invoke(this, new FilterChangedEventArgs(FilterPattern.FilterText));
         }
 
         /// <summary>
@@ -490,6 +538,27 @@ namespace Avalonia.PropertyGrid.ViewModels
                     Categories[index].Value.Add(property);
                 }
             }
+        }
+    }
+    
+    /// <summary>
+    /// Class FilterChangedEventArgs.
+    /// </summary>
+    public class FilterChangedEventArgs : EventArgs
+    {
+        /// <summary>
+        /// The filter text.
+        /// </summary>
+        public readonly string? FilterText;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FilterChangedEventArgs" /> class.
+        /// </summary>
+        /// <param name="filterText">The filter text.</param>
+        public FilterChangedEventArgs(string? filterText) :
+            base()
+        {
+            FilterText = filterText;
         }
     }
 }

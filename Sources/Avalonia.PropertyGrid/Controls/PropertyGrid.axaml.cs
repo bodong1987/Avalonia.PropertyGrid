@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Templates;
 using Avalonia.Data;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
@@ -510,13 +511,12 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void OnPropertyDescriptorChanged(object? sender, EventArgs e) => BuildPropertiesView();
         
-
         /// <summary>
         /// Handles the <see cref="E:FilterChanged" /> event.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void OnFilterChanged(object? sender, EventArgs e) => RefreshVisibilities();
+        /// <param name="e">The <see cref="FilterChangedEventArgs"/> instance containing the event data.</param>
+        private void OnFilterChanged(object? sender, FilterChangedEventArgs e) => RefreshVisibilities(e.FilterText);
 
         /// <summary>
         /// Builds the properties view.
@@ -565,7 +565,7 @@ namespace Avalonia.PropertyGrid.Controls
 
             AddPropertyChangedObservers(_cellInfoCache.Children);
 
-            RefreshVisibilities();
+            RefreshVisibilities(ViewModel.FilterPattern.FilterText);
 
             var width = ColumnName.Bounds.Width;
 
@@ -599,7 +599,12 @@ namespace Avalonia.PropertyGrid.Controls
 
                 var expander = new Expander
                 {
-                    ExpandDirection = ExpandDirection.Down
+                    ExpandDirection = ExpandDirection.Down,
+                    HeaderTemplate = new FuncDataTemplate<object>((_, _) =>
+                        new HighlightedTextBlock
+                        {
+                            [!TextBlock.TextProperty] = new Binding()
+                        })
                 };
                 _ = expander.SetValue(Grid.RowProperty, PropertiesGrid.RowDefinitions.Count - 1);
                 expander.IsExpanded = autoCollapseCategoriesAttribute?.ShouldAutoCollapse(categoryInfo.Key) != true;
@@ -628,7 +633,7 @@ namespace Avalonia.PropertyGrid.Controls
 
                 var properties = propertyOrderStyle == PropertyGridOrderStyle.Builtin ? categoryInfo.Value : [.. categoryInfo.Value.OrderBy(x => x.DisplayName)];
 
-                BuildPropertiesCellEdit(target, referencePath, properties, expander, grid, cellInfo);
+                BuildPropertiesCellEdit(target, referencePath, properties, grid, cellInfo);
 
                 expander.Content = grid;
 
@@ -644,14 +649,12 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="target">The target.</param>
         /// <param name="referencePath">The reference path.</param>
         /// <param name="properties">The properties.</param>
-        /// <param name="expander">The expander.</param>
         /// <param name="grid">The grid.</param>
         /// <param name="container">The container.</param>
         private void BuildPropertiesCellEdit(
             object target,
             ReferencePath referencePath,
             IEnumerable<PropertyDescriptor> properties,
-            Expander? expander,
             Grid grid,
             IPropertyGridCellInfoContainer container
             )
@@ -662,8 +665,7 @@ namespace Avalonia.PropertyGrid.Controls
                 try
                 {
                     // var value = property.GetValue(target);
-
-                    BuildPropertyCellEdit(target, referencePath, property, expander, grid, container);
+                    BuildPropertyCellEdit(target, referencePath, property, grid, container);
                 }
                 finally
                 {
@@ -678,14 +680,12 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="target">The target.</param>
         /// <param name="referencePath">The reference path.</param>
         /// <param name="propertyDescriptor">The property descriptor.</param>
-        /// <param name="expander">The expander.</param>
         /// <param name="grid">The grid.</param>
         /// <param name="container">The container.</param>
         private void BuildPropertyCellEdit(
             object target,
             ReferencePath referencePath,
             PropertyDescriptor propertyDescriptor,
-            Expander? expander,
             Grid grid,
             IPropertyGridCellInfoContainer container
             )
@@ -712,7 +712,7 @@ namespace Avalonia.PropertyGrid.Controls
             factory.HandlePropertyChanged(context);
             grid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
 
-            var nameBlock = new TextBlock();
+            var nameBlock = new HighlightedTextBlock();
             var shouldUseInlineMode = this.DisplayMode == PropertyGridDisplayMode.Inline && this.IsExpandableType(property);
             switch (shouldUseInlineMode)
             {
@@ -808,7 +808,7 @@ namespace Avalonia.PropertyGrid.Controls
             PropertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
             PropertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
 
-            BuildPropertiesCellEdit(target, referencePath, ViewModel.AllProperties.OrderBy(x => x.DisplayName), null, PropertiesGrid, _cellInfoCache);
+            BuildPropertiesCellEdit(target, referencePath, ViewModel.AllProperties.OrderBy(x => x.DisplayName),  PropertiesGrid, _cellInfoCache);
         }
 
         /// <summary>
@@ -822,7 +822,7 @@ namespace Avalonia.PropertyGrid.Controls
             PropertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
             PropertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
 
-            BuildPropertiesCellEdit(target, referencePath, ViewModel.AllProperties, null, PropertiesGrid, _cellInfoCache);
+            BuildPropertiesCellEdit(target, referencePath, ViewModel.AllProperties,  PropertiesGrid, _cellInfoCache);
         }
         #endregion
 
@@ -880,21 +880,26 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Refreshes the visibilities.
         /// </summary>
-        private void RefreshVisibilities() => FilterCells(ViewModel);
+        /// <param name="filterText">The filter text.</param>
+        private void RefreshVisibilities(string? filterText) => FilterCells(ViewModel, FilterCategory.Default, filterText);
 
         /// <summary>
         /// Filters the cells.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="category">The category.</param>
+        /// <param name="filterText">The filter text.</param>
         /// <returns>PropertyVisibility.</returns>
-        public PropertyVisibility FilterCells(IPropertyGridFilterContext context, FilterCategory category = FilterCategory.Default)
+        public PropertyVisibility FilterCells(
+            IPropertyGridFilterContext context, 
+            FilterCategory category = FilterCategory.Default, 
+            string? filterText = null)
         {
             var atLeastOneVisible = false;
 
             foreach (var info in _cellInfoCache.Children)
             {
-                atLeastOneVisible |= context.PropagateVisibility(info, category) == PropertyVisibility.AlwaysVisible;
+                atLeastOneVisible |= context.PropagateVisibility(info, category, filterText) == PropertyVisibility.AlwaysVisible;
             }
 
             return atLeastOneVisible ? PropertyVisibility.AlwaysVisible : PropertyVisibility.HiddenByNoVisibleChildren;
@@ -926,7 +931,7 @@ namespace Avalonia.PropertyGrid.Controls
         {
             if (e.Cell.Context?.Property != null && e.Cell.Context.Property.IsDefined<ConditionTargetAttribute>())
             {
-                RefreshVisibilities();
+                RefreshVisibilities(ViewModel.FilterPattern.FilterText);
             }
         }
 
