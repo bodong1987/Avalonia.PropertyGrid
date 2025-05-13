@@ -336,43 +336,66 @@ namespace Avalonia.PropertyGrid.ViewModels
             string? filterText = null,
             bool filterMatchesParentCategory = false)
         {
-            if (cellInfo.CellType == PropertyGridCellType.Category)
-            {
-                bool filterMatchesCategory = filterMatchesParentCategory;
-                if (filterText.IsNotNullOrEmpty())
-                {
-                    filterMatchesCategory |= cellInfo.Category?.Contains(filterText, StringComparison.CurrentCultureIgnoreCase) ?? false;
-                }
+            PropertyVisibility result;
+            bool atLeastOneVisible = false;
 
-                var atLeastOneVisible = false;
-                foreach (var child in cellInfo.Children)
-                {
-                    var v = PropagateVisibility(child, child.Target, category, filterText, filterMatchesCategory);
-                    switch (filterMatchesCategory && !v.HasFlag(PropertyVisibility.HiddenByCategoryFilter))
+            switch (cellInfo.CellType)
+            {
+                case PropertyGridCellType.Category:
+                    // Check if the filter matches the (parent) category.
+                    bool filterMatchesCategory = filterMatchesParentCategory;
+                    if (filterText.IsNotNullOrEmpty())
+                    {
+                        filterMatchesCategory |= cellInfo.Category?.Contains(filterText, StringComparison.CurrentCultureIgnoreCase) ?? false;
+                    }
+
+                    // Propagate the visibility of all child cell infos.
+                    foreach (IPropertyGridCellInfo child in cellInfo.Children)
+                    {
+                        result = PropagateVisibility(child, child.Target, category, filterText, filterMatchesCategory);
+                        switch (filterMatchesCategory && !result.HasFlag(PropertyVisibility.HiddenByCategoryFilter))
+                        {
+                            case true:
+                                child.IsVisible = true;
+                                atLeastOneVisible = true;
+                                break;
+                            case false:
+                                atLeastOneVisible |= result == PropertyVisibility.AlwaysVisible;
+                                break;
+                        }
+                    }
+
+                    // Update the highlighted expander header text.
+                    if (cellInfo.Container is { Presenter.Parent.Parent: DockPanel dockPanel } &&
+                        dockPanel.Children.FirstOrDefault(item => item is ToggleButton) is
+                            ToggleButton { Presenter.Child: HighlightedTextBlock textBlock })
+                    {
+                        textBlock.HighlightedText = filterText;
+                    }
+
+                    break;
+
+                case PropertyGridCellType.Cell:
+                    // Propagate the visibility of the cell info.
+                    result = PropagateVisibility(cellInfo, cellInfo.Target, category, filterText, filterMatchesParentCategory);
+                    switch (filterMatchesParentCategory && !result.HasFlag(PropertyVisibility.HiddenByCategoryFilter))
                     {
                         case true:
-                            child.IsVisible = true;
                             atLeastOneVisible = true;
                             break;
                         case false:
-                            atLeastOneVisible |= v == PropertyVisibility.AlwaysVisible;
+                            atLeastOneVisible |= result == PropertyVisibility.AlwaysVisible;
                             break;
                     }
-                }
 
-                if (cellInfo.Container is { Presenter.Parent.Parent: DockPanel dockPanel } && 
-                    dockPanel.Children.FirstOrDefault(item => item is ToggleButton) is 
-                        ToggleButton { Presenter.Child: HighlightedTextBlock textBlock })
-                {
-                    textBlock.HighlightedText = filterText;
-                }
-
-                cellInfo.IsVisible = atLeastOneVisible;
-
-                return atLeastOneVisible ? PropertyVisibility.AlwaysVisible : PropertyVisibility.HiddenByNoVisibleChildren;
+                    break;
             }
 
-            return PropagateVisibility(cellInfo, cellInfo.Target, category, filterText);
+            // Update the visibility of the cell info.
+            cellInfo.IsVisible = atLeastOneVisible;
+
+            // Return the result.
+            return atLeastOneVisible ? PropertyVisibility.AlwaysVisible : PropertyVisibility.HiddenByNoVisibleChildren;
         }
 
         /// <summary>
@@ -458,8 +481,10 @@ namespace Avalonia.PropertyGrid.ViewModels
                 }
             }
 
+            // Update the visibility of the cell info.
             cellInfo.IsVisible = visibility == PropertyVisibility.AlwaysVisible;
 
+            // Update the highlighted name control text.
             if (cellInfo.NameControl is HighlightedTextBlock textBlock)
             {
                 textBlock.HighlightedText = filterText;
