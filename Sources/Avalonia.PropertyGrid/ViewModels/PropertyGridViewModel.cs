@@ -344,7 +344,7 @@ namespace Avalonia.PropertyGrid.ViewModels
                 case PropertyGridCellType.Category:
                     // Check if the filter matches the (parent) category.
                     bool filterMatchesCategory = filterMatchesParentCategory;
-                    if (filterText.IsNotNullOrEmpty())
+                    if (filterText.IsNotNullOrEmpty() && DisplayMode != PropertyGridDisplayMode.Inline)
                     {
                         filterMatchesCategory |= cellInfo.Category?.Contains(filterText, StringComparison.CurrentCultureIgnoreCase) ?? false;
                     }
