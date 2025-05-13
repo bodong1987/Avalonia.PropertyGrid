@@ -372,7 +372,7 @@ namespace Avalonia.PropertyGrid.ViewModels
                 return atLeastOneVisible ? PropertyVisibility.AlwaysVisible : PropertyVisibility.HiddenByNoVisibleChildren;
             }
 
-            return PropagateVisibility(cellInfo, cellInfo.Target, category);
+            return PropagateVisibility(cellInfo, cellInfo.Target, category, filterText);
         }
 
         /// <summary>
@@ -570,8 +570,7 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// Initializes a new instance of the <see cref="FilterChangedEventArgs" /> class.
         /// </summary>
         /// <param name="filterText">The filter text.</param>
-        public FilterChangedEventArgs(string? filterText) :
-            base()
+        public FilterChangedEventArgs(string? filterText)
         {
             FilterText = filterText;
         }
