@@ -54,7 +54,7 @@
                         <ComboBox x:Name="DisplayModeComboBox" Margin="4" VerticalAlignment="Center" SelectedIndex="0">
                             <ComboBox.Items>
                                 <apv:PropertyGridDisplayMode>Tree</apv:PropertyGridDisplayMode>
-								<apv:PropertyGridDisplayMode>Inline</apv:PropertyGridDisplayMode>
+                                <apv:PropertyGridDisplayMode>Inline</apv:PropertyGridDisplayMode>
                             </ComboBox.Items>
                         </ComboBox>
                         <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Show_Style}"></TextBlock>
