@@ -7,6 +7,7 @@ using System.Runtime.Serialization;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.PropertyGrid.Controls;
+using Avalonia.PropertyGrid.Controls.Factories.Builtins;
 using Avalonia.PropertyGrid.Controls.Implements;
 using PropertyModels.ComponentModel;
 using PropertyModels.ComponentModel.DataAnnotations;
@@ -325,26 +326,28 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// <param name="cellInfo">The information.</param>
         /// <param name="category">The category.</param>
         /// <param name="filterText">The filter text.</param>
+        /// <param name="filterMatchesParentCategory">Indicates whether the filter matches the parent category.</param>
         /// <returns>
         /// The <see cref="PropertyVisibility"/> containing the result.
         /// </returns>
         public PropertyVisibility PropagateVisibility(
             IPropertyGridCellInfo cellInfo, 
             FilterCategory category = FilterCategory.Default, 
-            string? filterText = null)
+            string? filterText = null,
+            bool filterMatchesParentCategory = false)
         {
             if (cellInfo.CellType == PropertyGridCellType.Category)
             {
-                bool filterMatchesCategory = false;
+                bool filterMatchesCategory = filterMatchesParentCategory;
                 if (filterText.IsNotNullOrEmpty())
                 {
-                    filterMatchesCategory = cellInfo.Category?.Contains(filterText, StringComparison.CurrentCultureIgnoreCase) ?? false;
+                    filterMatchesCategory |= cellInfo.Category?.Contains(filterText, StringComparison.CurrentCultureIgnoreCase) ?? false;
                 }
 
                 var atLeastOneVisible = false;
                 foreach (var child in cellInfo.Children)
                 {
-                    var v = PropagateVisibility(child, child.Target, category, filterText);
+                    var v = PropagateVisibility(child, child.Target, category, filterText, filterMatchesCategory);
                     switch (filterMatchesCategory && !v.HasFlag(PropertyVisibility.HiddenByCategoryFilter))
                     {
                         case true:
@@ -379,6 +382,7 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// <param name="target">The target.</param>
         /// <param name="category">The category.</param>
         /// <param name="filterText">The filter text.</param>
+        /// <param name="filterMatchesParentCategory">Indicates whether the filter matches the parent category.</param>
         /// <returns>
         /// The <see cref="PropertyVisibility"/> containing the result.
         /// </returns>
@@ -386,7 +390,8 @@ namespace Avalonia.PropertyGrid.ViewModels
             IPropertyGridCellInfo cellInfo, 
             object? target, 
             FilterCategory category = FilterCategory.Default,
-            string? filterText = null)
+            string? filterText = null,
+            bool filterMatchesParentCategory = false)
         {
             var visibility = PropertyVisibility.AlwaysVisible;
 
@@ -402,7 +407,13 @@ namespace Avalonia.PropertyGrid.ViewModels
 
                 if (category.HasFlag(FilterCategory.Factory))
                 {
-                    childrenVisibility = cellInfo.Context.Factory?.HandlePropagateVisibility(target, cellInfo.Context, this);
+                    if (filterText.IsNotNullOrEmpty() && cellInfo.Context.Factory is ExpandableCellEditFactory)
+                    {
+                        filterMatchesParentCategory |= property.DisplayName.Contains(filterText, StringComparison.CurrentCultureIgnoreCase);
+                    }
+
+                    childrenVisibility = cellInfo.Context.Factory?.HandlePropagateVisibility(
+                        target, cellInfo.Context, this, filterText, filterMatchesParentCategory);
                 }
 
                 if (category.HasFlag(FilterCategory.PropertyCondition))

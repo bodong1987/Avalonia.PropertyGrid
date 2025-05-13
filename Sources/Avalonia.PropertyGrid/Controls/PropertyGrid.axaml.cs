@@ -580,7 +580,11 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="referencePath">The reference path.</param>
         /// <param name="categoryStyle">category style.</param>
         /// <param name="propertyOrderStyle">property style.</param>
-        protected virtual void BuildCategoryPropertiesView(object target, ReferencePath referencePath, PropertyGridOrderStyle categoryStyle, PropertyGridOrderStyle propertyOrderStyle)
+        protected virtual void BuildCategoryPropertiesView(
+            object target, 
+            ReferencePath referencePath, 
+            PropertyGridOrderStyle categoryStyle, 
+            PropertyGridOrderStyle propertyOrderStyle)
         {
             PropertiesGrid.ColumnDefinitions.Clear();
 
@@ -656,8 +660,7 @@ namespace Avalonia.PropertyGrid.Controls
             ReferencePath referencePath,
             IEnumerable<PropertyDescriptor> properties,
             Grid grid,
-            IPropertyGridCellInfoContainer container
-            )
+            IPropertyGridCellInfoContainer container)
         {
             foreach (var property in properties)
             {
@@ -687,8 +690,7 @@ namespace Avalonia.PropertyGrid.Controls
             ReferencePath referencePath,
             PropertyDescriptor propertyDescriptor,
             Grid grid,
-            IPropertyGridCellInfoContainer container
-            )
+            IPropertyGridCellInfoContainer container)
         {
             var property = propertyDescriptor;
 
@@ -889,17 +891,19 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="context">The context.</param>
         /// <param name="category">The category.</param>
         /// <param name="filterText">The filter text.</param>
+        /// <param name="filterMatchesParentCategory">Indicates whether the filter matches the parent category.</param>
         /// <returns>PropertyVisibility.</returns>
         public PropertyVisibility FilterCells(
             IPropertyGridFilterContext context, 
             FilterCategory category = FilterCategory.Default, 
-            string? filterText = null)
+            string? filterText = null,
+            bool filterMatchesParentCategory = false)
         {
             var atLeastOneVisible = false;
 
             foreach (var info in _cellInfoCache.Children)
             {
-                atLeastOneVisible |= context.PropagateVisibility(info, category, filterText) == PropertyVisibility.AlwaysVisible;
+                atLeastOneVisible |= context.PropagateVisibility(info, category, filterText, filterMatchesParentCategory) == PropertyVisibility.AlwaysVisible;
             }
 
             return atLeastOneVisible ? PropertyVisibility.AlwaysVisible : PropertyVisibility.HiddenByNoVisibleChildren;

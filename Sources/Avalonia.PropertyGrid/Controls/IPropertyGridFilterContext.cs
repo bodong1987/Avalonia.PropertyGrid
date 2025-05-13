@@ -60,10 +60,12 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="cellInfo">The information.</param>
         /// <param name="category">The category.</param>
         /// <param name="filterText">The filter text.</param>
+        /// <param name="filterMatchesParentCategory">Indicates whether the filter matches the parent category.</param>
         /// <returns>PropertyVisibility.</returns>
         PropertyVisibility PropagateVisibility(
             IPropertyGridCellInfo cellInfo, 
             FilterCategory category = FilterCategory.Default,
-            string? filterText = null);
+            string? filterText = null,
+            bool filterMatchesParentCategory = false);
     }
 }

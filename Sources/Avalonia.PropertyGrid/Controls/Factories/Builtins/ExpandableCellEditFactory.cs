@@ -147,8 +147,15 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <param name="target">The target.</param>
         /// <param name="context">The context.</param>
         /// <param name="filterContext">The filter context.</param>
+        /// <param name="filterText">The filter text.</param>
+        /// <param name="filterMatchesParentCategory">Indicates whether the filter matches the parent category.</param>
         /// <returns>System.Nullable&lt;PropertyVisibility&gt;.</returns>
-        public override PropertyVisibility? HandlePropagateVisibility(object? target, PropertyCellContext context, IPropertyGridFilterContext filterContext)
+        public override PropertyVisibility? HandlePropagateVisibility(
+            object? target, 
+            PropertyCellContext context, 
+            IPropertyGridFilterContext filterContext,
+            string? filterText = null,
+            bool filterMatchesParentCategory = false)
         {
             if (!IsExpandableType(context.Property))
             {
@@ -160,7 +167,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 var category = FilterCategory.Default;
                 category &= ~FilterCategory.Category;
 
-                return pg.FilterCells(filterContext, category);
+                return pg.FilterCells(filterContext, category, filterText, filterMatchesParentCategory);
             }
 
             return null;

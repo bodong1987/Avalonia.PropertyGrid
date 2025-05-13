@@ -128,8 +128,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories
                     propertyContext.Property,
                     oldValue,
                     value,
-                    context
-                    );
+                    context);
 
             (propertyContext.Owner as Interactive)?.RaiseEvent(evt);
 
@@ -236,8 +235,15 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         /// <param name="target">The target.</param>
         /// <param name="context">The context.</param>
         /// <param name="filterContext">The filter context.</param>
+        /// <param name="filterText">The filter text.</param>
+        /// <param name="filterMatchesParentCategory">Indicates whether the filter matches the parent category.</param>
         /// <returns>System.Nullable&lt;PropertyVisibility&gt;.</returns>
-        public virtual PropertyVisibility? HandlePropagateVisibility(object? target, PropertyCellContext context, IPropertyGridFilterContext filterContext) => null;
+        public virtual PropertyVisibility? HandlePropagateVisibility(
+            object? target, 
+            PropertyCellContext context,
+            IPropertyGridFilterContext filterContext,
+            string? filterText = null,
+            bool filterMatchesParentCategory = false) => null;
 
         /// <summary>
         /// Checks the equal.

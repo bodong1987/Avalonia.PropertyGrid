@@ -41,6 +41,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// The category
         /// </summary>
         Category,
+
         /// <summary>
         /// The cell
         /// </summary>
