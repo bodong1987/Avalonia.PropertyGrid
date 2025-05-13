@@ -21,12 +21,12 @@ namespace Avalonia.PropertyGrid.ViewModels
     public enum PropertyGridDisplayMode
     {
         /// <summary>
-        /// use tree
+        /// Use tree.
         /// </summary>
         Tree,
 
         /// <summary>
-        /// use inline mode
+        /// Use inline mode.
         /// </summary>
         Inline
     }
@@ -37,12 +37,12 @@ namespace Avalonia.PropertyGrid.ViewModels
     public enum PropertyGridShowStyle
     {
         /// <summary>
-        /// use category
+        /// Use category.
         /// </summary>
         Category,
 
         /// <summary>
-        /// use tiled mode
+        /// Use tiled mode.
         /// </summary>
         Tiled
     }
@@ -70,23 +70,27 @@ namespace Avalonia.PropertyGrid.ViewModels
     public enum PropertyVisibility
     {
         /// <summary>
-        /// The always visible
+        /// The always visible.
         /// </summary>
         AlwaysVisible = 0,
+
         /// <summary>
-        /// The hidden by filter
+        /// The hidden by filter.
         /// </summary>
         HiddenByFilter = 1 << 0,
+
         /// <summary>
-        /// The hidden by category filter
+        /// The hidden by category filter.
         /// </summary>
         HiddenByCategoryFilter = 1 << 1,
+
         /// <summary>
-        /// The hidden by no visible children
+        /// The hidden by no visible children.
         /// </summary>
         HiddenByNoVisibleChildren = 1 << 2,
+
         /// <summary>
-        /// The hidden by condition
+        /// The hidden by condition.
         /// </summary>
         HiddenByCondition = 1 << 10
     }
