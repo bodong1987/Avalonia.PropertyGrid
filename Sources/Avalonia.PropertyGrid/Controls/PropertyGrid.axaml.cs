@@ -524,7 +524,7 @@ namespace Avalonia.PropertyGrid.Controls
         private void OnShowTitleChanged(bool oldValue, bool newValue)
         {
             SplitterGrid.Opacity = newValue ? 1 : 0;
-            SplitterGrid.Height = 0;
+            SplitterGrid.Height = newValue ? double.NaN : 0;
         }
 
         private static void OnIsReadOnlyPropertyChanged(AvaloniaPropertyChangedEventArgs<bool> e)
