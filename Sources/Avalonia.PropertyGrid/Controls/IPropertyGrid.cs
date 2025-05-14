@@ -3,13 +3,14 @@ using System.ComponentModel;
 using Avalonia.Interactivity;
 using Avalonia.PropertyGrid.ViewModels;
 using PropertyModels.ComponentModel;
+using INotifyPropertyChanged = System.ComponentModel.INotifyPropertyChanged;
 
 namespace Avalonia.PropertyGrid.Controls
 {
     /// <summary>
     /// Interface IPropertyGrid
     /// </summary>
-    public interface IPropertyGrid
+    public interface IPropertyGrid: INotifyPropertyChanged, IDisposable
     {
         /// <summary>
         /// Gets the cell edit factory collection.

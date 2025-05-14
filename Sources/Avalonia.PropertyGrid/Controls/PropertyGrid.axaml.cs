@@ -209,8 +209,27 @@ namespace Avalonia.PropertyGrid.Controls
         /// Gets or sets the root property grid.
         /// </summary>
         /// <value>The root property grid.</value>
-        public IPropertyGrid? RootPropertyGrid { get; set; }
+        public IPropertyGrid? RootPropertyGrid
+        {
+            get => this.rootPropertyGrid;
+            set
+            {
+                if (this.rootPropertyGrid != null)
+                {
+                    this.rootPropertyGrid.PropertyChanged -= this.OnRootPropertyGridPropertyChanged;
+                }
 
+                this.rootPropertyGrid = value;
+
+                if (this.rootPropertyGrid != null)
+                {
+                    this.rootPropertyGrid.PropertyChanged += this.OnRootPropertyGridPropertyChanged;
+                }
+            }
+        }
+
+        private IPropertyGrid? rootPropertyGrid;
+        
         /// <summary>
         /// The custom property descriptor filter event
         /// </summary>
@@ -352,6 +371,24 @@ namespace Avalonia.PropertyGrid.Controls
         }
 
         /// <summary>
+        /// Handles the <see cref="E:ViewModelPropertyChanged" /> event of the root property grid.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="PropertyChangedEventArgs"/> instance containing the event data.</param>
+        private void OnRootPropertyGridPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (sender is IPropertyGrid propertyGrid)
+            {
+                switch (e.PropertyName)
+                {
+                    case nameof(IPropertyGrid.NameWidth):
+                        this.NameWidth = propertyGrid.NameWidth;
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
         /// Called when the <see cref="P:Avalonia.StyledElement.DataContext" /> finishes updating.
         /// </summary>
         protected override void OnDataContextEndUpdate()
@@ -484,7 +521,11 @@ namespace Avalonia.PropertyGrid.Controls
             }
         }
 
-        private void OnShowTitleChanged(bool oldValue, bool newValue) => SplitterGrid.IsVisible = newValue;
+        private void OnShowTitleChanged(bool oldValue, bool newValue)
+        {
+            SplitterGrid.Opacity = newValue ? 1 : 0;
+            SplitterGrid.Height = 0;
+        }
 
         private static void OnIsReadOnlyPropertyChanged(AvaloniaPropertyChangedEventArgs<bool> e)
         {
@@ -833,11 +874,6 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="syncToTitle">if set to <c>true</c> [synchronize to title].</param>
         private void SyncNameWidth(double width, bool syncToTitle)
         {
-            if (!ShowTitle)
-            {
-                return;
-            }
-
             PropagateCellNameWidth(_cellInfoCache.Children, width);
 
             if (syncToTitle)
@@ -933,6 +969,19 @@ namespace Avalonia.PropertyGrid.Controls
             if (e.Cell.Context?.Property != null && e.Cell.Context.Property.IsDefined<ConditionTargetAttribute>())
             {
                 RefreshVisibilities(ViewModel.FilterPattern.FilterText);
+            }
+        }
+
+        #endregion
+
+        #region IDisposable
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            if (this.rootPropertyGrid != null)
+            {
+                this.rootPropertyGrid.PropertyChanged -= this.OnRootPropertyGridPropertyChanged;
             }
         }
 
