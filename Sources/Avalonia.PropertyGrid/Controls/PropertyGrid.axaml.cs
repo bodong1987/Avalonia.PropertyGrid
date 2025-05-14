@@ -272,7 +272,7 @@ namespace Avalonia.PropertyGrid.Controls
             _ = PropertyOrderStyleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<PropertyGridOrderStyle>>(OnPropertyOrderStyleChanged));
             _ = ShowTitleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnShowTitleChanged));
             _ = NameWidthProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<double>>(OnNameWidthChanged));
-            _ = IsReadOnlyProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnIsReadOnyPropertyChanged));
+            _ = IsReadOnlyProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnIsReadOnlyPropertyChanged));
         }
 
         /// <summary>
@@ -486,15 +486,15 @@ namespace Avalonia.PropertyGrid.Controls
 
         private void OnShowTitleChanged(bool oldValue, bool newValue) => SplitterGrid.IsVisible = newValue;
 
-        private static void OnIsReadOnyPropertyChanged(AvaloniaPropertyChangedEventArgs<bool> e)
+        private static void OnIsReadOnlyPropertyChanged(AvaloniaPropertyChangedEventArgs<bool> e)
         {
             if (e.Sender is PropertyGrid sender)
             {
-                sender.OnIsReadOnyPropertyChanged(e.OldValue.Value, e.NewValue.Value);
+                sender.OnIsReadOnIsReadOnyPropertyChanged(e.OldValue.Value, e.NewValue.Value);
             }
         }
 
-        private void OnIsReadOnyPropertyChanged(bool oldValue, bool newValue) => ViewModel.IsReadOnly = newValue;
+        private void OnIsReadOnIsReadOnyPropertyChanged(bool oldValue, bool newValue) => ViewModel.IsReadOnly = newValue;
 
         private static void OnAllowQuickFilterChanged(AvaloniaPropertyChangedEventArgs<bool> e)
         {
