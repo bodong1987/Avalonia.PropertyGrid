@@ -42,7 +42,8 @@ namespace Avalonia.PropertyGrid.Controls
         [Category("Views")]
         public bool AllowFilter
         {
-            get => GetValue(AllowFilterProperty); set => SetValue(AllowFilterProperty, value);
+            get => GetValue(AllowFilterProperty); 
+            set => SetValue(AllowFilterProperty, value);
         }
 
         /// <summary>
@@ -57,7 +58,8 @@ namespace Avalonia.PropertyGrid.Controls
         [Category("Views")]
         public bool AllowToggleView
         {
-            get => GetValue(AllowToggleViewProperty); set => SetValue(AllowToggleViewProperty, value);
+            get => GetValue(AllowToggleViewProperty); 
+            set => SetValue(AllowToggleViewProperty, value);
         }
 
         /// <summary>
@@ -72,7 +74,8 @@ namespace Avalonia.PropertyGrid.Controls
         [Category("Views")]
         public bool AllowQuickFilter
         {
-            get => GetValue(AllowQuickFilterProperty); set => SetValue(AllowQuickFilterProperty, value);
+            get => GetValue(AllowQuickFilterProperty); 
+            set => SetValue(AllowQuickFilterProperty, value);
         }
 
         /// <summary>
@@ -87,7 +90,8 @@ namespace Avalonia.PropertyGrid.Controls
         [Category("Views")]
         public bool ShowTitle
         {
-            get => GetValue(ShowTitleProperty); set => SetValue(ShowTitleProperty, value);
+            get => GetValue(ShowTitleProperty); 
+            set => SetValue(ShowTitleProperty, value);
         }
 
         /// <summary>

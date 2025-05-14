@@ -66,6 +66,12 @@ namespace Avalonia.PropertyGrid.Controls
         PropertyGridShowStyle ShowStyle { get; set; }
 
         /// <summary>
+        /// Gets or sets the width of the name.
+        /// </summary>
+        /// <value>The width of the name.</value>
+        double NameWidth { get; set; }
+
+        /// <summary>
         /// Gets or sets the root property grid.
         /// </summary>
         /// <value>The root property grid.</value>

@@ -94,6 +94,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             propertyGrid.DisplayMode = context.Root.DisplayMode;
             propertyGrid.ShowStyle = context.Root.ShowStyle;
+            propertyGrid.NameWidth = context.Root.NameWidth;
             propertyGrid.AllowFilter = false;
             propertyGrid.AllowQuickFilter = false;
             propertyGrid.ShowTitle = false;
