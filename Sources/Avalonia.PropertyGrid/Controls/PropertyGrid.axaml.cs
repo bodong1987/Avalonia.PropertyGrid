@@ -490,11 +490,11 @@ namespace Avalonia.PropertyGrid.Controls
         {
             if (e.Sender is PropertyGrid sender)
             {
-                sender.OnIsReadOnIsReadOnyPropertyChanged(e.OldValue.Value, e.NewValue.Value);
+                sender.OnIsReadOnIsReadOnlyPropertyChanged(e.OldValue.Value, e.NewValue.Value);
             }
         }
 
-        private void OnIsReadOnIsReadOnyPropertyChanged(bool oldValue, bool newValue) => ViewModel.IsReadOnly = newValue;
+        private void OnIsReadOnIsReadOnlyPropertyChanged(bool oldValue, bool newValue) => ViewModel.IsReadOnly = newValue;
 
         private static void OnAllowQuickFilterChanged(AvaloniaPropertyChangedEventArgs<bool> e)
         {
