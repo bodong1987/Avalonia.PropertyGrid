@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Templates;
 using Avalonia.Data;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
@@ -13,6 +15,7 @@ using Avalonia.PropertyGrid.Localization;
 using Avalonia.PropertyGrid.Services;
 using Avalonia.PropertyGrid.ViewModels;
 using Avalonia.Reactive;
+using Avalonia.VisualTree;
 using PropertyModels.ComponentModel;
 using PropertyModels.ComponentModel.DataAnnotations;
 using PropertyModels.Extensions;
@@ -85,6 +88,22 @@ namespace Avalonia.PropertyGrid.Controls
         public bool ShowTitle
         {
             get => GetValue(ShowTitleProperty); set => SetValue(ShowTitleProperty, value);
+        }
+
+        /// <summary>
+        /// The display mode property
+        /// </summary>
+        public static readonly StyledProperty<PropertyGridDisplayMode> DisplayModeProperty = AvaloniaProperty.Register<PropertyGrid, PropertyGridDisplayMode>(nameof(DisplayMode));
+
+        /// <summary>
+        /// Gets or sets the display mode.
+        /// </summary>
+        /// <value>The display mode.</value>
+        [Category("Views")]
+        public PropertyGridDisplayMode DisplayMode
+        {
+            get => GetValue(DisplayModeProperty);
+            set => SetValue(DisplayModeProperty, value);
         }
 
         /// <summary>
@@ -243,6 +262,7 @@ namespace Avalonia.PropertyGrid.Controls
         {
             _ = AllowFilterProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnAllowFilterChanged));
             _ = AllowQuickFilterProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnAllowQuickFilterChanged));
+            _ = DisplayModeProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<PropertyGridDisplayMode>>(OnDisplayModeChanged));
             _ = ShowStyleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<PropertyGridShowStyle>>(OnShowStyleChanged));
             _ = CategoryOrderStyleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<PropertyGridOrderStyle>>(OnCategoryOrderStyleChanged));
             _ = PropertyOrderStyleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<PropertyGridOrderStyle>>(OnPropertyOrderStyleChanged));
@@ -300,7 +320,12 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="e">The <see cref="PropertyChangedEventArgs"/> instance containing the event data.</param>
         private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(ViewModel.ShowStyle))
+            if (e.PropertyName == nameof(ViewModel.DisplayMode))
+            {
+                DisplayMode = ViewModel.DisplayMode;
+                BuildPropertiesView();
+            }
+            else if (e.PropertyName == nameof(ViewModel.ShowStyle))
             {
                 ShowStyle = ViewModel.ShowStyle;
                 BuildPropertiesView();
@@ -390,6 +415,25 @@ namespace Avalonia.PropertyGrid.Controls
         private void OnNameWidthChanged(object? oldValue, object? newValue) => SplitterGrid.ColumnDefinitions[0].Width = new GridLength((double)newValue!);
 
         /// <summary>
+        /// Called when [display mode changed].
+        /// </summary>
+        /// <param name="e">The e.</param>
+        private static void OnDisplayModeChanged(AvaloniaPropertyChangedEventArgs<PropertyGridDisplayMode> e)
+        {
+            if (e.Sender is PropertyGrid sender)
+            {
+                sender.OnDisplayModeChanged(e.OldValue, e.NewValue);
+            }
+        }
+
+        /// <summary>
+        /// Called when [display mode changed].
+        /// </summary>
+        /// <param name="oldValue">The old value.</param>
+        /// <param name="newValue">The new value.</param>
+        private void OnDisplayModeChanged(Optional<PropertyGridDisplayMode> oldValue, BindingValue<PropertyGridDisplayMode> newValue) => ViewModel.DisplayMode = newValue.Value;
+
+        /// <summary>
         /// Called when [show style changed].
         /// </summary>
         /// <param name="e">The e.</param>
@@ -466,14 +510,13 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         private void OnPropertyDescriptorChanged(object? sender, EventArgs e) => BuildPropertiesView();
-
-
+        
         /// <summary>
         /// Handles the <see cref="E:FilterChanged" /> event.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
-        private void OnFilterChanged(object? sender, EventArgs e) => RefreshVisibilities();
+        /// <param name="e">The <see cref="FilterChangedEventArgs"/> instance containing the event data.</param>
+        private void OnFilterChanged(object? sender, FilterChangedEventArgs e) => RefreshVisibilities(e.FilterText);
 
         /// <summary>
         /// Builds the properties view.
@@ -522,7 +565,7 @@ namespace Avalonia.PropertyGrid.Controls
 
             AddPropertyChangedObservers(_cellInfoCache.Children);
 
-            RefreshVisibilities();
+            RefreshVisibilities(ViewModel.FilterPattern.FilterText);
 
             var width = ColumnName.Bounds.Width;
 
@@ -537,7 +580,11 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="referencePath">The reference path.</param>
         /// <param name="categoryStyle">category style.</param>
         /// <param name="propertyOrderStyle">property style.</param>
-        protected virtual void BuildCategoryPropertiesView(object target, ReferencePath referencePath, PropertyGridOrderStyle categoryStyle, PropertyGridOrderStyle propertyOrderStyle)
+        protected virtual void BuildCategoryPropertiesView(
+            object target, 
+            ReferencePath referencePath, 
+            PropertyGridOrderStyle categoryStyle, 
+            PropertyGridOrderStyle propertyOrderStyle)
         {
             PropertiesGrid.ColumnDefinitions.Clear();
 
@@ -556,14 +603,19 @@ namespace Avalonia.PropertyGrid.Controls
 
                 var expander = new Expander
                 {
-                    ExpandDirection = ExpandDirection.Down
+                    ExpandDirection = ExpandDirection.Down,
+                    HeaderTemplate = new FuncDataTemplate<object>((_, _) =>
+                        new HighlightedTextBlock
+                        {
+                            [!TextBlock.TextProperty] = new Binding()
+                        })
                 };
                 _ = expander.SetValue(Grid.RowProperty, PropertiesGrid.RowDefinitions.Count - 1);
                 expander.IsExpanded = autoCollapseCategoriesAttribute?.ShouldAutoCollapse(categoryInfo.Key) != true;
                 expander.HorizontalContentAlignment = HorizontalAlignment.Stretch;
                 expander.HorizontalAlignment = HorizontalAlignment.Stretch;
-                expander.Margin = new Thickness(2);
-                expander.Padding = new Thickness(2);
+                expander.Margin = new Thickness(this.DisplayMode == PropertyGridDisplayMode.Inline ? 0 : 2);
+                expander.Padding = new Thickness(this.DisplayMode == PropertyGridDisplayMode.Inline ? 0 : 2);
 
                 // expander.Header = categoryInfo.Key;
                 expander.SetLocalizeBinding(HeaderedContentControl.HeaderProperty, categoryInfo.Key);
@@ -585,7 +637,7 @@ namespace Avalonia.PropertyGrid.Controls
 
                 var properties = propertyOrderStyle == PropertyGridOrderStyle.Builtin ? categoryInfo.Value : [.. categoryInfo.Value.OrderBy(x => x.DisplayName)];
 
-                BuildPropertiesCellEdit(target, referencePath, properties, expander, grid, cellInfo);
+                BuildPropertiesCellEdit(target, referencePath, properties, grid, cellInfo);
 
                 expander.Content = grid;
 
@@ -601,17 +653,14 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="target">The target.</param>
         /// <param name="referencePath">The reference path.</param>
         /// <param name="properties">The properties.</param>
-        /// <param name="expander">The expander.</param>
         /// <param name="grid">The grid.</param>
         /// <param name="container">The container.</param>
         private void BuildPropertiesCellEdit(
             object target,
             ReferencePath referencePath,
             IEnumerable<PropertyDescriptor> properties,
-            Expander? expander,
             Grid grid,
-            IPropertyGridCellInfoContainer container
-            )
+            IPropertyGridCellInfoContainer container)
         {
             foreach (var property in properties)
             {
@@ -619,8 +668,7 @@ namespace Avalonia.PropertyGrid.Controls
                 try
                 {
                     // var value = property.GetValue(target);
-
-                    BuildPropertyCellEdit(target, referencePath, property, expander, grid, container);
+                    BuildPropertyCellEdit(target, referencePath, property, grid, container);
                 }
                 finally
                 {
@@ -635,17 +683,14 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="target">The target.</param>
         /// <param name="referencePath">The reference path.</param>
         /// <param name="propertyDescriptor">The property descriptor.</param>
-        /// <param name="expander">The expander.</param>
         /// <param name="grid">The grid.</param>
         /// <param name="container">The container.</param>
         private void BuildPropertyCellEdit(
             object target,
             ReferencePath referencePath,
             PropertyDescriptor propertyDescriptor,
-            Expander? expander,
             Grid grid,
-            IPropertyGridCellInfoContainer container
-            )
+            IPropertyGridCellInfoContainer container)
         {
             var property = propertyDescriptor;
 
@@ -666,34 +711,52 @@ namespace Avalonia.PropertyGrid.Controls
             Debug.Assert(context.CellEdit == control);
 
             var factory = context.Factory;
-
+            factory.HandlePropertyChanged(context);
             grid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
 
-            var nameBlock = new TextBlock();
-            nameBlock.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
-            nameBlock.SetValue(Grid.ColumnProperty, 0);
-            nameBlock.VerticalAlignment = VerticalAlignment.Center;
-            nameBlock.Margin = new Thickness(4);
-
-            // nameBlock.Text = LocalizationService.Default[property.DisplayName];
-            nameBlock.SetLocalizeBinding(TextBlock.TextProperty, property.DisplayName);
-
-            if (property.GetCustomAttribute<DescriptionAttribute>() is { } descriptionAttribute && descriptionAttribute.Description.IsNotNullOrEmpty())
+            var nameBlock = new HighlightedTextBlock();
+            var shouldUseInlineMode = this.DisplayMode == PropertyGridDisplayMode.Inline && this.IsExpandableType(property);
+            switch (shouldUseInlineMode)
             {
-                // nameBlock.SetValue(ToolTip.TipProperty, LocalizationService.Default[descriptionAttribute.Description]);
-                nameBlock.SetLocalizeBinding(ToolTip.TipProperty, descriptionAttribute.Description);
+                case true:
+                    var propertyGrid = control.GetVisualChildren().OfType<PropertyGrid>().FirstOrDefault();
+                    var innerGrid = propertyGrid?.LogicalChildren.OfType<Grid>().FirstOrDefault();
+                    var innerPropertyGrid = innerGrid?.GetVisualChildren().OfType<Grid>()
+                        .FirstOrDefault(item => item.Name == "PropertiesGrid");
+                    var innerExpander = innerPropertyGrid?.Children.OfType<Expander>().FirstOrDefault();
+
+                    if (innerExpander != null)
+                    {
+                        innerExpander.Header = property.DisplayName;
+                    }
+                    break;
+
+                case false:
+                    nameBlock.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
+                    nameBlock.SetValue(Grid.ColumnProperty, 0);
+                    nameBlock.VerticalAlignment = VerticalAlignment.Center;
+                    nameBlock.Margin = new Thickness(4);
+
+                    // nameBlock.Text = LocalizationService.Default[property.DisplayName];
+                    nameBlock.SetLocalizeBinding(TextBlock.TextProperty, property.DisplayName);
+
+                    if (property.GetCustomAttribute<DescriptionAttribute>() is { } descriptionAttribute && descriptionAttribute.Description.IsNotNullOrEmpty())
+                    {
+                        // nameBlock.SetValue(ToolTip.TipProperty, LocalizationService.Default[descriptionAttribute.Description]);
+                        nameBlock.SetLocalizeBinding(ToolTip.TipProperty, descriptionAttribute.Description);
+                    }
+
+                    grid.Children.Add(nameBlock);
+                    break;
             }
 
-            grid.Children.Add(nameBlock);
-
             control.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
-            control.SetValue(Grid.ColumnProperty, 1);
-            control.Margin = new Thickness(4);
+            control.SetValue(Grid.ColumnProperty, shouldUseInlineMode ? 0 : 1);
+            control.SetValue(Grid.ColumnSpanProperty, shouldUseInlineMode ? 2 : 1);
+            control.Margin = new Thickness(shouldUseInlineMode ? 0 : 4);
             factory.HandleReadOnlyStateChanged(control, context.IsReadOnly);
 
             grid.Children.Add(control);
-
-            factory.HandlePropertyChanged(context);
 
             var cellInfo = new PropertyGridCellInfo(context)
             {
@@ -708,6 +771,31 @@ namespace Avalonia.PropertyGrid.Controls
 
             container.Add(cellInfo);
         }
+
+        /// <summary>
+        /// Determines whether [is expandable type] [the specified property].
+        /// </summary>
+        /// <param name="property">The property.</param>
+        /// <returns><c>true</c> if [is expandable type] [the specified property]; otherwise, <c>false</c>.</returns>
+        private bool IsExpandableType(PropertyDescriptor property)
+        {
+            if (!property.PropertyType.IsClass)
+            {
+                return false;
+            }
+
+            var attr = property.GetCustomAttribute<TypeConverterAttribute>();
+
+            if (attr?.GetConverterType()!.IsChildOf<ExpandableObjectConverter>() == true)
+            {
+                return true;
+            }
+
+            attr = property.PropertyType.GetCustomAttribute<TypeConverterAttribute>();
+
+            return attr?.GetConverterType()!.IsChildOf<ExpandableObjectConverter>() == true;
+        }
+
         #endregion
 
         #region Alpha
@@ -722,7 +810,7 @@ namespace Avalonia.PropertyGrid.Controls
             PropertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
             PropertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
 
-            BuildPropertiesCellEdit(target, referencePath, ViewModel.AllProperties.OrderBy(x => x.DisplayName), null, PropertiesGrid, _cellInfoCache);
+            BuildPropertiesCellEdit(target, referencePath, ViewModel.AllProperties.OrderBy(x => x.DisplayName),  PropertiesGrid, _cellInfoCache);
         }
 
         /// <summary>
@@ -736,7 +824,7 @@ namespace Avalonia.PropertyGrid.Controls
             PropertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
             PropertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
 
-            BuildPropertiesCellEdit(target, referencePath, ViewModel.AllProperties, null, PropertiesGrid, _cellInfoCache);
+            BuildPropertiesCellEdit(target, referencePath, ViewModel.AllProperties,  PropertiesGrid, _cellInfoCache);
         }
         #endregion
 
@@ -794,21 +882,28 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Refreshes the visibilities.
         /// </summary>
-        private void RefreshVisibilities() => FilterCells(ViewModel);
+        /// <param name="filterText">The filter text.</param>
+        private void RefreshVisibilities(string? filterText) => FilterCells(ViewModel, FilterCategory.Default, filterText);
 
         /// <summary>
         /// Filters the cells.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="category">The category.</param>
+        /// <param name="filterText">The filter text.</param>
+        /// <param name="filterMatchesParentCategory">Indicates whether the filter matches the parent category.</param>
         /// <returns>PropertyVisibility.</returns>
-        public PropertyVisibility FilterCells(IPropertyGridFilterContext context, FilterCategory category = FilterCategory.Default)
+        public PropertyVisibility FilterCells(
+            IPropertyGridFilterContext context, 
+            FilterCategory category = FilterCategory.Default, 
+            string? filterText = null,
+            bool filterMatchesParentCategory = false)
         {
             var atLeastOneVisible = false;
 
             foreach (var info in _cellInfoCache.Children)
             {
-                atLeastOneVisible |= context.PropagateVisibility(info, category) == PropertyVisibility.AlwaysVisible;
+                atLeastOneVisible |= context.PropagateVisibility(info, category, filterText, filterMatchesParentCategory) == PropertyVisibility.AlwaysVisible;
             }
 
             return atLeastOneVisible ? PropertyVisibility.AlwaysVisible : PropertyVisibility.HiddenByNoVisibleChildren;
@@ -840,7 +935,7 @@ namespace Avalonia.PropertyGrid.Controls
         {
             if (e.Cell.Context?.Property != null && e.Cell.Context.Property.IsDefined<ConditionTargetAttribute>())
             {
-                RefreshVisibilities();
+                RefreshVisibilities(ViewModel.FilterPattern.FilterText);
             }
         }
 

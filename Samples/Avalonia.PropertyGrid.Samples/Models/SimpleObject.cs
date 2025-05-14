@@ -196,7 +196,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
         public decimal decValue { get; set; } = 100.00M;
 
         [Category("Numeric")]
-        [Range(typeof(decimal), "10.00001", "1000.9999")]
+        [Range(typeof(decimal), "10.00001", "1000.9999", ParseLimitsInInvariantCulture = true)]
         [FloatPrecision(3)]
         public decimal decValueWithRange { get; set; } = 100.00M;
 
@@ -293,9 +293,9 @@ namespace Avalonia.PropertyGrid.Samples.Models
         [Category("Color")]
         public BindingList<System.Drawing.Color> ColorList { get; set; } = [System.Drawing.Color.Pink, System.Drawing.Color.Purple];
 
+        [Category("Expandable")]
         [DisplayName("Login User Data")]
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        [Category("Expandable")]
         public LoginInfo loginInfo { get; set; } = new LoginInfo();
 
         [Category("Font")]

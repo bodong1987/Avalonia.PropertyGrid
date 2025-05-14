@@ -291,9 +291,11 @@ namespace PropertyModels.Extensions
         /// <param name="customAssemblies">The custom assemblies.</param>
         /// <returns>Type.</returns>
         private static Type? GetTypeFromAssemblies(string typeName, params Assembly[] customAssemblies)
-            => customAssemblies.Select(x => x.GetType(typeName)).FirstOrDefault()
-                ?? AppDomain.CurrentDomain.GetAssemblies().Select(x => x.GetType(typeName)).FirstOrDefault();
-
+            => customAssemblies
+                .Concat(AppDomain.CurrentDomain.GetAssemblies())
+                .SelectMany(a => a.GetTypes())
+                .FirstOrDefault(t => t.FullName == typeName);
+        
         /// <summary>
         /// Gets the type.
         /// </summary>

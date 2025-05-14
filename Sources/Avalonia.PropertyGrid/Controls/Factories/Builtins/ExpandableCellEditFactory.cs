@@ -79,7 +79,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             var border = new Border
             {
                 BorderBrush = Brushes.Gray,
-                BorderThickness = new Thickness(0.5),
+                BorderThickness = new Thickness(context.Root.DisplayMode == PropertyGridDisplayMode.Inline ? 0 : 0.5),
                 CornerRadius = new CornerRadius(0, 0, 5, 5),
                 Margin = new Thickness(0)
             };
@@ -92,6 +92,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             Debug.Assert(propertyGrid.RootPropertyGrid != null);
             Debug.Assert(!Equals(propertyGrid.RootPropertyGrid, propertyGrid));
 
+            propertyGrid.DisplayMode = context.Root.DisplayMode;
             propertyGrid.ShowStyle = context.Root.ShowStyle;
             propertyGrid.AllowFilter = false;
             propertyGrid.AllowQuickFilter = false;
@@ -146,8 +147,15 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <param name="target">The target.</param>
         /// <param name="context">The context.</param>
         /// <param name="filterContext">The filter context.</param>
+        /// <param name="filterText">The filter text.</param>
+        /// <param name="filterMatchesParentCategory">Indicates whether the filter matches the parent category.</param>
         /// <returns>System.Nullable&lt;PropertyVisibility&gt;.</returns>
-        public override PropertyVisibility? HandlePropagateVisibility(object? target, PropertyCellContext context, IPropertyGridFilterContext filterContext)
+        public override PropertyVisibility? HandlePropagateVisibility(
+            object? target, 
+            PropertyCellContext context, 
+            IPropertyGridFilterContext filterContext,
+            string? filterText = null,
+            bool filterMatchesParentCategory = false)
         {
             if (!IsExpandableType(context.Property))
             {
@@ -159,7 +167,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 var category = FilterCategory.Default;
                 category &= ~FilterCategory.Category;
 
-                return pg.FilterCells(filterContext, category);
+                return pg.FilterCells(filterContext, category, filterText, filterMatchesParentCategory);
             }
 
             return null;

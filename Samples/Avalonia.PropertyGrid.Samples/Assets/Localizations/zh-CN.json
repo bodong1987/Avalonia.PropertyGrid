@@ -139,6 +139,7 @@
     "Can not be null": "不可为空",
     "ValidateString": "可校验字符串",
     "Show_Style": "显示风格",
+    "Display_Mode": "显示模式",
     "CategoryOrder": "分类顺序",
     "PropertyOrder": "属性顺序",
     "User Home": "用户主页",
@@ -146,7 +147,7 @@
     "AutoCollapse": "自动折叠",
     "decValue": "高精度数值",
     "decValueWithRange": "高精度数值(带范围精度)",
-    "LengthLimitedList":"带长度限制数组",
+    "LengthLimitedList": "带长度限制数组",
     "ReadonlyPath": "只读路径",
     "ReadonlyString": "只读字符串",
     "ReadonlyBoolean": "只读布尔值",
@@ -170,7 +171,7 @@
     "ImagingList": "图像列表",
     "LoginNameRadioMode": "登录名[单选模式]",
     "LoginNameToggleGroupMode": "登录名[开关组模式]",
-    "GenderDefaultView" : "性别",
+    "GenderDefaultView": "性别",
     "GenderRadioView": "性别[单选模式]",
     "GenderToggleGroupView": "性别[开关组模式]"
 }

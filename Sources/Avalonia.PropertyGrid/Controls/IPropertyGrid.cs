@@ -54,6 +54,12 @@ namespace Avalonia.PropertyGrid.Controls
         bool IsReadOnly { get; set; }
 
         /// <summary>
+        /// Gets or sets the display mode.
+        /// </summary>
+        /// <value>The display mode.</value>
+        PropertyGridDisplayMode DisplayMode { get; set; }
+
+        /// <summary>
         /// Gets or sets the show style.
         /// </summary>
         /// <value>The show style.</value>

@@ -63,8 +63,20 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
         }
 
         #region View
+        private PropertyGridDisplayMode _DisplayMode = PropertyGridDisplayMode.Tree;
+        public PropertyGridDisplayMode DisplayMode
+        {
+            get => _DisplayMode;
+            set
+            {
+                if (_DisplayMode != value)
+                {
+                    this.RaiseAndSetIfChanged(ref _DisplayMode, value);
+                }
+            }
+        }
+        
         private PropertyGridShowStyle _ShowStyle = PropertyGridShowStyle.Category;
-
         public PropertyGridShowStyle ShowStyle
         {
             get => _ShowStyle;

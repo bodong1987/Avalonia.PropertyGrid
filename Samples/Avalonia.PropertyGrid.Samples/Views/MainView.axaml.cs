@@ -40,6 +40,14 @@ public partial class MainView : UserControl
 
         ((MainViewModel)DataContext).PropertyChanged += OnPropertyChanged;
 
+        DisplayModeComboBox.SelectionChanged += (sender, e) =>
+        {
+            if (DisplayModeComboBox.SelectedItem is PropertyGridDisplayMode displayMode)
+            {
+                propertyGrid_Styles.DisplayMode = displayMode;
+            }
+        };
+
         ShowStyleComboBox.SelectionChanged += (sender, e) =>
         {
             if (ShowStyleComboBox.SelectedItem is PropertyGridShowStyle showStyle)
