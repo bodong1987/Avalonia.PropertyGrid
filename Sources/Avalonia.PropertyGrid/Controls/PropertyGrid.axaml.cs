@@ -724,11 +724,7 @@ namespace Avalonia.PropertyGrid.Controls
                     var innerPropertyGrid = innerGrid?.GetVisualChildren().OfType<Grid>()
                         .FirstOrDefault(item => item.Name == "PropertiesGrid");
                     var innerExpander = innerPropertyGrid?.Children.OfType<Expander>().FirstOrDefault();
-
-                    if (innerExpander != null)
-                    {
-                        innerExpander.Header = property.DisplayName;
-                    }
+                    innerExpander?.SetLocalizeBinding(HeaderedContentControl.HeaderProperty, property.DisplayName);
                     break;
 
                 case false:
@@ -736,13 +732,10 @@ namespace Avalonia.PropertyGrid.Controls
                     nameBlock.SetValue(Grid.ColumnProperty, 0);
                     nameBlock.VerticalAlignment = VerticalAlignment.Center;
                     nameBlock.Margin = new Thickness(4);
-
-                    // nameBlock.Text = LocalizationService.Default[property.DisplayName];
                     nameBlock.SetLocalizeBinding(TextBlock.TextProperty, property.DisplayName);
 
                     if (property.GetCustomAttribute<DescriptionAttribute>() is { } descriptionAttribute && descriptionAttribute.Description.IsNotNullOrEmpty())
                     {
-                        // nameBlock.SetValue(ToolTip.TipProperty, LocalizationService.Default[descriptionAttribute.Description]);
                         nameBlock.SetLocalizeBinding(ToolTip.TipProperty, descriptionAttribute.Description);
                     }
 
