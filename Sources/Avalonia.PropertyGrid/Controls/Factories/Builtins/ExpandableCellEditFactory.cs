@@ -24,30 +24,6 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         public override int ImportPriority => int.MinValue + 10000;
 
         /// <summary>
-        /// Determines whether [is expandable type] [the specified property].
-        /// </summary>
-        /// <param name="property">The property.</param>
-        /// <returns><c>true</c> if [is expandable type] [the specified property]; otherwise, <c>false</c>.</returns>
-        protected virtual bool IsExpandableType(PropertyDescriptor property)
-        {
-            if (!property.PropertyType.IsClass)
-            {
-                return false;
-            }
-
-            var attr = property.GetCustomAttribute<TypeConverterAttribute>();
-
-            if (attr?.GetConverterType()!.IsChildOf<ExpandableObjectConverter>() == true)
-            {
-                return true;
-            }
-
-            attr = property.PropertyType.GetCustomAttribute<TypeConverterAttribute>();
-
-            return attr?.GetConverterType()!.IsChildOf<ExpandableObjectConverter>() == true;
-        }
-
-        /// <summary>
         /// Handles the new property.
         /// </summary>
         /// <param name="context">The context.</param>
@@ -62,7 +38,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return null;
             }
 
-            if (!IsExpandableType(propertyDescriptor))
+            if (!propertyDescriptor.IsExpandableType())
             {
                 return null;
             }
@@ -125,7 +101,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 return false;
             }
 
-            if (!IsExpandableType(propertyDescriptor))
+            if (!propertyDescriptor.IsExpandableType())
             {
                 return false;
             }
@@ -158,7 +134,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             string? filterText = null,
             bool filterMatchesParentCategory = false)
         {
-            if (!IsExpandableType(context.Property))
+            if (!context.Property.IsExpandableType())
             {
                 return null;
             }

@@ -760,7 +760,7 @@ namespace Avalonia.PropertyGrid.Controls
             grid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
 
             var nameBlock = new HighlightedTextBlock();
-            var shouldUseInlineMode = this.DisplayMode == PropertyGridDisplayMode.Inline && this.IsExpandableType(property);
+            var shouldUseInlineMode = this.DisplayMode == PropertyGridDisplayMode.Inline && property.IsExpandableType();
             switch (shouldUseInlineMode)
             {
                 case true:
@@ -808,30 +808,6 @@ namespace Avalonia.PropertyGrid.Controls
             };
 
             container.Add(cellInfo);
-        }
-
-        /// <summary>
-        /// Determines whether [is expandable type] [the specified property].
-        /// </summary>
-        /// <param name="property">The property.</param>
-        /// <returns><c>true</c> if [is expandable type] [the specified property]; otherwise, <c>false</c>.</returns>
-        private bool IsExpandableType(PropertyDescriptor property)
-        {
-            if (!property.PropertyType.IsClass)
-            {
-                return false;
-            }
-
-            var attr = property.GetCustomAttribute<TypeConverterAttribute>();
-
-            if (attr?.GetConverterType()!.IsChildOf<ExpandableObjectConverter>() == true)
-            {
-                return true;
-            }
-
-            attr = property.PropertyType.GetCustomAttribute<TypeConverterAttribute>();
-
-            return attr?.GetConverterType()!.IsChildOf<ExpandableObjectConverter>() == true;
         }
 
         #endregion
