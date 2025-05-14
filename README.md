@@ -28,7 +28,11 @@ Use the source code of this project directly or use NUGet Packages:
 Then add PropertyGrid to your project, and bind the object to be displayed and edited to the `DataContext` property. If you want to bind multiple objects, just bind IEnumerable<T> directly
 
 ## How to Debug
-Open `Avalonia.PropertyGrid.sln`, change config to Development, Build it and run samples.  
+Open `Avalonia.PropertyGrid.sln`, change config to `Development`, Build it and run samples.  
+
+## How to build Online Demo
+run `dotnet publish` under `Samples/Avalonia.PropertyGrid.Samples.Browser`. This may end up taking several minutes.    
+**Because of the bug in .net 8.0, you must use .net 9.0, otherwise you will encounter errors when running**  
 
 ## Detail Description
 ### Data Modeling
