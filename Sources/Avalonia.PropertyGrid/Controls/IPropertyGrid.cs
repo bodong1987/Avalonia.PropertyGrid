@@ -3,13 +3,14 @@ using System.ComponentModel;
 using Avalonia.Interactivity;
 using Avalonia.PropertyGrid.ViewModels;
 using PropertyModels.ComponentModel;
+using INotifyPropertyChanged = System.ComponentModel.INotifyPropertyChanged;
 
 namespace Avalonia.PropertyGrid.Controls
 {
     /// <summary>
     /// Interface IPropertyGrid
     /// </summary>
-    public interface IPropertyGrid
+    public interface IPropertyGrid: INotifyPropertyChanged, IDisposable
     {
         /// <summary>
         /// Gets the cell edit factory collection.
@@ -64,6 +65,12 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <value>The show style.</value>
         PropertyGridShowStyle ShowStyle { get; set; }
+
+        /// <summary>
+        /// Gets or sets the width of the name.
+        /// </summary>
+        /// <value>The width of the name.</value>
+        double NameWidth { get; set; }
 
         /// <summary>
         /// Gets or sets the root property grid.

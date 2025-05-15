@@ -42,7 +42,8 @@ namespace Avalonia.PropertyGrid.Controls
         [Category("Views")]
         public bool AllowFilter
         {
-            get => GetValue(AllowFilterProperty); set => SetValue(AllowFilterProperty, value);
+            get => GetValue(AllowFilterProperty); 
+            set => SetValue(AllowFilterProperty, value);
         }
 
         /// <summary>
@@ -57,7 +58,8 @@ namespace Avalonia.PropertyGrid.Controls
         [Category("Views")]
         public bool AllowToggleView
         {
-            get => GetValue(AllowToggleViewProperty); set => SetValue(AllowToggleViewProperty, value);
+            get => GetValue(AllowToggleViewProperty); 
+            set => SetValue(AllowToggleViewProperty, value);
         }
 
         /// <summary>
@@ -72,7 +74,8 @@ namespace Avalonia.PropertyGrid.Controls
         [Category("Views")]
         public bool AllowQuickFilter
         {
-            get => GetValue(AllowQuickFilterProperty); set => SetValue(AllowQuickFilterProperty, value);
+            get => GetValue(AllowQuickFilterProperty); 
+            set => SetValue(AllowQuickFilterProperty, value);
         }
 
         /// <summary>
@@ -87,7 +90,8 @@ namespace Avalonia.PropertyGrid.Controls
         [Category("Views")]
         public bool ShowTitle
         {
-            get => GetValue(ShowTitleProperty); set => SetValue(ShowTitleProperty, value);
+            get => GetValue(ShowTitleProperty); 
+            set => SetValue(ShowTitleProperty, value);
         }
 
         /// <summary>
@@ -205,8 +209,27 @@ namespace Avalonia.PropertyGrid.Controls
         /// Gets or sets the root property grid.
         /// </summary>
         /// <value>The root property grid.</value>
-        public IPropertyGrid? RootPropertyGrid { get; set; }
+        public IPropertyGrid? RootPropertyGrid
+        {
+            get => this.rootPropertyGrid;
+            set
+            {
+                if (this.rootPropertyGrid != null)
+                {
+                    this.rootPropertyGrid.PropertyChanged -= this.OnRootPropertyGridPropertyChanged;
+                }
 
+                this.rootPropertyGrid = value;
+
+                if (this.rootPropertyGrid != null)
+                {
+                    this.rootPropertyGrid.PropertyChanged += this.OnRootPropertyGridPropertyChanged;
+                }
+            }
+        }
+
+        private IPropertyGrid? rootPropertyGrid;
+        
         /// <summary>
         /// The custom property descriptor filter event
         /// </summary>
@@ -268,7 +291,7 @@ namespace Avalonia.PropertyGrid.Controls
             _ = PropertyOrderStyleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<PropertyGridOrderStyle>>(OnPropertyOrderStyleChanged));
             _ = ShowTitleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnShowTitleChanged));
             _ = NameWidthProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<double>>(OnNameWidthChanged));
-            _ = IsReadOnlyProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnIsReadOnyPropertyChanged));
+            _ = IsReadOnlyProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnIsReadOnlyPropertyChanged));
         }
 
         /// <summary>
@@ -344,6 +367,24 @@ namespace Avalonia.PropertyGrid.Controls
             {
                 IsReadOnly = ViewModel.IsReadOnly;
                 BuildPropertiesView();
+            }
+        }
+
+        /// <summary>
+        /// Handles the <see cref="E:ViewModelPropertyChanged" /> event of the root property grid.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="PropertyChangedEventArgs"/> instance containing the event data.</param>
+        private void OnRootPropertyGridPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (sender is IPropertyGrid propertyGrid)
+            {
+                switch (e.PropertyName)
+                {
+                    case nameof(IPropertyGrid.NameWidth):
+                        this.NameWidth = propertyGrid.NameWidth;
+                        break;
+                }
             }
         }
 
@@ -480,17 +521,21 @@ namespace Avalonia.PropertyGrid.Controls
             }
         }
 
-        private void OnShowTitleChanged(bool oldValue, bool newValue) => SplitterGrid.IsVisible = newValue;
+        private void OnShowTitleChanged(bool oldValue, bool newValue)
+        {
+            SplitterGrid.Opacity = newValue ? 1 : 0;
+            SplitterGrid.Height = newValue ? double.NaN : 0;
+        }
 
-        private static void OnIsReadOnyPropertyChanged(AvaloniaPropertyChangedEventArgs<bool> e)
+        private static void OnIsReadOnlyPropertyChanged(AvaloniaPropertyChangedEventArgs<bool> e)
         {
             if (e.Sender is PropertyGrid sender)
             {
-                sender.OnIsReadOnyPropertyChanged(e.OldValue.Value, e.NewValue.Value);
+                sender.OnIsReadOnlyPropertyChanged(e.OldValue.Value, e.NewValue.Value);
             }
         }
 
-        private void OnIsReadOnyPropertyChanged(bool oldValue, bool newValue) => ViewModel.IsReadOnly = newValue;
+        private void OnIsReadOnlyPropertyChanged(bool oldValue, bool newValue) => ViewModel.IsReadOnly = newValue;
 
         private static void OnAllowQuickFilterChanged(AvaloniaPropertyChangedEventArgs<bool> e)
         {
@@ -715,7 +760,7 @@ namespace Avalonia.PropertyGrid.Controls
             grid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
 
             var nameBlock = new HighlightedTextBlock();
-            var shouldUseInlineMode = this.DisplayMode == PropertyGridDisplayMode.Inline && this.IsExpandableType(property);
+            var shouldUseInlineMode = this.DisplayMode == PropertyGridDisplayMode.Inline && property.IsExpandableType();
             switch (shouldUseInlineMode)
             {
                 case true:
@@ -724,11 +769,7 @@ namespace Avalonia.PropertyGrid.Controls
                     var innerPropertyGrid = innerGrid?.GetVisualChildren().OfType<Grid>()
                         .FirstOrDefault(item => item.Name == "PropertiesGrid");
                     var innerExpander = innerPropertyGrid?.Children.OfType<Expander>().FirstOrDefault();
-
-                    if (innerExpander != null)
-                    {
-                        innerExpander.Header = property.DisplayName;
-                    }
+                    innerExpander?.SetLocalizeBinding(HeaderedContentControl.HeaderProperty, property.DisplayName);
                     break;
 
                 case false:
@@ -736,13 +777,10 @@ namespace Avalonia.PropertyGrid.Controls
                     nameBlock.SetValue(Grid.ColumnProperty, 0);
                     nameBlock.VerticalAlignment = VerticalAlignment.Center;
                     nameBlock.Margin = new Thickness(4);
-
-                    // nameBlock.Text = LocalizationService.Default[property.DisplayName];
                     nameBlock.SetLocalizeBinding(TextBlock.TextProperty, property.DisplayName);
 
                     if (property.GetCustomAttribute<DescriptionAttribute>() is { } descriptionAttribute && descriptionAttribute.Description.IsNotNullOrEmpty())
                     {
-                        // nameBlock.SetValue(ToolTip.TipProperty, LocalizationService.Default[descriptionAttribute.Description]);
                         nameBlock.SetLocalizeBinding(ToolTip.TipProperty, descriptionAttribute.Description);
                     }
 
@@ -770,30 +808,6 @@ namespace Avalonia.PropertyGrid.Controls
             };
 
             container.Add(cellInfo);
-        }
-
-        /// <summary>
-        /// Determines whether [is expandable type] [the specified property].
-        /// </summary>
-        /// <param name="property">The property.</param>
-        /// <returns><c>true</c> if [is expandable type] [the specified property]; otherwise, <c>false</c>.</returns>
-        private bool IsExpandableType(PropertyDescriptor property)
-        {
-            if (!property.PropertyType.IsClass)
-            {
-                return false;
-            }
-
-            var attr = property.GetCustomAttribute<TypeConverterAttribute>();
-
-            if (attr?.GetConverterType()!.IsChildOf<ExpandableObjectConverter>() == true)
-            {
-                return true;
-            }
-
-            attr = property.PropertyType.GetCustomAttribute<TypeConverterAttribute>();
-
-            return attr?.GetConverterType()!.IsChildOf<ExpandableObjectConverter>() == true;
         }
 
         #endregion
@@ -836,11 +850,6 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="syncToTitle">if set to <c>true</c> [synchronize to title].</param>
         private void SyncNameWidth(double width, bool syncToTitle)
         {
-            if (!ShowTitle)
-            {
-                return;
-            }
-
             PropagateCellNameWidth(_cellInfoCache.Children, width);
 
             if (syncToTitle)
@@ -936,6 +945,19 @@ namespace Avalonia.PropertyGrid.Controls
             if (e.Cell.Context?.Property != null && e.Cell.Context.Property.IsDefined<ConditionTargetAttribute>())
             {
                 RefreshVisibilities(ViewModel.FilterPattern.FilterText);
+            }
+        }
+
+        #endregion
+
+        #region IDisposable
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            if (this.rootPropertyGrid != null)
+            {
+                this.rootPropertyGrid.PropertyChanged -= this.OnRootPropertyGridPropertyChanged;
             }
         }
 
