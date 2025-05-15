@@ -344,11 +344,10 @@ namespace Avalonia.PropertyGrid.ViewModels
                 case PropertyGridCellType.Category:
                     // Check if the filter matches the (parent) category.
                     bool filterMatchesCategory = filterMatchesParentCategory;
-                    bool allChildrenAreExpandable = cellInfo.Children.All(child => child.Context?.Property.IsExpandableType() == true);
-                    bool shouldCheckCategory = this.DisplayMode != PropertyGridDisplayMode.Inline || allChildrenAreExpandable;
-                    if (filterText.IsNotNullOrEmpty() && shouldCheckCategory)
+                    if (filterText.IsNotNullOrEmpty())
                     {
-                        filterMatchesCategory |= cellInfo.Category?.Contains(filterText, StringComparison.CurrentCultureIgnoreCase) ?? false;
+                        filterMatchesCategory |= (cellInfo.Container?.Header as string)?
+                            .Contains(filterText, StringComparison.CurrentCultureIgnoreCase) ?? false;
                     }
 
                     // Propagate the visibility of all child cell infos.
