@@ -93,7 +93,8 @@ public partial class HighlightedTextBlock : TextBlock
                     : new SolidColorBrush(Colors.Transparent);
                 inlineCollection.Add(new Run(this.Text.Substring(index, textToHighlight.Length))
                 {
-                    Background = backgroundBrush
+                    Background = backgroundBrush,
+                    Foreground = new SolidColorBrush(Colors.White)
                 });
 
                 startIndex = index + textToHighlight.Length;
