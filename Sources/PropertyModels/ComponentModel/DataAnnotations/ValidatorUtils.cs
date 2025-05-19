@@ -32,7 +32,7 @@ namespace PropertyModels.ComponentModel.DataAnnotations
 
                     if (!Validator.TryValidateValue(
                         value,
-                        new ValidationContext(value)
+                        new ValidationContext(target)
                         {
                             DisplayName = property.DisplayName,
                             MemberName = property.Name
@@ -69,7 +69,7 @@ namespace PropertyModels.ComponentModel.DataAnnotations
                 {
                     if (!Validator.TryValidateValue(
                     value,
-                    new ValidationContext(value)
+                    new ValidationContext(component)
                     {
                         DisplayName = property.DisplayName,
                         MemberName = property.Name
