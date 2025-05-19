@@ -171,41 +171,51 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
         [Category("Numeric")]
         [Range(10, 200)]
+        [Unit("m")]
         public int iValue { get; set; } = 100;
 
         [Category("Numeric")]
         [Range(0.1f, 10.0f)]
+        [Unit("cm")]
         public float fValue { get; set; } = 0.5f;
 
         [Category("Numeric")]
         [Range(0.1f, 10.0f)]
         [FloatPrecision(3)]
+        [Unit("mm")]
         public float fValuePrecision { get; set; } = 0.5f;
 
         [Category("Numeric")]
         [Range(0.1f, 10.0f)]
+        [Unit("rad")]
         public double dValue { get; set; } = 5.5f;
 
         [Category("Numeric")]
+        [Unit("deg")]
         public long i64Value { get; set; } = 1000000000;
 
         [Category("Numeric")]
+        [Unit("m/s\u00b2")]
         public long i64ValueBig { get; set; } = 583792581039233983;
 
         [Category("Numeric")]
+        [Unit("km/h")]
         public decimal decValue { get; set; } = 100.00M;
 
         [Category("Numeric")]
         [Range(typeof(decimal), "10.00001", "1000.9999", ParseLimitsInInvariantCulture = true)]
         [FloatPrecision(3)]
+        [Unit("mp/h")]
         public decimal decValueWithRange { get; set; } = 100.00M;
 
         [Category("Numeric")]
         [Progress]
+        [Unit("%")]
         public double progressValue { get; set; } = 47;
 
         [Category("Numeric")]
         [Trackable(0, 100, Increment = 0.1, FormatString = "{0:0.0}")]
+        [Unit("kg")]
         public double trackableDoubleValue
         {
             get => progressValue;
@@ -221,6 +231,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
         [Category("Numeric")]
         [Trackable(-1000, 1000, Increment = 1, FormatString = "{0:0}")]
+        [Unit("t")]
         public int trackableIntValue { get; set; } = 10;
 
         [Category("Array")]
