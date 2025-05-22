@@ -50,6 +50,9 @@ namespace Avalonia.PropertyGrid.Samples.Models
         [Category("Boolean")]
         public static bool readonlyBoolean2 => true;
 
+        [Category("Boolean")]
+        public bool customLabel { get; set; }
+
         public TestExtendsObject()
         {
             List<CountryInfo> list = [];

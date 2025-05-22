@@ -249,6 +249,21 @@ namespace Avalonia.PropertyGrid.Controls
 
         #region Events
         /// <summary>
+        /// The custom name block event
+        /// </summary>
+        public static readonly RoutedEvent<CustomNameBlockEventArgs> CustomNameBlockEvent = 
+            RoutedEvent.Register<PropertyGrid, CustomNameBlockEventArgs>(nameof(CustomNameBlock), RoutingStrategies.Bubble);
+
+        /// <summary>
+        /// Occurs when [custom name block].
+        /// </summary>
+        public event EventHandler<CustomNameBlockEventArgs> CustomNameBlock
+        {
+            add => AddHandler(CustomNameBlockEvent, value);
+            remove => RemoveHandler(CustomNameBlockEvent, value);
+        }
+
+        /// <summary>
         /// The command executing event
         /// </summary>
         public static readonly RoutedEvent<RoutedCommandExecutingEventArgs> CommandExecutingEvent =
@@ -760,7 +775,7 @@ namespace Avalonia.PropertyGrid.Controls
             factory.HandlePropertyChanged(context);
             grid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
 
-            HighlightedTextBlock? nameBlock = null;
+            Control? nameBlock = null;
             var shouldUseInlineMode = this.DisplayMode == PropertyGridDisplayMode.Inline && property.IsExpandableType();
             if (shouldUseInlineMode)
             {
@@ -806,16 +821,25 @@ namespace Avalonia.PropertyGrid.Controls
                     return inlines;
                 };
                 
-                nameBlock.Inlines = generateInlines();
+                (nameBlock as HighlightedTextBlock)!.Inlines = generateInlines();
                 LocalizationService.Default.OnCultureChanged += (s, e) =>
                 {
-                    nameBlock.Inlines = generateInlines();
+                    if(nameBlock is HighlightedTextBlock htb){
+                        htb.Inlines = generateInlines();
+                    }                    
                 };
 
                 if (property.GetCustomAttribute<DescriptionAttribute>() is { } descriptionAttribute && 
                     descriptionAttribute.Description.IsNotNullOrEmpty())
                 {
                     nameBlock.SetLocalizeBinding(ToolTip.TipProperty, descriptionAttribute.Description);
+                }
+
+                var args = new CustomNameBlockEventArgs(target, propertyDescriptor, nameBlock);
+                RaiseEvent(args);
+                if (args.CustomNameBlock != null)
+                {
+                    nameBlock = args.CustomNameBlock;
                 }
 
                 nameBlock.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
@@ -1036,4 +1060,57 @@ namespace Avalonia.PropertyGrid.Controls
             PropertyDescriptor = propertyDescriptor;
         }
     }
+
+    /// <summary>
+    /// Class CustomNameBlockEventArgs.
+    /// Implements the <see cref="RoutedEventArgs" />
+    /// </summary>
+    /// <seealso cref="RoutedEventArgs" />
+    public class CustomNameBlockEventArgs : RoutedEventArgs
+    {
+        /// <summary>
+        /// Gets the target.
+        /// </summary>
+        /// <value>The target.</value>
+        public object Target { get; }
+
+        /// <summary>
+        /// Gets the property descriptor.
+        /// </summary>
+        /// <value>The property descriptor.</value>
+        public PropertyDescriptor PropertyDescriptor { get; }
+
+        /// <summary>
+        /// Gets the default name block.
+        /// </summary>
+        /// <value>The default name block.</value>
+        public Control DefaultNameBlock { get; }
+
+        /// <summary>
+        /// Gets or sets the custom name block.
+        /// </summary>
+        /// <value>The custom name block.</value>
+        public Control? CustomNameBlock { get; set; }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CustomNameBlockEventArgs"/> class.
+        /// </summary>
+        /// <param name="target">The target.</param>
+        /// <param name="propertyDescriptor">The property descriptor.</param>
+        /// <param name="defaultBlock">The default block.</param>
+        public CustomNameBlockEventArgs(
+            object target,
+            PropertyDescriptor propertyDescriptor,
+            Control defaultBlock
+        ) : 
+            base(PropertyGrid.CustomNameBlockEvent)
+        {
+            Target = target;
+            PropertyDescriptor = propertyDescriptor;
+            DefaultNameBlock = defaultBlock;
+            CustomNameBlock = defaultBlock;
+        }
+    }
 }
+
+

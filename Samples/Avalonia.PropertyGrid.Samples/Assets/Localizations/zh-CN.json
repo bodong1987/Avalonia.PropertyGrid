@@ -173,5 +173,6 @@
     "LoginNameToggleGroupMode": "登录名[开关组模式]",
     "GenderDefaultView": "性别",
     "GenderRadioView": "性别[单选模式]",
-    "GenderToggleGroupView": "性别[开关组模式]"
+    "GenderToggleGroupView": "性别[开关组模式]",
+    "customLabel": "自定义标签"
 }

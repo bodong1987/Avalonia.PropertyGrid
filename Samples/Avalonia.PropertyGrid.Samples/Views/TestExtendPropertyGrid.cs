@@ -1,4 +1,5 @@
-﻿using Avalonia.Controls;
+﻿using System.Diagnostics;
+using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.PropertyGrid.Controls;
 using Avalonia.PropertyGrid.Controls.Factories;
@@ -18,6 +19,26 @@ namespace Avalonia.PropertyGrid.Samples.Views
             CellEditFactoryService.Default.AddFactory(new Vector3CellEditFactory());
             CellEditFactoryService.Default.AddFactory(new CountryInfoCellEditFactory());
             CellEditFactoryService.Default.AddFactory(new ToggleSwitchCellEditFactory());
+        }
+
+        private int CustomLabelClickCount = 0;
+
+        public TestExtendPropertyGrid()
+        {
+            CustomNameBlock += (s, e) =>
+            {
+                if(e.PropertyDescriptor.Name == "customLabel")
+                {
+                    var button = new Button() { Content = LocalizationService.Default[e.PropertyDescriptor.DisplayName] };
+                    
+                    button.Click += (ss, ee) =>
+                    {
+                        button.Content = $"{LocalizationService.Default[e.PropertyDescriptor.DisplayName]} {++CustomLabelClickCount}";
+                    };
+
+                    e.CustomNameBlock = button;
+                }                
+            };
         }
     }
 
