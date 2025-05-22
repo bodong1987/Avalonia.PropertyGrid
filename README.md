@@ -36,7 +36,7 @@ run `dotnet publish` under `Samples/Avalonia.PropertyGrid.Samples.Browser`. This
 
 ## Detail Description
 ### Data Modeling
-If you want to edit an object in PropertyGrid, you only need to directly set this object to the `DataContext` property of PropertyGrid, PropertyGrid will automatically analyze the properties that can support editing, and edit it with the corresponding CellEdit. At the same time, you can also use Attributes in System.ComponentModel and System.ComponentModel.DataAnnotations to mark these properties, so that these properties have some special characteristics.  
+If you want to edit an object in PropertyGrid, you only need to directly set this object to the `DataContext` property of PropertyGrid, PropertyGrid will automatically analyze the properties that can support editing, and edit it with the corresponding CellEdit. At the same time, you can also use Attributes in System.ComponentModel, System.ComponentModel.DataAnnotations and PropertyModels.ComponentModel to mark these properties, so that these properties have some special characteristics.  
 Support but not limited to these:
 ```
 System.ComponentModel.CategoryAttribute                     /* set property category */  
@@ -48,6 +48,7 @@ System.ComponentModel.PasswordPropertyTextAttribute         /* mark text propert
 System.ComponentModel.DataAnnotations.EditableAttribute     /* mark list property can add/remove/clear elements */  
 System.ComponentModel.DataAnnotations.RangeAttribute        /* set numeric range */  
 System.Runtime.Serialization.IgnoreDataMemberAttribute      /* used to hide a property */  
+PropertyModels.ComponentModel.UnitAttribute                 /* used to display a unit next to the display name */  
 ```
 In addition, there are other classes that can be supported in PropertyModels.ComponentModel and PropertyModels.ComponentModel.DataAnnotations, which can assist in describing class properties.  
 If you want to have some associations between your class properties, for example, some properties depend on other properties in implementation, then you can try to mark this dependency with PropertyModels.ComponentModel.DataAnnotations.DependsOnPropertyAttribute  

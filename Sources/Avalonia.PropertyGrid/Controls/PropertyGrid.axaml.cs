@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using Avalonia.Controls;
+using Avalonia.Controls.Documents;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Data;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
+using Avalonia.Media;
 using Avalonia.PropertyGrid.Controls.Implements;
 using Avalonia.PropertyGrid.Localization;
 using Avalonia.PropertyGrid.Services;
@@ -164,7 +165,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The name width property
         /// </summary>
-        public static readonly StyledProperty<double> NameWidthProperty = AvaloniaProperty.Register<PropertyGrid, double>(nameof(NameWidth), 180);
+        public static readonly StyledProperty<double> NameWidthProperty = AvaloniaProperty.Register<PropertyGrid, double>(nameof(NameWidth), 200);
 
         /// <summary>
         /// Gets or sets the width of the name.
@@ -759,7 +760,7 @@ namespace Avalonia.PropertyGrid.Controls
             factory.HandlePropertyChanged(context);
             grid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
 
-            var nameBlock = new HighlightedTextBlock();
+            HighlightedTextBlock? nameBlock = null;
             var shouldUseInlineMode = this.DisplayMode == PropertyGridDisplayMode.Inline && property.IsExpandableType();
             switch (shouldUseInlineMode)
             {
@@ -773,16 +774,41 @@ namespace Avalonia.PropertyGrid.Controls
                     break;
 
                 case false:
-                    nameBlock.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
-                    nameBlock.SetValue(Grid.ColumnProperty, 0);
-                    nameBlock.VerticalAlignment = VerticalAlignment.Center;
-                    nameBlock.Margin = new Thickness(4);
+                    nameBlock = new HighlightedTextBlock
+                    {
+                        Margin = new Thickness(4),
+                        VerticalAlignment = VerticalAlignment.Center
+                    };
+
                     nameBlock.SetLocalizeBinding(TextBlock.TextProperty, property.DisplayName);
 
-                    if (property.GetCustomAttribute<DescriptionAttribute>() is { } descriptionAttribute && descriptionAttribute.Description.IsNotNullOrEmpty())
+                    var inlines = new InlineCollection { new Run { Text = property.DisplayName } };
+                    if (property.GetCustomAttribute<UnitAttribute>() is { } unitAttribute && 
+                        unitAttribute.Unit.IsNotNullOrEmpty())
+                    {
+                        SolidColorBrush foregroundBrush = Application.Current?
+                            .TryGetResource("SystemControlPageTextBaseMediumBrush",
+                                Application.Current.ActualThemeVariant,
+                                out object? value) == true && value is Color color
+                            ? new SolidColorBrush(color, 0.7)
+                            : new SolidColorBrush(Colors.Gray);
+                        inlines.Add(new Run
+                        {
+                            Text = $" ({unitAttribute.Unit})",
+                            Foreground = foregroundBrush,
+                            DataContext = unitAttribute
+                        });
+                    }
+                    nameBlock.Inlines = inlines;
+
+                    if (property.GetCustomAttribute<DescriptionAttribute>() is { } descriptionAttribute && 
+                        descriptionAttribute.Description.IsNotNullOrEmpty())
                     {
                         nameBlock.SetLocalizeBinding(ToolTip.TipProperty, descriptionAttribute.Description);
                     }
+
+                    nameBlock.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
+                    nameBlock.SetValue(Grid.ColumnProperty, 0);
 
                     grid.Children.Add(nameBlock);
                     break;
@@ -809,7 +835,7 @@ namespace Avalonia.PropertyGrid.Controls
 
             container.Add(cellInfo);
         }
-
+        
         #endregion
 
         #region Alpha

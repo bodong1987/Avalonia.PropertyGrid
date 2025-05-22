@@ -37,7 +37,7 @@
 		<lc:CheckedMask x:Name="FastFilterBox" Grid.Row="1" Model="{Binding $parent[lc:PropertyGrid].ViewModel.CategoryFilter}"></lc:CheckedMask>
 		<Grid x:Name="SplitterGrid" Grid.Row="2">
 			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="180" MinWidth="60"></ColumnDefinition>
+				<ColumnDefinition Width="200" MinWidth="60"></ColumnDefinition>
 				<ColumnDefinition Width="2"></ColumnDefinition>
 				<ColumnDefinition Width="*"></ColumnDefinition>				
 			</Grid.ColumnDefinitions>

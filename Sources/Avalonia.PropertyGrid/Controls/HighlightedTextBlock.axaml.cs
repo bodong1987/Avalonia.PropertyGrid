@@ -1,11 +1,13 @@
 ﻿namespace Avalonia.PropertyGrid.Controls;
 
 using System;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Documents;
 using Avalonia.Media;
 using Avalonia.PropertyGrid.Utils;
+using PropertyModels.ComponentModel;
 
 /// <summary>
 /// Custom Avalonia <see cref="TextBlock"/> which supports highlighting.
@@ -65,10 +67,9 @@ public partial class HighlightedTextBlock : TextBlock
     /// <param name="textToHighlight">The text to highlight.</param>
     private void HighlightText(string? textToHighlight)
     {
+        // Update the inline collection to highlight the matching text.
         InlineCollection inlineCollection = [];
-        if (this.Text is not null &&
-            !string.IsNullOrEmpty(this.Text) &&
-            !string.IsNullOrEmpty(textToHighlight))
+        if (!string.IsNullOrEmpty(this.Text) && !string.IsNullOrEmpty(textToHighlight))
         {
             int startIndex = 0;
             while (startIndex < this.Text.Length)
@@ -93,11 +94,24 @@ public partial class HighlightedTextBlock : TextBlock
                     : new SolidColorBrush(Colors.Transparent);
                 inlineCollection.Add(new Run(this.Text.Substring(index, textToHighlight.Length))
                 {
-                    Background = backgroundBrush
+                    Background = backgroundBrush,
+                    Foreground = new SolidColorBrush(Colors.White)
                 });
 
                 startIndex = index + textToHighlight.Length;
             }
+        }
+        
+        // Add the text as inline if no matching text has been found.
+        if (inlineCollection.Count == 0)
+        {
+            inlineCollection.Add(new Run { Text = this.Text });
+        }
+
+        // Add the previous unit inline back to the inline collection.
+        if (this.Inlines?.FirstOrDefault(item => item.DataContext is UnitAttribute) is Run unitInlineRun)
+        {
+            inlineCollection.Add(unitInlineRun);
         }
 
         this.Inlines = inlineCollection;
