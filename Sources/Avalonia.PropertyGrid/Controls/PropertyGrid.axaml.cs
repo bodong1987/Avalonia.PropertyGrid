@@ -782,7 +782,7 @@ namespace Avalonia.PropertyGrid.Controls
 
                     nameBlock.SetLocalizeBinding(TextBlock.TextProperty, property.DisplayName);
 
-                    var inlines = new InlineCollection { new Run { Text = property.DisplayName } };
+                    var inlines = new InlineCollection { new Run { Text = LocalizationService.Default[property.DisplayName] } };
                     if (property.GetCustomAttribute<UnitAttribute>() is { } unitAttribute && 
                         unitAttribute.Unit.IsNotNullOrEmpty())
                     {
@@ -794,7 +794,7 @@ namespace Avalonia.PropertyGrid.Controls
                             : new SolidColorBrush(Colors.Gray);
                         inlines.Add(new Run
                         {
-                            Text = $" ({unitAttribute.Unit})",
+                            Text = $" ({LocalizationService.Default[unitAttribute.Unit]})",
                             Foreground = foregroundBrush,
                             DataContext = unitAttribute
                         });
