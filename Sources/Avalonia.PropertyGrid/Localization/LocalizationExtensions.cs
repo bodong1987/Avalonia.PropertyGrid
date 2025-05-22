@@ -35,6 +35,7 @@ namespace Avalonia.PropertyGrid.Localization
 
     internal class LocalizedDataModel : ReactiveObject
     {
+        // ReSharper disable once MemberCanBePrivate.Global
         public readonly string Name;
 
         public string Value

@@ -762,34 +762,37 @@ namespace Avalonia.PropertyGrid.Controls
 
             HighlightedTextBlock? nameBlock = null;
             var shouldUseInlineMode = this.DisplayMode == PropertyGridDisplayMode.Inline && property.IsExpandableType();
-            switch (shouldUseInlineMode)
+            if (shouldUseInlineMode)
             {
-                case true:
-                    var propertyGrid = control.GetVisualChildren().OfType<PropertyGrid>().FirstOrDefault();
-                    var innerGrid = propertyGrid?.LogicalChildren.OfType<Grid>().FirstOrDefault();
-                    var innerPropertyGrid = innerGrid?.GetVisualChildren().OfType<Grid>()
-                        .FirstOrDefault(item => item.Name == "PropertiesGrid");
-                    var innerExpander = innerPropertyGrid?.Children.OfType<Expander>().FirstOrDefault();
-                    innerExpander?.SetLocalizeBinding(HeaderedContentControl.HeaderProperty, property.DisplayName);
-                    break;
+                var propertyGrid = control.GetVisualChildren().OfType<PropertyGrid>().FirstOrDefault();
+                var innerGrid = propertyGrid?.LogicalChildren.OfType<Grid>().FirstOrDefault();
+                var innerPropertyGrid = innerGrid?.GetVisualChildren().OfType<Grid>()
+                    .FirstOrDefault(item => item.Name == "PropertiesGrid");
+                var innerExpander = innerPropertyGrid?.Children.OfType<Expander>().FirstOrDefault();
+                innerExpander?.SetLocalizeBinding(HeaderedContentControl.HeaderProperty, property.DisplayName);
+            }
+            else
+            {
+                nameBlock = new HighlightedTextBlock
+                {
+                    Margin = new Thickness(4),
+                    VerticalAlignment = VerticalAlignment.Center
+                };
 
-                case false:
-                    nameBlock = new HighlightedTextBlock
-                    {
-                        Margin = new Thickness(4),
-                        VerticalAlignment = VerticalAlignment.Center
-                    };
-
-                    nameBlock.SetLocalizeBinding(TextBlock.TextProperty, property.DisplayName);
-
-                    var inlines = new InlineCollection { new Run { Text = LocalizationService.Default[property.DisplayName] } };
-                    if (property.GetCustomAttribute<UnitAttribute>() is { } unitAttribute && 
+                nameBlock.SetLocalizeBinding(TextBlock.TextProperty, property.DisplayName);
+                
+                // ReSharper disable once ConvertToLocalFunction
+                var generateInlines = () =>
+                {
+                    var inlines = new InlineCollection
+                        { new Run { Text = LocalizationService.Default[property.DisplayName] } };
+                    if (property.GetCustomAttribute<UnitAttribute>() is { } unitAttribute &&
                         unitAttribute.Unit.IsNotNullOrEmpty())
                     {
-                        SolidColorBrush foregroundBrush = Application.Current?
+                        var foregroundBrush = Application.Current?
                             .TryGetResource("SystemControlPageTextBaseMediumBrush",
                                 Application.Current.ActualThemeVariant,
-                                out object? value) == true && value is Color color
+                                out var value) == true && value is Color color
                             ? new SolidColorBrush(color, 0.7)
                             : new SolidColorBrush(Colors.Gray);
                         inlines.Add(new Run
@@ -799,19 +802,26 @@ namespace Avalonia.PropertyGrid.Controls
                             DataContext = unitAttribute
                         });
                     }
-                    nameBlock.Inlines = inlines;
 
-                    if (property.GetCustomAttribute<DescriptionAttribute>() is { } descriptionAttribute && 
-                        descriptionAttribute.Description.IsNotNullOrEmpty())
-                    {
-                        nameBlock.SetLocalizeBinding(ToolTip.TipProperty, descriptionAttribute.Description);
-                    }
+                    return inlines;
+                };
+                
+                nameBlock.Inlines = generateInlines();
+                LocalizationService.Default.OnCultureChanged += (s, e) =>
+                {
+                    nameBlock.Inlines = generateInlines();
+                };
 
-                    nameBlock.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
-                    nameBlock.SetValue(Grid.ColumnProperty, 0);
+                if (property.GetCustomAttribute<DescriptionAttribute>() is { } descriptionAttribute && 
+                    descriptionAttribute.Description.IsNotNullOrEmpty())
+                {
+                    nameBlock.SetLocalizeBinding(ToolTip.TipProperty, descriptionAttribute.Description);
+                }
 
-                    grid.Children.Add(nameBlock);
-                    break;
+                nameBlock.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
+                nameBlock.SetValue(Grid.ColumnProperty, 0);
+
+                grid.Children.Add(nameBlock);
             }
 
             control.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);

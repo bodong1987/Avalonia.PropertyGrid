@@ -14,13 +14,12 @@ using PropertyModels.ComponentModel;
 /// </summary>
 public partial class HighlightedTextBlock : TextBlock
 {
-    // -----------------------------------------
     #region Properties
-    // -----------------------------------------
-
+ 
     /// <summary>
     /// The highlighted text property.
     /// </summary>
+    // ReSharper disable once MemberCanBePrivate.Global
     public static readonly StyledProperty<string?> HighlightedTextProperty =
         AvaloniaProperty.Register<HighlightedTextBlock, string?>(nameof(HighlightedText));
 
@@ -32,15 +31,9 @@ public partial class HighlightedTextBlock : TextBlock
         get => this.GetValue(HighlightedTextProperty);
         set => this.SetValue(HighlightedTextProperty, value);
     }
-
-    // -----------------------------------------
     #endregion
-    // -----------------------------------------
-
-    // -----------------------------------------
+    
     #region Constructor(s)
-    // -----------------------------------------
-
     /// <summary>
     /// Initializes a new instance of the <see cref="HighlightedTextBlock"/> class.
     /// </summary>
@@ -52,15 +45,9 @@ public partial class HighlightedTextBlock : TextBlock
         this.GetObservable(HighlightedTextProperty)
             .Subscribe(new PropertyObserver<string?>(this.HighlightText));
     }
-
-    // -----------------------------------------
     #endregion
-    // -----------------------------------------
-
-    // -----------------------------------------
+    
     #region Methods
-    // -----------------------------------------
-
     /// <summary>
     /// Highlights the specified text.
     /// </summary>
@@ -116,8 +103,5 @@ public partial class HighlightedTextBlock : TextBlock
 
         this.Inlines = inlineCollection;
     }
-
-    // -----------------------------------------
     #endregion
-    // -----------------------------------------
 }
