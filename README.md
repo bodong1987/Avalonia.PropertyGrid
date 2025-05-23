@@ -52,7 +52,6 @@ System.ComponentModel.PasswordPropertyTextAttribute         /* mark text propert
 System.ComponentModel.DataAnnotations.EditableAttribute     /* mark list property can add/remove/clear elements */  
 System.ComponentModel.DataAnnotations.RangeAttribute        /* set numeric range */  
 System.Runtime.Serialization.IgnoreDataMemberAttribute      /* used to hide a property */  
-PropertyModels.ComponentModel.UnitAttribute                 /* used to display a unit next to the display name */  
 ```
 In addition, there are other classes that can be supported in PropertyModels.ComponentModel and PropertyModels.ComponentModel.DataAnnotations, which can assist in describing class properties.  
 If you want to have some associations between your class properties, for example, some properties depend on other properties in implementation, then you can try to mark this dependency with PropertyModels.ComponentModel.DataAnnotations.DependsOnPropertyAttribute  
@@ -79,6 +78,7 @@ PropertyModels.ComponentModel.DataAnnotations.EnumProhibitNamesAttribute        
 PropertyModels.ComponentModel.DataAnnotations.IEnumValueAuthorizeAttribute          /* create your custom enum value filter based on this interface */
 PropertyModels.ComponentModel.DataAnnotations.ImagePreviewModeAttribute             /* set image display mode */
 PropertyModels.ComponentModel.SingleSelectionModeAttribute                          /* set enum/selectablelist view mode, use combobox/togglebutton group/radiobox group */
+PropertyModels.ComponentModel.UnitAttribute                                         /* used to display a unit next to the display name */  
 ```
 
 ### Supported Builtin Types

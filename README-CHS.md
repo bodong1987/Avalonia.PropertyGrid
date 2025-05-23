@@ -53,7 +53,6 @@ System.ComponentModel.PasswordPropertyTextAttribute         /* 标记文本属�
 System.ComponentModel.DataAnnotations.EditableAttribute     /* 标记列表属性可以添加/删除/清除元素 */  
 System.ComponentModel.DataAnnotations.RangeAttribute        /* 设置数值范围 */
 System.Runtime.Serialization.IgnoreDataMemberAttribute      /* 用于隐藏属性 */
-PropertyModels.ComponentModel.UnitAttribute                 /* 用于在显示名称旁显示单位 */
 ```
 
 此外，在PropertyModels.ComponentModel和PropertyModels.ComponentModel.DataAnnotations中还有其他类可以支持，帮助描述类属性。  
@@ -81,6 +80,7 @@ PropertyModels.ComponentModel.DataAnnotations.EnumProhibitNamesAttribute        
 PropertyModels.ComponentModel.DataAnnotations.IEnumValueAuthorizeAttribute          /* 基于此接口创建自定义枚举值过滤器 */
 PropertyModels.ComponentModel.DataAnnotations.ImagePreviewModeAttribute             /* 设置图像显示模式 */
 PropertyModels.ComponentModel.SingleSelectionModeAttribute                          /* 设置枚举/可选列表视图模式，使用组合框/切换按钮组/单选按钮组 */  
+PropertyModels.ComponentModel.UnitAttribute                                         /* 用于在显示名称旁显示单位 */  
 ```
 
 ### 支持的内置类型
