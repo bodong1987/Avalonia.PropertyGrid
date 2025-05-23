@@ -25,7 +25,8 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
         public SimpleObject MultiObject0 { get; } = new("MultiObject0");
         public SimpleObject MultiObject1 { get; } = new("MultiObject1");
 
-        public IEnumerable<SimpleObject> MultiObjects => [MultiObject0, MultiObject1];
+        // ReSharper disable once UseCollectionExpression
+        public IEnumerable<SimpleObject> MultiObjects => new SimpleObject[]{MultiObject0, MultiObject1};
 
         public ScriptableOptions CustomOptions { get; } = new();
 
