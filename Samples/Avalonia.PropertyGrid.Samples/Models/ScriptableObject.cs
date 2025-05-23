@@ -4,6 +4,8 @@ using System.ComponentModel;
 using PropertyModels.ComponentModel;
 using PropertyModels.ComponentModel.DataAnnotations;
 using PropertyModels.Extensions;
+// ReSharper disable ForCanBeConvertedToForeach
+// ReSharper disable PropertyCanBeMadeInitOnly.Global
 
 namespace Avalonia.PropertyGrid.Samples.Models
 {
@@ -43,19 +45,19 @@ namespace Avalonia.PropertyGrid.Samples.Models
         [DependsOnProperty(nameof(Value))]
         public Type? ValueType { get; set; }
 
-        private object? ValueCore;
+        private object? _valueCore;
         /// <summary>
         /// Gets or sets the value.
         /// </summary>
         /// <value>The value.</value>
         public object? Value
         {
-            get => ValueCore;
+            get => _valueCore;
             set
             {
                 if (value == null)
                 {
-                    ValueCore = null;
+                    _valueCore = null;
                     ValueType = null;
                     RaisePropertyChanged(nameof(Value));
                     return;
@@ -77,14 +79,14 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
                         if (type != null)
                         {
-                            ValueCore = Activator.CreateInstance(typeof(BindingList<>).MakeGenericType(type));
+                            _valueCore = Activator.CreateInstance(typeof(BindingList<>).MakeGenericType(type));
 
                             for (var i = 0; i < list.Count; ++i)
                             {
-                                (ValueCore as IList)!.Add(list[i]);
+                                (_valueCore as IList)!.Add(list[i]);
                             }
 
-                            ValueType = ValueCore!.GetType();
+                            ValueType = _valueCore!.GetType();
 
                             RaisePropertyChanged(nameof(Value));
 
@@ -92,14 +94,14 @@ namespace Avalonia.PropertyGrid.Samples.Models
                         }
                     }
 
-                    ValueCore = new BindingList<string>();
-                    ValueType = ValueCore.GetType();
+                    _valueCore = new BindingList<string>();
                 }
                 else
                 {
-                    ValueCore = value;
-                    ValueType = ValueCore.GetType();
+                    _valueCore = value;
                 }
+
+                ValueType = _valueCore.GetType();
 
                 RaisePropertyChanged(nameof(Value));
             }
@@ -130,10 +132,8 @@ namespace Avalonia.PropertyGrid.Samples.Models
             {
                 return [.. ExtraAttributes, descAttribute, displayNameAttribute];
             }
-            else
-            {
-                return [descAttribute, displayNameAttribute];
-            }
+
+            return [descAttribute, displayNameAttribute];
         }
     }
 }

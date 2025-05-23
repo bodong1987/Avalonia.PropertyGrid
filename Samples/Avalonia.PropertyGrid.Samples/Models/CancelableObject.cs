@@ -7,19 +7,19 @@ namespace Avalonia.PropertyGrid.Samples.Models
 {
     public class CancelableObject : SimpleObject
     {
-        private readonly CancelableCommandRecorder _Recorder = new();
+        private readonly CancelableCommandRecorder _recorder = new();
 
         [Browsable(false)]
-        public bool CanUndo => _Recorder.CanUndo;
+        public bool CanUndo => _recorder.CanUndo;
 
         [Browsable(false)]
-        public bool CanRedo => _Recorder.CanRedo;
+        public bool CanRedo => _recorder.CanRedo;
 
         [Browsable(false)]
-        public string UndoDescription => _Recorder.UndoCommandDescription;
+        public string UndoDescription => _recorder.UndoCommandDescription;
 
         [Browsable(false)]
-        public string RedoDescription => _Recorder.RedoCommandDescription;
+        public string RedoDescription => _recorder.RedoCommandDescription;
 
         [Browsable(false)]
         public ICommand UndoCommand { get; set; }
@@ -32,14 +32,14 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
         public CancelableObject(string description) : base(description)
         {
-            UndoCommand = ReactiveCommand.Create(() => _Recorder.Undo());
-            RedoCommand = ReactiveCommand.Create(() => _Recorder.Redo());
-            ClearCommand = ReactiveCommand.Create(_Recorder.Clear);
+            UndoCommand = ReactiveCommand.Create(() => _recorder.Undo());
+            RedoCommand = ReactiveCommand.Create(() => _recorder.Redo());
+            ClearCommand = ReactiveCommand.Create(_recorder.Clear);
 
-            _Recorder.OnNewCommandAdded += (s, e) => RefreshFlags();
-            _Recorder.OnCommandCanceled += (s, e) => RefreshFlags();
-            _Recorder.OnCommandCleared += (s, e) => RefreshFlags();
-            _Recorder.OnCommandRedo += (s, e) => RefreshFlags();
+            _recorder.OnNewCommandAdded += (s, e) => RefreshFlags();
+            _recorder.OnCommandCanceled += (s, e) => RefreshFlags();
+            _recorder.OnCommandCleared += (s, e) => RefreshFlags();
+            _recorder.OnCommandRedo += (s, e) => RefreshFlags();
         }
 
         private void RefreshFlags()
@@ -50,6 +50,6 @@ namespace Avalonia.PropertyGrid.Samples.Models
             RaisePropertyChanged(nameof(RedoDescription));
         }
 
-        public void OnCommandExecuted(object? sender, RoutedCommandExecutedEventArgs e) => _Recorder.PushCommand(e.Command);
+        public void OnCommandExecuted(object? sender, RoutedCommandExecutedEventArgs e) => _recorder.PushCommand(e.Command);
     }
 }

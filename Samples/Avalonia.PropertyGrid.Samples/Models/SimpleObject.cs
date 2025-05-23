@@ -8,6 +8,10 @@ using PropertyModels.Collections;
 using PropertyModels.ComponentModel;
 using PropertyModels.ComponentModel.DataAnnotations;
 using PropertyModels.Extensions;
+// ReSharper disable InconsistentNaming
+// ReSharper disable RedundantArgumentDefaultValue
+// ReSharper disable CollectionNeverQueried.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Avalonia.PropertyGrid.Samples.Models
 {
@@ -25,7 +29,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
                 AvaloniaBanner = new Media.Imaging.Bitmap(stream);
             }
 
-            foreach (var name in new string[] { "au.png", "bl.png", "ca.png", "cn.png" })
+            foreach (var name in new[] { "au.png", "bl.png", "ca.png", "cn.png" })
             {
                 using var stream = AssetLoader.Open(new Uri($"avares://{GetType().Assembly.GetName().Name}/Assets/country-flags/{name}"));
                 var image = new Media.Imaging.Bitmap(stream);
@@ -121,21 +125,21 @@ namespace Avalonia.PropertyGrid.Samples.Models
         public PlatformType EnumWithDisplayName { get; set; } = PlatformType.Windows;
 
         [Category("Selectable List")]
-        public SelectableList<string> LoginName { get; set; } = new SelectableList<string>(["John", "David", "bodong"], "bodong");
+        public SelectableList<string> LoginName { get; set; } = new(["John", "David", "bodong"], "bodong");
 
         [Category("Selectable List")]
-        public SelectableList<string> LoginNameNoDefault { get; set; } = new SelectableList<string>(["John", "David", "bodong"]);
+        public SelectableList<string> LoginNameNoDefault { get; set; } = new(["John", "David", "bodong"]);
 
         [Category("Selectable List")]
         [SingleSelectionMode(SingleSelectionMode.RadioButton)]
-        public SelectableList<string> LoginNameRadioMode { get; set; } = new SelectableList<string>(["John", "David", "bodong"]);
+        public SelectableList<string> LoginNameRadioMode { get; set; } = new(["John", "David", "bodong"]);
 
         [Category("Selectable List")]
         [SingleSelectionMode(SingleSelectionMode.ToggleButtonGroup)]
-        public SelectableList<string> LoginNameToggleGroupMode { get; set; } = new SelectableList<string>(["John", "David", "bodong"]);
+        public SelectableList<string> LoginNameToggleGroupMode { get; set; } = new(["John", "David", "bodong"]);
 
         [Category("Selectable List")]
-        public SelectableList<int> IdList { get; set; } = new SelectableList<int>([100, 1000, 1024], 1000);
+        public SelectableList<int> IdList { get; set; } = new([100, 1000, 1024], 1000);
 
         private string? _SourceImagePath;
         [Category("DataValidation")]
@@ -167,7 +171,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
         [Category("DataValidation")]
         [Description("Select platforms")]
         [ValidatePlatform]
-        public CheckedList<PlatformID> Platforms { get; set; } = new CheckedList<PlatformID>(Enum.GetValues<PlatformID>());
+        public CheckedList<PlatformID> Platforms { get; set; } = new(Enum.GetValues<PlatformID>());
 
         [Category("Numeric")]
         [Range(10, 200)]
@@ -221,6 +225,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
             get => progressValue;
             set
             {
+                // ReSharper disable once CompareOfFloatsByEqualityOperator
                 if (progressValue != value)
                 {
                     progressValue = value;
@@ -258,17 +263,17 @@ namespace Avalonia.PropertyGrid.Samples.Models
         public BindingList<PlatformID> enumList { get; set; } = [PlatformID.Win32NT, PlatformID.Unix];
 
         [Category("Array")]
-        public BindingList<Vector3> Vec3List { get; set; } = [new Vector3(1024.0f, 2048.0f, 4096.0f)];
+        public BindingList<Vector3> Vec3List { get; set; } = [new(1024.0f, 2048.0f, 4096.0f)];
 
         [Category("Array")]
         [Length(1, 10)]
         public BindingList<int> LengthLimitedList { get; set; } = [10, 20, 30];
 
         [Category("Checked List")]
-        public CheckedList<string> CheckedListString { get; set; } = new CheckedList<string>(["bodong", "John", "David"], ["bodong"]);
+        public CheckedList<string> CheckedListString { get; set; } = new(["bodong", "John", "David"], ["bodong"]);
 
         [Category("Checked List")]
-        public CheckedList<int> CheckedListInt { get; set; } = new CheckedList<int>([1024, 2048, 4096, 8192], [1024, 8192]);
+        public CheckedList<int> CheckedListInt { get; set; } = new([1024, 2048, 4096, 8192], [1024, 8192]);
 
         [Category("Date Time")]
         public DateTime dateTime { get; set; } = DateTime.Now;
@@ -297,7 +302,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
         public TimeSpan timeReadonly { get; set; } = DateTime.Now.TimeOfDay;
 
         [Category("Expandable")]
-        public Vector3 vec3 { get; set; } = new Vector3(1, 2, 3);
+        public Vector3 vec3 { get; set; } = new(1, 2, 3);
 
         [Category("Color")]
         public System.Drawing.Color RedColor { get; set; } = System.Drawing.Color.Red;
@@ -311,15 +316,15 @@ namespace Avalonia.PropertyGrid.Samples.Models
         [Category("Expandable")]
         [DisplayName("Login User Data")]
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        public LoginInfo loginInfo { get; set; } = new LoginInfo();
+        public LoginInfo loginInfo { get; set; } = new();
 
         [Category("Font")]
-        public FontFamily FontFamily { get; set; } = new FontFamily("Courier New");
+        public FontFamily FontFamily { get; set; } = new("Courier New");
 
         [Category("Readonly")]
         [PathBrowsable(PathBrowsableType.Directory)]
         [ReadOnly(true)]
-        public string ReadonlyPath { get; set; } = "C:\\Windows\\System32";
+        public string ReadonlyPath { get; set; } = @"C:\Windows\System32";
 
         [Category("Readonly")]
         [ReadOnly(true)]
@@ -355,24 +360,24 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
         [Category("Readonly")]
         [ReadOnly(true)]
-        public SelectableList<string> ReadonlySelectableList { get; set; } = new SelectableList<string>(["John", "David", "bodong"]);
+        public SelectableList<string> ReadonlySelectableList { get; set; } = new(["John", "David", "bodong"]);
 
         [Category("Readonly")]
         [ReadOnly(true)]
-        public Vector3 ReadonlyVector3 { get; set; } = new Vector3(1, 2, 3);
+        public Vector3 ReadonlyVector3 { get; set; } = new(1, 2, 3);
 
         [Category("Readonly")]
         [ReadOnly(true)]
-        public CheckedList<PlatformID> ReadonlyPlatforms { get; set; } = new CheckedList<PlatformID>(Enum.GetValues<PlatformID>(), [PlatformID.Win32NT, PlatformID.Unix]);
+        public CheckedList<PlatformID> ReadonlyPlatforms { get; set; } = new(Enum.GetValues<PlatformID>(), [PlatformID.Win32NT, PlatformID.Unix]);
 
         [Category("Readonly")]
         [ReadOnly(true)]
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        public LoginInfo ReadonlyLoginInfo { get; set; } = new LoginInfo();
+        public LoginInfo ReadonlyLoginInfo { get; set; } = new();
 
         [Category("AutoCollapse")]
         [TypeConverter(typeof(ExpandableObjectConverter))]
-        public LoginInfo CollapsedLoginInfo { get; set; } = new LoginInfo();
+        public LoginInfo CollapsedLoginInfo { get; set; } = new();
     }
 
     [Flags]
@@ -387,7 +392,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
         Other = 16,
 
         [EnumExclude]
-        CanNotSeeThis = 32,
+        CanNotSeeThis = 32
     }
 
     public enum PlatformType
@@ -410,7 +415,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
     {
         Unknown,
         Male,
-        Female,
+        Female
     }
 
     public class ValidatePlatformAttribute : ValidationAttribute

@@ -711,7 +711,7 @@ namespace Avalonia.PropertyGrid.Controls
                     })
                 };
                 _ = expander.SetValue(Grid.RowProperty, PropertiesGrid.RowDefinitions.Count - 1);
-                expander.IsExpanded = autoCollapseCategoriesAttribute?.ShouldAutoCollapse(categoryInfo.Key) != true;
+                expander.IsExpanded = AllCategoriesExpanded && autoCollapseCategoriesAttribute?.ShouldAutoCollapse(categoryInfo.Key) != true;
                 expander.HorizontalContentAlignment = HorizontalAlignment.Stretch;
                 expander.HorizontalAlignment = HorizontalAlignment.Stretch;
                 expander.Margin = new Thickness(DisplayMode == PropertyGridDisplayMode.Inline ? 0 : 2);

@@ -1,29 +1,30 @@
 ﻿using System.ComponentModel;
 using PropertyModels.ComponentModel;
+// ReSharper disable PropertyCanBeMadeInitOnly.Global
 
 namespace Avalonia.PropertyGrid.Samples.Models
 {
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public class Vector3 : MiniReactiveObject
     {
-        public double _X, _Y, _Z;
+        private double _x, _y, _z;
 
         public double X
         {
-            get => _X;
-            set => this.RaiseAndSetIfChanged(ref _X, value);
+            get => _x;
+            set => this.RaiseAndSetIfChanged(ref _x, value);
         }
 
         public double Y
         {
-            get => _Y;
-            set => this.RaiseAndSetIfChanged(ref _Y, value);
+            get => _y;
+            set => this.RaiseAndSetIfChanged(ref _y, value);
         }
 
         public double Z
         {
-            get => _Z;
-            set => this.RaiseAndSetIfChanged(ref _Z, value);
+            get => _z;
+            set => this.RaiseAndSetIfChanged(ref _z, value);
         }
 
         public Vector3()

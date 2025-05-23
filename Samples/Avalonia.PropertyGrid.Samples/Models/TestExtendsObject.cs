@@ -7,6 +7,9 @@ using System.Linq;
 using Avalonia.Platform;
 using PropertyModels.Collections;
 using PropertyModels.ComponentModel;
+// ReSharper disable InconsistentNaming
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
 namespace Avalonia.PropertyGrid.Samples.Models
 {
@@ -14,13 +17,13 @@ namespace Avalonia.PropertyGrid.Samples.Models
     {
         public float x, y, z;
 
-        public override readonly string ToString() => string.Format("{0:0.0}, {1:0.0}, {2:0.0}", x, y, z);
+        public readonly override string ToString() => $"{x:0.0}, {y:0.0}, {z:0.0}";
     }
 
     public class TestExtendsObject : MiniReactiveObject
     {
         [Category("Struct")]
-        public Vector3 vec3Object { get; set; } = new Vector3();
+        public Vector3 vec3Object { get; set; } = new();
 
         [Category("Struct")]
         public SVector3 vec3Struct { get; set; }
@@ -28,7 +31,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
         [Category("Struct")]
         public BindingList<SVector3> vec3BindingList { get; set; } =
         [
-            new SVector3(){ x = 7.8f, y = 3.14f, z = 0.0f }
+            new(){ x = 7.8f, y = 3.14f, z = 0.0f }
         ];
 
         [Category("SelectableList")]
@@ -85,6 +88,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
             }
             catch
             {
+                // ignored
             }
 
             using var stream = AssetLoader.Open(asset);
@@ -103,6 +107,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
             return false;
         }
 
+        // ReSharper disable once NonReadonlyMemberInGetHashCode
         public override int GetHashCode() => Code.GetHashCode();
     }
 }

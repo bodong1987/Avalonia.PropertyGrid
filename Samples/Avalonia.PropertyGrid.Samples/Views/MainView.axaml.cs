@@ -36,7 +36,7 @@ public partial class MainView : UserControl
             }
         };
 
-        proeprtyGrid_RedoUndo.CommandExecuted += OnCommandExecuted;
+        PropertyGridRedoUndo.CommandExecuted += OnCommandExecuted;
 
         ((MainViewModel)DataContext).PropertyChanged += OnPropertyChanged;
 
@@ -44,7 +44,7 @@ public partial class MainView : UserControl
         {
             if (DisplayModeComboBox.SelectedItem is PropertyGridDisplayMode displayMode)
             {
-                propertyGrid_Styles.DisplayMode = displayMode;
+                StylesPropertyGrid.DisplayMode = displayMode;
             }
         };
 
@@ -52,7 +52,7 @@ public partial class MainView : UserControl
         {
             if (ShowStyleComboBox.SelectedItem is PropertyGridShowStyle showStyle)
             {
-                propertyGrid_Styles.ShowStyle = showStyle;
+                StylesPropertyGrid.ShowStyle = showStyle;
             }
         };
 
@@ -60,7 +60,7 @@ public partial class MainView : UserControl
         {
             if (CategoryOrderComboBox.SelectedItem is PropertyGridOrderStyle showStyle)
             {
-                propertyGrid_Styles.CategoryOrderStyle = showStyle;
+                StylesPropertyGrid.CategoryOrderStyle = showStyle;
             }
         };
 
@@ -68,7 +68,7 @@ public partial class MainView : UserControl
         {
             if (PropertyOrderComboBox.SelectedItem is PropertyGridOrderStyle showStyle)
             {
-                propertyGrid_Styles.PropertyOrderStyle = showStyle;
+                StylesPropertyGrid.PropertyOrderStyle = showStyle;
             }
         };
     }
@@ -77,27 +77,27 @@ public partial class MainView : UserControl
     {
         if (e.PropertyName == nameof(MainVM.ShowStyle))
         {
-            propertyGrid_Styles.ShowStyle = MainVM.ShowStyle;
+            StylesPropertyGrid.ShowStyle = MainVM.ShowStyle;
         }
         else if (e.PropertyName == nameof(MainVM.IsShowTitle))
         {
-            propertyGrid_Styles.ShowTitle = MainVM.IsShowTitle;
+            StylesPropertyGrid.ShowTitle = MainVM.IsShowTitle;
         }
         else if (e.PropertyName == nameof(MainVM.AllowFilter))
         {
-            propertyGrid_Styles.AllowFilter = MainVM.AllowFilter;
+            StylesPropertyGrid.AllowFilter = MainVM.AllowFilter;
         }
         else if (e.PropertyName == nameof(MainVM.AllowQuickFilter))
         {
-            propertyGrid_Styles.AllowQuickFilter = MainVM.AllowQuickFilter;
+            StylesPropertyGrid.AllowQuickFilter = MainVM.AllowQuickFilter;
         }
         else if (e.PropertyName == nameof(MainVM.DefaultNameWidth))
         {
-            propertyGrid_Styles.NameWidth = MainVM.DefaultNameWidth;
+            StylesPropertyGrid.NameWidth = MainVM.DefaultNameWidth;
         }
         else if (e.PropertyName == nameof(MainVM.IsReadOnly))
         {
-            propertyGrid_Styles.IsReadOnly = MainVM.IsReadOnly;
+            StylesPropertyGrid.IsReadOnly = MainVM.IsReadOnly;
         }
     }
 

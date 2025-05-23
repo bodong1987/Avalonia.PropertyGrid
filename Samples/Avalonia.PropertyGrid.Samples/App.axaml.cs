@@ -12,7 +12,7 @@ using Avalonia.Themes.Simple;
 
 namespace Avalonia.PropertyGrid.Samples;
 
-public partial class App : Application
+public class App : Application
 {
     private readonly Styles _themeStylesContainer = [];
     private FluentTheme? _fluentTheme;
@@ -42,7 +42,7 @@ public partial class App : Application
         {
             // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
             // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
-            App.DisableAvaloniaDataAnnotationValidation();
+            DisableAvaloniaDataAnnotationValidation();
             desktop.MainWindow = new MainWindow
             {
                 DataContext = new MainViewModel()

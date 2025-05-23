@@ -125,9 +125,9 @@ namespace Avalonia.PropertyGrid.Samples.Models
     /// <seealso cref="PropertyDescriptor" />
     internal class ScriptableObjectPropertyDescriptor : PropertyDescriptor
     {
-        private readonly Type _Type;
-        private readonly string? _DisplayName;
-        private readonly string? _Description;
+        private readonly Type _type;
+        private readonly string? _displayName;
+        private readonly string? _description;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ScriptableObjectPropertyDescriptor" /> class.
@@ -136,22 +136,25 @@ namespace Avalonia.PropertyGrid.Samples.Models
         public ScriptableObjectPropertyDescriptor(ScriptableObject target)
             : base(target.Name!, target.GetAttributes())
         {
-            _Type = target.ValueType!;
-            _DisplayName = target.DisplayName;
-            _Description = target.Description;
+            _type = target.ValueType!;
+            _displayName = target.DisplayName;
+            _description = target.Description;
         }
 
         public override Type ComponentType => typeof(ScriptableOptions);
 
-        public override bool IsReadOnly => Attributes[typeof(ReadOnlyAttribute)] is ReadOnlyAttribute attr && attr.IsReadOnly;
+        public override bool IsReadOnly => Attributes[typeof(ReadOnlyAttribute)] is ReadOnlyAttribute
+        {
+            IsReadOnly: true
+        };
 
-        public override Type PropertyType => _Type;
+        // ReSharper disable once FunctionRecursiveOnAllPaths
+        // ReSharper disable once ConvertToAutoProperty
+        public override Type PropertyType => _type;
 
-        public override string DisplayName => _DisplayName ?? string.Empty;
+        public override string DisplayName => _displayName ?? string.Empty;
 
-        public override string Name => base.Name;
-
-        public override string Description => _Description ?? string.Empty;
+        public override string Description => _description ?? string.Empty;
 
         public override bool CanResetValue(object component) => false;
 
@@ -159,7 +162,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
         {
             if (component is ScriptableOptions options)
             {
-                var obj = options.Properties.Find(x => x.Name == this.Name);
+                var obj = options.Properties.Find(x => x.Name == Name);
 
                 return obj?.Value;
             }
@@ -174,13 +177,13 @@ namespace Avalonia.PropertyGrid.Samples.Models
         {
             if (component is ScriptableOptions options)
             {
-                var obj = options.Properties.Find(x => x.Name == this.Name);
+                var obj = options.Properties.Find(x => x.Name == Name);
 
                 if (obj != null)
                 {
                     obj.Value = value;
 
-                    options.RaisePropertyChanged(this.Name);
+                    options.RaisePropertyChanged(Name);
                 }
             }
         }

@@ -51,7 +51,7 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
                 {
                     LocalizationService.Default.SelectCulture(value.Culture.Name);
 
-                    this.RaisePropertyChanged(nameof(CurrentCulture));
+                    RaisePropertyChanged(nameof(CurrentCulture));
                 }
             }
         }

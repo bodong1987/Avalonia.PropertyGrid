@@ -28,7 +28,7 @@ namespace Avalonia.PropertyGrid.Samples.Views
             {
                 if(e.PropertyDescriptor.Name == "customLabel")
                 {
-                    var button = new Button() { Content = LocalizationService.Default[e.PropertyDescriptor.DisplayName] };
+                    var button = new Button { Content = LocalizationService.Default[e.PropertyDescriptor.DisplayName] };
                     
                     button.Click += (ss, ee) =>
                     {
@@ -107,7 +107,7 @@ namespace Avalonia.PropertyGrid.Samples.Views
             {
                 var vec = (SVector3)propertyDescriptor.GetValue(target)!;
 
-                var model = new SVector3ViewModel() { Vec = vec };
+                var model = new SVector3ViewModel { Vec = vec };
                 vv.DataContext = model;
 
                 model.PropertyChanged += (s, e) => SetAndRaise(context, control, model.Vec);
