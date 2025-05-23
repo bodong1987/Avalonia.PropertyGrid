@@ -212,24 +212,24 @@ namespace Avalonia.PropertyGrid.Controls
         /// <value>The root property grid.</value>
         public IPropertyGrid? RootPropertyGrid
         {
-            get => this.rootPropertyGrid;
+            get => this._rootPropertyGrid;
             set
             {
-                if (this.rootPropertyGrid != null)
+                if (this._rootPropertyGrid != null)
                 {
-                    this.rootPropertyGrid.PropertyChanged -= this.OnRootPropertyGridPropertyChanged;
+                    this._rootPropertyGrid.PropertyChanged -= this.OnRootPropertyGridPropertyChanged;
                 }
 
-                this.rootPropertyGrid = value;
+                this._rootPropertyGrid = value;
 
-                if (this.rootPropertyGrid != null)
+                if (this._rootPropertyGrid != null)
                 {
-                    this.rootPropertyGrid.PropertyChanged += this.OnRootPropertyGridPropertyChanged;
+                    this._rootPropertyGrid.PropertyChanged += this.OnRootPropertyGridPropertyChanged;
                 }
             }
         }
 
-        private IPropertyGrid? rootPropertyGrid;
+        private IPropertyGrid? _rootPropertyGrid;
         
         /// <summary>
         /// The custom property descriptor filter event
@@ -775,7 +775,7 @@ namespace Avalonia.PropertyGrid.Controls
             factory.HandlePropertyChanged(context);
             grid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
 
-            Control? nameBlock = null;
+            Control? nameControl = null;
             var shouldUseInlineMode = this.DisplayMode == PropertyGridDisplayMode.Inline && property.IsExpandableType();
             if (shouldUseInlineMode)
             {
@@ -788,64 +788,46 @@ namespace Avalonia.PropertyGrid.Controls
             }
             else
             {
-                nameBlock = new HighlightedTextBlock
+                var highlightedTextBlock = new HighlightedTextBlock
                 {
                     Margin = new Thickness(4),
                     VerticalAlignment = VerticalAlignment.Center
                 };
 
-                nameBlock.SetLocalizeBinding(TextBlock.TextProperty, property.DisplayName);
-                
-                // ReSharper disable once ConvertToLocalFunction
-                var generateInlines = () =>
+                var args = new CustomNameBlockEventArgs(target, propertyDescriptor, highlightedTextBlock);
+                RaiseEvent(args);
+
+                nameControl = args.CustomNameBlock ?? highlightedTextBlock;
+
+                if (nameControl == highlightedTextBlock)
                 {
-                    var inlines = new InlineCollection
-                        { new Run { Text = LocalizationService.Default[property.DisplayName] } };
+                    highlightedTextBlock.SetLocalizeBinding(TextBlock.TextProperty, property.DisplayName);
+                    
                     if (property.GetCustomAttribute<UnitAttribute>() is { } unitAttribute &&
                         unitAttribute.Unit.IsNotNullOrEmpty())
                     {
-                        var foregroundBrush = Application.Current?
-                            .TryGetResource("SystemControlPageTextBaseMediumBrush",
-                                Application.Current.ActualThemeVariant,
-                                out var value) == true && value is Color color
-                            ? new SolidColorBrush(color, 0.7)
-                            : new SolidColorBrush(Colors.Gray);
-                        inlines.Add(new Run
+                        var source = new UnitDataBindingDataModel(unitAttribute);
+                        var binding = new Binding
                         {
-                            Text = $" ({LocalizationService.Default[unitAttribute.Unit]})",
-                            Foreground = foregroundBrush,
-                            DataContext = unitAttribute
-                        });
+                            Source = source,
+                            Path = nameof(source.Inlines),
+                            Mode = BindingMode.OneWay,
+                        };
+
+                        highlightedTextBlock.Bind(HighlightedTextBlock.ExtraInlinesProperty, binding);
                     }
 
-                    return inlines;
-                };
+                    if (property.GetCustomAttribute<DescriptionAttribute>() is { } descriptionAttribute && 
+                        descriptionAttribute.Description.IsNotNullOrEmpty())
+                    {
+                        highlightedTextBlock.SetLocalizeBinding(ToolTip.TipProperty, descriptionAttribute.Description);
+                    }
+                }
                 
-                (nameBlock as HighlightedTextBlock)!.Inlines = generateInlines();
-                LocalizationService.Default.OnCultureChanged += (s, e) =>
-                {
-                    if(nameBlock is HighlightedTextBlock htb){
-                        htb.Inlines = generateInlines();
-                    }                    
-                };
+                nameControl.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
+                nameControl.SetValue(Grid.ColumnProperty, 0);
 
-                if (property.GetCustomAttribute<DescriptionAttribute>() is { } descriptionAttribute && 
-                    descriptionAttribute.Description.IsNotNullOrEmpty())
-                {
-                    nameBlock.SetLocalizeBinding(ToolTip.TipProperty, descriptionAttribute.Description);
-                }
-
-                var args = new CustomNameBlockEventArgs(target, propertyDescriptor, nameBlock);
-                RaiseEvent(args);
-                if (args.CustomNameBlock != null)
-                {
-                    nameBlock = args.CustomNameBlock;
-                }
-
-                nameBlock.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
-                nameBlock.SetValue(Grid.ColumnProperty, 0);
-
-                grid.Children.Add(nameBlock);
+                grid.Children.Add(nameControl);
             }
 
             control.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
@@ -859,7 +841,7 @@ namespace Avalonia.PropertyGrid.Controls
             var cellInfo = new PropertyGridCellInfo(context)
             {
                 ReferencePath = referencePath.ToString(),
-                NameControl = nameBlock,
+                NameControl = nameControl,
                 Category = (container as IPropertyGridCellInfo)?.Category ?? propertyDescriptor.Category,
                 OwnerObject = target,
                 Target = target,
@@ -868,6 +850,30 @@ namespace Avalonia.PropertyGrid.Controls
             };
 
             container.Add(cellInfo);
+        }
+
+        private class UnitDataBindingDataModel : ReactiveObject
+        {
+            public UnitDataBindingDataModel(UnitAttribute attribute)
+            {   
+                var foregroundBrush = Application.Current?
+                    .TryGetResource("SystemControlPageTextBaseMediumBrush",
+                        Application.Current.ActualThemeVariant,
+                        out var value) == true && value is Color color
+                    ? new SolidColorBrush(color, 0.7)
+                    : new SolidColorBrush(Colors.Gray);
+
+                Inlines =
+                [
+                    new Run
+                    {
+                        Text = $" ({attribute.Unit})",
+                        Foreground = foregroundBrush
+                    }
+                ];
+            }
+
+            public InlineCollection Inlines { get; }
         }
         
         #endregion
@@ -1011,13 +1017,16 @@ namespace Avalonia.PropertyGrid.Controls
         #endregion
 
         #region IDisposable
-
-        /// <inheritdoc />
+        /// <summary>
+        /// dispose object
+        /// </summary>
+#pragma warning disable CA1816
         public void Dispose()
+#pragma warning restore CA1816
         {
-            if (this.rootPropertyGrid != null)
+            if (this._rootPropertyGrid != null)
             {
-                this.rootPropertyGrid.PropertyChanged -= this.OnRootPropertyGridPropertyChanged;
+                this._rootPropertyGrid.PropertyChanged -= this.OnRootPropertyGridPropertyChanged;
             }
         }
 
@@ -1072,6 +1081,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Gets the target.
         /// </summary>
         /// <value>The target.</value>
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public object Target { get; }
 
         /// <summary>
@@ -1084,6 +1094,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Gets the default name block.
         /// </summary>
         /// <value>The default name block.</value>
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public Control DefaultNameBlock { get; }
 
         /// <summary>

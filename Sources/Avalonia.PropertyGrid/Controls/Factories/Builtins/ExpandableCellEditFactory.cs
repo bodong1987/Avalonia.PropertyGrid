@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-using System.Diagnostics;
-using System.Reflection;
+﻿using System.Diagnostics;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.PropertyGrid.ViewModels;

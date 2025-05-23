@@ -1,13 +1,13 @@
-﻿namespace Avalonia.PropertyGrid.Controls;
+﻿using System.Xml;
+
+namespace Avalonia.PropertyGrid.Controls;
 
 using System;
-using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Documents;
-using Avalonia.Media;
-using Avalonia.PropertyGrid.Utils;
-using PropertyModels.ComponentModel;
+using Media;
+using Utils;
 
 /// <summary>
 /// Custom Avalonia <see cref="TextBlock"/> which supports highlighting.
@@ -28,9 +28,26 @@ public partial class HighlightedTextBlock : TextBlock
     /// </summary>
     public string? HighlightedText
     {
-        get => this.GetValue(HighlightedTextProperty);
-        set => this.SetValue(HighlightedTextProperty, value);
+        get => GetValue(HighlightedTextProperty);
+        set => SetValue(HighlightedTextProperty, value);
     }
+    
+    /// <summary>
+    /// Extra inlines
+    /// </summary>
+    public static readonly DirectProperty<HighlightedTextBlock, InlineCollection?> ExtraInlinesProperty =
+        AvaloniaProperty.RegisterDirect<HighlightedTextBlock, InlineCollection?>(
+            nameof(ExtraInlines), t => t.ExtraInlines, (t, v) => t.ExtraInlines = v);
+
+    /// <summary>
+    /// Extra Inlines
+    /// </summary>
+    public InlineCollection? ExtraInlines
+    {
+        get;
+        set => SetAndRaise(ExtraInlinesProperty, ref field, value);
+    }
+
     #endregion
     
     #region Constructor(s)
@@ -39,69 +56,114 @@ public partial class HighlightedTextBlock : TextBlock
     /// </summary>
     public HighlightedTextBlock()
     {
-        this.InitializeComponent();
+        InitializeComponent();
 
         // Observe the styled properties.
         this.GetObservable(HighlightedTextProperty)
-            .Subscribe(new PropertyObserver<string?>(this.HighlightText));
+            .Subscribe(new PropertyObserver<string?>(OnHighLightTextChanged));
+
+        this.GetObservable(ExtraInlinesProperty)
+            .Subscribe(new PropertyObserver<InlineCollection?>(OnExtraInlinesChanged));
+
+        this.GetObservable(InlinesProperty)
+            .Subscribe(new PropertyObserver<InlineCollection?>(OnInternalInlinesChanged));
     }
     #endregion
     
     #region Methods
-    /// <summary>
-    /// Highlights the specified text.
-    /// </summary>
-    /// <param name="textToHighlight">The text to highlight.</param>
-    private void HighlightText(string? textToHighlight)
+
+    private InlineCollection BuildFullyInlines()
     {
         // Update the inline collection to highlight the matching text.
         InlineCollection inlineCollection = [];
-        if (!string.IsNullOrEmpty(this.Text) && !string.IsNullOrEmpty(textToHighlight))
+        if (!string.IsNullOrEmpty(Text) && !string.IsNullOrEmpty(HighlightedText))
         {
-            int startIndex = 0;
-            while (startIndex < this.Text.Length)
+            var startIndex = 0;
+            while (startIndex < Text.Length)
             {
-                int index = this.Text.IndexOf(textToHighlight, startIndex, StringComparison.OrdinalIgnoreCase);
+                var index = Text.IndexOf(HighlightedText, startIndex, StringComparison.OrdinalIgnoreCase);
                 if (index == -1)
                 {
-                    inlineCollection.Add(new Run(this.Text[startIndex..]));
+                    inlineCollection.Add(new Run(Text[startIndex..]));
                     break;
                 }
 
                 if (index > startIndex)
                 {
-                    inlineCollection.Add(new Run(this.Text[startIndex..index]));
+                    inlineCollection.Add(new Run(Text[startIndex..index]));
                 }
 
-                SolidColorBrush backgroundBrush = Application.Current?
+                var backgroundBrush = Application.Current?
                     .TryGetResource("SystemAccentColor", 
                         Application.Current.ActualThemeVariant, 
-                        out object? value) == true && value is Color color
+                        out var value) == true && value is Color color
                     ? new SolidColorBrush(color, 0.7) 
                     : new SolidColorBrush(Colors.Transparent);
-                inlineCollection.Add(new Run(this.Text.Substring(index, textToHighlight.Length))
+                inlineCollection.Add(new Run(Text.Substring(index, HighlightedText.Length))
                 {
                     Background = backgroundBrush,
                     Foreground = new SolidColorBrush(Colors.White)
                 });
 
-                startIndex = index + textToHighlight.Length;
+                startIndex = index + HighlightedText.Length;
             }
         }
         
         // Add the text as inline if no matching text has been found.
         if (inlineCollection.Count == 0)
         {
-            inlineCollection.Add(new Run { Text = this.Text });
+            inlineCollection.Add(new Run { Text = Text });
         }
 
-        // Add the previous unit inline back to the inline collection.
-        if (this.Inlines?.FirstOrDefault(item => item.DataContext is UnitAttribute) is Run unitInlineRun)
+        return inlineCollection;
+    }
+    
+    /// <summary>
+    /// Highlights the specified text.
+    /// </summary>
+    /// <param name="textToHighlight">The text to highlight.</param>
+    private void OnHighLightTextChanged(string? textToHighlight)
+    {
+        if (_internalDecorateInlines)
         {
-            inlineCollection.Add(unitInlineRun);
+            return;
+        }
+        
+        try
+        {
+            _internalDecorateInlines = true;
+            
+            var newInlines = BuildFullyInlines();
+            if (this.ExtraInlines != null)
+            {
+                newInlines.AddRange(this.ExtraInlines);    
+            }
+            
+            Inlines = newInlines;
+        }
+        finally
+        {
+            _internalDecorateInlines = false;
+        }
+    }
+
+    /// <summary>
+    /// merge extra lines
+    /// </summary>
+    private void OnExtraInlinesChanged(InlineCollection? collection)
+    {
+        OnHighLightTextChanged(this.HighlightedText);
+    }
+
+    private bool _internalDecorateInlines = false;
+    private void OnInternalInlinesChanged(InlineCollection? collection)
+    {
+        if (_internalDecorateInlines)
+        {
+            return;
         }
 
-        this.Inlines = inlineCollection;
+        OnHighLightTextChanged(this.HighlightedText);
     }
     #endregion
 }
