@@ -1,10 +1,13 @@
 ﻿# Avalonia.PropertyGrid
+[查看简体中文文档](./README-CHS.md)  
+
 This is a PropertyGrid implementation for Avalonia, you can use it in Avalonia Applications.  
 Its main features are:  
 * Support automatic analysis of class's Properties like DevExpress's PropertyGridControl and display and edit
 * Support simultaneous editing of multiple objects in one PropertyGrid
 * Support custom types that implement the ICustomTypeDescriptor interface or TypeDescriptionProvider
 * Support custom property label controls
+* Support custom property cell edit  
 * Support array editing, support for creating, inserting, deleting and clearing in the control
 * Support data verification
 * Support Built-in undo and redo framework
@@ -24,12 +27,12 @@ Its main features are:
 <a href="https://bodong1987.github.io/Avalonia.PropertyGrid/" target="_blank"> → View Online Demo</a>
 
 ## How To Use
-Use the source code of this project directly or use NUGet Packages:  
+Use the source code of this project directly or use NUGET Packages:  
     https://www.nuget.org/packages/bodong.Avalonia.PropertyGrid   
-Then add PropertyGrid to your project, and bind the object to be displayed and edited to the `DataContext` property. If you want to bind multiple objects, just bind IEnumerable<T> directly
+Then add PropertyGrid to your project, and bind the object to be displayed and edited to the `DataContext` property. If you want to bind multiple objects, just bind `IEnumerable<T>` directly
 
 ## How to Debug
-Open `Avalonia.PropertyGrid.sln`, change config to `Development`, Build it and run samples.  
+Open `Avalonia.PropertyGrid.sln`, change config to `Development`, set `Avalonia.PropertyGrid.Samples.Desktop` as startup project, build and run it.  
 
 ## How to build Online Demo
 run `dotnet publish` under `Samples/Avalonia.PropertyGrid.Samples.Browser`. This may end up taking several minutes.    
@@ -37,9 +40,9 @@ run `dotnet publish` under `Samples/Avalonia.PropertyGrid.Samples.Browser`. This
 
 ## Detail Description
 ### Data Modeling
-If you want to edit an object in PropertyGrid, you only need to directly set this object to the `DataContext` property of PropertyGrid, PropertyGrid will automatically analyze the properties that can support editing, and edit it with the corresponding CellEdit. At the same time, you can also use Attributes in System.ComponentModel, System.ComponentModel.DataAnnotations and PropertyModels.ComponentModel to mark these properties, so that these properties have some special characteristics.  
+If you want to edit an object in PropertyGrid, you only need to directly set this object to the `DataContext` property of PropertyGrid, PropertyGrid will automatically analyze the properties that can support editing, and edit it with the corresponding `CellEdit`. At the same time, you can also use Attributes in `System.ComponentModel`, `System.ComponentModel.DataAnnotations` and `PropertyModels.ComponentModel` to mark these properties, so that these properties have some special characteristics.  
 Support but not limited to these:
-```
+```C#
 System.ComponentModel.CategoryAttribute                     /* set property category */  
 System.ComponentModel.BrowsableAttribute                    /* used to hide a property */    
 System.ComponentModel.ReadOnlyAttribute                     /* make property readonly */  
@@ -79,6 +82,7 @@ PropertyModels.ComponentModel.SingleSelectionModeAttribute                      
 ```
 
 ### Supported Builtin Types
+```C#
     bool  
     bool?  
     sbyte  
@@ -102,6 +106,7 @@ PropertyModels.ComponentModel.SingleSelectionModeAttribute                      
     PropertyModels.Collections.ICheckedList  
     PropertyModels.Collections.ISelectableList  
     object which support TypeConverter.CanConvertFrom(typeof(string))  
+```
 
 **By default, structure properties are not supported. All structure properties need to be customized before they can be displayed.**  
 
@@ -113,9 +118,9 @@ PropertyModels.ComponentModel.SingleSelectionModeAttribute                      
     ![CheckList](./Docs/Images/CheckList.png)
 
 ### Data Reloading
-Implement from System.ComponentModel.INotifyPropertyChanged and trigger the PropertyChanged event when the property changes. PropertyGrid will listen to these events and automatically refresh the view data.  
-if you implementing from PropertyModels.ComponentModel.INotifyPropertyChanged instead of System.ComponentModel.INotifyPropertyChanged will gain the additional ability to automatically fire the PropertyChanged event when an edit occurs in the PropertyGrid without having to handle each property itself.  
-You can also directly inherit PropertyModel.ComponentModel.MiniReactiveObject, PropertyModel.ComponentModel.ReactiveObject. The former only has data change notification capabilities, while the latter also has data dynamic visibility refresh support. If you use ReactiveUI.ReactiveObject directly, then you will not have dynamic visibility support. At this time, you need to monitor the relevant properties yourself, rather than using the RaisePropertyChanged method to throw the corresponding property change event.
+Implement from `System.ComponentModel.INotifyPropertyChanged` and trigger the `PropertyChanged` event when the property changes. `PropertyGrid` will listen to these events and automatically refresh the view data.  
+if you implementing from `PropertyModels.ComponentModel.INotifyPropertyChanged` instead of `System.ComponentModel.INotifyPropertyChanged` will gain the additional ability to automatically fire the `PropertyChanged` event when an edit occurs in the PropertyGrid without having to handle each property itself.  
+You can also directly inherit `PropertyModel.ComponentModel.MiniReactiveObject`, `PropertyModel.ComponentModel.ReactiveObject`. The former only has data change notification capabilities, while the latter also has data dynamic visibility refresh support. If you use `ReactiveUI.ReactiveObject` directly, then you will not have dynamic visibility support. At this time, you need to monitor the relevant properties yourself, rather than using the `RaisePropertyChanged` method to throw the corresponding property change event.
 
 ### Custom Property Filter
 ```xml
@@ -138,7 +143,7 @@ private void OnCustomPropertyDescriptorFilter(object? sender, CustomPropertyDesc
     }
 }
 ```  
-check MainDemoView.axaml.cs for more information.
+check [MainView.axaml.cs](./Samples/Avalonia.PropertyGrid.Samples/Views/MainView.axaml.cs) for more information.
 
 
 ### Change Size
@@ -216,7 +221,7 @@ There are two ways to provide data validation capabilities:
         }
     }
 ```
-2. The second method is to use System.ComponentModel.DataAnnotations.ValidationAttribute to mark the target property, both system-provided and user-defined. for example:
+2. The second method is to use `System.ComponentModel.DataAnnotations.ValidationAttribute` to mark the target property, both system-provided and user-defined. for example:
 ```C#
     public class ValidatePlatformAttribute : ValidationAttribute
     {
@@ -287,7 +292,7 @@ In this example, you can check IsShowPath first, then set the Platform to Unix, 
 To do this, you only need to mark the property with a custom Attribute. If you need to implement your own rules, just implement your own rules from.  
 
 
-***The implementation behind this depends on IReactiveObject in PropertyModels, you can implement it yourself, or directly derive your Model from ReactiveObject.***
+**The implementation behind this depends on `IReactiveObject` in `PropertyModels`, you can implement it yourself, or directly derive your Model from `ReactiveObject`.**
 
 **AbstractVisiblityConditionAttribute**.  
 One thing to pay special attention to is **that any property that needs to be used as a visibility condition for other properties needs to be marked with [ConditionTarget].**   
@@ -298,12 +303,40 @@ Implement your PropertyModels.Services.ILocalizationService class, and register 
 ```C#
     LocalizationService.Default.AddExtraService(new YourLocalizationService());
 ```
-If you want to provide the corresponding language pack for the built-in text, please add the corresponding file to Avalonia.PropertyGrid/Assets/Localizations, and name it with the CultureInfo.Name of the language. for example:  
+If you want to provide the corresponding language pack for the built-in text, please add the corresponding file to `/Sources/Avalonia.PropertyGrid/Assets/Localizations`, and name it with the `CultureInfo.Name` of the language. for example:  
 ```
     en-US.json
     ru-RU.json
     zh-CN.json
 ```
+
+### Custom Property Label Controls
+To custom label control, use `CustomNameBlock` event on PropertyGrid, and assign your custom control to `e.CustomNameBlock`, for example:
+```C#
+public class TestExtendPropertyGrid : Controls.PropertyGrid
+{
+    private int CustomLabelClickCount = 0;
+
+    public TestExtendPropertyGrid()
+    {
+        CustomNameBlock += (s, e) =>
+        {
+            if(e.PropertyDescriptor.Name == "customLabel")
+            {
+                var button = new Button() { Content = LocalizationService.Default[e.PropertyDescriptor.DisplayName] };
+                
+                button.Click += (ss, ee) =>
+                {
+                    button.Content = $"{LocalizationService.Default[e.PropertyDescriptor.DisplayName]} {++CustomLabelClickCount}";
+                };
+
+                e.CustomNameBlock = button;
+            }                
+        };
+    }
+}
+```
+![Custom-Label](./Docs/Images/custom-label.png) 
 
 ### Custom Cell Edit
 To customize CellEdit, you need to implement a Factory class from AbstractCellEditFactory, and then append this class instance to CellEditFactoryService.Default, such as:
