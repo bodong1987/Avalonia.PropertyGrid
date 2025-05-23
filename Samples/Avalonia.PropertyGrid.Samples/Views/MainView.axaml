@@ -28,7 +28,7 @@
 						x:Name="propertyGrid_Basic"
 						Margin="4"
 						CustomPropertyDescriptorFilter="OnCustomPropertyDescriptorFilter"
-						DataContext="{Binding simpleObject}"
+						DataContext="{Binding SimpleObject}"
 						>
                     </pgc:PropertyGrid>
                 </ScrollViewer>
@@ -40,12 +40,13 @@
                         <pgc:PropertyGrid
                             x:Name="propertyGrid_Styles"
                             Margin="2"
-                            DataContext="{Binding simpleObject}"
+                            DataContext="{Binding SimpleObject}"
                             AllowFilter="{Binding DataContext.AllowFilter, RelativeSource={RelativeSource AncestorType=UserControl}}"
                             DisplayMode="{Binding DataContext.DisplayMode, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
                             ShowStyle="{Binding DataContext.ShowStyle, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
                             ShowTitle="{Binding DataContext.IsShowTitle, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
                             AllowQuickFilter="{Binding DataContext.AllowQuickFilter, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
+                            AllCategoriesExpanded="{Binding DataContext.IsAllExpanded, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
                             NameWidth="280">
                         </pgc:PropertyGrid>
                     </ScrollViewer>
@@ -86,6 +87,8 @@
                         <ToggleSwitch IsChecked="{Binding AllowQuickFilter}" Margin="4"></ToggleSwitch>
                         <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Show_Title}"></TextBlock>
                         <ToggleSwitch IsChecked="{Binding IsShowTitle}" Margin="4"></ToggleSwitch>
+                        <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize All_Expand}"></TextBlock>
+                        <ToggleSwitch IsChecked="{Binding IsAllExpanded}" Margin="4"></ToggleSwitch>
                         <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Name_Width}"></TextBlock>
                         <Slider Minimum="60" Maximum="400" Value="{Binding DefaultNameWidth}" Margin="4" Width="180"></Slider>
                     </StackPanel>
@@ -96,8 +99,8 @@
                 <ScrollViewer>
                     <Grid ColumnDefinitions="1*,2,1*">
                         <GridSplitter Grid.Column="1"></GridSplitter>
-                        <pgc:PropertyGrid Margin="2" DataContext="{Binding syncObject}"></pgc:PropertyGrid>
-                        <pgc:PropertyGrid Margin="2" Grid.Column="2" DataContext="{Binding syncObject}"></pgc:PropertyGrid>
+                        <pgc:PropertyGrid Margin="2" DataContext="{Binding SyncObject}"></pgc:PropertyGrid>
+                        <pgc:PropertyGrid Margin="2" Grid.Column="2" DataContext="{Binding SyncObject}"></pgc:PropertyGrid>
                     </Grid>
                 </ScrollViewer>
             </TabItem>
@@ -108,15 +111,15 @@
                         <GridSplitter Grid.Column="3"></GridSplitter>
                         <StackPanel Orientation="Vertical">
                             <TextBlock Text="{ll:Localize MultiObjects}"></TextBlock>
-                            <pgc:PropertyGrid x:Name="propertyGrid_MultipleObjects" Margin="2" DataContext="{Binding multiObjects}"></pgc:PropertyGrid>
+                            <pgc:PropertyGrid x:Name="propertyGrid_MultipleObjects" Margin="2" DataContext="{Binding MultiObjects}"></pgc:PropertyGrid>
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Grid.Column="2">
                             <TextBlock Text="{ll:Localize FirstObject}"></TextBlock>
-                            <pgc:PropertyGrid x:Name="propertyGrid_MultipleObjects0" IsReadOnly="True" Margin="2" DataContext="{Binding multiObject0}"></pgc:PropertyGrid>
+                            <pgc:PropertyGrid x:Name="propertyGrid_MultipleObjects0" IsReadOnly="True" Margin="2" DataContext="{Binding MultiObject0}"></pgc:PropertyGrid>
                         </StackPanel>
                         <StackPanel Orientation="Vertical" Grid.Column="4">
                             <TextBlock Text="{ll:Localize SecondObject}"></TextBlock>
-                            <pgc:PropertyGrid x:Name="propertyGrid_MultipleObjects1" IsReadOnly="True" Margin="2" DataContext="{Binding multiObject1}"></pgc:PropertyGrid>
+                            <pgc:PropertyGrid x:Name="propertyGrid_MultipleObjects1" IsReadOnly="True" Margin="2" DataContext="{Binding MultiObject1}"></pgc:PropertyGrid>
                         </StackPanel>
                     </Grid>
                 </ScrollViewer>
@@ -125,13 +128,13 @@
                 <Grid ColumnDefinitions="1*, 2, 1*">
                     <Expander IsExpanded="True" Margin="2" Grid.Column="0" Header="ICustomTypeDescriptor" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
                         <ScrollViewer>
-                            <pgc:PropertyGrid Margin="4" DataContext="{Binding customOptions}"></pgc:PropertyGrid>
+                            <pgc:PropertyGrid Margin="4" DataContext="{Binding CustomOptions}"></pgc:PropertyGrid>
                         </ScrollViewer>
                     </Expander>
                     <GridSplitter Grid.Column="1"></GridSplitter>
                     <Expander IsExpanded="True" Margin="2" Grid.Column="2" Header="TypeDescriptionProvider" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
                         <ScrollViewer >
-                            <pgc:PropertyGrid Margin="4" DataContext="{Binding customObject}"></pgc:PropertyGrid>
+                            <pgc:PropertyGrid Margin="4" DataContext="{Binding CustomObject}"></pgc:PropertyGrid>
                         </ScrollViewer>
                     </Expander>
                 </Grid>
@@ -141,11 +144,11 @@
                 <ScrollViewer>
                     <Grid ColumnDefinitions="1*,2,1*">
                         <Expander IsExpanded="True" Margin="2" Grid.Column="0" Header="{ll:Localize Native}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-                            <pgc:PropertyGrid DataContext="{Binding extendsObject}"></pgc:PropertyGrid>
+                            <pgc:PropertyGrid DataContext="{Binding ExtendsObject}"></pgc:PropertyGrid>
                         </Expander>
                         <GridSplitter Grid.Column="1"></GridSplitter>
                         <Expander IsExpanded="True" Header="{ll:Localize Extends}" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-                            <lv:TestExtendPropertyGrid Margin="2" DataContext="{Binding extendsObject}"></lv:TestExtendPropertyGrid>
+                            <lv:TestExtendPropertyGrid Margin="2" DataContext="{Binding ExtendsObject}"></lv:TestExtendPropertyGrid>
                         </Expander>
 
                     </Grid>
@@ -154,32 +157,32 @@
 
             <TabItem Header="{ll:Localize Dynamic_Visibility}">
                 <ScrollViewer>
-                    <pgc:PropertyGrid Margin="4" DataContext="{Binding dynamicVisiblity}"></pgc:PropertyGrid>
+                    <pgc:PropertyGrid Margin="4" DataContext="{Binding DynamicVisibility}"></pgc:PropertyGrid>
                 </ScrollViewer>
             </TabItem>
 
             <TabItem Header="{ll:Localize RedoUndo}">
                 <Grid RowDefinitions="Auto, *">
                     <StackPanel Orientation="Horizontal" Margin="6">
-                        <Button IsEnabled="{Binding cancelableObject.CanUndo}"
+                        <Button IsEnabled="{Binding CancelableObject.CanUndo}"
                                 Content="{ll:Localize Undo}" Margin="2"
-                                Command="{Binding cancelableObject.UndoCommand}"
-                                ToolTip.Tip="{Binding cancelableObject.UndoDescription}"
+                                Command="{Binding CancelableObject.UndoCommand}"
+                                ToolTip.Tip="{Binding CancelableObject.UndoDescription}"
                                 ></Button>
-                        <Button IsEnabled="{Binding cancelableObject.CanRedo}"
+                        <Button IsEnabled="{Binding CancelableObject.CanRedo}"
                                 Content="{ll:Localize Redo}" Margin="2"
-                                Command="{Binding cancelableObject.RedoCommand}"
-                                ToolTip.Tip="{Binding cancelableObject.RedoDescription}"
+                                Command="{Binding CancelableObject.RedoCommand}"
+                                ToolTip.Tip="{Binding CancelableObject.RedoDescription}"
                                 ></Button>
                         <Button Content="{ll:Localize Clear}" Margin="2"
-                                Command="{Binding cancelableObject.ClearCommand}"
+                                Command="{Binding CancelableObject.ClearCommand}"
                                 ToolTip.Tip="Clear all cached commands"
                                 ></Button>
                     </StackPanel>
                     <ScrollViewer Grid.Row="1">
                         <pgc:PropertyGrid x:Name="proeprtyGrid_RedoUndo"
                                           Margin="4"
-                                          DataContext="{Binding cancelableObject}"
+                                          DataContext="{Binding CancelableObject}"
                                           ></pgc:PropertyGrid>
                     </ScrollViewer>
                 </Grid>

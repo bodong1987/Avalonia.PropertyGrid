@@ -244,6 +244,25 @@ namespace Avalonia.PropertyGrid.Controls
             add => AddHandler(CustomPropertyDescriptorFilterEvent, value);
             remove => RemoveHandler(CustomPropertyDescriptorFilterEvent, value);
         }
+        
+        private readonly List<Expander> _categoryExpanders = [];
+        
+        /// <summary>
+        /// is all categories expanded property
+        /// </summary>
+        public static readonly StyledProperty<bool> AllCategoriesExpandedProperty = 
+            AvaloniaProperty.Register<PropertyGrid, bool>(nameof(AllCategoriesExpanded), 
+                defaultValue: true,
+                inherits: true); 
+
+        /// <summary>
+        /// is all categories expanded
+        /// </summary>
+        public bool AllCategoriesExpanded
+        {
+            get => GetValue(AllCategoriesExpandedProperty);
+            set => SetValue(AllCategoriesExpandedProperty, value);
+        }
         #endregion
 
         #region Events
@@ -307,6 +326,14 @@ namespace Avalonia.PropertyGrid.Controls
             _ = ShowTitleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnShowTitleChanged));
             _ = NameWidthProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<double>>(OnNameWidthChanged));
             _ = IsReadOnlyProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnIsReadOnlyPropertyChanged));
+            _ = AllCategoriesExpandedProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(e => 
+            {
+                if (e.Sender is PropertyGrid pg && pg._categoryExpanders.Any())
+                {
+                    var expanded = e.NewValue.Value;
+                    pg._categoryExpanders.ForEach(ex => ex.IsExpanded = expanded);
+                }
+            }));
         }
 
         /// <summary>
@@ -579,6 +606,15 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="e">The <see cref="FilterChangedEventArgs"/> instance containing the event data.</param>
         private void OnFilterChanged(object? sender, FilterChangedEventArgs e) => RefreshVisibilities(e.FilterText);
 
+
+        /// <inheritdoc />
+        public void ExpandAllCategories() => 
+            _categoryExpanders.ForEach(e => e.IsExpanded = true);
+
+        /// <inheritdoc />
+        public void CollapseAllCategories() => 
+            _categoryExpanders.ForEach(e => e.IsExpanded = false);
+
         /// <summary>
         /// Builds the properties view.
         /// </summary>
@@ -590,6 +626,7 @@ namespace Avalonia.PropertyGrid.Controls
 
             ClearPropertyChangedObservers(_cellInfoCache.Children);
             _cellInfoCache.Clear();
+            _categoryExpanders.Clear();
 
             var target = ViewModel.Context;
 
@@ -682,6 +719,7 @@ namespace Avalonia.PropertyGrid.Controls
 
                 // expander.Header = categoryInfo.Key;
                 expander.SetLocalizeBinding(HeaderedContentControl.HeaderProperty, categoryInfo.Key);
+                _categoryExpanders.Add(expander);
 
                 var grid = new Grid();
                 grid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
@@ -998,6 +1036,7 @@ namespace Avalonia.PropertyGrid.Controls
         #endregion
     }
 
+    #region Event Args
     /// <summary>
     /// Class CustomPropertyDescriptorFilterEventArgs.
     /// Implements the <see cref="RoutedEventArgs" />
@@ -1087,6 +1126,7 @@ namespace Avalonia.PropertyGrid.Controls
             CustomNameBlock = defaultBlock;
         }
     }
+    #endregion
 }
 
 

@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.PropertyGrid.Controls;
 using Avalonia.PropertyGrid.Controls.Factories;
@@ -21,7 +20,7 @@ namespace Avalonia.PropertyGrid.Samples.Views
             CellEditFactoryService.Default.AddFactory(new ToggleSwitchCellEditFactory());
         }
 
-        private int CustomLabelClickCount = 0;
+        private int _customLabelClickCount;
 
         public TestExtendPropertyGrid()
         {
@@ -33,7 +32,13 @@ namespace Avalonia.PropertyGrid.Samples.Views
                     
                     button.Click += (ss, ee) =>
                     {
-                        button.Content = $"{LocalizationService.Default[e.PropertyDescriptor.DisplayName]} {++CustomLabelClickCount}";
+                        button.Content = $"{LocalizationService.Default[e.PropertyDescriptor.DisplayName]} {++_customLabelClickCount}";
+                    };
+
+                    LocalizationService.Default.OnCultureChanged += (ss, ee) =>
+                    {
+                        button.Content =
+                            $"{LocalizationService.Default[e.PropertyDescriptor.DisplayName]} {_customLabelClickCount}";
                     };
 
                     e.CustomNameBlock = button;
@@ -45,42 +50,24 @@ namespace Avalonia.PropertyGrid.Samples.Views
     #region SVector3
     public class SVector3ViewModel : MiniReactiveObject
     {
-        public SVector3 _vec;
+        public SVector3 Vec;
 
         public float X
         {
-            get
-            {
-                return _vec.x;
-            }
-            set
-            {
-                this.RaiseAndSetIfChanged(ref _vec.x, value);
-            }
+            get => Vec.x;
+            set => this.RaiseAndSetIfChanged(ref Vec.x, value);
         }
 
         public float Y
         {
-            get
-            {
-                return _vec.y;
-            }
-            set
-            {
-                this.RaiseAndSetIfChanged(ref _vec.y, value);
-            }
+            get => Vec.y;
+            set => this.RaiseAndSetIfChanged(ref Vec.y, value);
         }
 
         public float Z
         {
-            get
-            {
-                return _vec.z;
-            }
-            set
-            {
-                this.RaiseAndSetIfChanged(ref _vec.z, value);
-            }
+            get => Vec.z;
+            set => this.RaiseAndSetIfChanged(ref Vec.z, value);
         }
     }
 
@@ -120,10 +107,10 @@ namespace Avalonia.PropertyGrid.Samples.Views
             {
                 var vec = (SVector3)propertyDescriptor.GetValue(target)!;
 
-                var model = new SVector3ViewModel() { _vec = vec };
+                var model = new SVector3ViewModel() { Vec = vec };
                 vv.DataContext = model;
 
-                model.PropertyChanged += (s, e) => SetAndRaise(context, control, model._vec);
+                model.PropertyChanged += (s, e) => SetAndRaise(context, control, model.Vec);
 
                 return true;
             }
@@ -151,7 +138,7 @@ namespace Avalonia.PropertyGrid.Samples.Views
 
             if (control is ComboBox cb)
             {
-                cb.ItemTemplate = new FuncDataTemplate<CountryInfo>((value, namescope) => new CountryView());
+                cb.ItemTemplate = new FuncDataTemplate<CountryInfo>((value, _) => new CountryView());
             }
 
             return control;
@@ -168,7 +155,7 @@ namespace Avalonia.PropertyGrid.Samples.Views
         public override Control? HandleNewProperty(PropertyCellContext context)
         {
             var propertyDescriptor = context.Property;
-            var target = context.Target;
+            // var target = context.Target;
 
             if (propertyDescriptor.PropertyType != typeof(bool))
             {

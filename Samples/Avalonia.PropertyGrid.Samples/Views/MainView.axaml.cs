@@ -110,6 +110,6 @@ public partial class MainView : UserControl
         }
     }
 
-    private void OnCommandExecuted(object? sender, RoutedCommandExecutedEventArgs e) => (DataContext as MainViewModel)!.cancelableObject.OnCommandExecuted(sender, e);
+    private void OnCommandExecuted(object? sender, RoutedCommandExecutedEventArgs e) => (DataContext as MainViewModel)!.CancelableObject.OnCommandExecuted(sender, e);
 
 }

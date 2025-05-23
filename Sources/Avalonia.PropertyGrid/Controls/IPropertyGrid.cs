@@ -35,6 +35,16 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <returns>IPropertyGridCellInfoCache.</returns>
         IPropertyGridCellInfoCache GetCellInfoCache();
+        
+        /// <summary>
+        /// Expand all categories
+        /// </summary>
+        void ExpandAllCategories();
+        
+        /// <summary>
+        /// collapse all categories
+        /// </summary>
+        void CollapseAllCategories();
 
         /// <summary>
         /// Gets or sets a value indicating whether [show title].

@@ -16,28 +16,28 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
         Simple
     }
 
-    public partial class MainViewModel : ViewModelBase
+    public class MainViewModel : ViewModelBase
     {
-        public SimpleObject simpleObject { get; } = new SimpleObject("SimpleTests");
+        public SimpleObject SimpleObject { get; } = new("SimpleTests");
 
-        public SimpleObject syncObject { get; } = new SimpleObject("SyncTests");
+        public SimpleObject SyncObject { get; } = new("SyncTests");
 
-        public SimpleObject multiObject0 { get; } = new SimpleObject("MultiObject0");
-        public SimpleObject multiObject1 { get; } = new SimpleObject("MultiObject1");
+        public SimpleObject MultiObject0 { get; } = new("MultiObject0");
+        public SimpleObject MultiObject1 { get; } = new("MultiObject1");
 
-        public IEnumerable<SimpleObject> multiObjects => [multiObject0, multiObject1];
+        public IEnumerable<SimpleObject> MultiObjects => [MultiObject0, MultiObject1];
 
-        public ScriptableOptions customOptions { get; } = new ScriptableOptions();
+        public ScriptableOptions CustomOptions { get; } = new();
 
-        public DynamicVisibilityObject dynamicVisiblity { get; } = new DynamicVisibilityObject();
+        public DynamicVisibilityObject DynamicVisibility { get; } = new();
 
-        public TestExtendsObject extendsObject { get; } = new TestExtendsObject();
+        public TestExtendsObject ExtendsObject { get; } = new();
 
-        public CancelableObject cancelableObject { get; } = new CancelableObject("Cancelable");
+        public CancelableObject CancelableObject { get; } = new("Cancelable");
 
-        private readonly List<ICultureData> _AllCultures = [];
+        private readonly List<ICultureData> _allCultures = [];
 
-        public ICultureData[] AllCultures => [.. _AllCultures];
+        public ICultureData[] AllCultures => [.. _allCultures];
 
         public static string Version => $"v{typeof(Utils.FontUtils).Assembly.GetName().Version?.ToString() ?? "Unknown Version"}";
 
@@ -46,6 +46,7 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
             get => LocalizationService.Default.CultureData;
             set
             {
+                // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
                 if (value != null)
                 {
                     LocalizationService.Default.SelectCulture(value.Culture.Name);
@@ -55,73 +56,81 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
             }
         }
 
-        private TestCustomObject _CustomObject2 = new();
-        public TestCustomObject customObject
+        private TestCustomObject _customObject2 = new();
+        public TestCustomObject CustomObject
         {
-            get => _CustomObject2;
-            set => this.RaiseAndSetIfChanged(ref _CustomObject2, value);
+            get => _customObject2;
+            set => this.RaiseAndSetIfChanged(ref _customObject2, value);
         }
 
         #region View
-        private PropertyGridDisplayMode _DisplayMode = PropertyGridDisplayMode.Tree;
+        private PropertyGridDisplayMode _displayMode = PropertyGridDisplayMode.Tree;
         public PropertyGridDisplayMode DisplayMode
         {
-            get => _DisplayMode;
+            get => _displayMode;
             set
             {
-                if (_DisplayMode != value)
+                if (_displayMode != value)
                 {
-                    this.RaiseAndSetIfChanged(ref _DisplayMode, value);
+                    this.RaiseAndSetIfChanged(ref _displayMode, value);
                 }
             }
         }
         
-        private PropertyGridShowStyle _ShowStyle = PropertyGridShowStyle.Category;
+        private PropertyGridShowStyle _showStyle = PropertyGridShowStyle.Category;
         public PropertyGridShowStyle ShowStyle
         {
-            get => _ShowStyle;
+            get => _showStyle;
             set
             {
-                if (_ShowStyle != value)
+                if (_showStyle != value)
                 {
-                    this.RaiseAndSetIfChanged(ref _ShowStyle, value);
+                    this.RaiseAndSetIfChanged(ref _showStyle, value);
                 }
             }
         }
 
-        private bool _AllowFilter = true;
+        private bool _allowFilter = true;
         public bool AllowFilter
         {
-            get => _AllowFilter;
-            set => this.RaiseAndSetIfChanged(ref _AllowFilter, value);
+            get => _allowFilter;
+            set => this.RaiseAndSetIfChanged(ref _allowFilter, value);
         }
 
-        private bool _AllowQuickFilter = true;
+        private bool _allowQuickFilter = true;
         public bool AllowQuickFilter
         {
-            get => _AllowQuickFilter;
-            set => this.RaiseAndSetIfChanged(ref _AllowQuickFilter, value);
+            get => _allowQuickFilter;
+            set => this.RaiseAndSetIfChanged(ref _allowQuickFilter, value);
         }
 
-        private bool _IsShowTitle = true;
+        private bool _isShowTitle = true;
         public bool IsShowTitle
         {
-            get => _IsShowTitle;
-            set => this.RaiseAndSetIfChanged(ref _IsShowTitle, value);
+            get => _isShowTitle;
+            set => this.RaiseAndSetIfChanged(ref _isShowTitle, value);
         }
 
-        private bool _IsReadOnly = false;
+        private bool _isAllExpanded = true;
+
+        public bool IsAllExpanded
+        {
+            get => _isAllExpanded;
+            set => this.RaiseAndSetIfChanged(ref _isAllExpanded, value);
+        }
+
+        private bool _isReadOnly;
         public bool IsReadOnly
         {
-            get => _IsReadOnly;
-            set => this.RaiseAndSetIfChanged(ref _IsReadOnly, value);
+            get => _isReadOnly;
+            set => this.RaiseAndSetIfChanged(ref _isReadOnly, value);
         }
 
-        private double _DefaultNameWidth = 280;
+        private double _defaultNameWidth = 280;
         public double DefaultNameWidth
         {
-            get => _DefaultNameWidth;
-            set => this.RaiseAndSetIfChanged(ref _DefaultNameWidth, value);
+            get => _defaultNameWidth;
+            set => this.RaiseAndSetIfChanged(ref _defaultNameWidth, value);
         }
         #endregion
 
@@ -131,7 +140,7 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
 
             GenOptions();
 
-            _AllCultures.AddRange(LocalizationService.Default.GetCultures());
+            _allCultures.AddRange(LocalizationService.Default.GetCultures());
 
             var propertyManager = new DynamicPropertyManager<TestCustomObject>();
             propertyManager.Properties.Add(
@@ -167,7 +176,7 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
         #region Gen Custom Object Properties
         private void GenOptions()
         {
-            customOptions.AddProperty(new ScriptableObject()
+            CustomOptions.AddProperty(new ScriptableObject
             {
                 Name = "IntValue",
                 DisplayName = "Int Value",
@@ -175,7 +184,7 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
                 Value = 1024
             });
 
-            customOptions.AddProperty(new ScriptableObject()
+            CustomOptions.AddProperty(new ScriptableObject
             {
                 Name = "BooleanValue",
                 DisplayName = "Boolean Value",
@@ -183,7 +192,7 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
                 Value = true
             });
 
-            customOptions.AddProperty(new ScriptableObject()
+            CustomOptions.AddProperty(new ScriptableObject
             {
                 Name = "ThreeBooleanValue",
                 DisplayName = "Three Boolean Value",
@@ -192,7 +201,7 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
                 ValueType = typeof(bool?)
             });
 
-            customOptions.AddProperty(new ScriptableObject()
+            CustomOptions.AddProperty(new ScriptableObject
             {
                 Name = "StringValue",
                 DisplayName = "String Value",
@@ -200,7 +209,7 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
                 Value = "bodong"
             });
 
-            customOptions.AddProperty(new ScriptableObject()
+            CustomOptions.AddProperty(new ScriptableObject
             {
                 Name = "EnumValue",
                 DisplayName = "Enum Value",
@@ -209,7 +218,7 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
                 ExtraAttributes = [new ValidatePlatformAttribute()]
             });
 
-            customOptions.AddProperty(new ScriptableObject()
+            CustomOptions.AddProperty(new ScriptableObject
             {
                 Name = "EnumValueR",
                 DisplayName = "Enum Value(Readonly)",
@@ -218,30 +227,30 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
                 ExtraAttributes = [new ReadOnlyAttribute(true)]
             });
 
-            customOptions.AddProperty(new ScriptableObject()
+            CustomOptions.AddProperty(new ScriptableObject
             {
                 Name = "BindingList",
                 DisplayName = "BindingList Value",
                 Description = "Custom type = BindingList",
-                Value = new BindingList<int>() { 1024, 2048, 4096 },
+                Value = new BindingList<int> { 1024, 2048, 4096 },
                 ExtraAttributes = [new CategoryAttribute("Array")]
             });
 
-            customOptions.AddProperty(new ScriptableObject()
+            CustomOptions.AddProperty(new ScriptableObject
             {
                 Name = "BindingListNotEditable",
                 DisplayName = "Not Editable List",
                 Description = "Custom type = BindingList(Not Editable)",
-                Value = new BindingList<int>() { 1024, 2048, 4096 },
+                Value = new BindingList<int> { 1024, 2048, 4096 },
                 ExtraAttributes = [new CategoryAttribute("Array"), new EditableAttribute(false)]
             });
 
-            customOptions.AddProperty(new ScriptableObject()
+            CustomOptions.AddProperty(new ScriptableObject
             {
                 Name = "BindingListReadOnly",
                 DisplayName = "ReadOnly List",
                 Description = "Custom type = BindingList(Readonly)",
-                Value = new BindingList<int>() { 1024, 2048, 4096 },
+                Value = new BindingList<int> { 1024, 2048, 4096 },
                 ExtraAttributes = [new CategoryAttribute("Array"), new ReadOnlyAttribute(true)]
             });
         }
