@@ -69,16 +69,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 {
                     var v = propertyDescriptor.GetValue(target)!;
 
-                    switch (Type.GetTypeCode(v.GetType()))
+                    progressBar.Value = Type.GetTypeCode(v.GetType()) switch
                     {
-                        case TypeCode.Single:
-                            progressBar.Value = (float)v;
-                            break;
-                        case TypeCode.Double:
-                            progressBar.Value = (double)v;
-                            break;
-                    }
-
+                        TypeCode.Single => (float)v,
+                        TypeCode.Double => (double)v,
+                        _ => progressBar.Value
+                    };
                 }
                 catch (Exception ex)
                 {

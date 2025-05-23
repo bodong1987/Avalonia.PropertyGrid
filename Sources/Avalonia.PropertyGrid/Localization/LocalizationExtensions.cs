@@ -25,7 +25,7 @@ namespace Avalonia.PropertyGrid.Localization
             {
                 Source = source,
                 Path = nameof(source.Value),
-                Mode = mode,
+                Mode = mode
             };
 
             _ = control.Bind(property, binding);

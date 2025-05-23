@@ -108,6 +108,7 @@ namespace Avalonia.PropertyGrid.Controls
                 {
                     var v = System.Convert.ChangeType(value, targetType);
 
+                    // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                     if (v != null)
                     {
                         return v;

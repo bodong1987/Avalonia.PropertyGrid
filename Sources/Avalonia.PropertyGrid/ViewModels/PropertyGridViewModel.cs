@@ -171,14 +171,12 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// <value>The show style text.</value>
         public string ShowStyleText
         {
-            get
-            {
-                return ShowStyle switch
+            get =>
+                ShowStyle switch
                 {
                     PropertyGridShowStyle.Tiled => "T",
                     _ => "C"
                 };
-            }
         }
 
         /// <summary>
@@ -338,13 +336,14 @@ namespace Avalonia.PropertyGrid.ViewModels
             bool filterMatchesParentCategory = false)
         {
             PropertyVisibility result;
-            bool atLeastOneVisible = false;
+            var atLeastOneVisible = false;
 
+            // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
             switch (cellInfo.CellType)
             {
                 case PropertyGridCellType.Category:
                     // Check if the filter matches the (parent) category.
-                    bool filterMatchesCategory = filterMatchesParentCategory;
+                    var filterMatchesCategory = filterMatchesParentCategory;
                     if (filterText.IsNotNullOrEmpty())
                     {
                         filterMatchesCategory |= (cellInfo.Container?.Header as string)?

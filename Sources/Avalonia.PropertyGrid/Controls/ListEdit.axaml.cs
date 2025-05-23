@@ -446,7 +446,7 @@ namespace Avalonia.PropertyGrid.Controls
                     foreach (var index in Enumerable.Range(0, list.Count))
                     {
                         var attributes = PropertyContext?.Property.Attributes.OfType<Attribute>()
-                            .Where(attr => !(attr is ValidationAttribute))
+                            .Where(attr => attr is not ValidationAttribute)
                             .ToArray();
 
                         var pd = new ListElementPropertyDescriptor(

@@ -37,6 +37,7 @@ namespace Avalonia.PropertyGrid.Utils
                 var enumValue = Enum.Parse(enumType, name);
                 Debug.Assert(enumValue is Enum);
 
+                // ReSharper disable once PossibleMultipleEnumeration
                 if (attributes != null && !IsValueAllowed(attributes, enumType, name, (enumValue as Enum)!))
                 {
                     continue;
@@ -73,6 +74,7 @@ namespace Avalonia.PropertyGrid.Utils
             }
             catch
             {
+                // ReSharper disable once RedundantSuppressNullableWarningExpression
                 wrapper.DisplayName = enumValueName ?? enumValue.ToString()!;
             }
 
@@ -94,6 +96,7 @@ namespace Avalonia.PropertyGrid.Utils
                 var fieldInfo = enumType.GetField(value.ToString());
                 if (fieldInfo?.IsDefined<EnumExcludeAttribute>() == false &&
                     flags.HasFlag(value) &&
+                    // ReSharper disable once PossibleMultipleEnumeration
                     (attributes == null || IsValueAllowed(attributes, typeof(T), fieldInfo.Name, value)))
                 {
                     yield return (T)value;

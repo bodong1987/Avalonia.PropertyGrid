@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net.Mime;
 using Avalonia.Controls;
 using Avalonia.Controls.Documents;
 using Avalonia.Data;
@@ -135,8 +134,8 @@ public class TextBlockInlinesBindingDataModel : ReactiveObject
     /// <param name="highLightedText"></param>
     public void UpdateHighlightedText(string? highLightedText)
     {
-        this._highLightedText = highLightedText;
-        RebuildInlines();;
+        _highLightedText = highLightedText;
+        RebuildInlines();
     }
 
     private void OnCultureChanged(object? sender, EventArgs e)
@@ -164,7 +163,7 @@ public class TextBlockInlinesBindingDataModel : ReactiveObject
             });
         }
 
-        this.Inlines = collections;
+        Inlines = collections;
         RaisePropertyChanged(nameof(Inlines));
     }
 

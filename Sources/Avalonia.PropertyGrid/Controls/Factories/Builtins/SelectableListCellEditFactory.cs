@@ -93,10 +93,10 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             }
             else
             {
-                ICheckableListEdit control = attr.Mode == SingleSelectionMode.ToggleButtonGroup ? new ToggleButtonGroupListEdit()
+                ICheckableListEdit control = attr.Mode == SingleSelectionMode.ToggleButtonGroup ? new ToggleButtonGroupListEdit
                 {
                     Items = list?.Values ?? []
-                } : new RadioButtonListEdit()
+                } : new RadioButtonListEdit
                 {
                     Items = list?.Values ?? []
                 };

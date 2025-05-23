@@ -97,6 +97,7 @@
     "progressValue": "以进度条展示的数值",
     "trackableDoubleValue": "以滑动条展示的数值",
     "trackableIntValue": "可拖动整型",
+    "trackableIntValueNoUnit": "可拖动整型无单位",
     "stringList": "字符串数组",
     "Not Editable": "不可增删",
     "Readonly List": "只读数组",

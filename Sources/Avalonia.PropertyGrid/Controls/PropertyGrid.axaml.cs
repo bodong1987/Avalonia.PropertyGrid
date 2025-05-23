@@ -4,13 +4,11 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using Avalonia.Controls;
-using Avalonia.Controls.Documents;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Data;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
-using Avalonia.Media;
 using Avalonia.PropertyGrid.Controls.Implements;
 using Avalonia.PropertyGrid.Localization;
 using Avalonia.PropertyGrid.Services;
@@ -213,19 +211,19 @@ namespace Avalonia.PropertyGrid.Controls
         /// <value>The root property grid.</value>
         public IPropertyGrid? RootPropertyGrid
         {
-            get => this._rootPropertyGrid;
+            get => _rootPropertyGrid;
             set
             {
-                if (this._rootPropertyGrid != null)
+                if (_rootPropertyGrid != null)
                 {
-                    this._rootPropertyGrid.PropertyChanged -= this.OnRootPropertyGridPropertyChanged;
+                    _rootPropertyGrid.PropertyChanged -= OnRootPropertyGridPropertyChanged;
                 }
 
-                this._rootPropertyGrid = value;
+                _rootPropertyGrid = value;
 
-                if (this._rootPropertyGrid != null)
+                if (_rootPropertyGrid != null)
                 {
-                    this._rootPropertyGrid.PropertyChanged += this.OnRootPropertyGridPropertyChanged;
+                    _rootPropertyGrid.PropertyChanged += OnRootPropertyGridPropertyChanged;
                 }
             }
         }
@@ -396,10 +394,11 @@ namespace Avalonia.PropertyGrid.Controls
         {
             if (sender is IPropertyGrid propertyGrid)
             {
+                // ReSharper disable once ConvertSwitchStatementToSwitchExpression
                 switch (e.PropertyName)
                 {
                     case nameof(IPropertyGrid.NameWidth):
-                        this.NameWidth = propertyGrid.NameWidth;
+                        NameWidth = propertyGrid.NameWidth;
                         break;
                 }
             }
@@ -678,8 +677,8 @@ namespace Avalonia.PropertyGrid.Controls
                 expander.IsExpanded = autoCollapseCategoriesAttribute?.ShouldAutoCollapse(categoryInfo.Key) != true;
                 expander.HorizontalContentAlignment = HorizontalAlignment.Stretch;
                 expander.HorizontalAlignment = HorizontalAlignment.Stretch;
-                expander.Margin = new Thickness(this.DisplayMode == PropertyGridDisplayMode.Inline ? 0 : 2);
-                expander.Padding = new Thickness(this.DisplayMode == PropertyGridDisplayMode.Inline ? 0 : 2);
+                expander.Margin = new Thickness(DisplayMode == PropertyGridDisplayMode.Inline ? 0 : 2);
+                expander.Padding = new Thickness(DisplayMode == PropertyGridDisplayMode.Inline ? 0 : 2);
 
                 // expander.Header = categoryInfo.Key;
                 expander.SetLocalizeBinding(HeaderedContentControl.HeaderProperty, categoryInfo.Key);
@@ -779,7 +778,7 @@ namespace Avalonia.PropertyGrid.Controls
             grid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
 
             Control? nameControl = null;
-            var shouldUseInlineMode = this.DisplayMode == PropertyGridDisplayMode.Inline && property.IsExpandableType();
+            var shouldUseInlineMode = DisplayMode == PropertyGridDisplayMode.Inline && property.IsExpandableType();
             if (shouldUseInlineMode)
             {
                 var propertyGrid = control.GetVisualChildren().OfType<PropertyGrid>().FirstOrDefault();
@@ -791,7 +790,7 @@ namespace Avalonia.PropertyGrid.Controls
             }
             else
             {
-                var nameTextBlock = new TextBlock()
+                var nameTextBlock = new TextBlock
                 {
                     Margin = new Thickness(4),
                     VerticalAlignment = VerticalAlignment.Center
@@ -990,9 +989,9 @@ namespace Avalonia.PropertyGrid.Controls
         public void Dispose()
 #pragma warning restore CA1816
         {
-            if (this._rootPropertyGrid != null)
+            if (_rootPropertyGrid != null)
             {
-                this._rootPropertyGrid.PropertyChanged -= this.OnRootPropertyGridPropertyChanged;
+                _rootPropertyGrid.PropertyChanged -= OnRootPropertyGridPropertyChanged;
             }
         }
 

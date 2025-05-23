@@ -91,10 +91,10 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 var items = EnumUtils.GetEnumValues(propertyDescriptor.PropertyType,
                     propertyDescriptor.Attributes.OfType<Attribute>()).Cast<object>().ToArray();
 
-                ICheckableListEdit control = attr.Mode == SingleSelectionMode.ToggleButtonGroup ? new ToggleButtonGroupListEdit()
+                ICheckableListEdit control = attr.Mode == SingleSelectionMode.ToggleButtonGroup ? new ToggleButtonGroupListEdit
                 {
                     Items = items
-                } : new RadioButtonListEdit()
+                } : new RadioButtonListEdit
                 {
                     Items = items
                 };
@@ -157,13 +157,15 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                 return true;
             }
-            else if (control is ComboBox cb)
+
+            if (control is ComboBox cb)
             {
                 var value = propertyDescriptor.GetValue(target) as Enum;
                 cb.SelectedItem = new EnumValueWrapper(value!);
                 return true;
             }
-            else if (control is ICheckableListEdit rb)
+
+            if (control is ICheckableListEdit rb)
             {
                 var value = propertyDescriptor.GetValue(target) as Enum;
                 rb.CheckedItem = new EnumValueWrapper(value!);
