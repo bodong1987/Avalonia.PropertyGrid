@@ -14,6 +14,7 @@ using Avalonia.Media;
 using Avalonia.PropertyGrid.Controls.Implements;
 using Avalonia.PropertyGrid.Localization;
 using Avalonia.PropertyGrid.Services;
+using Avalonia.PropertyGrid.Utils;
 using Avalonia.PropertyGrid.ViewModels;
 using Avalonia.Reactive;
 using Avalonia.VisualTree;
@@ -666,10 +667,12 @@ namespace Avalonia.PropertyGrid.Controls
                 {
                     ExpandDirection = ExpandDirection.Down,
                     HeaderTemplate = new FuncDataTemplate<object>((_, _) =>
-                        new HighlightedTextBlock
-                        {
-                            [!TextBlock.TextProperty] = new Binding()
-                        })
+                    {
+                        var tb = new TextBlock();
+                        tb.SetInlinesBinding(categoryInfo.Key);
+
+                        return tb;
+                    })
                 };
                 _ = expander.SetValue(Grid.RowProperty, PropertiesGrid.RowDefinitions.Count - 1);
                 expander.IsExpanded = autoCollapseCategoriesAttribute?.ShouldAutoCollapse(categoryInfo.Key) != true;
@@ -788,39 +791,25 @@ namespace Avalonia.PropertyGrid.Controls
             }
             else
             {
-                var highlightedTextBlock = new HighlightedTextBlock
+                var nameTextBlock = new TextBlock()
                 {
                     Margin = new Thickness(4),
                     VerticalAlignment = VerticalAlignment.Center
                 };
 
-                var args = new CustomNameBlockEventArgs(target, propertyDescriptor, highlightedTextBlock);
+                var args = new CustomNameBlockEventArgs(target, propertyDescriptor, nameTextBlock);
                 RaiseEvent(args);
 
-                nameControl = args.CustomNameBlock ?? highlightedTextBlock;
+                nameControl = args.CustomNameBlock ?? nameTextBlock;
 
-                if (nameControl == highlightedTextBlock)
+                if (nameControl == nameTextBlock)
                 {
-                    highlightedTextBlock.SetLocalizeBinding(TextBlock.TextProperty, property.DisplayName);
-                    
-                    if (property.GetCustomAttribute<UnitAttribute>() is { } unitAttribute &&
-                        unitAttribute.Unit.IsNotNullOrEmpty())
-                    {
-                        var source = new UnitDataBindingDataModel(unitAttribute);
-                        var binding = new Binding
-                        {
-                            Source = source,
-                            Path = nameof(source.Inlines),
-                            Mode = BindingMode.OneWay,
-                        };
-
-                        highlightedTextBlock.Bind(HighlightedTextBlock.ExtraInlinesProperty, binding);
-                    }
+                    nameTextBlock.SetInlinesBinding(propertyDescriptor.DisplayName, null, propertyDescriptor.GetCustomAttribute<UnitAttribute>());
 
                     if (property.GetCustomAttribute<DescriptionAttribute>() is { } descriptionAttribute && 
                         descriptionAttribute.Description.IsNotNullOrEmpty())
                     {
-                        highlightedTextBlock.SetLocalizeBinding(ToolTip.TipProperty, descriptionAttribute.Description);
+                        nameTextBlock.SetLocalizeBinding(ToolTip.TipProperty, descriptionAttribute.Description);
                     }
                 }
                 
@@ -852,29 +841,6 @@ namespace Avalonia.PropertyGrid.Controls
             container.Add(cellInfo);
         }
 
-        private class UnitDataBindingDataModel : ReactiveObject
-        {
-            public UnitDataBindingDataModel(UnitAttribute attribute)
-            {   
-                var foregroundBrush = Application.Current?
-                    .TryGetResource("SystemControlPageTextBaseMediumBrush",
-                        Application.Current.ActualThemeVariant,
-                        out var value) == true && value is Color color
-                    ? new SolidColorBrush(color, 0.7)
-                    : new SolidColorBrush(Colors.Gray);
-
-                Inlines =
-                [
-                    new Run
-                    {
-                        Text = $" ({attribute.Unit})",
-                        Foreground = foregroundBrush
-                    }
-                ];
-            }
-
-            public InlineCollection Inlines { get; }
-        }
         
         #endregion
 

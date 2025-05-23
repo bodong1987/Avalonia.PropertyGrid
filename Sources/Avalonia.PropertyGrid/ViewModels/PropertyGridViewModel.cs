@@ -9,6 +9,7 @@ using Avalonia.Controls.Primitives;
 using Avalonia.PropertyGrid.Controls;
 using Avalonia.PropertyGrid.Controls.Factories.Builtins;
 using Avalonia.PropertyGrid.Controls.Implements;
+using Avalonia.PropertyGrid.Utils;
 using PropertyModels.ComponentModel;
 using PropertyModels.ComponentModel.DataAnnotations;
 using PropertyModels.Extensions;
@@ -351,7 +352,7 @@ namespace Avalonia.PropertyGrid.ViewModels
                     }
 
                     // Propagate the visibility of all child cell infos.
-                    foreach (IPropertyGridCellInfo child in cellInfo.Children)
+                    foreach (var child in cellInfo.Children)
                     {
                         result = PropagateVisibility(child, child.Target, category, filterText, filterMatchesCategory);
                         switch (filterMatchesCategory && !result.HasFlag(PropertyVisibility.HiddenByCategoryFilter))
@@ -365,13 +366,13 @@ namespace Avalonia.PropertyGrid.ViewModels
                                 break;
                         }
                     }
-
+                    
                     // Update the highlighted expander header text.
                     if (cellInfo.Container is { Presenter.Parent.Parent: DockPanel dockPanel } &&
                         dockPanel.Children.FirstOrDefault(item => item is ToggleButton) is
-                            ToggleButton { Presenter.Child: HighlightedTextBlock textBlock })
+                            ToggleButton { Presenter.Child: TextBlock textBlock })
                     {
-                        textBlock.HighlightedText = filterText;
+                        textBlock.UpdateHighlightedText(filterText);
                     }
 
                     break;
@@ -484,11 +485,9 @@ namespace Avalonia.PropertyGrid.ViewModels
 
             // Update the visibility of the cell info.
             cellInfo.IsVisible = visibility == PropertyVisibility.AlwaysVisible;
-
-            // Update the highlighted name control text.
-            if (cellInfo.NameControl is HighlightedTextBlock textBlock)
+            if (cellInfo.NameControl is TextBlock textBlock)
             {
-                textBlock.HighlightedText = filterText;
+                textBlock.UpdateHighlightedText(filterText);
             }
 
             return visibility;
