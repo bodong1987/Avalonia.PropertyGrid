@@ -55,7 +55,7 @@ namespace PropertyModels.ComponentModel.DataAnnotations
     /// <summary>
     /// Attribute to specify the image preview mode, including stretch and stretch direction.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public class ImagePreviewModeAttribute : Attribute
     {
         /// <summary>
@@ -66,6 +66,7 @@ namespace PropertyModels.ComponentModel.DataAnnotations
         /// <summary>
         /// Gets or sets the stretch direction.
         /// </summary>
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public StretchDirectionType StretchDirection { get; set; }
     }
 }

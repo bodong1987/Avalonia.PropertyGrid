@@ -31,10 +31,8 @@ namespace PropertyModels.ComponentModel
     /// Attribute to specify that an enum field should be excluded from the selectable list.
     /// </summary>
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Enum)]
-    public class EnumExcludeAttribute : Attribute
-    {
-    }
-
+    public class EnumExcludeAttribute : Attribute;
+    
     /// <summary>
     /// Class EnumValueWrapper.
     /// </summary>

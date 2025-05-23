@@ -72,7 +72,7 @@ namespace PropertyModels.ComponentModel
                 return;
             }
 
-            Dictionary<string, List<string>>? cache = [];
+            Dictionary<string, List<string>> cache = [];
 
             foreach (var property in type.GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {

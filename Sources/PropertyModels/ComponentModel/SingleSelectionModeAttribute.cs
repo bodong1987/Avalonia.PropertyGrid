@@ -22,13 +22,13 @@ public enum SingleSelectionMode
     /// <summary>
     /// toggle button group
     /// </summary>
-    ToggleButtonGroup,
+    ToggleButtonGroup
 }
 
 /// <summary>
 /// set select mode
 /// </summary>
-[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, AllowMultiple = false)]
+[AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 public class SingleSelectionModeAttribute : Attribute
 {
     /// <summary>

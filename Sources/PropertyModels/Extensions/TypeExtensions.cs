@@ -68,13 +68,16 @@ namespace PropertyModels.Extensions
         public static Type GetUnderlyingType(this MemberInfo memberInfo)
         {
             // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
+            // ReSharper disable once SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault
             return memberInfo.MemberType switch
             {
-                MemberTypes.Event => ((EventInfo)memberInfo).EventHandlerType!, // ReSharper disable once RedundantSuppressNullableWarningExpression
+                // ReSharper disable once AssignNullToNotNullAttribute
+                // ReSharper disable once RedundantSuppressNullableWarningExpression
+                MemberTypes.Event => ((EventInfo)memberInfo).EventHandlerType!, 
                 MemberTypes.Field => ((FieldInfo)memberInfo).FieldType,
                 MemberTypes.Method => ((MethodInfo)memberInfo).ReturnType,
                 MemberTypes.Property => ((PropertyInfo)memberInfo).PropertyType,
-                _ => throw new ArgumentException("Input MemberInfo must be if type EventInfo, FieldInfo, MethodInfo, or PropertyInfo"),
+                _ => throw new ArgumentException("Input MemberInfo must be if type EventInfo, FieldInfo, MethodInfo, or PropertyInfo")
             };
         }
 
@@ -87,11 +90,12 @@ namespace PropertyModels.Extensions
         /// <exception cref="System.ArgumentException">Input MemberInfo must be if type FieldInfo, or PropertyInfo</exception>
         public static object? GetUnderlyingValue(this MemberInfo memberInfo, object? target)
             // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
+            // ReSharper disable once SwitchExpressionHandlesSomeKnownEnumValuesWithExceptionInDefault
             => memberInfo.MemberType switch
             {
                 MemberTypes.Field => ((FieldInfo)memberInfo).GetValue(target),
                 MemberTypes.Property => ((PropertyInfo)memberInfo).GetValue(target, null),
-                _ => throw new ArgumentException("Input MemberInfo must be if type FieldInfo, or PropertyInfo"),
+                _ => throw new ArgumentException("Input MemberInfo must be if type FieldInfo, or PropertyInfo")
             };
 
         /// <summary>
@@ -304,12 +308,7 @@ namespace PropertyModels.Extensions
         public static Type? GetType(string typeName)
         {
             var type = Type.GetType(typeName);
-            if (type != null)
-            {
-                return type;
-            }
-
-            return AppDomain.CurrentDomain.GetAssemblies().Select(x => x.GetType(typeName)).FirstOrDefault();
+            return type ?? AppDomain.CurrentDomain.GetAssemblies().Select(x => x.GetType(typeName)).FirstOrDefault();
         }
 
         /// <summary>
@@ -332,7 +331,7 @@ namespace PropertyModels.Extensions
                 or TypeCode.Decimal
                 or TypeCode.Double
                 or TypeCode.Single => true,
-                _ => false,
+                _ => false
             };
 
         /// <summary>

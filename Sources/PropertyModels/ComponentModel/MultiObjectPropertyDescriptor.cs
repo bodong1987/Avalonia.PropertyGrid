@@ -178,7 +178,7 @@ namespace PropertyModels.ComponentModel
         /// Gets a value indicating whether value change notifications for this property may originate from outside the property descriptor.
         /// </summary>
         /// <value><c>true</c> if [supports change events]; otherwise, <c>false</c>.</value>
-        public override bool SupportsChangeEvents { get { return Descriptors.Any(p => p.SupportsChangeEvents); } }
+        public override bool SupportsChangeEvents => Descriptors.Any(p => p.SupportsChangeEvents);
 
         /// <summary>
         /// Enables other objects to be notified when this property changes.

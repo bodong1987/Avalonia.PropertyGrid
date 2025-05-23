@@ -30,6 +30,7 @@ namespace PropertyModels.Utils
         /// <exception cref="System.ArgumentNullException">target</exception>
         public PropertyDescriptorBuilder(object target)
         {
+            // ReSharper disable once ConvertIfStatementToSwitchStatement
             if (target == null)
             {
                 throw new ArgumentNullException(nameof(target));

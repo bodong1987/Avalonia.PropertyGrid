@@ -16,6 +16,7 @@ namespace PropertyModels.ComponentModel.DataAnnotations
         /// <param name="fieldName">Name of the filed.</param>
         /// <param name="fieldValue">The field value.</param>
         /// <returns><c>true</c> if the value is allowed; otherwise, <c>false</c>.</returns>
+        // ReSharper disable once ParameterOnlyUsedForPreconditionCheck.Global
         bool AllowValue(Type enumType, string fieldName, object fieldValue);
     }
 
@@ -23,7 +24,7 @@ namespace PropertyModels.ComponentModel.DataAnnotations
     /// Generic interface for authorizing enum values.
     /// </summary>
     /// <typeparam name="T">The enum type.</typeparam>
-    public interface IEnumValueAuthorizeAttribute<T> : IEnumValueAuthorizeAttribute
+    public interface IEnumValueAuthorizeAttribute<in T> : IEnumValueAuthorizeAttribute
         where T : Enum
     {
         /// <summary>

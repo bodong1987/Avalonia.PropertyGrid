@@ -45,7 +45,7 @@ public static class DecimalConvertUtils
                 TypeCode.Double => Convert.ToDecimal((double)value, CultureInfo.CurrentCulture),
                 TypeCode.Single => Convert.ToDecimal((float)value, CultureInfo.CurrentCulture),
                 TypeCode.String => decimal.TryParse(value as string, NumberStyles.Any, CultureInfo.CurrentCulture, out var v) ? v : 0,
-                _ => 0,
+                _ => 0
             };
         }
         catch (OverflowException)
@@ -92,18 +92,19 @@ public static class DecimalConvertUtils
             : CultureInfo.CurrentCulture;
 
         var minValue = converter.ConvertFromString(
+            // ReSharper disable once AssignNullToNotNullAttribute
             null,
             conversionCulture,
             Convert.ToString(rangeAttr.Minimum, conversionCulture)!
         );
 
         var maxValue = converter.ConvertFromString(
+            // ReSharper disable once AssignNullToNotNullAttribute
             null,
             conversionCulture,
             Convert.ToString(rangeAttr.Maximum, conversionCulture)!
         );
 
-        // 数值类型安全转换
         return (
             Convert.ToDecimal(minValue, CultureInfo.InvariantCulture),
             Convert.ToDecimal(maxValue, CultureInfo.InvariantCulture)
