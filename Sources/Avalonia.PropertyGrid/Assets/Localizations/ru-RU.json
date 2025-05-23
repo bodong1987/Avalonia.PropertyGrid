@@ -1,5 +1,6 @@
 ﻿{
   "ShowGroup": "Показывать категорию",
+  "ShowStyle": "Стиль отображения",
   "IgnoreCase": "Игнорировать регистр",
   "UseRegex": "Использовать Regex",
   "Search": "Поиск",
@@ -11,5 +12,17 @@
   "InsertNewElement": "Вставить элемент перед этим элементом",
   "RemoveElement": "Удалить элемент",
   "AppendNewElement": "Добавить новый элемент",
-  "ClearAllElements": "Очистить список"
+  "ClearAllElements": "Очистить список",
+  "Please select some folders": "Пожалуйста, выберите папки",
+  "Please select a folder": "Пожалуйста, выберите папку",
+  "Please select some files": "Пожалуйста, выберите файлы",
+  "Please select a file": "Пожалуйста, выберите файл",
+  "Remove array element at {0}": "Удалить элемент массива в {0}",
+  "Clear all elements of the array": "Очистить все элементы массива",
+  "Insert a new element at {0}": "Вставить новый элемент в {0}",
+  "Insert a new element at the end of the array": "Вставить новый элемент в конец массива",
+  "Change {0} form {1} to {2}": "Изменить {0} с {1} на {2}",
+  "Change {0} selection from {1} to {2}": "Изменить выбор {0} с {1} на {2}",
+  "ReadOnly": "Только чтение",
+  "Readonly": "Только чтение"
 }

@@ -50,47 +50,54 @@
                             NameWidth="280">
                         </pgc:PropertyGrid>
                     </ScrollViewer>
-                    <StackPanel Orientation="Horizontal" Grid.Row="1">
-                        <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Display_Mode}"></TextBlock>
-                        <ComboBox x:Name="DisplayModeComboBox" Margin="4" VerticalAlignment="Center" SelectedIndex="0">
-                            <ComboBox.Items>
-                                <apv:PropertyGridDisplayMode>Tree</apv:PropertyGridDisplayMode>
-                                <apv:PropertyGridDisplayMode>Inline</apv:PropertyGridDisplayMode>
-                            </ComboBox.Items>
-                        </ComboBox>
-                        <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Show_Style}"></TextBlock>
-                        <ComboBox x:Name="ShowStyleComboBox" Margin="4" VerticalAlignment="Center" SelectedIndex="0">
-                            <ComboBox.Items>
-                                <apv:PropertyGridShowStyle>Category</apv:PropertyGridShowStyle>
-                                <apv:PropertyGridShowStyle>Tiled</apv:PropertyGridShowStyle>
-                            </ComboBox.Items>
-                        </ComboBox>
-                        <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize CategoryOrder}"></TextBlock>
-                        <ComboBox x:Name="CategoryOrderComboBox" Margin="4" VerticalAlignment="Center" SelectedIndex="0">
-                            <ComboBox.Items>
-                                <apv:PropertyGridOrderStyle>Builtin</apv:PropertyGridOrderStyle>
-                                <apv:PropertyGridOrderStyle>Alphabetic</apv:PropertyGridOrderStyle>
-                            </ComboBox.Items>
-                        </ComboBox>
-                        <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize PropertyOrder}"></TextBlock>
-                        <ComboBox x:Name="PropertyOrderComboBox" Margin="4" VerticalAlignment="Center" SelectedIndex="0">
-                            <ComboBox.Items>
-                                <apv:PropertyGridOrderStyle>Builtin</apv:PropertyGridOrderStyle>
-                                <apv:PropertyGridOrderStyle>Alphabetic</apv:PropertyGridOrderStyle>
-                            </ComboBox.Items>
-                        </ComboBox>
-                        <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Readonly}"></TextBlock>
-                        <ToggleSwitch IsChecked="{Binding IsReadOnly}" Margin="4"></ToggleSwitch>
-                        <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Allow_Filter}"></TextBlock>
-                        <ToggleSwitch IsChecked="{Binding AllowFilter}" Margin="4"></ToggleSwitch>
-                        <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Allow_Quick_Filter}"></TextBlock>
-                        <ToggleSwitch IsChecked="{Binding AllowQuickFilter}" Margin="4"></ToggleSwitch>
-                        <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Show_Title}"></TextBlock>
-                        <ToggleSwitch IsChecked="{Binding IsShowTitle}" Margin="4"></ToggleSwitch>
-                        <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize All_Expand}"></TextBlock>
-                        <ToggleSwitch IsChecked="{Binding IsAllExpanded}" Margin="4"></ToggleSwitch>
-                        <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Name_Width}"></TextBlock>
-                        <Slider Minimum="60" Maximum="400" Value="{Binding DefaultNameWidth}" Margin="4" Width="180"></Slider>
+                    <StackPanel Orientation="Vertical" Grid.Row="1">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Display_Mode}"></TextBlock>
+                            <ComboBox x:Name="DisplayModeComboBox" Margin="4" VerticalAlignment="Center" SelectedIndex="0">
+                                <ComboBox.Items>
+                                    <apv:PropertyGridDisplayMode>Tree</apv:PropertyGridDisplayMode>
+                                    <apv:PropertyGridDisplayMode>Inline</apv:PropertyGridDisplayMode>
+                                </ComboBox.Items>
+                            </ComboBox>
+                            <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Show_Style}"></TextBlock>
+                            <ComboBox x:Name="ShowStyleComboBox" Margin="4" VerticalAlignment="Center" SelectedIndex="0">
+                                <ComboBox.Items>
+                                    <apv:PropertyGridShowStyle>Category</apv:PropertyGridShowStyle>
+                                    <apv:PropertyGridShowStyle>Tiled</apv:PropertyGridShowStyle>
+                                </ComboBox.Items>
+                            </ComboBox>
+                            <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize CategoryOrder}"></TextBlock>
+                            <ComboBox x:Name="CategoryOrderComboBox" Margin="4" VerticalAlignment="Center" SelectedIndex="0">
+                                <ComboBox.Items>
+                                    <apv:PropertyGridOrderStyle>Builtin</apv:PropertyGridOrderStyle>
+                                    <apv:PropertyGridOrderStyle>Alphabetic</apv:PropertyGridOrderStyle>
+                                </ComboBox.Items>
+                            </ComboBox>
+                            <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize PropertyOrder}"></TextBlock>
+                            <ComboBox x:Name="PropertyOrderComboBox" Margin="4" VerticalAlignment="Center" SelectedIndex="0">
+                                <ComboBox.Items>
+                                    <apv:PropertyGridOrderStyle>Builtin</apv:PropertyGridOrderStyle>
+                                    <apv:PropertyGridOrderStyle>Alphabetic</apv:PropertyGridOrderStyle>
+                                </ComboBox.Items>
+                            </ComboBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Readonly}"></TextBlock>
+                            <ToggleSwitch IsChecked="{Binding IsReadOnly}" Margin="4"></ToggleSwitch>
+                            <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Allow_Filter}"></TextBlock>
+                            <ToggleSwitch IsChecked="{Binding AllowFilter}" Margin="4"></ToggleSwitch>
+                            <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Allow_Quick_Filter}"></TextBlock>
+                            <ToggleSwitch IsChecked="{Binding AllowQuickFilter}" Margin="4"></ToggleSwitch>
+                        </StackPanel>
+                        
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Show_Title}"></TextBlock>
+                            <ToggleSwitch IsChecked="{Binding IsShowTitle}" Margin="4"></ToggleSwitch>
+                            <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize All_Expand}"></TextBlock>
+                            <ToggleSwitch IsChecked="{Binding IsAllExpanded}" Margin="4"></ToggleSwitch>
+                            <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Name_Width}"></TextBlock>
+                            <Slider Minimum="60" Maximum="400" Value="{Binding DefaultNameWidth}" Margin="4" Width="180"></Slider>
+                        </StackPanel>
                     </StackPanel>
                 </Grid>
             </TabItem>
