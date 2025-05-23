@@ -192,11 +192,11 @@
                 <ColumnDefinition Width="Auto"/>                
             </Grid.ColumnDefinitions>
 
-            <TextBlock Text="{Binding Version}"
-                       HorizontalAlignment="Left"
-                       VerticalAlignment="Center"
-                       Padding="2"/>
-
+            <HyperlinkButton IsEnabled="True"
+                             NavigateUri="https://github.com/bodong1987/Avalonia.PropertyGrid">
+                <TextBlock Text="{Binding Version}" />
+            </HyperlinkButton>
+            
             <StackPanel Margin="4" Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right">
                 <TextBlock Text="{ll:Localize Theme}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="2" ></TextBlock>
                 <ComboBox x:Name="ThemeBox" Width="125" Padding="4" SelectedIndex="0">
