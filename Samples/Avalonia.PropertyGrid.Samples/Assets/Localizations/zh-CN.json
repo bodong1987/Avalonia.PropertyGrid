@@ -180,5 +180,10 @@
     "Show_Property_Operation": "显示属性操作",
     "NoCustomOperationNumber": "无自定义操作",
     "CustomOperationMenuNumber": "自定义操作菜单",
-    "CustomOperationControlNumber": "自定义操作控件"
+    "CustomOperationControlNumber": "自定义操作控件",
+    "Min": "最小值",
+    "Max": "最大值",
+    "GenError": "生成一个错误",
+    "Operation": "操作",
+    "NumberWithOperations": "含操作的数值"
 }

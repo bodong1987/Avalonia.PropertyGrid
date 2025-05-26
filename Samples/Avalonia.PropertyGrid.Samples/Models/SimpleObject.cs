@@ -242,6 +242,11 @@ namespace Avalonia.PropertyGrid.Samples.Models
         [Category("Numeric")]
         [Trackable(-1000, 1000, Increment = 1, FormatString = "{0:0}")]
         public int trackableIntValueNoUnit { get; set; } = 10;
+        
+        [Category("Numeric")]
+        [Trackable(-1000, 1000, Increment = 1, FormatString = "{0:0}")]
+        [PropertyOperationVisibility(PropertyOperationVisibility.Visible)]
+        public int NumberWithOperations { get; set; } = 100;
 
         [Category("Array")]
         public BindingList<string> stringList { get; set; } = ["bodong", "china"];

@@ -33,7 +33,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The allow filter property
         /// </summary>
-        public static readonly StyledProperty<bool> AllowFilterProperty = AvaloniaProperty.Register<PropertyGrid, bool>(nameof(AllowFilter), true);
+        public static readonly StyledProperty<bool> AllowFilterProperty =
+            AvaloniaProperty.Register<PropertyGrid, bool>(nameof(AllowFilter), true);
 
         /// <summary>
         /// Gets or sets a value indicating whether [allow filter].
@@ -49,7 +50,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The allow toggle view property
         /// </summary>
-        public static readonly StyledProperty<bool> AllowToggleViewProperty = AvaloniaProperty.Register<PropertyGrid, bool>(nameof(AllowToggleView), true);
+        public static readonly StyledProperty<bool> AllowToggleViewProperty =
+            AvaloniaProperty.Register<PropertyGrid, bool>(nameof(AllowToggleView), true);
 
         /// <summary>
         /// Gets or sets a value indicating whether [allow toggle view].
@@ -65,7 +67,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The allow quick filter property
         /// </summary>
-        public static readonly StyledProperty<bool> AllowQuickFilterProperty = AvaloniaProperty.Register<PropertyGrid, bool>(nameof(AllowQuickFilter), true);
+        public static readonly StyledProperty<bool> AllowQuickFilterProperty =
+            AvaloniaProperty.Register<PropertyGrid, bool>(nameof(AllowQuickFilter), true);
 
         /// <summary>
         /// Gets or sets a value indicating whether [allow quick filter].
@@ -81,7 +84,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The show title property
         /// </summary>
-        public static readonly StyledProperty<bool> ShowTitleProperty = AvaloniaProperty.Register<PropertyGrid, bool>(nameof(ShowTitle), true);
+        public static readonly StyledProperty<bool> ShowTitleProperty =
+            AvaloniaProperty.Register<PropertyGrid, bool>(nameof(ShowTitle), true);
 
         /// <summary>
         /// Gets or sets a value indicating whether [show title].
@@ -93,11 +97,28 @@ namespace Avalonia.PropertyGrid.Controls
             get => GetValue(ShowTitleProperty); 
             set => SetValue(ShowTitleProperty, value);
         }
+        
+        /// <summary>
+        /// cell edit alignment type
+        /// </summary>
+        public static readonly StyledProperty<CellEditAlignmentType> CellEditAlignmentProperty =
+            AvaloniaProperty.Register<PropertyGrid, CellEditAlignmentType>(nameof(CellEditAlignment));
+       
+        /// <summary>
+        /// cell edit alignment
+        /// </summary>
+        [Category("Views")]
+        public CellEditAlignmentType CellEditAlignment
+        {
+            get => GetValue(CellEditAlignmentProperty); 
+            set => SetValue(CellEditAlignmentProperty, value);
+        }
 
         /// <summary>
         /// The display mode property
         /// </summary>
-        public static readonly StyledProperty<PropertyGridDisplayMode> DisplayModeProperty = AvaloniaProperty.Register<PropertyGrid, PropertyGridDisplayMode>(nameof(DisplayMode));
+        public static readonly StyledProperty<PropertyGridDisplayMode> DisplayModeProperty =
+            AvaloniaProperty.Register<PropertyGrid, PropertyGridDisplayMode>(nameof(DisplayMode));
 
         /// <summary>
         /// Gets or sets the display mode.
@@ -113,7 +134,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The show style property
         /// </summary>
-        public static readonly StyledProperty<PropertyGridShowStyle> ShowStyleProperty = AvaloniaProperty.Register<PropertyGrid, PropertyGridShowStyle>(nameof(ShowStyle));
+        public static readonly StyledProperty<PropertyGridShowStyle> ShowStyleProperty =
+            AvaloniaProperty.Register<PropertyGrid, PropertyGridShowStyle>(nameof(ShowStyle));
 
         /// <summary>
         /// Gets or sets the show style.
@@ -130,7 +152,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// The order style property
         /// control category sort algorithm
         /// </summary>
-        public static readonly StyledProperty<PropertyGridOrderStyle> CategoryOrderStyleProperty = AvaloniaProperty.Register<PropertyGrid, PropertyGridOrderStyle>(nameof(CategoryOrderStyle));
+        public static readonly StyledProperty<PropertyGridOrderStyle> CategoryOrderStyleProperty =
+            AvaloniaProperty.Register<PropertyGrid, PropertyGridOrderStyle>(nameof(CategoryOrderStyle));
 
         /// <summary>
         /// Gets or sets the category order style.
@@ -148,7 +171,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// The order style property
         /// control property sort algorithm
         /// </summary>
-        public static readonly StyledProperty<PropertyGridOrderStyle> PropertyOrderStyleProperty = AvaloniaProperty.Register<PropertyGrid, PropertyGridOrderStyle>(nameof(PropertyOrderStyle));
+        public static readonly StyledProperty<PropertyGridOrderStyle> PropertyOrderStyleProperty =
+            AvaloniaProperty.Register<PropertyGrid, PropertyGridOrderStyle>(nameof(PropertyOrderStyle));
 
         /// <summary>
         /// Gets or sets the order style.
@@ -164,7 +188,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The name width property
         /// </summary>
-        public static readonly StyledProperty<double> NameWidthProperty = AvaloniaProperty.Register<PropertyGrid, double>(nameof(NameWidth), 200);
+        public static readonly StyledProperty<double> NameWidthProperty =
+            AvaloniaProperty.Register<PropertyGrid, double>(nameof(NameWidth), 200);
 
         /// <summary>
         /// Gets or sets the width of the name.
@@ -180,7 +205,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The IsReadOnly property
         /// </summary>
-        public static readonly StyledProperty<bool> IsReadOnlyProperty = AvaloniaProperty.Register<PropertyGrid, bool>(nameof(IsReadOnly));
+        public static readonly StyledProperty<bool> IsReadOnlyProperty =
+            AvaloniaProperty.Register<PropertyGrid, bool>(nameof(IsReadOnly));
 
         /// <summary>
         /// Gets or sets Is Readonly flag
@@ -234,7 +260,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// The custom property descriptor filter event
         /// </summary>
         public static readonly RoutedEvent<CustomPropertyDescriptorFilterEventArgs> CustomPropertyDescriptorFilterEvent =
-            RoutedEvent.Register<PropertyGrid, CustomPropertyDescriptorFilterEventArgs>(nameof(CustomPropertyDescriptorFilter), RoutingStrategies.Bubble);
+            RoutedEvent.Register<PropertyGrid, CustomPropertyDescriptorFilterEventArgs>(
+                nameof(CustomPropertyDescriptorFilter), RoutingStrategies.Bubble);
 
         /// <summary>
         /// Occurs when [custom property descriptor filter].
@@ -287,7 +314,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// The custom name block event
         /// </summary>
         public static readonly RoutedEvent<CustomNameBlockEventArgs> CustomNameBlockEvent = 
-            RoutedEvent.Register<PropertyGrid, CustomNameBlockEventArgs>(nameof(CustomNameBlock), RoutingStrategies.Bubble);
+            RoutedEvent.Register<PropertyGrid, CustomNameBlockEventArgs>(nameof(CustomNameBlock),
+                RoutingStrategies.Bubble);
 
         /// <summary>
         /// Occurs when [custom name block].
@@ -303,8 +331,10 @@ namespace Avalonia.PropertyGrid.Controls
         /// you can use this to custom your controls.
         /// assign your control to e.CustomControl
         /// </summary>
-        public static readonly RoutedEvent<CustomPropertyOperationControlEventArgs> CustomPropertyOperationControlEvent = 
-            RoutedEvent.Register<PropertyGrid, CustomPropertyOperationControlEventArgs>(nameof(CustomPropertyOperationControl), RoutingStrategies.Bubble);
+        public static readonly RoutedEvent<CustomPropertyOperationControlEventArgs>
+            CustomPropertyOperationControlEvent = 
+            RoutedEvent.Register<PropertyGrid, CustomPropertyOperationControlEventArgs>(
+                nameof(CustomPropertyOperationControl), RoutingStrategies.Bubble);
 
         /// <summary>
         /// Occurs when [custom name block].
@@ -318,8 +348,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// custom menu items
         /// </summary>
-        public static readonly RoutedEvent<CustomPropertyOperationMenuEventArgs> CustomPropertyOperationMenuOpeningEvent = 
-            RoutedEvent.Register<PropertyGrid, CustomPropertyOperationMenuEventArgs>(
+        public static readonly RoutedEvent<CustomPropertyDefaultOperationEventArgs> CustomPropertyOperationMenuOpeningEvent = 
+            RoutedEvent.Register<PropertyGrid, CustomPropertyDefaultOperationEventArgs>(
                 nameof(CustomPropertyOperationMenuOpening), 
                 RoutingStrategies.Bubble
             );
@@ -327,7 +357,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// custom menu items
         /// </summary>
-        public event EventHandler<CustomPropertyOperationMenuEventArgs> CustomPropertyOperationMenuOpening
+        public event EventHandler<CustomPropertyDefaultOperationEventArgs> CustomPropertyOperationMenuOpening
         {
             add => AddHandler(CustomPropertyOperationMenuOpeningEvent, value);
             remove => RemoveHandler(CustomPropertyOperationMenuOpeningEvent, value);
@@ -389,6 +419,10 @@ namespace Avalonia.PropertyGrid.Controls
             }));
             _ = PropertyOperationVisibilityProperty.Changed.Subscribe(
                 new AnonymousObserver<AvaloniaPropertyChangedEventArgs<PropertyOperationVisibility>>(OnPropertyOperationVisibilityPropertyChanged));
+            _ = CellEditAlignmentProperty.Changed.Subscribe(
+                new AnonymousObserver<AvaloniaPropertyChangedEventArgs<CellEditAlignmentType>>(
+                    OnCellEditAlignmentPropertyChanged)
+            );
         }
 
         /// <summary>
@@ -657,6 +691,20 @@ namespace Avalonia.PropertyGrid.Controls
         {
             BuildPropertiesView();
         }
+        
+        private static void OnCellEditAlignmentPropertyChanged(AvaloniaPropertyChangedEventArgs<CellEditAlignmentType> e)
+        {
+            if (e.Sender is PropertyGrid sender)
+            {
+                sender.OnCellEditAlignmentChanged(e.OldValue.Value, e.NewValue.Value);
+            }
+        }
+
+        private void OnCellEditAlignmentChanged(CellEditAlignmentType oldValueValue, CellEditAlignmentType newValueValue)
+        {
+            BuildPropertiesView();
+        }
+
         #endregion
 
         /// <summary>
@@ -831,19 +879,52 @@ namespace Avalonia.PropertyGrid.Controls
             Grid grid,
             IPropertyGridCellInfoContainer container)
         {
+            var atLeastOnePropertyOperation = false;
+            var list = new List<BuildPropertyCellEditResult>();
+            
             foreach (var property in properties)
             {
                 referencePath.BeginScope(property.Name);
                 try
                 {
-                    // var value = property.GetValue(target);
-                    BuildPropertyCellEdit(target, referencePath, property, grid, container);
+                    var result = BuildPropertyCellEdit(target, referencePath, property, grid, container);
+                    atLeastOnePropertyOperation |= result.ResultType.HasFlag(BuildPropertyCellEditResultType.PropertyOperationVisible);
+                    list.Add(result);
                 }
                 finally
                 {
                     referencePath.EndScope();
                 }
             }
+
+            if (atLeastOnePropertyOperation && CellEditAlignment != CellEditAlignmentType.Compact)
+            {
+                foreach (var result in list)
+                {
+                    if (!result.ResultType.HasFlag(BuildPropertyCellEditResultType.PropertyOperationVisible))
+                    {
+                        result.Context.CellEdit?.SetValue(Grid.ColumnSpanProperty,
+                            result.ResultType.HasFlag(BuildPropertyCellEditResultType.InlineMode) ? 3 : 2);    
+                    }
+                }
+            }
+        }
+
+        [Flags]
+        private enum BuildPropertyCellEditResultType
+        {
+            // ReSharper disable once UnusedMember.Local
+            Failure = 0,
+            // ReSharper disable once UnusedMember.Local
+            Success = 1<<0,
+            InlineMode = 1<<1,
+            PropertyOperationVisible = 1<<2
+        }
+
+        private struct BuildPropertyCellEditResult
+        {
+            public BuildPropertyCellEditResultType ResultType;
+            public PropertyCellContext Context;
         }
 
         /// <summary>
@@ -854,7 +935,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="propertyDescriptor">The property descriptor.</param>
         /// <param name="grid">The grid.</param>
         /// <param name="container">The container.</param>
-        private void BuildPropertyCellEdit(
+        private BuildPropertyCellEditResult BuildPropertyCellEdit(
             object target,
             ReferencePath referencePath,
             PropertyDescriptor propertyDescriptor,
@@ -862,8 +943,12 @@ namespace Avalonia.PropertyGrid.Controls
             IPropertyGridCellInfoContainer container)
         {
             var property = propertyDescriptor;
-
+            
             var context = new PropertyCellContext(null, RootPropertyGrid ?? this, this, target, propertyDescriptor);
+            var result = new BuildPropertyCellEditResult()
+            {
+                Context = context
+            };
 
             var control = Factories.BuildPropertyControl(context);
 
@@ -872,13 +957,13 @@ namespace Avalonia.PropertyGrid.Controls
 #if DEBUG
                 Debug.WriteLine($"Warning: Failed build property control for property:{property.Name}({property.PropertyType}");
 #endif
-                return;
+                return result;
             }
 
             Debug.Assert(context.Factory != null);
             Debug.Assert(context.CellEdit != null);
             Debug.Assert(context.CellEdit == control);
-
+            
             var factory = context.Factory;
             factory.HandlePropertyChanged(context);
             grid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
@@ -893,6 +978,8 @@ namespace Avalonia.PropertyGrid.Controls
                     .FirstOrDefault(item => item.Name == "PropertiesGrid");
                 var innerExpander = innerPropertyGrid?.Children.OfType<Expander>().FirstOrDefault();
                 innerExpander?.SetLocalizeBinding(HeaderedContentControl.HeaderProperty, property.DisplayName);
+
+                result.ResultType |= BuildPropertyCellEditResultType.InlineMode;
             }
             else
             {
@@ -945,10 +1032,15 @@ namespace Avalonia.PropertyGrid.Controls
 
             container.Add(cellInfo);
 
-            AppendPropertyOperationUiIfNeed(context, grid, shouldUseInlineMode);
+            if (AppendPropertyOperationUiIfNeed(context, grid, shouldUseInlineMode))
+            {
+                result.ResultType |= BuildPropertyCellEditResultType.PropertyOperationVisible;
+            }
+            
+            return result;
         }
 
-        private void AppendPropertyOperationUiIfNeed(PropertyCellContext context, Grid grid, bool shouldUseInlineMode)
+        private bool AppendPropertyOperationUiIfNeed(PropertyCellContext context, Grid grid, bool shouldUseInlineMode)
         {
             // Default = Hidden
             // so, you can force show operations for one property
@@ -974,13 +1066,15 @@ namespace Avalonia.PropertyGrid.Controls
                 {
                     var contextMenu = new ContextMenu();
                     button.ContextMenu = contextMenu;
+                    
+                    var initMenuArgs =
+                        new CustomPropertyDefaultOperationEventArgs(context, PropertyDefaultOperationStageType.Init, button, contextMenu);
+                    RaiseEvent(initMenuArgs);
 
                     button.Click += (s, e) =>
                     {
-                        contextMenu.Items.Clear();
-                        
                         var customMenuArgs =
-                            new CustomPropertyOperationMenuEventArgs(context, contextMenu);
+                            new CustomPropertyDefaultOperationEventArgs(context, PropertyDefaultOperationStageType.MenuOpening, button, contextMenu);
                         RaiseEvent(customMenuArgs);
 
                         if (contextMenu is { IsOpen: false, Items.Count: > 0 })
@@ -989,7 +1083,11 @@ namespace Avalonia.PropertyGrid.Controls
                         }
                     };
                 }
+
+                return true;
             }
+
+            return false;
         }
 
         private bool IsPropertyOperationVisible(PropertyDescriptor propertyDescriptor)
@@ -1234,31 +1332,60 @@ namespace Avalonia.PropertyGrid.Controls
     }
 
     /// <summary>
-    /// if you use default button for property operation
-    /// you can add your custom menu items
+    /// custom default operation stage type
     /// </summary>
-    public class CustomPropertyOperationMenuEventArgs : RoutedEventArgs
+    public enum PropertyDefaultOperationStageType
+    {
+        /// <summary>
+        /// initialize
+        /// </summary>
+        Init,
+        
+        /// <summary>
+        /// menu opening
+        /// </summary>
+        MenuOpening
+    }
+    /// <summary>
+    /// if you use default button for property operation
+    /// you can add your custom menu items and default button
+    /// </summary>
+    public class CustomPropertyDefaultOperationEventArgs : RoutedEventArgs
     {
         /// <summary>
         /// Context
         /// </summary>
-        public PropertyCellContext Context;
+        public readonly PropertyCellContext Context;
+        
+        /// <summary>
+        /// stage type
+        /// </summary>
+        public readonly PropertyDefaultOperationStageType StageType;
         
         /// <summary>
         /// local menu
         /// </summary>
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public ContextMenu Menu { get; }
+        
+        /// <summary>
+        /// internal button
+        /// </summary>
+        public Button DefaultButton { get; }
 
         /// <summary>
         /// constructor
         /// </summary>
-        public CustomPropertyOperationMenuEventArgs(
+        public CustomPropertyDefaultOperationEventArgs(
             PropertyCellContext context,
+            PropertyDefaultOperationStageType stageType,
+            Button defaultButton,
             ContextMenu menu
         ) : base(PropertyGrid.CustomPropertyOperationMenuOpeningEvent)
         {
             Context = context;
+            StageType = stageType;
+            DefaultButton = defaultButton;
             Menu = menu;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Layout;
 using Avalonia.PropertyGrid.Controls;
@@ -48,6 +49,53 @@ namespace Avalonia.PropertyGrid.Samples.Views
             };
 
             CustomPropertyOperationControl += OnCustomPropertyOperationControl;
+            CustomPropertyOperationMenuOpening += OnCustomPropertyOperationMenuOpening;
+        }
+
+        private void OnCustomPropertyOperationMenuOpening(object? sender, CustomPropertyDefaultOperationEventArgs e)
+        {
+            if (!e.Context.Property.IsDefined<PropertyOperationVisibilityAttribute>())
+            {
+                return;
+            }
+
+            if (e.Context.Property.Name == nameof(TestExtendsObject.CustomOperationMenuNumber))
+            {
+                if (e.StageType == PropertyDefaultOperationStageType.Init)
+                {
+                    e.DefaultButton.SetLocalizeBinding(Button.ContentProperty, "Operation");    
+                }
+                else if (e.StageType == PropertyDefaultOperationStageType.MenuOpening)
+                {
+                    // If you don't want to create the menu every time, you can move it to Init, so you don't have to Clear it here.
+                    e.Menu.Items.Clear();
+                        
+                    var minMenuItem = new MenuItem();
+                    minMenuItem.SetLocalizeBinding(HeaderedSelectingItemsControl.HeaderProperty, "Min");
+                    minMenuItem.Click += (s, args) => 
+                    {
+                        e.Context.Factory!.SetPropertyValue(e.Context, 0);
+                    };
+
+                    var maxMenuItem = new MenuItem();
+                    maxMenuItem.SetLocalizeBinding(HeaderedSelectingItemsControl.HeaderProperty, "Max");
+                    maxMenuItem.Click += (s, args) => 
+                    {
+                        e.Context.Factory!.SetPropertyValue(e.Context, 1024); 
+                    };
+                
+                    var errorMenuItem = new MenuItem();
+                    errorMenuItem.SetLocalizeBinding(HeaderedSelectingItemsControl.HeaderProperty, "GenError");
+                    errorMenuItem.Click += (s, args) =>
+                    {
+                        e.Context.Factory!.SetPropertyValue(e.Context, 1024000);
+                    };
+
+                    e.Menu.Items.Add(minMenuItem);
+                    e.Menu.Items.Add(maxMenuItem);
+                    e.Menu.Items.Add(errorMenuItem);
+                }
+            }
         }
 
         private void OnCustomPropertyOperationControl(object? sender, CustomPropertyOperationControlEventArgs e)
@@ -68,6 +116,7 @@ namespace Avalonia.PropertyGrid.Samples.Views
                 minButton.SetLocalizeBinding(Button.ContentProperty, "Min");
                 minButton.Click += (ss, ee) =>
                 {
+                    // please use factory interface, so you can raise command event 
                     e.Context.Factory!.SetPropertyValue(e.Context, 0);
                 };
                 
@@ -77,6 +126,7 @@ namespace Avalonia.PropertyGrid.Samples.Views
                 maxButton.SetLocalizeBinding(Button.ContentProperty, "Max");
                 maxButton.Click += (ss, ee) =>
                 {
+                    // please use factory interface, so you can raise command event 
                     e.Context.Factory!.SetPropertyValue(e.Context, 1024);
                 };
 

@@ -98,6 +98,27 @@ namespace Avalonia.PropertyGrid.ViewModels
     }
 
     /// <summary>
+    /// Cell edit alignment type
+    /// </summary>
+    public enum CellEditAlignmentType
+    {
+        /// <summary>
+        /// default : same as Default
+        /// </summary>
+        Default,
+        
+        /// <summary>
+        /// all space/all blank columns
+        /// </summary>
+        Stretch,
+        
+        /// <summary>
+        /// always one column
+        /// </summary>
+        Compact
+    }
+
+    /// <summary>
     /// Class PropertyGridViewModel.
     /// Implements the <see cref="ReactiveObject" />
     /// </summary>
