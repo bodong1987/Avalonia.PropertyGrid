@@ -6,6 +6,7 @@ Its main features are:
 * Support custom types that implement the ICustomTypeDescriptor interface or TypeDescriptionProvider
 * Support custom property label controls
 * Support custom property cell edit  
+* Support for additional property operation areas and their custom operations  
 * Support array editing, support for creating, inserting, deleting and clearing in the control
 * Support data verification
 * Support Built-in undo and redo framework
@@ -36,6 +37,7 @@ https://bodong1987.github.io/Avalonia.PropertyGrid/
 * 支持实现ICustomTypeDescriptor接口或TypeDescriptionProvider的自定义类型
 * 支持自定义属性标签的控件
 * 支持自定义任意属性的栅格编辑器(Cell Edit)
+* 支持额外的属性操作区及其自定义操作
 * 支持数组编辑，支持数组在控件中创建、插入、删除和清除
 * 支持数据验证
 * 支持内置的撤销和重做框架

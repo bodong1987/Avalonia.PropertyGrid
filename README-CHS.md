@@ -8,6 +8,7 @@
 * 支持实现ICustomTypeDescriptor接口或TypeDescriptionProvider的自定义类型
 * 支持自定义属性标签的控件
 * 支持自定义任意属性的栅格编辑器(CellEdit)
+* 支持额外的属性操作区及其自定义操作
 * 支持数组编辑，支持数组在控件中创建、插入、删除和清除
 * 支持数据验证
 * 支持内置的撤销和重做框架
@@ -351,6 +352,98 @@ public class TestExtendPropertyGrid : Controls.PropertyGrid
 }
 ```  
 有关更多信息，请参考Samples中的Extends。  
+
+### 自定义属性操作
+要自定义属性操作，你需要先配置`PropertyGrid`的`PropertyOperationVisibility`属性为Default或者Visible，前者由属性自行决定是否显示，后者全部显示；Hidden表示禁止所有操作区显示。  
+然后你需要注册`PropertyGrid`的事件`CustomPropertyOperationControl`或者`CustomPropertyOperationMenuOpening`，这允许你配置默认的操作按钮以及弹出菜单，当然你也可以全部替换该区域的所有控件为你自己的控件，你通过事件回调中的`PropertyCellContext`获取到该属性对应的所有上下文信息，比如PropertyDescriptor、Target、RootPropertyGrid等等。  
+**需要注意的是，如果你涉及到属性变更，要通过Context的Factory相关接口，这样可以确保你的修改可以基于命令模式，这样可以产生必要的命令队列，使得操作全部融入框架中。**  
+如：  
+```C#
+private void OnCustomPropertyOperationMenuOpening(object? sender, CustomPropertyDefaultOperationEventArgs e)
+{
+    if (!e.Context.Property.IsDefined<PropertyOperationVisibilityAttribute>())
+    {
+        return;
+    }
+
+    if (e.Context.Property.Name == nameof(TestExtendsObject.CustomOperationMenuNumber))
+    {
+        if (e.StageType == PropertyDefaultOperationStageType.Init)
+        {
+            e.DefaultButton.SetLocalizeBinding(Button.ContentProperty, "Operation");    
+        }
+        else if (e.StageType == PropertyDefaultOperationStageType.MenuOpening)
+        {
+            // If you don't want to create the menu every time, you can move it to Init, so you don't have to Clear it here.
+            e.Menu.Items.Clear();
+                
+            var minMenuItem = new MenuItem();
+            minMenuItem.SetLocalizeBinding(HeaderedSelectingItemsControl.HeaderProperty, "Min");
+            minMenuItem.Click += (s, args) => 
+            {
+                e.Context.Factory!.SetPropertyValue(e.Context, 0);
+            };
+
+            var maxMenuItem = new MenuItem();
+            maxMenuItem.SetLocalizeBinding(HeaderedSelectingItemsControl.HeaderProperty, "Max");
+            maxMenuItem.Click += (s, args) => 
+            {
+                e.Context.Factory!.SetPropertyValue(e.Context, 1024); 
+            };
+        
+            var errorMenuItem = new MenuItem();
+            errorMenuItem.SetLocalizeBinding(HeaderedSelectingItemsControl.HeaderProperty, "GenError");
+            errorMenuItem.Click += (s, args) =>
+            {
+                e.Context.Factory!.SetPropertyValue(e.Context, 1024000);
+            };
+
+            e.Menu.Items.Add(minMenuItem);
+            e.Menu.Items.Add(maxMenuItem);
+            e.Menu.Items.Add(errorMenuItem);
+        }
+    }
+}
+
+private void OnCustomPropertyOperationControl(object? sender, CustomPropertyOperationControlEventArgs e)
+{
+    if (!e.Context.Property.IsDefined<PropertyOperationVisibilityAttribute>())
+    {
+        return;
+    }
+
+    if (e.Context.Property.Name == nameof(TestExtendsObject.CustomOperationControlNumber))
+    {
+        var stackPanel = new StackPanel
+        {
+            Orientation = Orientation.Horizontal
+        };
+
+        var minButton = new Button();
+        minButton.SetLocalizeBinding(Button.ContentProperty, "Min");
+        minButton.Click += (ss, ee) =>
+        {
+            // please use factory interface, so you can raise command event 
+            e.Context.Factory!.SetPropertyValue(e.Context, 0);
+        };
+        
+        stackPanel.Children.Add(minButton);
+        
+        var maxButton = new Button();
+        maxButton.SetLocalizeBinding(Button.ContentProperty, "Max");
+        maxButton.Click += (ss, ee) =>
+        {
+            // please use factory interface, so you can raise command event 
+            e.Context.Factory!.SetPropertyValue(e.Context, 1024);
+        };
+
+        stackPanel.Children.Add(maxButton);
+
+        e.CustomControl = stackPanel;
+    }
+}
+```
+![Proeprty Operation Example](./Docs/Images/operation-example.png)
 
 ## 示例描述
 ![Basic View](./Docs/Images/BasicView.png)

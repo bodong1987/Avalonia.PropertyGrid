@@ -8,6 +8,7 @@ Its main features are:
 * Support custom types that implement the ICustomTypeDescriptor interface or TypeDescriptionProvider
 * Support custom property label controls
 * Support custom property cell edit  
+* Support for additional property operation areas and their custom operations
 * Support array editing, support for creating, inserting, deleting and clearing in the control
 * Support data verification
 * Support Built-in undo and redo framework
@@ -350,7 +351,102 @@ public class TestExtendPropertyGrid : Controls.PropertyGrid
     }
 }
 ```
-Refer to Extends in Samples for more information.
+Refer to Extends in Samples for more information.  
+
+### Custom Property Operations
+
+To customize property operations, you first need to configure the `PropertyGrid`'s `PropertyOperationVisibility` property to either Default or Visible. The former allows the property itself to decide whether to display, while the latter displays everything. Hidden means all operation areas are prohibited from displaying.
+
+Then, you need to register the `PropertyGrid` events `CustomPropertyOperationControl` or `CustomPropertyOperationMenuOpening`. This allows you to configure the default operation buttons and popup menus. Of course, you can also replace all controls in this area with your own. You can obtain all context information corresponding to the property through the `PropertyCellContext` in the event callback, such as PropertyDescriptor, Target, RootPropertyGrid, etc.
+
+**It is important to note that if you involve property changes, you must use the Factory-related interfaces of the Context. This ensures that your modifications can be based on the command pattern, creating the necessary command queue so that operations are fully integrated into the framework.**
+
+```C#
+private void OnCustomPropertyOperationMenuOpening(object? sender, CustomPropertyDefaultOperationEventArgs e)
+{
+    if (!e.Context.Property.IsDefined<PropertyOperationVisibilityAttribute>())
+    {
+        return;
+    }
+
+    if (e.Context.Property.Name == nameof(TestExtendsObject.CustomOperationMenuNumber))
+    {
+        if (e.StageType == PropertyDefaultOperationStageType.Init)
+        {
+            e.DefaultButton.SetLocalizeBinding(Button.ContentProperty, "Operation");    
+        }
+        else if (e.StageType == PropertyDefaultOperationStageType.MenuOpening)
+        {
+            // If you don't want to create the menu every time, you can move it to Init, so you don't have to Clear it here.
+            e.Menu.Items.Clear();
+                
+            var minMenuItem = new MenuItem();
+            minMenuItem.SetLocalizeBinding(HeaderedSelectingItemsControl.HeaderProperty, "Min");
+            minMenuItem.Click += (s, args) => 
+            {
+                e.Context.Factory!.SetPropertyValue(e.Context, 0);
+            };
+
+            var maxMenuItem = new MenuItem();
+            maxMenuItem.SetLocalizeBinding(HeaderedSelectingItemsControl.HeaderProperty, "Max");
+            maxMenuItem.Click += (s, args) => 
+            {
+                e.Context.Factory!.SetPropertyValue(e.Context, 1024); 
+            };
+        
+            var errorMenuItem = new MenuItem();
+            errorMenuItem.SetLocalizeBinding(HeaderedSelectingItemsControl.HeaderProperty, "GenError");
+            errorMenuItem.Click += (s, args) =>
+            {
+                e.Context.Factory!.SetPropertyValue(e.Context, 1024000);
+            };
+
+            e.Menu.Items.Add(minMenuItem);
+            e.Menu.Items.Add(maxMenuItem);
+            e.Menu.Items.Add(errorMenuItem);
+        }
+    }
+}
+
+private void OnCustomPropertyOperationControl(object? sender, CustomPropertyOperationControlEventArgs e)
+{
+    if (!e.Context.Property.IsDefined<PropertyOperationVisibilityAttribute>())
+    {
+        return;
+    }
+
+    if (e.Context.Property.Name == nameof(TestExtendsObject.CustomOperationControlNumber))
+    {
+        var stackPanel = new StackPanel
+        {
+            Orientation = Orientation.Horizontal
+        };
+
+        var minButton = new Button();
+        minButton.SetLocalizeBinding(Button.ContentProperty, "Min");
+        minButton.Click += (ss, ee) =>
+        {
+            // please use factory interface, so you can raise command event 
+            e.Context.Factory!.SetPropertyValue(e.Context, 0);
+        };
+        
+        stackPanel.Children.Add(minButton);
+        
+        var maxButton = new Button();
+        maxButton.SetLocalizeBinding(Button.ContentProperty, "Max");
+        maxButton.Click += (ss, ee) =>
+        {
+            // please use factory interface, so you can raise command event 
+            e.Context.Factory!.SetPropertyValue(e.Context, 1024);
+        };
+
+        stackPanel.Children.Add(maxButton);
+
+        e.CustomControl = stackPanel;
+    }
+}
+```
+![Proeprty Operation Example](./Docs/Images/operation-example.png)
 
 ## Description of Samples
 ![Basic View](./Docs/Images/BasicView.png)
