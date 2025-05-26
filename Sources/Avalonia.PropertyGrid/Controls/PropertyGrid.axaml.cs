@@ -297,7 +297,43 @@ namespace Avalonia.PropertyGrid.Controls
             add => AddHandler(CustomNameBlockEvent, value);
             remove => RemoveHandler(CustomNameBlockEvent, value);
         }
+        
+        /// <summary>
+        /// custom property operation control event
+        /// you can use this to custom your controls.
+        /// assign your control to e.CustomControl
+        /// </summary>
+        public static readonly RoutedEvent<CustomPropertyOperationControlEventArgs> CustomPropertyOperationControlEvent = 
+            RoutedEvent.Register<PropertyGrid, CustomPropertyOperationControlEventArgs>(nameof(CustomPropertyOperationControl), RoutingStrategies.Bubble);
 
+        /// <summary>
+        /// Occurs when [custom name block].
+        /// </summary>
+        public event EventHandler<CustomPropertyOperationControlEventArgs> CustomPropertyOperationControl
+        {
+            add => AddHandler(CustomPropertyOperationControlEvent, value);
+            remove => RemoveHandler(CustomPropertyOperationControlEvent, value);
+        }
+
+        /// <summary>
+        /// custom menu items
+        /// </summary>
+        public static readonly RoutedEvent<CustomPropertyOperationMenuEventArgs> CustomPropertyOperationMenuOpeningEvent = 
+            RoutedEvent.Register<PropertyGrid, CustomPropertyOperationMenuEventArgs>(
+                nameof(CustomPropertyOperationMenuOpening), 
+                RoutingStrategies.Bubble
+            );
+
+        /// <summary>
+        /// custom menu items
+        /// </summary>
+        public event EventHandler<CustomPropertyOperationMenuEventArgs> CustomPropertyOperationMenuOpening
+        {
+            add => AddHandler(CustomPropertyOperationMenuOpeningEvent, value);
+            remove => RemoveHandler(CustomPropertyOperationMenuOpeningEvent, value);
+        }
+
+        
         /// <summary>
         /// The command executing event
         /// </summary>
@@ -909,21 +945,50 @@ namespace Avalonia.PropertyGrid.Controls
 
             container.Add(cellInfo);
 
+            AppendPropertyOperationUiIfNeed(target, propertyDescriptor, grid, shouldUseInlineMode);
+        }
+
+        private void AppendPropertyOperationUiIfNeed(object target, PropertyDescriptor propertyDescriptor, Grid grid, bool shouldUseInlineMode)
+        {
             // Default = Hidden
             // so, you can force show operations for one property
             //
             if (IsPropertyOperationVisible(propertyDescriptor))
             {
-                var button = new Button
+                var args = new CustomPropertyOperationControlEventArgs(target, propertyDescriptor);
+                RaiseEvent(args);
+                
+                var operationControl = args.CustomControl ?? new Button
                 {
                     Content = "?",
                     Margin = new Thickness(4, 0, 0, 0),
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Center
-                };
-                button.SetValue(Grid.ColumnProperty, shouldUseInlineMode ? 1: 2);
-                button.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
-                grid.Children.Add(button);
+                }; 
+                
+                operationControl.SetValue(Grid.ColumnProperty, shouldUseInlineMode ? 1: 2);
+                operationControl.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
+                grid.Children.Add(operationControl);
+
+                if (args.CustomControl == null && operationControl is Button button)
+                {
+                    var contextMenu = new ContextMenu();
+                    button.ContextMenu = contextMenu;
+
+                    button.Click += (s, e) =>
+                    {
+                        contextMenu.Items.Clear();
+                        
+                        var customMenuArgs =
+                            new CustomPropertyOperationMenuEventArgs(target, propertyDescriptor, contextMenu);
+                        RaiseEvent(customMenuArgs);
+
+                        if (contextMenu is { IsOpen: false, Items.Count: > 0 })
+                        {
+                            contextMenu.Open(button);
+                        }
+                    };
+                }
             }
         }
 
@@ -1142,6 +1207,82 @@ namespace Avalonia.PropertyGrid.Controls
         }
     }
 
+    /// <summary>
+    /// allow use custom property operation control
+    /// </summary>
+    public class CustomPropertyOperationControlEventArgs : RoutedEventArgs
+    {
+        /// <summary>
+        /// input context
+        /// </summary>
+        public readonly object DataContext;
+        
+        /// <summary>
+        /// target property descriptor
+        /// </summary>
+        public readonly PropertyDescriptor PropertyDescriptor;
+        
+        /// <summary>
+        /// custom control
+        /// </summary>
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public Control? CustomControl { get; set; }
+
+        /// <summary>
+        /// construct this event args
+        /// </summary>
+        /// <param name="dataContext"></param>
+        /// <param name="propertyDescriptor"></param>
+        public CustomPropertyOperationControlEventArgs(object dataContext, PropertyDescriptor propertyDescriptor) :
+            base(PropertyGrid.CustomPropertyOperationControlEvent)
+        {
+            DataContext = dataContext;
+            PropertyDescriptor = propertyDescriptor;
+        }
+    }
+
+    /// <summary>
+    /// if you use default button for property operation
+    /// you can add your custom menu items
+    /// </summary>
+    public class CustomPropertyOperationMenuEventArgs : RoutedEventArgs
+    {
+        /// <summary>
+        /// data context/ target object
+        /// </summary>
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public object DataContext { get; }
+        
+        /// <summary>
+        /// property descriptor
+        /// </summary>
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public PropertyDescriptor PropertyDescriptor { get; }
+        
+        /// <summary>
+        /// local menu
+        /// </summary>
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        public ContextMenu Menu { get; }
+
+        /// <summary>
+        /// constructor
+        /// </summary>
+        /// <param name="dataContext"></param>
+        /// <param name="descriptor"></param>
+        /// <param name="menu"></param>
+        public CustomPropertyOperationMenuEventArgs(
+            object dataContext,
+            PropertyDescriptor descriptor,
+            ContextMenu menu
+        ) : base(PropertyGrid.CustomPropertyOperationMenuOpeningEvent)
+        {
+            PropertyDescriptor = descriptor;
+            DataContext = dataContext;
+            Menu = menu;
+        }
+    }
+    
     /// <summary>
     /// Class CustomNameBlockEventArgs.
     /// Implements the <see cref="RoutedEventArgs" />

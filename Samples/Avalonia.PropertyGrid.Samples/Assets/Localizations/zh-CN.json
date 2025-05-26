@@ -177,5 +177,8 @@
     "GenderRadioView": "性别[单选模式]",
     "GenderToggleGroupView": "性别[开关组模式]",
     "customLabel": "自定义标签",
-    "Show_Property_Operation": "显示属性操作"
+    "Show_Property_Operation": "显示属性操作",
+    "NoCustomOperationNumber": "无自定义操作",
+    "CustomOperationMenuNumber": "自定义操作菜单",
+    "CustomOperationControlNumber": "自定义操作控件"
 }

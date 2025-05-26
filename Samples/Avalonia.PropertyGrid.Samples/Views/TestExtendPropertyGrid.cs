@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Controls.Templates;
+using Avalonia.Layout;
 using Avalonia.PropertyGrid.Controls;
 using Avalonia.PropertyGrid.Controls.Factories;
 using Avalonia.PropertyGrid.Controls.Factories.Builtins;
@@ -8,6 +9,7 @@ using Avalonia.PropertyGrid.Samples.Models;
 using Avalonia.PropertyGrid.Services;
 using PropertyModels.Collections;
 using PropertyModels.ComponentModel;
+using PropertyModels.Extensions;
 
 namespace Avalonia.PropertyGrid.Samples.Views
 {
@@ -44,6 +46,44 @@ namespace Avalonia.PropertyGrid.Samples.Views
                     e.CustomNameBlock = button;
                 }                
             };
+
+            CustomPropertyOperationControl += OnCustomPropertyOperationControl;
+        }
+
+        private void OnCustomPropertyOperationControl(object? sender, CustomPropertyOperationControlEventArgs e)
+        {
+            if (!e.PropertyDescriptor.IsDefined<PropertyOperationVisibilityAttribute>())
+            {
+                return;
+            }
+
+            if (e.PropertyDescriptor.Name == nameof(TestExtendsObject.CustomOperationControlNumber))
+            {
+                var stackPanel = new StackPanel
+                {
+                    Orientation = Orientation.Horizontal
+                };
+
+                var minButton = new Button();
+                minButton.SetLocalizeBinding(Button.ContentProperty, "Min");
+                minButton.Click += (ss, ee) =>
+                {
+                    e.PropertyDescriptor.SetValue(e.DataContext, 0);
+                };
+                
+                stackPanel.Children.Add(minButton);
+                
+                var maxButton = new Button();
+                maxButton.SetLocalizeBinding(Button.ContentProperty, "Max");
+                maxButton.Click += (ss, ee) =>
+                {
+                    e.PropertyDescriptor.SetValue(e.DataContext, 1024);
+                };
+
+                stackPanel.Children.Add(maxButton);
+
+                e.CustomControl = stackPanel;
+            }
         }
     }
 

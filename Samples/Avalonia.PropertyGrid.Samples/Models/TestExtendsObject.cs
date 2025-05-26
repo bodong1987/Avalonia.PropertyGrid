@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -55,6 +56,21 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
         [Category("Boolean")]
         public bool customLabel { get; set; }
+        
+        [Category("Numeric")]
+        [Range(0, 1024)]
+        [PropertyOperationVisibility(PropertyOperationVisibility.Visible)]
+        public int NoCustomOperationNumber { get; set; }
+        
+        [Category("Numeric")]
+        [Range(0, 1024)]
+        [PropertyOperationVisibility(PropertyOperationVisibility.Visible)]
+        public int CustomOperationMenuNumber { get; set; }
+        
+        [Category("Numeric")]
+        [Range(0, 1024)]
+        [PropertyOperationVisibility(PropertyOperationVisibility.Visible)]
+        public int CustomOperationControlNumber { get; set; }
 
         public TestExtendsObject()
         {
