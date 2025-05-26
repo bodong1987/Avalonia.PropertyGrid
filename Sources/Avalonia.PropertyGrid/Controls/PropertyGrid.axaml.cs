@@ -1093,19 +1093,20 @@ namespace Avalonia.PropertyGrid.Controls
         private bool IsPropertyOperationVisible(PropertyDescriptor propertyDescriptor)
         {
             var settings = PropertyOperationVisibility;
-            var propertyOperationVisibilityAttribute = propertyDescriptor.GetCustomAttribute<PropertyOperationVisibilityAttribute>();
-
-            if (propertyOperationVisibilityAttribute == null)
-            {
-                return settings == PropertyOperationVisibility.Visible;
-            }
-
+            
             if (settings == PropertyOperationVisibility.Hidden)
             {
-                return propertyOperationVisibilityAttribute.Visibility == PropertyOperationVisibility.Visible;
+                return false;
             }
             
-            return propertyOperationVisibilityAttribute.Visibility != PropertyOperationVisibility.Hidden;
+            if (settings == PropertyOperationVisibility.Visible)
+            {
+                return true;
+            }
+            
+            var propertyOperationVisibilityAttribute = propertyDescriptor.GetCustomAttribute<PropertyOperationVisibilityAttribute>();
+
+            return propertyOperationVisibilityAttribute != null && propertyOperationVisibilityAttribute.Visibility != PropertyOperationVisibility.Hidden;
         }
         
         #endregion

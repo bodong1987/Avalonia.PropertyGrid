@@ -11,12 +11,12 @@ namespace Avalonia.PropertyGrid.Samples.Views;
 
 public partial class MainView : UserControl
 {
-    private MainViewModel MainVM;
+    private readonly MainViewModel _mainVm;
 
     public MainView()
     {
-        MainVM = new MainViewModel();
-        DataContext = MainVM;
+        _mainVm = new MainViewModel();
+        DataContext = _mainVm;
 
         InitializeComponent();
 
@@ -80,35 +80,41 @@ public partial class MainView : UserControl
                 StylesPropertyGrid.PropertyOperationVisibility = visibility;
             }
         };
-        
-        
+
+        CellEditAlignmentComboBox.SelectionChanged += (sender, e) =>
+        {
+            if (CellEditAlignmentComboBox.SelectedItem is CellEditAlignmentType cellEditAlignment)
+            {
+                StylesPropertyGrid.CellEditAlignment = cellEditAlignment;
+            }
+        };
     }
 
     private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(MainVM.ShowStyle))
+        if (e.PropertyName == nameof(_mainVm.ShowStyle))
         {
-            StylesPropertyGrid.ShowStyle = MainVM.ShowStyle;
+            StylesPropertyGrid.ShowStyle = _mainVm.ShowStyle;
         }
-        else if (e.PropertyName == nameof(MainVM.IsShowTitle))
+        else if (e.PropertyName == nameof(_mainVm.IsShowTitle))
         {
-            StylesPropertyGrid.ShowTitle = MainVM.IsShowTitle;
+            StylesPropertyGrid.ShowTitle = _mainVm.IsShowTitle;
         }
-        else if (e.PropertyName == nameof(MainVM.AllowFilter))
+        else if (e.PropertyName == nameof(_mainVm.AllowFilter))
         {
-            StylesPropertyGrid.AllowFilter = MainVM.AllowFilter;
+            StylesPropertyGrid.AllowFilter = _mainVm.AllowFilter;
         }
-        else if (e.PropertyName == nameof(MainVM.AllowQuickFilter))
+        else if (e.PropertyName == nameof(_mainVm.AllowQuickFilter))
         {
-            StylesPropertyGrid.AllowQuickFilter = MainVM.AllowQuickFilter;
+            StylesPropertyGrid.AllowQuickFilter = _mainVm.AllowQuickFilter;
         }
-        else if (e.PropertyName == nameof(MainVM.DefaultNameWidth))
+        else if (e.PropertyName == nameof(_mainVm.DefaultNameWidth))
         {
-            StylesPropertyGrid.NameWidth = MainVM.DefaultNameWidth;
+            StylesPropertyGrid.NameWidth = _mainVm.DefaultNameWidth;
         }
-        else if (e.PropertyName == nameof(MainVM.IsReadOnly))
+        else if (e.PropertyName == nameof(_mainVm.IsReadOnly))
         {
-            StylesPropertyGrid.IsReadOnly = MainVM.IsReadOnly;
+            StylesPropertyGrid.IsReadOnly = _mainVm.IsReadOnly;
         }
     }
 

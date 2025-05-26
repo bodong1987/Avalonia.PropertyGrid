@@ -92,6 +92,18 @@
                                     <componentModel:PropertyOperationVisibility>Hidden</componentModel:PropertyOperationVisibility>
                                 </ComboBox.Items>
                             </ComboBox>
+                            <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize CellEdit_Alignment}"/>
+                            <ComboBox x:Name="CellEditAlignmentComboBox" 
+                                      Margin="4" 
+                                      VerticalAlignment="Center"
+                                      SelectedItem="{Binding CellEditAlignment, Mode=TwoWay}">
+                                <ComboBox.Items>
+                                    <apv:CellEditAlignmentType>Default</apv:CellEditAlignmentType>
+                                    <apv:CellEditAlignmentType>Stretch</apv:CellEditAlignmentType>
+                                    <apv:CellEditAlignmentType>Compact</apv:CellEditAlignmentType>
+                                </ComboBox.Items>
+                            </ComboBox>
+                            
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Readonly}"></TextBlock>

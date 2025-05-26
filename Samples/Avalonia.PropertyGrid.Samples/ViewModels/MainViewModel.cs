@@ -140,6 +140,14 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
             get => _showPropertyOperation;
             set => this.RaiseAndSetIfChanged(ref _showPropertyOperation, value);
         }
+
+        private CellEditAlignmentType _cellEditAlignment = CellEditAlignmentType.Default;
+
+        public CellEditAlignmentType CellEditAlignment
+        {
+            get => _cellEditAlignment;
+            set => this.RaiseAndSetIfChanged(ref _cellEditAlignment, value);
+        }
         #endregion
 
         public MainViewModel()

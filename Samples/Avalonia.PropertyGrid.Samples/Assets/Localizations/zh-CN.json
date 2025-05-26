@@ -185,5 +185,6 @@
     "Max": "最大值",
     "GenError": "生成一个错误",
     "Operation": "操作",
-    "NumberWithOperations": "含操作的数值"
+    "NumberWithOperations": "含操作的数值",
+    "CellEdit_Alignment": "栅格编辑器对齐模式"
 }
