@@ -176,5 +176,6 @@
     "GenderDefaultView": "性别",
     "GenderRadioView": "性别[单选模式]",
     "GenderToggleGroupView": "性别[开关组模式]",
-    "customLabel": "自定义标签"
+    "customLabel": "自定义标签",
+    "Show_Property_Operation": "显示属性操作"
 }

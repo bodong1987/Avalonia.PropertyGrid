@@ -5,6 +5,7 @@ using Avalonia.PropertyGrid.Samples.Models;
 using Avalonia.PropertyGrid.Samples.ViewModels;
 using Avalonia.PropertyGrid.ViewModels;
 using Avalonia.Styling;
+using PropertyModels.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Samples.Views;
 
@@ -71,6 +72,16 @@ public partial class MainView : UserControl
                 StylesPropertyGrid.PropertyOrderStyle = showStyle;
             }
         };
+        
+        PropertyOperationComboBox.SelectionChanged += (sender, e) =>
+        {
+            if (PropertyOperationComboBox.SelectedItem is PropertyOperationVisibility visibility)
+            {
+                StylesPropertyGrid.PropertyOperationVisibility = visibility;
+            }
+        };
+        
+        
     }
 
     private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)

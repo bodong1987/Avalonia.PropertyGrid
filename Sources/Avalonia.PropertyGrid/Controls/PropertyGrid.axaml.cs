@@ -263,6 +263,23 @@ namespace Avalonia.PropertyGrid.Controls
             get => GetValue(AllCategoriesExpandedProperty);
             set => SetValue(AllCategoriesExpandedProperty, value);
         }
+
+        /// <summary>
+        /// global option for extra property button
+        /// </summary>
+        public static readonly StyledProperty<PropertyOperationVisibility> PropertyOperationVisibilityProperty =
+            AvaloniaProperty.Register<PropertyGrid, PropertyOperationVisibility>(nameof(PropertyOperationVisibility), 
+                defaultValue: PropertyOperationVisibility.Default, // default is hidden
+                inherits: true);
+
+        /// <summary>
+        /// global option for extra property button
+        /// </summary>
+        public PropertyOperationVisibility PropertyOperationVisibility
+        {
+            get => GetValue(PropertyOperationVisibilityProperty);
+            set => SetValue(PropertyOperationVisibilityProperty, value);
+        }
         #endregion
 
         #region Events
@@ -334,6 +351,8 @@ namespace Avalonia.PropertyGrid.Controls
                     pg._categoryExpanders.ForEach(ex => ex.IsExpanded = expanded);
                 }
             }));
+            _ = PropertyOperationVisibilityProperty.Changed.Subscribe(
+                new AnonymousObserver<AvaloniaPropertyChangedEventArgs<PropertyOperationVisibility>>(OnPropertyOperationVisibilityPropertyChanged));
         }
 
         /// <summary>
@@ -590,6 +609,18 @@ namespace Avalonia.PropertyGrid.Controls
 
         private void OnAllowQuickFilterChanged(bool oldValue, bool newValue) => FastFilterBox.IsVisible = newValue;
 
+        private static void OnPropertyOperationVisibilityPropertyChanged(AvaloniaPropertyChangedEventArgs<PropertyOperationVisibility> e)
+        {
+            if (e.Sender is PropertyGrid sender)
+            {
+                sender.OnPropertyOperationVisibilityChanged(e.OldValue.Value, e.NewValue.Value);
+            }
+        }
+
+        private void OnPropertyOperationVisibilityChanged(PropertyOperationVisibility oldValueValue, PropertyOperationVisibility newValueValue)
+        {
+            BuildPropertiesView();
+        }
         #endregion
 
         /// <summary>
@@ -724,6 +755,7 @@ namespace Avalonia.PropertyGrid.Controls
                 var grid = new Grid();
                 grid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
                 grid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
+                grid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
 
                 var cellInfo = new PropertyGridCellInfo(null)
                 {
@@ -876,8 +908,42 @@ namespace Avalonia.PropertyGrid.Controls
             };
 
             container.Add(cellInfo);
+
+            // Default = Hidden
+            // so, you can force show operations for one property
+            //
+            if (IsPropertyOperationVisible(propertyDescriptor))
+            {
+                var button = new Button
+                {
+                    Content = "?",
+                    Margin = new Thickness(4, 0, 0, 0),
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center
+                };
+                button.SetValue(Grid.ColumnProperty, shouldUseInlineMode ? 1: 2);
+                button.SetValue(Grid.RowProperty, grid.RowDefinitions.Count - 1);
+                grid.Children.Add(button);
+            }
         }
 
+        private bool IsPropertyOperationVisible(PropertyDescriptor propertyDescriptor)
+        {
+            var settings = PropertyOperationVisibility;
+            var propertyOperationVisibilityAttribute = propertyDescriptor.GetCustomAttribute<PropertyOperationVisibilityAttribute>();
+
+            if (propertyOperationVisibilityAttribute == null)
+            {
+                return settings == PropertyOperationVisibility.Visible;
+            }
+
+            if (settings == PropertyOperationVisibility.Hidden)
+            {
+                return propertyOperationVisibilityAttribute.Visibility == PropertyOperationVisibility.Visible;
+            }
+            
+            return propertyOperationVisibilityAttribute.Visibility != PropertyOperationVisibility.Hidden;
+        }
         
         #endregion
 
@@ -892,6 +958,7 @@ namespace Avalonia.PropertyGrid.Controls
             PropertiesGrid.ColumnDefinitions.Clear();
             PropertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
             PropertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
+            PropertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
 
             BuildPropertiesCellEdit(target, referencePath, ViewModel.AllProperties.OrderBy(x => x.DisplayName),  PropertiesGrid, _cellInfoCache);
         }
@@ -906,6 +973,7 @@ namespace Avalonia.PropertyGrid.Controls
             PropertiesGrid.ColumnDefinitions.Clear();
             PropertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
             PropertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
+            PropertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
 
             BuildPropertiesCellEdit(target, referencePath, ViewModel.AllProperties,  PropertiesGrid, _cellInfoCache);
         }

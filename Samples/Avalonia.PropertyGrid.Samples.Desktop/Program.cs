@@ -1,4 +1,6 @@
 ﻿using System;
+using Avalonia;
+using Avalonia.Platform;
 
 namespace Avalonia.PropertyGrid.Samples.Desktop;
 
@@ -16,5 +18,11 @@ internal sealed class Program
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .WithInterFont()
-            .LogToTrace();
+            .LogToTrace().AfterSetup(builder=>
+            {
+                builder.Instance!.AttachDevTools(new Avalonia.Diagnostics.DevToolsOptions()
+                {
+                    StartupScreenIndex = 1,
+                });
+            });
 }

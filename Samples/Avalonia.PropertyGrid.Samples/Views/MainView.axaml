@@ -7,7 +7,8 @@
              xmlns:apv="clr-namespace:Avalonia.PropertyGrid.ViewModels;assembly=Avalonia.PropertyGrid"
 		     xmlns:lv="clr-namespace:Avalonia.PropertyGrid.Samples.Views"
 			 xmlns:ll="clr-namespace:Avalonia.PropertyGrid.Localization;assembly=Avalonia.PropertyGrid"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+			 xmlns:componentModel="clr-namespace:PropertyModels.ComponentModel;assembly=PropertyModels"
+			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Avalonia.PropertyGrid.Samples.Views.MainView"
              x:DataType="vm:MainViewModel">
   <Design.DataContext>
@@ -36,6 +37,7 @@
             <TabItem Header="{ll:Localize Styles}">
                 <Grid RowDefinitions="*,Auto">
                     <ScrollViewer>
+                        <!-- ReSharper disable Xaml.PossibleNullReferenceException -->
                         <pgc:PropertyGrid
                             x:Name="StylesPropertyGrid"
                             Margin="2"
@@ -77,6 +79,17 @@
                                 <ComboBox.Items>
                                     <apv:PropertyGridOrderStyle>Builtin</apv:PropertyGridOrderStyle>
                                     <apv:PropertyGridOrderStyle>Alphabetic</apv:PropertyGridOrderStyle>
+                                </ComboBox.Items>
+                            </ComboBox>
+                            <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Show_Property_Operation}"/>
+                            <ComboBox x:Name="PropertyOperationComboBox" 
+                                      Margin="4" 
+                                      VerticalAlignment="Center"
+                                      SelectedItem="{Binding ShowPropertyOperation, Mode=TwoWay}">
+                                <ComboBox.Items>
+                                    <componentModel:PropertyOperationVisibility>Default</componentModel:PropertyOperationVisibility>
+                                    <componentModel:PropertyOperationVisibility>Visible</componentModel:PropertyOperationVisibility>
+                                    <componentModel:PropertyOperationVisibility>Hidden</componentModel:PropertyOperationVisibility>
                                 </ComboBox.Items>
                             </ComboBox>
                         </StackPanel>

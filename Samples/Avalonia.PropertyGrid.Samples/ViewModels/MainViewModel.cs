@@ -133,6 +133,13 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
             get => _defaultNameWidth;
             set => this.RaiseAndSetIfChanged(ref _defaultNameWidth, value);
         }
+        
+        private PropertyOperationVisibility _showPropertyOperation = PropertyOperationVisibility.Default;
+        public PropertyOperationVisibility ShowPropertyOperation
+        {
+            get => _showPropertyOperation;
+            set => this.RaiseAndSetIfChanged(ref _showPropertyOperation, value);
+        }
         #endregion
 
         public MainViewModel()
