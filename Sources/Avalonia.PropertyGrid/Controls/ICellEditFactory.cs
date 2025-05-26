@@ -82,6 +82,13 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="context"></param>
         /// <param name="value"></param>
         void SetPropertyValue(PropertyCellContext context, object? value);
+
+        /// <summary>
+        /// Gets the property value.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns>System.Nullable&lt;System.Object&gt;.</returns>
+        object? GetPropertyValue(PropertyCellContext context);
     }
 
     /// <summary>

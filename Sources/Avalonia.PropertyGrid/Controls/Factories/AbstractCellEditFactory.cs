@@ -75,7 +75,17 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         {
             SetAndRaise(context, context.CellEdit!, value);
         }
-        
+
+        /// <summary>
+        /// Gets the property value.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <returns>System.Nullable&lt;System.Object&gt;.</returns>
+        public virtual object? GetPropertyValue(PropertyCellContext context)
+        {
+            return context.GetValue();
+        }
+
         /// <summary>
         /// Sets the and raise.
         /// </summary>
