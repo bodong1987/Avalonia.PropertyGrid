@@ -902,7 +902,7 @@ namespace Avalonia.PropertyGrid.Controls
                     VerticalAlignment = VerticalAlignment.Center
                 };
 
-                var args = new CustomNameBlockEventArgs(target, propertyDescriptor, nameTextBlock);
+                var args = new CustomNameBlockEventArgs(context, nameTextBlock);
                 RaiseEvent(args);
 
                 nameControl = args.CustomNameBlock ?? nameTextBlock;
@@ -945,17 +945,17 @@ namespace Avalonia.PropertyGrid.Controls
 
             container.Add(cellInfo);
 
-            AppendPropertyOperationUiIfNeed(target, propertyDescriptor, grid, shouldUseInlineMode);
+            AppendPropertyOperationUiIfNeed(context, grid, shouldUseInlineMode);
         }
 
-        private void AppendPropertyOperationUiIfNeed(object target, PropertyDescriptor propertyDescriptor, Grid grid, bool shouldUseInlineMode)
+        private void AppendPropertyOperationUiIfNeed(PropertyCellContext context, Grid grid, bool shouldUseInlineMode)
         {
             // Default = Hidden
             // so, you can force show operations for one property
             //
-            if (IsPropertyOperationVisible(propertyDescriptor))
+            if (IsPropertyOperationVisible(context.Property))
             {
-                var args = new CustomPropertyOperationControlEventArgs(target, propertyDescriptor);
+                var args = new CustomPropertyOperationControlEventArgs(context);
                 RaiseEvent(args);
                 
                 var operationControl = args.CustomControl ?? new Button
@@ -980,7 +980,7 @@ namespace Avalonia.PropertyGrid.Controls
                         contextMenu.Items.Clear();
                         
                         var customMenuArgs =
-                            new CustomPropertyOperationMenuEventArgs(target, propertyDescriptor, contextMenu);
+                            new CustomPropertyOperationMenuEventArgs(context, contextMenu);
                         RaiseEvent(customMenuArgs);
 
                         if (contextMenu is { IsOpen: false, Items.Count: > 0 })
@@ -1215,12 +1215,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// input context
         /// </summary>
-        public readonly object DataContext;
-        
-        /// <summary>
-        /// target property descriptor
-        /// </summary>
-        public readonly PropertyDescriptor PropertyDescriptor;
+        public readonly PropertyCellContext Context;
         
         /// <summary>
         /// custom control
@@ -1231,13 +1226,10 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// construct this event args
         /// </summary>
-        /// <param name="dataContext"></param>
-        /// <param name="propertyDescriptor"></param>
-        public CustomPropertyOperationControlEventArgs(object dataContext, PropertyDescriptor propertyDescriptor) :
+        public CustomPropertyOperationControlEventArgs(PropertyCellContext context) :
             base(PropertyGrid.CustomPropertyOperationControlEvent)
         {
-            DataContext = dataContext;
-            PropertyDescriptor = propertyDescriptor;
+            Context = context;
         }
     }
 
@@ -1248,16 +1240,9 @@ namespace Avalonia.PropertyGrid.Controls
     public class CustomPropertyOperationMenuEventArgs : RoutedEventArgs
     {
         /// <summary>
-        /// data context/ target object
+        /// Context
         /// </summary>
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
-        public object DataContext { get; }
-        
-        /// <summary>
-        /// property descriptor
-        /// </summary>
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
-        public PropertyDescriptor PropertyDescriptor { get; }
+        public PropertyCellContext Context;
         
         /// <summary>
         /// local menu
@@ -1268,17 +1253,12 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// constructor
         /// </summary>
-        /// <param name="dataContext"></param>
-        /// <param name="descriptor"></param>
-        /// <param name="menu"></param>
         public CustomPropertyOperationMenuEventArgs(
-            object dataContext,
-            PropertyDescriptor descriptor,
+            PropertyCellContext context,
             ContextMenu menu
         ) : base(PropertyGrid.CustomPropertyOperationMenuOpeningEvent)
         {
-            PropertyDescriptor = descriptor;
-            DataContext = dataContext;
+            Context = context;
             Menu = menu;
         }
     }
@@ -1291,17 +1271,9 @@ namespace Avalonia.PropertyGrid.Controls
     public class CustomNameBlockEventArgs : RoutedEventArgs
     {
         /// <summary>
-        /// Gets the target.
+        /// Context
         /// </summary>
-        /// <value>The target.</value>
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
-        public object Target { get; }
-
-        /// <summary>
-        /// Gets the property descriptor.
-        /// </summary>
-        /// <value>The property descriptor.</value>
-        public PropertyDescriptor PropertyDescriptor { get; }
+        public readonly PropertyCellContext Context;
 
         /// <summary>
         /// Gets the default name block.
@@ -1319,18 +1291,13 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Initializes a new instance of the <see cref="CustomNameBlockEventArgs"/> class.
         /// </summary>
-        /// <param name="target">The target.</param>
-        /// <param name="propertyDescriptor">The property descriptor.</param>
-        /// <param name="defaultBlock">The default block.</param>
         public CustomNameBlockEventArgs(
-            object target,
-            PropertyDescriptor propertyDescriptor,
+            PropertyCellContext context,
             Control defaultBlock
         ) : 
             base(PropertyGrid.CustomNameBlockEvent)
         {
-            Target = target;
-            PropertyDescriptor = propertyDescriptor;
+            Context = context;
             DefaultNameBlock = defaultBlock;
             CustomNameBlock = defaultBlock;
         }

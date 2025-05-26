@@ -75,6 +75,13 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="readOnly">readonly flag</param>
         /// <returns>Control.</returns>
         void HandleReadOnlyStateChanged(Control control, bool readOnly);
+        
+        /// <summary>
+        /// use internal framework to set property value, include command executing...
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="value"></param>
+        void SetPropertyValue(PropertyCellContext context, object? value);
     }
 
     /// <summary>

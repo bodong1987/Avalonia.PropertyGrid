@@ -28,19 +28,19 @@ namespace Avalonia.PropertyGrid.Samples.Views
         {
             CustomNameBlock += (s, e) =>
             {
-                if(e.PropertyDescriptor.Name == "customLabel")
+                if(e.Context.Property.Name == nameof(TestExtendsObject.customLabel))
                 {
-                    var button = new Button { Content = LocalizationService.Default[e.PropertyDescriptor.DisplayName] };
+                    var button = new Button { Content = LocalizationService.Default[e.Context.Property.DisplayName] };
                     
                     button.Click += (ss, ee) =>
                     {
-                        button.Content = $"{LocalizationService.Default[e.PropertyDescriptor.DisplayName]} {++_customLabelClickCount}";
+                        button.Content = $"{LocalizationService.Default[e.Context.Property.DisplayName]} {++_customLabelClickCount}";
                     };
 
                     LocalizationService.Default.OnCultureChanged += (ss, ee) =>
                     {
                         button.Content =
-                            $"{LocalizationService.Default[e.PropertyDescriptor.DisplayName]} {_customLabelClickCount}";
+                            $"{LocalizationService.Default[e.Context.Property.DisplayName]} {_customLabelClickCount}";
                     };
 
                     e.CustomNameBlock = button;
@@ -52,12 +52,12 @@ namespace Avalonia.PropertyGrid.Samples.Views
 
         private void OnCustomPropertyOperationControl(object? sender, CustomPropertyOperationControlEventArgs e)
         {
-            if (!e.PropertyDescriptor.IsDefined<PropertyOperationVisibilityAttribute>())
+            if (!e.Context.Property.IsDefined<PropertyOperationVisibilityAttribute>())
             {
                 return;
             }
 
-            if (e.PropertyDescriptor.Name == nameof(TestExtendsObject.CustomOperationControlNumber))
+            if (e.Context.Property.Name == nameof(TestExtendsObject.CustomOperationControlNumber))
             {
                 var stackPanel = new StackPanel
                 {
@@ -68,7 +68,7 @@ namespace Avalonia.PropertyGrid.Samples.Views
                 minButton.SetLocalizeBinding(Button.ContentProperty, "Min");
                 minButton.Click += (ss, ee) =>
                 {
-                    e.PropertyDescriptor.SetValue(e.DataContext, 0);
+                    e.Context.Factory!.SetPropertyValue(e.Context, 0);
                 };
                 
                 stackPanel.Children.Add(minButton);
@@ -77,7 +77,7 @@ namespace Avalonia.PropertyGrid.Samples.Views
                 maxButton.SetLocalizeBinding(Button.ContentProperty, "Max");
                 maxButton.Click += (ss, ee) =>
                 {
-                    e.PropertyDescriptor.SetValue(e.DataContext, 1024);
+                    e.Context.Factory!.SetPropertyValue(e.Context, 1024);
                 };
 
                 stackPanel.Children.Add(maxButton);

@@ -70,6 +70,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories
             // you can override this method to change this default operation
             control.IsEnabled = !readOnly;
 
+        /// <inheritdoc />
+        public virtual void SetPropertyValue(PropertyCellContext context, object? value)
+        {
+            SetAndRaise(context, context.CellEdit!, value);
+        }
+        
         /// <summary>
         /// Sets the and raise.
         /// </summary>
