@@ -19,7 +19,6 @@ Its main features are:
 * Support automatic expansion of sub-objects
 * Support adjust the width of the property name and property value by drag the title
 * Support localization and realtime change language without restart
-* Support custom property cell editors
 * Support web  
 * Depend on https://www.nuget.org/packages/bodong.PropertyModels  
 
@@ -36,7 +35,7 @@ https://bodong1987.github.io/Avalonia.PropertyGrid/
 * 支持在一个PropertyGrid中同时编辑多个对象
 * 支持实现ICustomTypeDescriptor接口或TypeDescriptionProvider的自定义类型
 * 支持自定义属性标签的控件
-* 支持自定义任意属性的栅格编辑器
+* 支持自定义任意属性的栅格编辑器(Cell Edit)
 * 支持数组编辑，支持数组在控件中创建、插入、删除和清除
 * 支持数据验证
 * 支持内置的撤销和重做框架
@@ -50,7 +49,6 @@ https://bodong1987.github.io/Avalonia.PropertyGrid/
 * 支持子对象的自动展开
 * 支持通过拖动标题调整属性名称和属性值的宽度
 * 支持本地化和实时更改语言而无需重启
-* 支持自定义属性单元格编辑器
 * 支持Web  
 
 查看更多信息: https://github.com/bodong1987/Avalonia.PropertyGrid

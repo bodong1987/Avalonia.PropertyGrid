@@ -21,7 +21,6 @@ Its main features are:
 * Support automatic expansion of sub-objects
 * Support adjust the width of the property name and property value by drag the title
 * Support localization and realtime change language without restart
-* Support custom property cell editors
 * Support web  
 
 <a href="https://bodong1987.github.io/Avalonia.PropertyGrid/" target="_blank"> → View Online Demo</a>

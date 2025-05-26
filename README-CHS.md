@@ -7,7 +7,7 @@
 * 支持在一个PropertyGrid中同时编辑多个对象
 * 支持实现ICustomTypeDescriptor接口或TypeDescriptionProvider的自定义类型
 * 支持自定义属性标签的控件
-* 支持自定义任意属性的栅格编辑器
+* 支持自定义任意属性的栅格编辑器(CellEdit)
 * 支持数组编辑，支持数组在控件中创建、插入、删除和清除
 * 支持数据验证
 * 支持内置的撤销和重做框架
@@ -21,7 +21,6 @@
 * 支持子对象的自动展开
 * 支持通过拖动标题调整属性名称和属性值的宽度
 * 支持本地化和实时更改语言而无需重启
-* 支持自定义属性单元格编辑器
 * 支持Web  
 
 <a href="https://bodong1987.github.io/Avalonia.PropertyGrid/" target="_blank"> → 查看在线演示</a>
