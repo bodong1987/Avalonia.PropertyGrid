@@ -449,15 +449,10 @@ private void OnCustomPropertyOperationControl(object? sender, CustomPropertyOper
 ![Proeprty Operation Example](./Docs/Images/operation-example.png)
 
 ## Description of Samples
-![Basic View](./Docs/Images/BasicView.png)
-You can clone this project, and open Avalonia.PropertyGrid.sln, build it and run Avalonia.PropertyGrid.Samples, you can view this.
-
 ### Basic
 This page shows the basic functions of PropertyGrid, including the display of various properties and the default editor, etc.  
-
-### Styles
+Test all adjustable appearance properties.  
 ![Styles](./Docs/Images/Styles.png)
-Test all adjustable appearance properties.
 
 ### DataSync
 ![DataSync](./Docs/Images/data-sync.png)

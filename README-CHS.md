@@ -446,15 +446,10 @@ private void OnCustomPropertyOperationControl(object? sender, CustomPropertyOper
 ![Proeprty Operation Example](./Docs/Images/operation-example.png)
 
 ## 示例描述
-![Basic View](./Docs/Images/BasicView.png)
-您可以克隆此项目，打开Avalonia.PropertyGrid.sln，构建并运行Avalonia.PropertyGrid.Samples，即可查看此内容。
 
 ### 基本功能
-此页面展示了PropertyGrid的基本功能，包括各种属性的显示和默认编辑器等。
-
-### 样式
+此页面展示了PropertyGrid的基本功能，包括各种属性的显示和默认编辑器等,另外还测试所有可调外观属性。
 ![Styles](./Docs/Images/Styles.png)
-测试所有可调外观属性。
 
 ### 数据同步
 ![DataSync](./Docs/Images/data-sync.png)

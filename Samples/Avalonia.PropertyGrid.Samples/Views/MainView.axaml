@@ -24,22 +24,12 @@
     <Grid RowDefinitions="*, Auto">
         <TabControl TabStripPlacement="Left" Grid.Row="0" Padding="4">
             <TabItem Header="{ll:Localize Basic}">
-                <ScrollViewer>
-                    <pgc:PropertyGrid
-						Margin="4"
-						CustomPropertyDescriptorFilter="OnCustomPropertyDescriptorFilter"
-						DataContext="{Binding SimpleObject}"
-						>
-                    </pgc:PropertyGrid>
-                </ScrollViewer>
-            </TabItem>
-
-            <TabItem Header="{ll:Localize Styles}">
                 <Grid RowDefinitions="*,Auto">
                     <ScrollViewer>
                         <!-- ReSharper disable Xaml.PossibleNullReferenceException -->
                         <pgc:PropertyGrid
                             x:Name="StylesPropertyGrid"
+                            CustomPropertyDescriptorFilter="OnCustomPropertyDescriptorFilter"
                             Margin="2"
                             DataContext="{Binding SimpleObject}"
                             AllowFilter="{Binding DataContext.AllowFilter, RelativeSource={RelativeSource AncestorType=UserControl}}"
