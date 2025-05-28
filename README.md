@@ -79,7 +79,8 @@ PropertyModels.ComponentModel.DataAnnotations.IEnumValueAuthorizeAttribute      
 PropertyModels.ComponentModel.DataAnnotations.ImagePreviewModeAttribute             /* set image display mode */
 PropertyModels.ComponentModel.SingleSelectionModeAttribute                          /* set enum/selectablelist view mode, use combobox/togglebutton group/radiobox group */
 PropertyModels.ComponentModel.UnitAttribute                                         /* used to display a unit next to the display name */  
-PropertyModels.ComponentModel.PropertyOperationVisibilityAttribute                  /* Used to specify the display view category of the multi-select list type. The default is horizontal arrangement + automatic line wrap, and it can also be configured to other types. */  
+PropertyModels.ComponentModel.PropertyOperationVisibilityAttribute                  /* Used to specify whether the additional operation area is visible. The default value is determined by the property. */  
+PropertyModels.ComponentModel.CheckedListDisplayModeAttribute                       /* Used to specify the display view category of the multi-select list type. The default is horizontal arrangement + automatic line wrap, and it can also be configured to other types. */  
 ```
 
 ### Supported Builtin Types
