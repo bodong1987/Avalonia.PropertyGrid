@@ -1,36 +1,32 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="using:Avalonia.PropertyGrid.Controls">
-  <Design.PreviewWith>
-    <controls:CheckedListEdit />
-  </Design.PreviewWith>
+    <Design.PreviewWith>
+        <controls:CheckedListEdit />
+    </Design.PreviewWith>
 
-  <Style Selector="controls|CheckedListEdit">
-    <!-- Set Defaults -->
-    <Setter Property="Template">
-      <ControlTemplate>
-		  <DataValidationErrors>
-			  <Border BorderBrush="Gray" BorderThickness="0.5" CornerRadius="0,0,5,5" Margin="0">
-				  <ItemsControl x:Name="ItemsPresenter"
-								  ItemsSource="{Binding Model.Items, RelativeSource={RelativeSource TemplatedParent}}">
-					  <ItemsControl.ItemsPanel>
-						  <ItemsPanelTemplate>
-							  <StackPanel Orientation="Vertical" Spacing="4">
-							  </StackPanel>
-						  </ItemsPanelTemplate>
-					  </ItemsControl.ItemsPanel>
-					  <ItemsControl.ItemTemplate>
-						  <DataTemplate>
-							  <StackPanel Orientation="Horizontal">
-								  <CheckBox Margin="2,0,2,0" IsChecked="{Binding IsChecked, Mode=TwoWay}"></CheckBox>
-								  <TextBlock Margin="2,0,2,0" Text="{Binding Name}" VerticalAlignment="Center"></TextBlock>
-							  </StackPanel>
-						  </DataTemplate>
-					  </ItemsControl.ItemTemplate>
-				  </ItemsControl>
-			  </Border>
-		  </DataValidationErrors>
-	  </ControlTemplate>
-    </Setter>
-  </Style>
+    <Style Selector="controls|CheckedListEdit">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border BorderBrush="Gray" BorderThickness="0.5" CornerRadius="0,0,5,5" Margin="0">
+                    <ItemsControl x:Name="ItemsPresenter"
+                                  ItemsSource="{Binding Model.Items, RelativeSource={RelativeSource TemplatedParent}}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <Panel /> <!-- just be placeholder -->
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox Margin="2,0,2,0" IsChecked="{Binding IsChecked, Mode=TwoWay}"></CheckBox>
+                                    <TextBlock Margin="2,0,2,0" Text="{Binding Name}" VerticalAlignment="Center"></TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
 </Styles>

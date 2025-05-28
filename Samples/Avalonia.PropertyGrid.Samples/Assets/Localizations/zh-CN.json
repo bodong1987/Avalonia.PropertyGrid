@@ -66,8 +66,8 @@
     "ThreeStates2": "三态布尔2",
     "LoginName": "登录名",
     "IdList": "账号列表",
-    "CheckedListString": "字符串可选列表",
-    "CheckedListInt": "数值可选列表",
+    "CheckedListString": "可选字符串",
+    "CheckedListInt": "可选数值",
     "vec3": "三维向量",
     "Login User Data": "用户登录数据",
     "UserName": "用户名",
@@ -186,5 +186,10 @@
     "GenError": "生成一个错误",
     "Operation": "操作",
     "NumberWithOperations": "含操作的数值",
-    "CellEdit_Alignment": "栅格编辑器对齐模式"
+    "CellEdit_Alignment": "栅格编辑器对齐模式",
+    "ServiceDefaultView": "服务[默认视图]",
+    "ServiceVerticalView": "服务[垂直视图]",
+    "ServiceHorizontalView": "服务[水平视图]",
+    "CheckedListStringVerticalView": "可选字符串[垂直视图]",
+    "CheckedListStringHorizontalView": "可选字符串[水平视图]"
 }

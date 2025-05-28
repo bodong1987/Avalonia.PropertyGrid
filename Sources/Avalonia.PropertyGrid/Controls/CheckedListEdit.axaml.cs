@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Templates;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Markup.Xaml.Templates;
 using PropertyModels.ComponentModel;
 using PropertyModels.Extensions;
 
@@ -39,6 +43,28 @@ namespace Avalonia.PropertyGrid.Controls
                 o => o.Items,
                 (o, v) => o.Items = v
                 );
+        
+        /// <summary>
+        /// display mode property
+        /// </summary>
+        public static readonly StyledProperty<CheckedListDisplayMode> DisplayModeProperty =
+            AvaloniaProperty.Register<CheckedListEdit, CheckedListDisplayMode>(
+                nameof(DisplayMode),
+                defaultValue: CheckedListDisplayMode.Default);
+
+        /// <summary>
+        /// get/set display mode
+        /// </summary>
+        public CheckedListDisplayMode DisplayMode
+        {
+            get => GetValue(DisplayModeProperty);
+            set => SetValue(DisplayModeProperty, value);
+        }
+
+        /// <summary>
+        /// when use stack model, get the orientation
+        /// </summary>
+        public Orientation StackViewOrientation => DisplayMode == CheckedListDisplayMode.Horizontal ? Orientation.Horizontal : Orientation.Vertical;
 
         /// <summary>
         /// Gets or sets the items.
@@ -98,6 +124,50 @@ namespace Avalonia.PropertyGrid.Controls
         {
             var evt = new RoutedEventArgs(SelectedItemsChangedEvent);
             RaiseEvent(evt);
+        }
+
+        internal class DeferredPanelTemplate : IDeferredContent
+        {
+            private readonly Func<Panel> _panelFactory;
+
+            public DeferredPanelTemplate(Func<Panel> panelFactory)
+            {
+                _panelFactory = panelFactory;
+            }
+
+            public object Build(IServiceProvider? serviceProvider)
+            {
+                var panel = _panelFactory();
+                var nameScope = new NameScope(); 
+                return new TemplateResult<Control>(panel, nameScope);
+            }
+        }
+        
+        /// <inheritdoc />
+        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+        {
+            base.OnApplyTemplate(e);
+
+            var itemsControl = e.NameScope.Find<ItemsControl>("ItemsPresenter");
+            if (itemsControl != null)
+            {
+                var panelTemplate = new ItemsPanelTemplate
+                {
+                    Content = new DeferredPanelTemplate(() =>
+                    {
+                        if (DisplayMode is CheckedListDisplayMode.AutoWrap or CheckedListDisplayMode.Default)
+                        {
+                            return new WrapPanel { Orientation = Orientation.Horizontal, ItemSpacing = 8};
+                        }
+                        else
+                        {
+                            return new StackPanel { Orientation = StackViewOrientation };
+                        }
+                    })
+                };
+
+                itemsControl.ItemsPanel = panelTemplate;
+            }
         }
     }
 

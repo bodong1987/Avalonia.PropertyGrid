@@ -93,7 +93,16 @@ namespace Avalonia.PropertyGrid.Samples.Models
         public bool AlwaysHiddenBoolean { get; set; }
 
         [Category("Enum")]
-        public PhoneService Service { get; set; } = PhoneService.None;
+        [CheckedListDisplayMode(CheckedListDisplayMode.Default)]
+        public PhoneService ServiceDefaultView { get; set; } = PhoneService.None;
+        
+        [Category("Enum")]
+        [CheckedListDisplayMode(CheckedListDisplayMode.Vertical)]
+        public PhoneService ServiceVerticalView { get; set; } = PhoneService.None;
+        
+        [Category("Enum")]
+        [CheckedListDisplayMode(CheckedListDisplayMode.Horizontal)]
+        public PhoneService ServiceHorizontalView { get; set; } = PhoneService.None;
 
         [Category("Enum")]
         [SingleSelectionMode(SingleSelectionMode.Default)]
@@ -126,7 +135,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
         [Category("Selectable List")]
         public SelectableList<string> LoginName { get; set; } = new(["John", "David", "bodong"], "bodong");
-
+        
         [Category("Selectable List")]
         public SelectableList<string> LoginNameNoDefault { get; set; } = new(["John", "David", "bodong"]);
 
@@ -276,9 +285,17 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
         [Category("Checked List")]
         public CheckedList<string> CheckedListString { get; set; } = new(["bodong", "John", "David"], ["bodong"]);
+        
+        [Category("Checked List")]
+        [CheckedListDisplayMode(CheckedListDisplayMode.Vertical)]
+        public CheckedList<string> CheckedListStringVerticalView { get; set; } = new(["bodong", "John", "David"], ["bodong", "John"]);
+        
+        [Category("Checked List")]
+        [CheckedListDisplayMode(CheckedListDisplayMode.Horizontal)]
+        public CheckedList<string> CheckedListStringHorizontalView { get; set; } = new(["bodong", "John", "David"], ["David"]);
 
         [Category("Checked List")]
-        public CheckedList<int> CheckedListInt { get; set; } = new([1024, 2048, 4096, 8192], [1024, 8192]);
+        public CheckedList<int> CheckedListInt { get; set; } = new([100, 200, 300, 400, 1024, 2048, 4096, 8192], [1024, 8192]);
 
         [Category("Date Time")]
         public DateTime dateTime { get; set; } = DateTime.Now;

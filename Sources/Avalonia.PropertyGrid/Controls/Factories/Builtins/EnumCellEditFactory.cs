@@ -46,6 +46,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 {
                     Items = EnumUtils.GetEnumValues(propertyDescriptor.PropertyType, propertyDescriptor.Attributes.OfType<Attribute>()).Cast<object>().ToArray()
                 };
+                
+                if (propertyDescriptor.GetCustomAttribute<CheckedListDisplayModeAttribute>() is { } displayModeAttr)
+                {
+                    control.DisplayMode = displayModeAttr.DisplayMode;
+                }
 
                 control.SelectedItemsChanged += (s, e) =>
                 {

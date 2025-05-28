@@ -45,6 +45,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 Items = list.SourceItems
             };
 
+            if (propertyDescriptor.GetCustomAttribute<CheckedListDisplayModeAttribute>() is { } displayModeAttr)
+            {
+                control.DisplayMode = displayModeAttr.DisplayMode;
+            }
+
             control.SelectedItemsChanged += (s, e) =>
             {
                 var items = control.SelectedItems;

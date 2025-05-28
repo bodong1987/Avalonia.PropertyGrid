@@ -81,6 +81,7 @@ PropertyModels.ComponentModel.DataAnnotations.IEnumValueAuthorizeAttribute      
 PropertyModels.ComponentModel.DataAnnotations.ImagePreviewModeAttribute             /* 设置图像显示模式 */
 PropertyModels.ComponentModel.SingleSelectionModeAttribute                          /* 设置枚举/可选列表视图模式，使用组合框/切换按钮组/单选按钮组 */  
 PropertyModels.ComponentModel.UnitAttribute                                         /* 用于在显示名称旁显示单位 */  
+PropertyModels.ComponentModel.PropertyOperationVisibilityAttribute                  /* 用于指定多选列表类型的显示视图类别，默认是水平排列+自动换行，也可配置成其它的。 */ 
 ```
 
 ### 支持的内置类型
