@@ -175,12 +175,12 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
         [Category("Selectable List")]
         [SingleSelectionMode(SingleSelectionMode.ToggleButtonGroup)]
-        public SelectableList<string> LoginNameToggleGroupMode { get; set; } = new(["John", "David", "bodong"]);
+        public SelectableList<string> LoginNameToggleGroupMode { get; set; } = new(["John", "David", "bodong"], "bodong");
         
         [Category("Selectable List")]
         [SingleSelectionMode(SingleSelectionMode.ToggleButtonGroup)]
         [SelectableListDisplayMode(SelectableListDisplayMode.Vertical)]
-        public SelectableList<string> LoginNameToggleGroupModeVerticalView { get; set; } = new(["John", "David", "bodong"]);
+        public SelectableList<string> LoginNameToggleGroupModeVerticalView { get; set; } = new(["John", "David", "bodong"], "David");
 
         [Category("Selectable List")]
         public SelectableList<int> IdList { get; set; } = new([100, 1000, 1024], 1000);
