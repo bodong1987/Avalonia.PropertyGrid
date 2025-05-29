@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "Avalonia.PropertyGrid.Samples.Browser",
   "resources": {
-    "hash": "sha256-R2Oc7MiifPN0t6CJkTmcPc5XT1mKqu+U24P7L2qdnVY=",
+    "hash": "sha256-Wd4ex/0F7xsFv7Z/4lny4uE/74NwXpicNeK5YEBlXOc=",
     "fingerprinting": {
       "Avalonia.Base.hi23v6rqyq.wasm": "Avalonia.Base.wasm",
       "Avalonia.Browser.bsnxfg8utl.wasm": "Avalonia.Browser.wasm",
@@ -17,9 +17,9 @@
       "Avalonia.Metal.a1trlafjv0.wasm": "Avalonia.Metal.wasm",
       "Avalonia.MicroCom.l5a1chlq6c.wasm": "Avalonia.MicroCom.wasm",
       "Avalonia.OpenGL.f91htzqokn.wasm": "Avalonia.OpenGL.wasm",
-      "Avalonia.PropertyGrid.Samples.Browser.xx0lejrns1.wasm": "Avalonia.PropertyGrid.Samples.Browser.wasm",
-      "Avalonia.PropertyGrid.Samples.5l8e605bn7.wasm": "Avalonia.PropertyGrid.Samples.wasm",
-      "Avalonia.PropertyGrid.fiu24oili5.wasm": "Avalonia.PropertyGrid.wasm",
+      "Avalonia.PropertyGrid.Samples.Browser.8yxvs4aynh.wasm": "Avalonia.PropertyGrid.Samples.Browser.wasm",
+      "Avalonia.PropertyGrid.Samples.4twsm6x4v7.wasm": "Avalonia.PropertyGrid.Samples.wasm",
+      "Avalonia.PropertyGrid.yd4zqs4bpx.wasm": "Avalonia.PropertyGrid.wasm",
       "Avalonia.Remote.Protocol.y9odstt7hi.wasm": "Avalonia.Remote.Protocol.wasm",
       "Avalonia.Skia.0czubqrpyj.wasm": "Avalonia.Skia.wasm",
       "Avalonia.Themes.Fluent.npdwd6m7l7.wasm": "Avalonia.Themes.Fluent.wasm",
@@ -201,7 +201,7 @@
       "System.Xml.XPath.XDocument.dvarvms6fh.wasm": "System.Xml.XPath.XDocument.wasm",
       "WindowsBase.5lai2eowco.wasm": "WindowsBase.wasm",
       "dotnet.native.v4dma02dan.js": "dotnet.native.js",
-      "dotnet.native.njxca4kus6.wasm": "dotnet.native.wasm",
+      "dotnet.native.e2xelei28s.wasm": "dotnet.native.wasm",
       "dotnet.js": "dotnet.js",
       "dotnet.runtime.cymp1amu5g.js": "dotnet.runtime.js",
       "icudt_CJK.tjcz0u77k5.dat": "icudt_CJK.dat",
@@ -215,7 +215,7 @@
       "dotnet.runtime.cymp1amu5g.js": "sha256-dCmS9Zx4egtLYSUgTI3R6gMS+Yg8MkzxW1CgEMJKAEw="
     },
     "wasmNative": {
-      "dotnet.native.njxca4kus6.wasm": "sha256-LTEvGtY11cb2o+v3VX0nlbI2lFnzNk/Y1Ux/OC5D5s8="
+      "dotnet.native.e2xelei28s.wasm": "sha256-GpSi8J4lvj2QoSG90VpMFuByT9A8+SoLBFWLw1o0zxY="
     },
     "icu": {
       "icudt_CJK.tjcz0u77k5.dat": "sha256-SZLtQnRc0JkwqHab0VUVP7T3uBPSeYzxzDnpxPpUnHk=",
@@ -241,9 +241,9 @@
       "Avalonia.Metal.a1trlafjv0.wasm": "sha256-vhhoiDN9aXFKTAnSiC2N6ZOAphyVUqLEK2FR08c51NQ=",
       "Avalonia.MicroCom.l5a1chlq6c.wasm": "sha256-qSlOn4m4tp0kEQZMB1f5ZuydnRqyWEKeVxeW9DZ6Zm8=",
       "Avalonia.OpenGL.f91htzqokn.wasm": "sha256-XZYaYdxYapDNdavH/nlY3/YlyBXeL+vTXIbFwznl3jY=",
-      "Avalonia.PropertyGrid.Samples.Browser.xx0lejrns1.wasm": "sha256-BWK++z7W5D8UTodPUxuqYVdXCjhLCmCHjhBVzxyqyoA=",
-      "Avalonia.PropertyGrid.Samples.5l8e605bn7.wasm": "sha256-+fg+gvFR7oxHN6wBms06cvY0l85pRljI0WEeD930H3M=",
-      "Avalonia.PropertyGrid.fiu24oili5.wasm": "sha256-CbWHe4jh6ZWsMwZ66+BPLoZxr7o+yBiAfaDgxV9MMK4=",
+      "Avalonia.PropertyGrid.Samples.Browser.8yxvs4aynh.wasm": "sha256-oAlFnKfH+N1mXq3SkKe4VNOyE/9d3ixZhPN+b3wJY5M=",
+      "Avalonia.PropertyGrid.Samples.4twsm6x4v7.wasm": "sha256-6KziPULjwRasKFYqLIjhP79Em86bJ4CtMH5dbFflINM=",
+      "Avalonia.PropertyGrid.yd4zqs4bpx.wasm": "sha256-9koD9TI4UGcCK7SV03QzI+7rCK3wr1RP+90NOC5JjXs=",
       "Avalonia.Remote.Protocol.y9odstt7hi.wasm": "sha256-JnzNhEQ7ViQq1kHF022cwWSafeMuDNNTBklkAW1AM/g=",
       "Avalonia.Skia.0czubqrpyj.wasm": "sha256-YJFdLUv2tNRg1K0kMhj/8/7Zmz/KltT2OnyR4JTw0UM=",
       "Avalonia.Themes.Fluent.npdwd6m7l7.wasm": "sha256-lc1bQ5R13xq2t3QR7Qi5Dk1JdAKz1utj0dhP1VF2nuE=",
