@@ -8,6 +8,7 @@
 		     xmlns:lv="clr-namespace:Avalonia.PropertyGrid.Samples.Views"
 			 xmlns:ll="clr-namespace:Avalonia.PropertyGrid.Localization;assembly=Avalonia.PropertyGrid"
 			 xmlns:componentModel="clr-namespace:PropertyModels.ComponentModel;assembly=PropertyModels"
+             xmlns:sd="clr-namespace:Avalonia.PropertyGrid.Samples.SettingsDemo.Views"
 			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Avalonia.PropertyGrid.Samples.Views.MainView"
              x:DataType="vm:MainViewModel">
@@ -208,6 +209,12 @@
                     </ScrollViewer>
                 </Grid>
 
+            </TabItem>
+            
+            <TabItem Header="{ll:Localize SettingsDemo}">
+                <ScrollViewer>
+                    <sd:SettingsView></sd:SettingsView>
+                </ScrollViewer>
             </TabItem>
         </TabControl>
         <Grid Margin="4" Grid.Row="1">
