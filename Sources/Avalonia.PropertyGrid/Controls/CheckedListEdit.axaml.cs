@@ -407,11 +407,11 @@ namespace Avalonia.PropertyGrid.Controls
                     {
                         if (displayMode is SelectableListDisplayMode.AutoWrap or SelectableListDisplayMode.Default)
                         {
-                            return new WrapPanel { Orientation = Orientation.Horizontal, ItemSpacing = 8};
+                            return new WrapPanel { Orientation = Orientation.Horizontal, ItemSpacing = 4};
                         }
                         else
                         {
-                            return new StackPanel { Orientation = orientation, Spacing = 8};
+                            return new StackPanel { Orientation = orientation, Spacing = 4};
                         }
                     })
                 };
