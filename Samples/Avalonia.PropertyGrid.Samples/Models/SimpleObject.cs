@@ -93,15 +93,15 @@ namespace Avalonia.PropertyGrid.Samples.Models
         public bool AlwaysHiddenBoolean { get; set; }
 
         [Category("Enum")]
-        [CheckedListDisplayMode(CheckedListDisplayMode.Default)]
+        [SelectableListDisplayMode(SelectableListDisplayMode.Default)]
         public PhoneService ServiceDefaultView { get; set; } = PhoneService.None;
         
         [Category("Enum")]
-        [CheckedListDisplayMode(CheckedListDisplayMode.Vertical)]
+        [SelectableListDisplayMode(SelectableListDisplayMode.Vertical)]
         public PhoneService ServiceVerticalView { get; set; } = PhoneService.None;
         
         [Category("Enum")]
-        [CheckedListDisplayMode(CheckedListDisplayMode.Horizontal)]
+        [SelectableListDisplayMode(SelectableListDisplayMode.Horizontal)]
         public PhoneService ServiceHorizontalView { get; set; } = PhoneService.None;
 
         [Category("Enum")]
@@ -124,7 +124,37 @@ namespace Avalonia.PropertyGrid.Samples.Models
         public static PlatformID CurrentPlatform => Environment.OSVersion.Platform;
 
         [Category("Enum")]
-        public PlatformID Platform { get; set; } = Environment.OSVersion.Platform;
+        public PlatformID PlatformDefaultView { get; set; } = Environment.OSVersion.Platform;
+        
+        [Category("Enum")]
+        [SingleSelectionMode(SingleSelectionMode.RadioButton)]
+        [SelectableListDisplayMode(SelectableListDisplayMode.Default)]
+        public PlatformID PlatformRadioButtonDefaultView { get; set; } = Environment.OSVersion.Platform;
+        
+        [Category("Enum")]
+        [SingleSelectionMode(SingleSelectionMode.RadioButton)]
+        [SelectableListDisplayMode(SelectableListDisplayMode.Vertical)]
+        public PlatformID PlatformRadioButtonVerticalView { get; set; } = Environment.OSVersion.Platform;
+        
+        [Category("Enum")]
+        [SingleSelectionMode(SingleSelectionMode.RadioButton)]
+        [SelectableListDisplayMode(SelectableListDisplayMode.Horizontal)]
+        public PlatformID PlatformRadioButtonHorizontalView { get; set; } = Environment.OSVersion.Platform;
+        
+        [Category("Enum")]
+        [SelectableListDisplayMode(SelectableListDisplayMode.Default)]
+        [SingleSelectionMode(SingleSelectionMode.ToggleButtonGroup)]
+        public PlatformID PlatformToggleButtonDefaultView { get; set; } = Environment.OSVersion.Platform;
+        
+        [Category("Enum")]
+        [SelectableListDisplayMode(SelectableListDisplayMode.Vertical)]
+        [SingleSelectionMode(SingleSelectionMode.ToggleButtonGroup)]
+        public PlatformID PlatformToggleButtonVerticalView { get; set; } = Environment.OSVersion.Platform;
+        
+        [Category("Enum")]
+        [SelectableListDisplayMode(SelectableListDisplayMode.Horizontal)]
+        [SingleSelectionMode(SingleSelectionMode.ToggleButtonGroup)]
+        public PlatformID PlatformToggleButtonHorizontalView{ get; set; } = Environment.OSVersion.Platform;
 
         [Category("Enum")]
         [EnumProhibitValues<PlatformID>(PlatformID.Unix)]
@@ -146,6 +176,11 @@ namespace Avalonia.PropertyGrid.Samples.Models
         [Category("Selectable List")]
         [SingleSelectionMode(SingleSelectionMode.ToggleButtonGroup)]
         public SelectableList<string> LoginNameToggleGroupMode { get; set; } = new(["John", "David", "bodong"]);
+        
+        [Category("Selectable List")]
+        [SingleSelectionMode(SingleSelectionMode.ToggleButtonGroup)]
+        [SelectableListDisplayMode(SelectableListDisplayMode.Vertical)]
+        public SelectableList<string> LoginNameToggleGroupModeVerticalView { get; set; } = new(["John", "David", "bodong"]);
 
         [Category("Selectable List")]
         public SelectableList<int> IdList { get; set; } = new([100, 1000, 1024], 1000);
@@ -287,11 +322,11 @@ namespace Avalonia.PropertyGrid.Samples.Models
         public CheckedList<string> CheckedListString { get; set; } = new(["bodong", "John", "David"], ["bodong"]);
         
         [Category("Checked List")]
-        [CheckedListDisplayMode(CheckedListDisplayMode.Vertical)]
+        [SelectableListDisplayMode(SelectableListDisplayMode.Vertical)]
         public CheckedList<string> CheckedListStringVerticalView { get; set; } = new(["bodong", "John", "David"], ["bodong", "John"]);
         
         [Category("Checked List")]
-        [CheckedListDisplayMode(CheckedListDisplayMode.Horizontal)]
+        [SelectableListDisplayMode(SelectableListDisplayMode.Horizontal)]
         public CheckedList<string> CheckedListStringHorizontalView { get; set; } = new(["bodong", "John", "David"], ["David"]);
 
         [Category("Checked List")]

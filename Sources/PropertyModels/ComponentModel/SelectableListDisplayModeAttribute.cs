@@ -3,10 +3,10 @@
 namespace PropertyModels.ComponentModel;
 
 /// <summary>
-/// checked list display mode
+/// selectable list display mode
 /// specify the show mode of the elements in items  
 /// </summary>
-public enum CheckedListDisplayMode
+public enum SelectableListDisplayMode
 {
     /// <summary>
     /// same as AutoWrap/ like grid layout/ WrapPanel
@@ -32,18 +32,18 @@ public enum CheckedListDisplayMode
 /// set property display mode
 /// </summary>
 [AttributeUsage(AttributeTargets.Property|AttributeTargets.Field)]
-public class CheckedListDisplayModeAttribute : Attribute
+public class SelectableListDisplayModeAttribute : Attribute
 {
     /// <summary>
     /// display mode for checked list
     /// </summary>
-    public readonly CheckedListDisplayMode DisplayMode;
+    public readonly SelectableListDisplayMode DisplayMode;
 
     /// <summary>
     /// constructor
     /// </summary>
     /// <param name="displayMode"></param>
-    public CheckedListDisplayModeAttribute(CheckedListDisplayMode displayMode)
+    public SelectableListDisplayModeAttribute(SelectableListDisplayMode displayMode)
     {
         DisplayMode = displayMode;
     }

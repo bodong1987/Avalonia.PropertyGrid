@@ -13,7 +13,6 @@
                                   ItemsSource="{Binding Model.Items, RelativeSource={RelativeSource TemplatedParent}}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <Panel /> <!-- just be placeholder -->
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.ItemTemplate>

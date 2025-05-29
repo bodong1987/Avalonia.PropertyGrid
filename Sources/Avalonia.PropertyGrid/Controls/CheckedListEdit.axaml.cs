@@ -47,15 +47,15 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// display mode property
         /// </summary>
-        public static readonly StyledProperty<CheckedListDisplayMode> DisplayModeProperty =
-            AvaloniaProperty.Register<CheckedListEdit, CheckedListDisplayMode>(
+        public static readonly StyledProperty<SelectableListDisplayMode> DisplayModeProperty =
+            AvaloniaProperty.Register<CheckedListEdit, SelectableListDisplayMode>(
                 nameof(DisplayMode),
-                defaultValue: CheckedListDisplayMode.Default);
+                defaultValue: SelectableListDisplayMode.Default);
 
         /// <summary>
         /// get/set display mode
         /// </summary>
-        public CheckedListDisplayMode DisplayMode
+        public SelectableListDisplayMode DisplayMode
         {
             get => GetValue(DisplayModeProperty);
             set => SetValue(DisplayModeProperty, value);
@@ -64,7 +64,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// when use stack model, get the orientation
         /// </summary>
-        public Orientation StackViewOrientation => DisplayMode == CheckedListDisplayMode.Horizontal ? Orientation.Horizontal : Orientation.Vertical;
+        public Orientation StackViewOrientation => DisplayMode == SelectableListDisplayMode.Horizontal ? Orientation.Horizontal : Orientation.Vertical;
 
         /// <summary>
         /// Gets or sets the items.
@@ -125,49 +125,13 @@ namespace Avalonia.PropertyGrid.Controls
             var evt = new RoutedEventArgs(SelectedItemsChangedEvent);
             RaiseEvent(evt);
         }
-
-        internal class DeferredPanelTemplate : IDeferredContent
-        {
-            private readonly Func<Panel> _panelFactory;
-
-            public DeferredPanelTemplate(Func<Panel> panelFactory)
-            {
-                _panelFactory = panelFactory;
-            }
-
-            public object Build(IServiceProvider? serviceProvider)
-            {
-                var panel = _panelFactory();
-                var nameScope = new NameScope(); 
-                return new TemplateResult<Control>(panel, nameScope);
-            }
-        }
         
         /// <inheritdoc />
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
         {
             base.OnApplyTemplate(e);
 
-            var itemsControl = e.NameScope.Find<ItemsControl>("ItemsPresenter");
-            if (itemsControl != null)
-            {
-                var panelTemplate = new ItemsPanelTemplate
-                {
-                    Content = new DeferredPanelTemplate(() =>
-                    {
-                        if (DisplayMode is CheckedListDisplayMode.AutoWrap or CheckedListDisplayMode.Default)
-                        {
-                            return new WrapPanel { Orientation = Orientation.Horizontal, ItemSpacing = 8};
-                        }
-                        else
-                        {
-                            return new StackPanel { Orientation = StackViewOrientation };
-                        }
-                    })
-                };
-
-                itemsControl.ItemsPanel = panelTemplate;
-            }
+            ApplyDisplayModeUtils.Process(e, DisplayMode, StackViewOrientation);
         }
     }
 
@@ -412,4 +376,49 @@ namespace Avalonia.PropertyGrid.Controls
         public string Name => Value?.ToString() ?? string.Empty;
     }
     #endregion
+    
+    internal class DeferredPanelTemplate : IDeferredContent
+    {
+        private readonly Func<Panel> _panelFactory;
+
+        public DeferredPanelTemplate(Func<Panel> panelFactory)
+        {
+            _panelFactory = panelFactory;
+        }
+
+        public object Build(IServiceProvider? serviceProvider)
+        {
+            var panel = _panelFactory();
+            var nameScope = new NameScope(); 
+            return new TemplateResult<Control>(panel, nameScope);
+        }
+    }
+
+    internal static class ApplyDisplayModeUtils
+    {
+        public static void Process(TemplateAppliedEventArgs e, SelectableListDisplayMode displayMode, Orientation orientation, string presenterName = "ItemsPresenter")
+        {
+            var itemsControl = e.NameScope.Find<ItemsControl>(presenterName);
+            if (itemsControl != null)
+            {
+                var panelTemplate = new ItemsPanelTemplate
+                {
+                    Content = new DeferredPanelTemplate(() =>
+                    {
+                        if (displayMode is SelectableListDisplayMode.AutoWrap or SelectableListDisplayMode.Default)
+                        {
+                            return new WrapPanel { Orientation = Orientation.Horizontal, ItemSpacing = 8};
+                        }
+                        else
+                        {
+                            return new StackPanel { Orientation = orientation, Spacing = 8};
+                        }
+                    })
+                };
+
+                itemsControl.ItemsPanel = panelTemplate;
+            }
+        }
+    }
 }
+

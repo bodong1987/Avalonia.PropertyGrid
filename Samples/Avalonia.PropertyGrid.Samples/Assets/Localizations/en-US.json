@@ -18,5 +18,13 @@
     "CheckedListString": "Checkable String[Default View]",
     "CheckedListInt": "Checkable Number",
     "CheckedListStringVerticalView": "Checkable String[Vertical View]",
-    "CheckedListStringHorizontalView": "Checkable String[Horizontal View]"
+    "CheckedListStringHorizontalView": "Checkable String[Horizontal View]",
+    "PlatformDefaultView": "Platform[Default View]",
+    "PlatformRadioButtonDefaultView": "Platform[Radio+Default View]",
+    "PlatformRadioButtonVerticalView": "Platform[Radio+Vertical View]",
+    "PlatformRadioButtonHorizontalView": "Platform[Radio+Horizontal View]",
+    "PlatformToggleButtonDefaultView": "Platform[Button+Default View]",
+    "PlatformToggleButtonVerticalView": "Platform[Button+Vertical View]",
+    "PlatformToggleButtonHorizontalView": "Platform[Button+Horizontal View]",
+    "LoginNameToggleGroupModeVerticalView": "Login Name[Button+Vertical View]"
 }

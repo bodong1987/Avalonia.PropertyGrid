@@ -173,6 +173,7 @@
     "ImagingList": "图像列表",
     "LoginNameRadioMode": "登录名[单选模式]",
     "LoginNameToggleGroupMode": "登录名[开关组模式]",
+    "LoginNameToggleGroupModeVerticalView": "登录名[开关组+垂直视图]",
     "GenderDefaultView": "性别",
     "GenderRadioView": "性别[单选模式]",
     "GenderToggleGroupView": "性别[开关组模式]",
@@ -191,5 +192,12 @@
     "ServiceVerticalView": "服务[垂直视图]",
     "ServiceHorizontalView": "服务[水平视图]",
     "CheckedListStringVerticalView": "可选字符串[垂直视图]",
-    "CheckedListStringHorizontalView": "可选字符串[水平视图]"
+    "CheckedListStringHorizontalView": "可选字符串[水平视图]",
+    "PlatformDefaultView": "平台[默认视图]",
+    "PlatformRadioButtonDefaultView": "平台[单选+默认视图]",
+    "PlatformRadioButtonVerticalView": "平台[单选+垂直视图]",
+    "PlatformRadioButtonHorizontalView": "平台[单选+水平视图]",
+    "PlatformToggleButtonDefaultView": "平台[开关组+默认视图]",
+    "PlatformToggleButtonVerticalView": "平台[开关组+垂直视图]",
+    "PlatformToggleButtonHorizontalView": "平台[开关组+水平视图]"
 }

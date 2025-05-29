@@ -47,7 +47,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     Items = EnumUtils.GetEnumValues(propertyDescriptor.PropertyType, propertyDescriptor.Attributes.OfType<Attribute>()).Cast<object>().ToArray()
                 };
                 
-                if (propertyDescriptor.GetCustomAttribute<CheckedListDisplayModeAttribute>() is { } displayModeAttr)
+                if (propertyDescriptor.GetCustomAttribute<SelectableListDisplayModeAttribute>() is { } displayModeAttr)
                 {
                     control.DisplayMode = displayModeAttr.DisplayMode;
                 }
@@ -103,6 +103,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 {
                     Items = items
                 };
+                
+                if (propertyDescriptor.GetCustomAttribute<SelectableListDisplayModeAttribute>() is { } displayModeAttr)
+                {
+                    control.DisplayMode = displayModeAttr.DisplayMode;
+                }
 
                 control.CheckChanged += (s, e) =>
                 {

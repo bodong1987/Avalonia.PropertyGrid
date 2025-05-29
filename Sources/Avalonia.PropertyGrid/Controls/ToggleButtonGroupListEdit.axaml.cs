@@ -2,7 +2,9 @@
 using System.Linq;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
 using Avalonia.PropertyGrid.ViewModels;
+using PropertyModels.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Controls
 {
@@ -27,6 +29,28 @@ namespace Avalonia.PropertyGrid.Controls
             add => AddHandler(CheckChangedEvent, value);
             remove => RemoveHandler(CheckChangedEvent, value);
         }
+        
+        /// <summary>
+        /// display mode property
+        /// </summary>
+        public static readonly StyledProperty<SelectableListDisplayMode> DisplayModeProperty =
+            AvaloniaProperty.Register<ToggleButtonGroupListEdit, SelectableListDisplayMode>(
+                nameof(DisplayMode),
+                defaultValue: SelectableListDisplayMode.Default);
+
+        /// <summary>
+        /// get/set display mode
+        /// </summary>
+        public SelectableListDisplayMode DisplayMode
+        {
+            get => GetValue(DisplayModeProperty);
+            set => SetValue(DisplayModeProperty, value);
+        }
+
+        /// <summary>
+        /// when use stack model, get the orientation
+        /// </summary>
+        public Orientation StackViewOrientation => DisplayMode == SelectableListDisplayMode.Horizontal ? Orientation.Horizontal : Orientation.Vertical;
 
         /// <summary>
         /// The items property
@@ -95,6 +119,14 @@ namespace Avalonia.PropertyGrid.Controls
         {
             var evt = new RoutedEventArgs(CheckChangedEvent);
             RaiseEvent(evt);
+        }
+        
+        /// <inheritdoc />
+        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+        {
+            base.OnApplyTemplate(e);
+
+            ApplyDisplayModeUtils.Process(e, DisplayMode, StackViewOrientation);
         }
     }
 }

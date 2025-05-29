@@ -15,13 +15,11 @@
 								  ItemsSource="{Binding Model.Items, RelativeSource={RelativeSource TemplatedParent}}">
 					  <ItemsControl.ItemsPanel>
 						  <ItemsPanelTemplate>
-							  <StackPanel Orientation="Horizontal" Spacing="8" Margin="4">
-							  </StackPanel>
 						  </ItemsPanelTemplate>
 					  </ItemsControl.ItemsPanel>
 					  <ItemsControl.ItemTemplate>
 						  <DataTemplate>
-							  <ToggleButton IsChecked="{Binding IsChecked, Mode=TwoWay}">
+							  <ToggleButton IsChecked="{Binding IsChecked, Mode=TwoWay}" Margin="4">
 								  <TextBlock Text="{Binding Name}"></TextBlock>
 							  </ToggleButton>
 						  </DataTemplate>

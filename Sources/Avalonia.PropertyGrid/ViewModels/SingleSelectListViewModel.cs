@@ -77,7 +77,7 @@ namespace Avalonia.PropertyGrid.ViewModels
 
             AddRange(items);
 
-            RefreshItemsCheckStates();
+            RaiseItemsCheckedChangedEvents();
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace Avalonia.PropertyGrid.ViewModels
 
             RaiseSelectedItemsChangedEvent();
 
-            RefreshItemsCheckStates();
+            RaiseItemsCheckedChangedEvents();
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace Avalonia.PropertyGrid.ViewModels
 
             RaisePropertyChanged(nameof(Items));
 
-            RefreshItemsCheckStates();
+            RaiseItemsCheckedChangedEvents();
         }
 
         /// <summary>
@@ -120,11 +120,26 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// <param name="value">if set to <c>true</c> [value].</param>
         public void SetChecked(SingleSelectListItemViewModel item, bool value)
         {
-            CheckedItem = item;
-            CheckedItem.IsChecked = value;
+            if (CheckedItem == item)
+            {
+                if (!value)
+                {
+                    CheckedItem = null;
+                }
+            }
+            else
+            {
+                if (CheckedItem != null)
+                {
+                    CheckedItem.IsChecked = false;
+                }
+                
+                CheckedItem = item;
+                CheckedItem.IsChecked = value;    
+            }
 
             RaiseSelectedItemsChangedEvent();
-            RefreshItemsCheckStates();
+            RaiseItemsCheckedChangedEvents();
         }
 
         /// <summary>
@@ -141,7 +156,7 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// <summary>
         /// Refreshes the items check states.
         /// </summary>
-        public void RefreshItemsCheckStates()
+        public void RaiseItemsCheckedChangedEvents()
         {
             foreach (var item in _items)
             {
@@ -207,5 +222,7 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// </summary>
         /// <value>The name.</value>
         public string Name => Value?.ToString() ?? string.Empty;
+
+        public override string ToString() => $"{Name}[{IsChecked}]";
     }
 }
