@@ -8,7 +8,7 @@ public class AccountSettings
     [Category("Credentials")]
     [DisplayName("Username")]
     [ReadOnly(true)]
-    public string Username { get; } = "Admin";
+    public string Username { get; set; } = "Admin";
 
     [Category("Credentials")]
     [DisplayName("Password")]

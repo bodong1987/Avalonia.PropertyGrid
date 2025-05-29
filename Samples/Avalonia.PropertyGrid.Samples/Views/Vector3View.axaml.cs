@@ -2,7 +2,5 @@
 
 namespace Avalonia.PropertyGrid.Samples.Views
 {
-    public class Vector3View : TemplatedControl
-    {
-    }
+    public class Vector3View : TemplatedControl;
 }

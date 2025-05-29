@@ -52,7 +52,7 @@ namespace Avalonia.PropertyGrid.Samples.Views
             CustomPropertyOperationMenuOpening += OnCustomPropertyOperationMenuOpening;
         }
 
-        private void OnCustomPropertyOperationMenuOpening(object? sender, CustomPropertyDefaultOperationEventArgs e)
+        private static void OnCustomPropertyOperationMenuOpening(object? sender, CustomPropertyDefaultOperationEventArgs e)
         {
             if (!e.Context.Property.IsDefined<PropertyOperationVisibilityAttribute>())
             {
@@ -63,7 +63,7 @@ namespace Avalonia.PropertyGrid.Samples.Views
             {
                 if (e.StageType == PropertyDefaultOperationStageType.Init)
                 {
-                    e.DefaultButton.SetLocalizeBinding(Button.ContentProperty, "Operation");    
+                    e.DefaultButton.SetLocalizeBinding(ContentProperty, "Operation");    
                 }
                 else if (e.StageType == PropertyDefaultOperationStageType.MenuOpening)
                 {
@@ -98,7 +98,7 @@ namespace Avalonia.PropertyGrid.Samples.Views
             }
         }
 
-        private void OnCustomPropertyOperationControl(object? sender, CustomPropertyOperationControlEventArgs e)
+        private static void OnCustomPropertyOperationControl(object? sender, CustomPropertyOperationControlEventArgs e)
         {
             if (!e.Context.Property.IsDefined<PropertyOperationVisibilityAttribute>())
             {
@@ -113,7 +113,7 @@ namespace Avalonia.PropertyGrid.Samples.Views
                 };
 
                 var minButton = new Button();
-                minButton.SetLocalizeBinding(Button.ContentProperty, "Min");
+                minButton.SetLocalizeBinding(ContentProperty, "Min");
                 minButton.Click += (ss, ee) =>
                 {
                     // please use factory interface, so you can raise command event 
@@ -123,7 +123,7 @@ namespace Avalonia.PropertyGrid.Samples.Views
                 stackPanel.Children.Add(minButton);
                 
                 var maxButton = new Button();
-                maxButton.SetLocalizeBinding(Button.ContentProperty, "Max");
+                maxButton.SetLocalizeBinding(ContentProperty, "Max");
                 maxButton.Click += (ss, ee) =>
                 {
                     // please use factory interface, so you can raise command event 

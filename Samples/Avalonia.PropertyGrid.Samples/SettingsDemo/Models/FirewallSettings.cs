@@ -32,7 +32,7 @@ public class FirewallSettings
     [DisplayName("Allowed IPs")]
     [Description("CIDR format (e.g. 192.168.1.0/24)")]
     [CIDRValidation]
-    public List<string> AllowedIPs { get; set; } = new List<string> { "192.168.1.0/24" };
+    public List<string> AllowedIPs { get; set; } = ["192.168.1.0/24"];
 
     [Category("Logging")]
     [DisplayName("Enable Logging")]
@@ -52,7 +52,9 @@ public class CIDRValidationAttribute : ValidationAttribute
     {
         if (value is string cidr)
         {
+#pragma warning disable SYSLIB1045
             if (!System.Text.RegularExpressions.Regex.IsMatch(cidr, @"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/\d{1,2}$"))
+#pragma warning restore SYSLIB1045
             {
                 return new ValidationResult("Invalid CIDR format");
             }

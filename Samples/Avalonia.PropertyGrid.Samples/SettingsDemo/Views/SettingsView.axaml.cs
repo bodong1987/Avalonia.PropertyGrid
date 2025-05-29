@@ -1,6 +1,4 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
+﻿using Avalonia.Controls;
 using Avalonia.PropertyGrid.Samples.SettingsDemo.ViewModels;
 
 namespace Avalonia.PropertyGrid.Samples.SettingsDemo.Views;

@@ -23,13 +23,14 @@
             
             <TabControl.ContentTemplate>
                 <DataTemplate>
+                    <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                     <pgc:PropertyGrid ShowTitle="False" 
                                       NameWidth="200"
                                       DataContext="{Binding Settings}"
                                       Margin="10"
                                       AllowQuickFilter="False"
                                       AllowToggleView="False"
-                                      />
+                    />
                 </DataTemplate>
             </TabControl.ContentTemplate>
         </TabControl>

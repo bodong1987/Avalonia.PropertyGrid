@@ -217,12 +217,7 @@
                 </ScrollViewer>
             </TabItem>
         </TabControl>
-        <Grid Margin="4" Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>                
-                <ColumnDefinition Width="Auto"/>                
-            </Grid.ColumnDefinitions>
-
+        <Grid Margin="4" Grid.Row="1" ColumnDefinitions="*,Auto">
             <HyperlinkButton IsEnabled="True"
                              NavigateUri="https://github.com/bodong1987/Avalonia.PropertyGrid">
                 <TextBlock Text="{Binding Version}" />

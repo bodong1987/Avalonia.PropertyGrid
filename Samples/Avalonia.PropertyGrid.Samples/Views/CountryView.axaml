@@ -10,8 +10,11 @@
     <Setter Property="Template">
       <ControlTemplate>
           <Grid RowDefinitions="Auto, Auto" ColumnDefinitions="Auto,Auto">
-              <Image Grid.RowSpan="2" Source="{Binding Flag}" Width="100" Height="60" Margin="2"></Image>
+            <!-- ReSharper disable once Xaml.BindingWithoutContextNotResolved -->
+            <Image Grid.RowSpan="2" Source="{Binding Flag}" Width="100" Height="60" Margin="2"></Image>
+            <!-- ReSharper disable once Xaml.BindingWithoutContextNotResolved -->
               <TextBlock VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" FontWeight="Bold" Text="{Binding Name}" Margin="10,2,10,2"></TextBlock>
+            <!-- ReSharper disable once Xaml.BindingWithoutContextNotResolved -->
               <TextBlock VerticalAlignment="Center" Grid.Column="1" Grid.Row="1" Text="{Binding Code}" Margin="10,2,10,2"></TextBlock>
           </Grid>
       </ControlTemplate>

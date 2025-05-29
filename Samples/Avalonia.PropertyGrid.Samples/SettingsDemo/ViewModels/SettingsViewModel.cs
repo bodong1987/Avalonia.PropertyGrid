@@ -47,6 +47,7 @@ public class FlatSettingCategory : ReactiveObject
 {
     public string Key { get; }
     public string Title { get; private set; }
+    // ReSharper disable once UnusedAutoPropertyAccessor.Global
     public object Settings { get; }
 
     public FlatSettingCategory(string key, object settings)
@@ -59,6 +60,6 @@ public class FlatSettingCategory : ReactiveObject
     public void Translate()
     {
         Title = LocalizationService.Default[Key];
-        this.RaisePropertyChanged(nameof(Title));
+        RaisePropertyChanged(nameof(Title));
     }
 }

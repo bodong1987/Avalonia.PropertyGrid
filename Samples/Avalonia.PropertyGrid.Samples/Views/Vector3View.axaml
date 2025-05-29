@@ -11,14 +11,17 @@
       <ControlTemplate>
           <StackPanel Orientation="Horizontal">
               <TextBlock Text="X" VerticalAlignment="Center" Padding="4"></TextBlock>
+              <!-- ReSharper disable once Xaml.BindingWithoutContextNotResolved -->
               <NumericUpDown Value="{Binding X}"  ShowButtonSpinner="False">
                   <NumericUpDown.FormatString>{0:0.0}</NumericUpDown.FormatString>
               </NumericUpDown>
               <TextBlock Text="Y" VerticalAlignment="Center" Padding="4"></TextBlock>
+              <!-- ReSharper disable once Xaml.BindingWithoutContextNotResolved -->
               <NumericUpDown Value="{Binding Y}" ShowButtonSpinner="False">
                   <NumericUpDown.FormatString>{0:0.0}</NumericUpDown.FormatString>
               </NumericUpDown>
               <TextBlock Text="Z" VerticalAlignment="Center" Padding="4"></TextBlock>
+              <!-- ReSharper disable once Xaml.BindingWithoutContextNotResolved -->
               <NumericUpDown Value="{Binding Z}" ShowButtonSpinner="False">
                   <NumericUpDown.FormatString>{0:0.0}</NumericUpDown.FormatString>
               </NumericUpDown>

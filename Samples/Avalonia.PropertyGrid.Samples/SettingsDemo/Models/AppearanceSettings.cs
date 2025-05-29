@@ -12,6 +12,7 @@ public class AppearanceSettings
 
     [Category("Theme")]
     [DisplayName("Dark Mode")]
+    // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
     public bool UseDarkTheme { get; set; } = true;
 
     [Category("Fonts")]

@@ -44,6 +44,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
 
         [Category("ImagingList")]
         [ImagePreviewMode(Stretch = StretchType.None)]
+        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
         public BindingList<IImage> ImageList { get; set; } = [];
 
         [Category("Path")]

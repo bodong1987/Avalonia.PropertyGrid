@@ -16,6 +16,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
         public string Second { get; set; } = string.Empty;
 
         [Browsable(false)]
+        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
         public string[] StringArray { get; set; } = ["ABC", "DEF", "HJK"];
     }
 

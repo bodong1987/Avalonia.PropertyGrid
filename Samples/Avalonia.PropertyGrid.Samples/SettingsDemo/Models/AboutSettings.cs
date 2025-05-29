@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel;
-using Avalonia.Media.Imaging;
 using PropertyModels.ComponentModel.DataAnnotations;
 
 namespace Avalonia.PropertyGrid.Samples.SettingsDemo.Models;
@@ -9,12 +8,16 @@ public class AboutSettings
     [Category("System Info")]
     [DisplayName("OS Version")]
     [ReadOnly(true)]
-    public string OsVersion { get; } = "Windows 10 Build 19044";
+#pragma warning disable CA1822
+    public string OsVersion => "Windows 10 Build 19044";
+#pragma warning restore CA1822
 
     [Category("System Info")]
     [DisplayName("Manufacturer")]
     [ReadOnly(true)]
-    public string Manufacturer { get; } = "Contoso Electronics";
+#pragma warning disable CA1822
+    public string Manufacturer => "Contoso Electronics";
+#pragma warning restore CA1822
 
     [Category("License")]
     [DisplayName("Activation Status")]

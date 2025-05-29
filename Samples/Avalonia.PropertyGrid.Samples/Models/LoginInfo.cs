@@ -15,7 +15,7 @@ namespace Avalonia.PropertyGrid.Samples.Models
         [Watermark("Your Password")]
         public string? Password { get; set; }
 
-        [MultilineText()]
+        [MultilineText]
         public string? HelpText { get; set; } = $"This is multiline Text{Environment.NewLine}Try edit me.";
 
         public PlatformID ServerType { get; set; } = PlatformID.Unix;

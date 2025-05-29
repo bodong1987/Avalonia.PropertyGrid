@@ -120,7 +120,7 @@ public partial class MainView : UserControl
 
     private void OnCustomPropertyDescriptorFilter(object sender, CustomPropertyDescriptorFilterEventArgs e)
     {
-        if (e.TargetObject is SimpleObject && e.PropertyDescriptor.Name == "ThreeStates2")
+        if (e is { TargetObject: SimpleObject, PropertyDescriptor.Name: "ThreeStates2" })
         {
             e.IsVisible = true;
             e.Handled = true;
