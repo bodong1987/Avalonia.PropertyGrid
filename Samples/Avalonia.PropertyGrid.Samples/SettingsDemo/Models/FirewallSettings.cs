@@ -2,11 +2,12 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using PropertyModels.Collections;
+using PropertyModels.ComponentModel;
 using PropertyModels.ComponentModel.DataAnnotations;
 
 namespace Avalonia.PropertyGrid.Samples.SettingsDemo.Models;
 
-public class FirewallSettings
+public class FirewallSettings : ReactiveObject
 {
     [Category("General")]
     [DisplayName("Firewall Status")]

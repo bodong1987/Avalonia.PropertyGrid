@@ -1,9 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
+using PropertyModels.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Samples.SettingsDemo.Models;
 
-public class AccountSettings
+public class AccountSettings : ReactiveObject
 {
     [Category("Credentials")]
     [DisplayName("Username")]

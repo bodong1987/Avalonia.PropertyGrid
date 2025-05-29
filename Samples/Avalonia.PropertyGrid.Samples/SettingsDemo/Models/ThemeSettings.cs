@@ -7,7 +7,7 @@ using PropertyModels.ComponentModel.DataAnnotations;
 
 namespace Avalonia.PropertyGrid.Samples.SettingsDemo.Models;
 
-public class ThemeSettings
+public class ThemeSettings : ReactiveObject
 {
     [Category("Color Scheme")]
     [DisplayName("Primary Color")]

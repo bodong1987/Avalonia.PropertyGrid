@@ -316,5 +316,6 @@
     "Check license status online": "在线验证许可证状态",
     "Enable transparency effects when using dark theme": "启用深色主题时显示透明效果",
     "CustomPortEnd": "自定义端口",
-    "SettingsDemo": "系统设置示例"
+    "SettingsDemo": "系统设置示例",
+    "Transparency": "透明度"
 }

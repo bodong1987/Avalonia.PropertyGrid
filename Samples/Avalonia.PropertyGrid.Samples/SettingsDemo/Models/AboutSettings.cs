@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel;
+using PropertyModels.ComponentModel;
 using PropertyModels.ComponentModel.DataAnnotations;
 
 namespace Avalonia.PropertyGrid.Samples.SettingsDemo.Models;
 
-public class AboutSettings
+public class AboutSettings : ReactiveObject
 {
     [Category("System Info")]
     [DisplayName("OS Version")]

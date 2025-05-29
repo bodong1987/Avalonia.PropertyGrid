@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using PropertyModels.Collections;
+using PropertyModels.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Samples.SettingsDemo.Models;
 
-public class GeneralSettings
+public class GeneralSettings : ReactiveObject
 {
     [Category("Update")]
     [DisplayName("Auto Update")]
