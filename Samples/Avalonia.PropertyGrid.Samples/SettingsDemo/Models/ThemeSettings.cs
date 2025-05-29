@@ -19,6 +19,7 @@ public class ThemeSettings : ReactiveObject
 
     [Category("Appearance")]
     [DisplayName("Theme Mode")]
+    [SingleSelectionMode(SingleSelectionMode.ToggleButtonGroup)]
     public SelectableList<string> ThemeMode { get; set; } = new (["Auto", "Light", "Dark"], "Auto");
 
     [Category("Advanced")]
