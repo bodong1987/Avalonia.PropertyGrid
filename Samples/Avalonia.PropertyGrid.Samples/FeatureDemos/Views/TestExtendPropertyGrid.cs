@@ -6,13 +6,13 @@ using Avalonia.PropertyGrid.Controls;
 using Avalonia.PropertyGrid.Controls.Factories;
 using Avalonia.PropertyGrid.Controls.Factories.Builtins;
 using Avalonia.PropertyGrid.Localization;
-using Avalonia.PropertyGrid.Samples.Models;
+using Avalonia.PropertyGrid.Samples.FeatureDemos.Models;
 using Avalonia.PropertyGrid.Services;
 using PropertyModels.Collections;
 using PropertyModels.ComponentModel;
 using PropertyModels.Extensions;
 
-namespace Avalonia.PropertyGrid.Samples.Views
+namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Views
 {
     public class TestExtendPropertyGrid : Controls.PropertyGrid
     {

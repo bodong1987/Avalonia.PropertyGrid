@@ -12,7 +12,7 @@ using PropertyModels.ComponentModel;
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
-namespace Avalonia.PropertyGrid.Samples.Models
+namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Models
 {
     public struct SVector3
     {

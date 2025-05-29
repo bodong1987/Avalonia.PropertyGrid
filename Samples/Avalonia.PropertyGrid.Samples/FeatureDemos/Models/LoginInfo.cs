@@ -4,7 +4,7 @@ using System.Net.Security;
 using System.Security.Cryptography;
 using PropertyModels.ComponentModel;
 
-namespace Avalonia.PropertyGrid.Samples.Models
+namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Models
 {
     public class LoginInfo : MiniReactiveObject
     {

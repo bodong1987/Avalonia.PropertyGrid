@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace Avalonia.PropertyGrid.Samples.Views;
+namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Views;
 
 public partial class MainWindow : Window
 {

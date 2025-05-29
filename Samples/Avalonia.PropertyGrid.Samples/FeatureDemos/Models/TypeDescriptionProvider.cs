@@ -7,7 +7,7 @@ using PropertyModels.Extensions;
 // ReSharper disable ReturnTypeCanBeNotNullable
 // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
 
-namespace Avalonia.PropertyGrid.Samples.Models
+namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Models
 {
     public class TestCustomObject
     {

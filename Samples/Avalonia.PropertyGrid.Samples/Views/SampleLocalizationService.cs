@@ -1,6 +1,6 @@
 ﻿using Avalonia.PropertyGrid.Localization;
 
-namespace Avalonia.PropertyGrid.Samples.ViewModels
+namespace Avalonia.PropertyGrid.Samples.Views
 {
     internal class SampleLocalizationService : AssemblyJsonAssetLocalizationService
     {

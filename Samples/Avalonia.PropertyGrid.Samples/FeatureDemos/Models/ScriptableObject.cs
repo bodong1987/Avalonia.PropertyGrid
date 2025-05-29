@@ -7,7 +7,7 @@ using PropertyModels.Extensions;
 // ReSharper disable ForCanBeConvertedToForeach
 // ReSharper disable PropertyCanBeMadeInitOnly.Global
 
-namespace Avalonia.PropertyGrid.Samples.Models
+namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Models
 {
     /// <summary>
     /// Class ScriptableObject.

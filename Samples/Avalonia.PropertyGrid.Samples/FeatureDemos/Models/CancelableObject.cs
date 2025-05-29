@@ -3,7 +3,7 @@ using System.Windows.Input;
 using Avalonia.PropertyGrid.Controls;
 using PropertyModels.ComponentModel;
 
-namespace Avalonia.PropertyGrid.Samples.Models
+namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Models
 {
     public class CancelableObject : SimpleObject
     {

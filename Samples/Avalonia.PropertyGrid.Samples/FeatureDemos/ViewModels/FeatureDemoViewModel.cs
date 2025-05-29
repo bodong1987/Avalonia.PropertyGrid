@@ -2,21 +2,15 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Avalonia.PropertyGrid.Samples.Models;
+using Avalonia.PropertyGrid.Samples.FeatureDemos.Models;
 using Avalonia.PropertyGrid.Services;
 using Avalonia.PropertyGrid.ViewModels;
 using PropertyModels.ComponentModel;
 using PropertyModels.Localization;
 
-namespace Avalonia.PropertyGrid.Samples.ViewModels
+namespace Avalonia.PropertyGrid.Samples.FeatureDemos.ViewModels
 {
-    public enum ThemeType
-    {
-        Fluent,
-        Simple
-    }
-
-    public class MainViewModel : ViewModelBase
+    public class FeatureDemoViewModel : MiniReactiveObject
     {
         public SimpleObject SimpleObject { get; } = new("SimpleTests");
 
@@ -37,27 +31,6 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
         public TestExtendsObject ExtendsObject { get; } = new();
 
         public CancelableObject CancelableObject { get; } = new("Cancelable");
-
-        private readonly List<ICultureData> _allCultures = [];
-
-        public ICultureData[] AllCultures => [.. _allCultures];
-
-        public static string Version => $"v{typeof(Utils.FontUtils).Assembly.GetName().Version?.ToString() ?? "Unknown Version"}";
-
-        public ICultureData CurrentCulture
-        {
-            get => LocalizationService.Default.CultureData;
-            set
-            {
-                // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-                if (value != null)
-                {
-                    LocalizationService.Default.SelectCulture(value.Culture.Name);
-
-                    RaisePropertyChanged(nameof(CurrentCulture));
-                }
-            }
-        }
 
         private TestCustomObject _customObject2 = new();
         public TestCustomObject CustomObject
@@ -152,13 +125,9 @@ namespace Avalonia.PropertyGrid.Samples.ViewModels
         }
         #endregion
 
-        public MainViewModel()
+        public FeatureDemoViewModel()
         {
-            LocalizationService.Default.AddExtraService(new SampleLocalizationService());
-
             GenOptions();
-
-            _allCultures.AddRange(LocalizationService.Default.GetCultures());
 
             var propertyManager = new DynamicPropertyManager<TestCustomObject>();
             propertyManager.Properties.Add(

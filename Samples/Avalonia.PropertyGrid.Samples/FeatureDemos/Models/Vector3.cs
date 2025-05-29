@@ -2,7 +2,7 @@
 using PropertyModels.ComponentModel;
 // ReSharper disable PropertyCanBeMadeInitOnly.Global
 
-namespace Avalonia.PropertyGrid.Samples.Models
+namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Models
 {
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public class Vector3 : MiniReactiveObject

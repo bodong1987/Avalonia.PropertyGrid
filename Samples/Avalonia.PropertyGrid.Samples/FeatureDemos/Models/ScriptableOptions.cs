@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using PropertyModels.ComponentModel;
 
-namespace Avalonia.PropertyGrid.Samples.Models
+namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Models
 {
     /// <summary>
     /// Class ScriptableOptions.

@@ -29,4 +29,19 @@
     <ItemGroup Condition="'$(Configuration)' == 'Development'">
       <ProjectReference Include="..\..\Sources\Avalonia.PropertyGrid\Avalonia.PropertyGrid.csproj" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="FeatureDemos\Views\CountryView.axaml.cs">
+        <DependentUpon>CountryView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="FeatureDemos\Views\Vector3View.axaml.cs">
+        <DependentUpon>Vector3View.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="FeatureDemos\Views\FeatureDemoView.axaml.cs">
+        <DependentUpon>FeatureDemoView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
 </Project>

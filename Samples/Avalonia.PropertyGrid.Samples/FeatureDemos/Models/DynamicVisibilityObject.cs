@@ -5,7 +5,7 @@ using PropertyModels.ComponentModel.DataAnnotations;
 using PropertyModels.Extensions;
 // ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
-namespace Avalonia.PropertyGrid.Samples.Models
+namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Models
 {
     public class DynamicVisibilityObject : ReactiveObject
     {

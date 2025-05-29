@@ -4,7 +4,8 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform;
-using Avalonia.PropertyGrid.Samples.ViewModels;
+using Avalonia.PropertyGrid.Samples.FeatureDemos.ViewModels;
+using Avalonia.PropertyGrid.Samples.FeatureDemos.Views;
 using Avalonia.PropertyGrid.Samples.Views;
 using Avalonia.Styling;
 using Avalonia.Themes.Fluent;
@@ -43,17 +44,11 @@ public class App : Application
             // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
             // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
             DisableAvaloniaDataAnnotationValidation();
-            desktop.MainWindow = new MainWindow
-            {
-                DataContext = new MainViewModel()
-            };
+            desktop.MainWindow = new MainWindow();
         }
         else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
         {
-            singleViewPlatform.MainView = new MainView
-            {
-                DataContext = new MainViewModel()
-            };
+            singleViewPlatform.MainView = new MainView();
         }
 
         if (this.TryGetFeature<IActivatableLifetime>() is { } activatableApplicationLifetime)

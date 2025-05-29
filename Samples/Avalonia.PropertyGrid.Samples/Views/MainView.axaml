@@ -1,234 +1,36 @@
-<UserControl xmlns="https://github.com/avaloniaui"
+﻿<UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:vm="clr-namespace:Avalonia.PropertyGrid.Samples.ViewModels"
-             xmlns:pgc="clr-namespace:Avalonia.PropertyGrid.Controls;assembly=Avalonia.PropertyGrid"
-             xmlns:apv="clr-namespace:Avalonia.PropertyGrid.ViewModels;assembly=Avalonia.PropertyGrid"
-		     xmlns:lv="clr-namespace:Avalonia.PropertyGrid.Samples.Views"
-			 xmlns:ll="clr-namespace:Avalonia.PropertyGrid.Localization;assembly=Avalonia.PropertyGrid"
-			 xmlns:componentModel="clr-namespace:PropertyModels.ComponentModel;assembly=PropertyModels"
+             xmlns:ll="clr-namespace:Avalonia.PropertyGrid.Localization;assembly=Avalonia.PropertyGrid"
+             xmlns:fdv="clr-namespace:Avalonia.PropertyGrid.Samples.FeatureDemos.Views"
              xmlns:sd="clr-namespace:Avalonia.PropertyGrid.Samples.SettingsDemo.Views"
-			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Avalonia.PropertyGrid.Samples.Views.MainView"
-             x:DataType="vm:MainViewModel">
-  <Design.DataContext>
-    <!-- This only sets the DataContext for the previewer in an IDE,
-         to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-    <vm:MainViewModel />
-  </Design.DataContext>
-    <UserControl.Styles>
-        <StyleInclude Source="/Views/Vector3View.axaml"></StyleInclude>
-        <StyleInclude Source="/Views/CountryView.axaml"></StyleInclude>
-    </UserControl.Styles>
-
-    <Grid RowDefinitions="*, Auto">
-        <TabControl TabStripPlacement="Left" Grid.Row="0" Padding="4">
-            <TabItem Header="{ll:Localize Basic}">
-                <Grid RowDefinitions="*,Auto">
-                    <ScrollViewer>
-                        <!-- ReSharper disable Xaml.PossibleNullReferenceException -->
-                        <pgc:PropertyGrid
-                            x:Name="StylesPropertyGrid"
-                            CustomPropertyDescriptorFilter="OnCustomPropertyDescriptorFilter"
-                            Margin="2"
-                            DataContext="{Binding SimpleObject}"
-                            AllowFilter="{Binding DataContext.AllowFilter, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                            DisplayMode="{Binding DataContext.DisplayMode, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
-                            ShowStyle="{Binding DataContext.ShowStyle, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
-                            ShowTitle="{Binding DataContext.IsShowTitle, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
-                            AllowQuickFilter="{Binding DataContext.AllowQuickFilter, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
-                            AllCategoriesExpanded="{Binding DataContext.IsAllExpanded, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
-                            NameWidth="280">
-                        </pgc:PropertyGrid>
-                    </ScrollViewer>
-                    <StackPanel Orientation="Vertical" Grid.Row="1">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Display_Mode}"></TextBlock>
-                            <ComboBox x:Name="DisplayModeComboBox" Margin="4" VerticalAlignment="Center" SelectedIndex="0">
-                                <ComboBox.Items>
-                                    <apv:PropertyGridDisplayMode>Tree</apv:PropertyGridDisplayMode>
-                                    <apv:PropertyGridDisplayMode>Inline</apv:PropertyGridDisplayMode>
-                                </ComboBox.Items>
-                            </ComboBox>
-                            <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Show_Style}"></TextBlock>
-                            <ComboBox x:Name="ShowStyleComboBox" Margin="4" VerticalAlignment="Center" SelectedIndex="0">
-                                <ComboBox.Items>
-                                    <apv:PropertyGridShowStyle>Category</apv:PropertyGridShowStyle>
-                                    <apv:PropertyGridShowStyle>Tiled</apv:PropertyGridShowStyle>
-                                </ComboBox.Items>
-                            </ComboBox>
-                            <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize CategoryOrder}"></TextBlock>
-                            <ComboBox x:Name="CategoryOrderComboBox" Margin="4" VerticalAlignment="Center" SelectedIndex="0">
-                                <ComboBox.Items>
-                                    <apv:PropertyGridOrderStyle>Builtin</apv:PropertyGridOrderStyle>
-                                    <apv:PropertyGridOrderStyle>Alphabetic</apv:PropertyGridOrderStyle>
-                                </ComboBox.Items>
-                            </ComboBox>
-                            <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize PropertyOrder}"></TextBlock>
-                            <ComboBox x:Name="PropertyOrderComboBox" Margin="4" VerticalAlignment="Center" SelectedIndex="0">
-                                <ComboBox.Items>
-                                    <apv:PropertyGridOrderStyle>Builtin</apv:PropertyGridOrderStyle>
-                                    <apv:PropertyGridOrderStyle>Alphabetic</apv:PropertyGridOrderStyle>
-                                </ComboBox.Items>
-                            </ComboBox>
-                            <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Show_Property_Operation}"/>
-                            <ComboBox x:Name="PropertyOperationComboBox" 
-                                      Margin="4" 
-                                      VerticalAlignment="Center"
-                                      SelectedItem="{Binding ShowPropertyOperation, Mode=TwoWay}">
-                                <ComboBox.Items>
-                                    <componentModel:PropertyOperationVisibility>Default</componentModel:PropertyOperationVisibility>
-                                    <componentModel:PropertyOperationVisibility>Visible</componentModel:PropertyOperationVisibility>
-                                    <componentModel:PropertyOperationVisibility>Hidden</componentModel:PropertyOperationVisibility>
-                                </ComboBox.Items>
-                            </ComboBox>
-                            <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize CellEdit_Alignment}"/>
-                            <ComboBox x:Name="CellEditAlignmentComboBox" 
-                                      Margin="4" 
-                                      VerticalAlignment="Center"
-                                      SelectedItem="{Binding CellEditAlignment, Mode=TwoWay}">
-                                <ComboBox.Items>
-                                    <apv:CellEditAlignmentType>Default</apv:CellEditAlignmentType>
-                                    <apv:CellEditAlignmentType>Stretch</apv:CellEditAlignmentType>
-                                    <apv:CellEditAlignmentType>Compact</apv:CellEditAlignmentType>
-                                </ComboBox.Items>
-                            </ComboBox>
-                            
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Readonly}"></TextBlock>
-                            <ToggleSwitch IsChecked="{Binding IsReadOnly}" Margin="4"></ToggleSwitch>
-                            <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Allow_Filter}"></TextBlock>
-                            <ToggleSwitch IsChecked="{Binding AllowFilter}" Margin="4"></ToggleSwitch>
-                            <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Allow_Quick_Filter}"></TextBlock>
-                            <ToggleSwitch IsChecked="{Binding AllowQuickFilter}" Margin="4"></ToggleSwitch>
-                        </StackPanel>
-                        
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Show_Title}"></TextBlock>
-                            <ToggleSwitch IsChecked="{Binding IsShowTitle}" Margin="4"></ToggleSwitch>
-                            <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize All_Expand}"></TextBlock>
-                            <ToggleSwitch IsChecked="{Binding IsAllExpanded}" Margin="4"></ToggleSwitch>
-                            <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Name_Width}"></TextBlock>
-                            <Slider Minimum="60" Maximum="400" Value="{Binding DefaultNameWidth}" Margin="4" Width="180"></Slider>
-                        </StackPanel>
-                    </StackPanel>
-                </Grid>
+             xmlns:views="clr-namespace:Avalonia.PropertyGrid.Samples.Views"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Avalonia.PropertyGrid.Samples.Views.MainView">
+    <Grid RowDefinitions="*,Auto">
+        <TabControl Grid.Row="0" TabStripPlacement="Top" Padding="4">
+            <TabItem Header="{ll:Localize FeatureDemos}">
+                <fdv:FeatureDemoView></fdv:FeatureDemoView>
             </TabItem>
-
-            <TabItem Header="{ll:Localize DataSync}">
-                <ScrollViewer>
-                    <Grid ColumnDefinitions="1*,2,1*">
-                        <GridSplitter Grid.Column="1"></GridSplitter>
-                        <pgc:PropertyGrid Grid.Column="0" Margin="2" DataContext="{Binding SyncObject}"></pgc:PropertyGrid>
-                        <pgc:PropertyGrid Margin="2" Grid.Column="2" DataContext="{Binding SyncObject}"></pgc:PropertyGrid>
-                    </Grid>
-                </ScrollViewer>
-            </TabItem>
-            <TabItem Header="{ll:Localize MultiObjects}">
-                <ScrollViewer>
-                    <Grid ColumnDefinitions="1*,2,1*,2,1*">
-                        <GridSplitter Grid.Column="1"></GridSplitter>
-                        <GridSplitter Grid.Column="3"></GridSplitter>
-                        <StackPanel Grid.Column="0" Orientation="Vertical">
-                            <TextBlock Text="{ll:Localize MultiObjects}"></TextBlock>
-                            <pgc:PropertyGrid Margin="2" DataContext="{Binding MultiObjects}"></pgc:PropertyGrid>
-                        </StackPanel>
-                        <StackPanel Orientation="Vertical" Grid.Column="2">
-                            <TextBlock Text="{ll:Localize FirstObject}"></TextBlock>
-                            <pgc:PropertyGrid IsReadOnly="True" Margin="2" DataContext="{Binding MultiObject0}"></pgc:PropertyGrid>
-                        </StackPanel>
-                        <StackPanel Orientation="Vertical" Grid.Column="4">
-                            <TextBlock Text="{ll:Localize SecondObject}"></TextBlock>
-                            <pgc:PropertyGrid IsReadOnly="True" Margin="2" DataContext="{Binding MultiObject1}"></pgc:PropertyGrid>
-                        </StackPanel>
-                    </Grid>
-                </ScrollViewer>
-            </TabItem>
-            <TabItem Header="{ll:Localize CustomObject}">
-                <Grid ColumnDefinitions="1*, 2, 1*">
-                    <Expander IsExpanded="True" Margin="2" Grid.Column="0" Header="ICustomTypeDescriptor" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-                        <ScrollViewer>
-                            <pgc:PropertyGrid Margin="4" DataContext="{Binding CustomOptions}"></pgc:PropertyGrid>
-                        </ScrollViewer>
-                    </Expander>
-                    <GridSplitter Grid.Column="1"></GridSplitter>
-                    <Expander IsExpanded="True" Margin="2" Grid.Column="2" Header="TypeDescriptionProvider" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-                        <ScrollViewer >
-                            <pgc:PropertyGrid Margin="4" DataContext="{Binding CustomObject}"></pgc:PropertyGrid>
-                        </ScrollViewer>
-                    </Expander>
-                </Grid>
-            </TabItem>
-
-            <TabItem Header="{ll:Localize Extends}">
-                <ScrollViewer>
-                    <Grid ColumnDefinitions="1*,2,1*">
-                        <Expander IsExpanded="True" Margin="2" Grid.Column="0" Header="{ll:Localize Native}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-                            <pgc:PropertyGrid DataContext="{Binding ExtendsObject}"></pgc:PropertyGrid>
-                        </Expander>
-                        <GridSplitter Grid.Column="1"></GridSplitter>
-                        <Expander IsExpanded="True" Header="{ll:Localize Extends}" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-                            <lv:TestExtendPropertyGrid Margin="2" DataContext="{Binding ExtendsObject}"></lv:TestExtendPropertyGrid>
-                        </Expander>
-
-                    </Grid>
-                </ScrollViewer>
-            </TabItem>
-
-            <TabItem Header="{ll:Localize Dynamic_Visibility}">
-                <ScrollViewer>
-                    <pgc:PropertyGrid Margin="4" DataContext="{Binding DynamicVisibility}"></pgc:PropertyGrid>
-                </ScrollViewer>
-            </TabItem>
-
-            <TabItem Header="{ll:Localize RedoUndo}">
-                <Grid RowDefinitions="Auto, *">
-                    <StackPanel Orientation="Horizontal" Margin="6">
-                        <Button IsEnabled="{Binding CancelableObject.CanUndo}"
-                                Content="{ll:Localize Undo}" Margin="2"
-                                Command="{Binding CancelableObject.UndoCommand}"
-                                ToolTip.Tip="{Binding CancelableObject.UndoDescription}"
-                                ></Button>
-                        <Button IsEnabled="{Binding CancelableObject.CanRedo}"
-                                Content="{ll:Localize Redo}" Margin="2"
-                                Command="{Binding CancelableObject.RedoCommand}"
-                                ToolTip.Tip="{Binding CancelableObject.RedoDescription}"
-                                ></Button>
-                        <Button Content="{ll:Localize Clear}" Margin="2"
-                                Command="{Binding CancelableObject.ClearCommand}"
-                                ToolTip.Tip="Clear all cached commands"
-                                ></Button>
-                    </StackPanel>
-                    <ScrollViewer Grid.Row="1">
-                        <pgc:PropertyGrid x:Name="PropertyGridRedoUndo"
-                                          Margin="4"
-                                          DataContext="{Binding CancelableObject}"
-                                          ></pgc:PropertyGrid>
-                    </ScrollViewer>
-                </Grid>
-
-            </TabItem>
-            
+        
             <TabItem Header="{ll:Localize SettingsDemo}">
-                <ScrollViewer>
-                    <sd:SettingsView></sd:SettingsView>
-                </ScrollViewer>
+                <sd:SettingsView></sd:SettingsView>
             </TabItem>
-        </TabControl>
+        </TabControl>    
+        
         <Grid Margin="4" Grid.Row="1" ColumnDefinitions="*,Auto">
             <HyperlinkButton IsEnabled="True"
                              NavigateUri="https://github.com/bodong1987/Avalonia.PropertyGrid">
-                <TextBlock Text="{Binding Version}" />
+                <TextBlock Text="{Binding Version, RelativeSource={RelativeSource AncestorType={x:Type views:MainView}}}" />
             </HyperlinkButton>
             
             <StackPanel Margin="4" Orientation="Horizontal" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right">
                 <TextBlock Text="{ll:Localize Theme}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="2" ></TextBlock>
                 <ComboBox x:Name="ThemeBox" Width="125" Padding="4" SelectedIndex="0">
                     <ComboBox.Items>
-                        <vm:ThemeType>Fluent</vm:ThemeType>
-                        <vm:ThemeType>Simple</vm:ThemeType>
+                        <views:ThemeType>Fluent</views:ThemeType>
+                        <views:ThemeType>Simple</views:ThemeType>
                     </ComboBox.Items>
                 </ComboBox>
                 <TextBlock Text="{ll:Localize ThemeVariants}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="2"></TextBlock>
@@ -246,12 +48,10 @@
                 <TextBlock Text="{ll:Localize Language}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="2"></TextBlock>
                 <ComboBox Width="125"
                           Padding="4"
-                          ItemsSource="{Binding AllCultures}"
-                          SelectedItem="{Binding CurrentCulture}"
+                          ItemsSource="{Binding AllCultures, RelativeSource={RelativeSource AncestorType={x:Type views:MainView}}}"
+                          SelectedItem="{Binding CurrentCulture, RelativeSource={RelativeSource AncestorType={x:Type views:MainView}}}"
                 ></ComboBox>
             </StackPanel>
         </Grid>
     </Grid>
-
-
 </UserControl>

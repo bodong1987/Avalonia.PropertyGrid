@@ -13,7 +13,7 @@ using PropertyModels.Extensions;
 // ReSharper disable CollectionNeverQueried.Global
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
-namespace Avalonia.PropertyGrid.Samples.Models
+namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Models
 {
     [AutoCollapseCategories("AutoCollapse")]
     public class SimpleObject : ReactiveObject
