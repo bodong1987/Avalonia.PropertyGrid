@@ -121,6 +121,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                             SetAndRaise(context, (control as Control)!, v);
                         }
                     }
+                    else
+                    {
+                        var enumWrappers = control.Items.Cast<EnumValueWrapper>().ToList();
+                        var currentValue = enumWrappers.Find(x=> Equals(x.Value, propertyDescriptor.GetValue(target) as Enum));
+                        control.CheckedItem = currentValue;
+                    }
                 };
 
                 return control as Control;

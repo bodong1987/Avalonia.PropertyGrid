@@ -138,8 +138,8 @@ namespace Avalonia.PropertyGrid.ViewModels
                 CheckedItem.IsChecked = value;    
             }
 
-            RaiseSelectedItemsChangedEvent();
             RaiseItemsCheckedChangedEvents();
+            RaiseSelectedItemsChangedEvent();
         }
 
         /// <summary>
