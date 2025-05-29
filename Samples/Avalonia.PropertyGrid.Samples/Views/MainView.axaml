@@ -6,6 +6,7 @@
              xmlns:fdv="clr-namespace:Avalonia.PropertyGrid.Samples.FeatureDemos.Views"
              xmlns:sd="clr-namespace:Avalonia.PropertyGrid.Samples.SettingsDemo.Views"
              xmlns:views="clr-namespace:Avalonia.PropertyGrid.Samples.Views"
+             xmlns:pdv="clr-namespace:Avalonia.PropertyGrid.Samples.PainterDemo.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Avalonia.PropertyGrid.Samples.Views.MainView">
     <Grid RowDefinitions="*,Auto">
@@ -16,6 +17,10 @@
         
             <TabItem Header="{ll:Localize SettingsDemo}">
                 <sd:SettingsView></sd:SettingsView>
+            </TabItem>
+            
+            <TabItem Header="{ll:Localize PainterDemo}">
+                <pdv:PainterView></pdv:PainterView>
             </TabItem>
         </TabControl>    
         

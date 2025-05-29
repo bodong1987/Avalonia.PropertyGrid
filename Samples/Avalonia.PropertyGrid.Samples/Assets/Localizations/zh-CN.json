@@ -318,5 +318,6 @@
     "CustomPortEnd": "自定义端口",
     "SettingsDemo": "系统设置示例",
     "FeatureDemos": "基础特性示例",
-    "Transparency": "透明度"
+    "Transparency": "透明度",
+    "PainterDemo": "画板示例"
 }
