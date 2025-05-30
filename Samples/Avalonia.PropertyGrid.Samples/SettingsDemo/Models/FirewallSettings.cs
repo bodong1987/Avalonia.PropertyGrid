@@ -33,7 +33,7 @@ public class FirewallSettings : ReactiveObject
     [DisplayName("Allowed IPs")]
     [Description("CIDR format (e.g. 192.168.1.0/24)")]
     [CIDRValidation]
-    public List<string> AllowedIPs { get; set; } = ["192.168.1.0/24"];
+    public BindingList<string> AllowedIPs { get; set; } = ["192.168.1.0/24"];
 
     [Category("Logging")]
     [DisplayName("Enable Logging")]
