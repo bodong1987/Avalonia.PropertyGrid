@@ -37,6 +37,8 @@
                       Cursor="SizeWestEast"
                       ></GridSplitter>
         
-        <pg:PropertyGrid x:Name="ShapePropertyGrid" Grid.Column="3" DataContext="{Binding SelectedShape}" ShowTitle="True"/>
+        <ScrollViewer Grid.Column="3">
+            <pg:PropertyGrid x:Name="ShapePropertyGrid" DataContext="{Binding SelectedShape}" ShowTitle="True"/>    
+        </ScrollViewer>
     </Grid>
 </UserControl>
