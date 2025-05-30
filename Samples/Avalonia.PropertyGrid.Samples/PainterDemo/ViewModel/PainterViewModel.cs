@@ -10,11 +10,7 @@ namespace Avalonia.PropertyGrid.Samples.PainterDemo.ViewModel;
 public enum ToolMode
 {
     Select,
-    CreateRectangle,
-    CreateEllipse,
-    CreateLine,
-    CreateStar,
-    CreateArrow
+    Brush 
 }
 
 public class EnumToBooleanConverter : IValueConverter

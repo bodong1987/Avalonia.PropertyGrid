@@ -29,6 +29,7 @@ public partial class PainterView : UserControl
             nameof(ShapeSelected), RoutingStrategies.Bubble);
 
     private Point _contextMenuPosition;
+    private FreehandShape? _currentFreehandShape;
     
     public event EventHandler<ShapeSelectedEventArgs> ShapeSelected
     {
@@ -148,8 +149,8 @@ public partial class PainterView : UserControl
             shape.Tag = new { OriginalStroke = shape.Stroke, OriginalStrokeThickness = shape.StrokeThickness };
 
             // Set highlight stroke
-            shape.Stroke = new SolidColorBrush(Colors.Red); // Highlight color
-            shape.StrokeThickness = 2; // Highlight thickness
+            shape.Stroke = new SolidColorBrush(Colors.OrangeRed); // Highlight color
+            shape.StrokeThickness = 4; // Highlight thickness
         }
     }
     
@@ -175,70 +176,6 @@ public partial class PainterView : UserControl
 
         switch (viewModel.CurrentToolMode)
         {
-            case ToolMode.CreateRectangle:
-                var rectangle = new RectangleShape
-                {
-                    X = point.X,
-                    Y = point.Y,
-                    Width = 300, // Default width
-                    Height = 250, // Default height
-                    FillColor = Colors.Gray
-                };
-                viewModel.Shapes.Add(rectangle);
-                viewModel.SelectedShape = rectangle;
-                break;
-
-            case ToolMode.CreateEllipse:
-                var circle = new EllipseShape
-                {
-                    X = point.X,
-                    Y = point.Y,
-                    Radius = 150, // Default radius
-                    FillColor = Colors.Gray
-                };
-                viewModel.Shapes.Add(circle);
-                viewModel.SelectedShape = circle;
-                break;
-            case ToolMode.CreateLine:
-                var line = new LineShape
-                {
-                    X = point.X,
-                    Y = point.Y,
-                    X2 = 100, // Default end point
-                    Y2 = 100,
-                    FillColor = Colors.Gray
-                };
-                viewModel.Shapes.Add(line);
-                viewModel.SelectedShape = line;
-                break;
-
-            case ToolMode.CreateStar:
-                var star = new StarShape
-                {
-                    X = point.X,
-                    Y = point.Y,
-                    Radius = 100, // Default radius
-                    FillColor = Colors.Gray
-                };
-                viewModel.Shapes.Add(star);
-                viewModel.SelectedShape = star;
-                break;
-
-            case ToolMode.CreateArrow:
-                var arrow = new ArrowShape
-                {
-                    X = point.X,
-                    Y = point.Y,
-                    Length = 100,
-                    HeadHeight = 30,
-                    HeadWidth = 30,
-                    ShaftWidth = 15,
-                    FillColor = Colors.Gray
-                };
-                viewModel.Shapes.Add(arrow);
-                viewModel.SelectedShape = arrow;
-                break;
-
             case ToolMode.Select:
                 foreach (var shape in _avaloniaShapesMapping.Keys)
                 {
@@ -255,12 +192,13 @@ public partial class PainterView : UserControl
                     }
                 }
                 break;
-        }
-
-        // only use once time
-        if (viewModel.CurrentToolMode != ToolMode.Select)
-        {
-            viewModel.CurrentToolMode = ToolMode.Select;
+            case ToolMode.Brush:
+                _currentFreehandShape = new FreehandShape(){StrokeColor = Colors.Red, FillColor = Colors.Red, StrokeThickness = 2};
+                _currentFreehandShape.Points.Add(point);
+                viewModel.Shapes.Add(_currentFreehandShape);
+                viewModel.SelectedShape = _currentFreehandShape;
+                e.Pointer.Capture(MainCanvas);
+                break;
         }
     }
     
@@ -277,6 +215,13 @@ public partial class PainterView : UserControl
                 baseShape.Y = _shapeStartPoint.Y + delta.Y;
             }
         }
+        
+        if (_currentFreehandShape != null && e.Pointer.Captured != null)
+        {
+            var currentPoint = e.GetPosition(MainCanvas);
+            _currentFreehandShape.Points.Add(currentPoint);
+            _currentFreehandShape.RaisePropertyChanged(nameof(_currentFreehandShape.Points));
+        }
     }
     
     private void MainCanvas_PointerReleased(object? sender, PointerReleasedEventArgs e)
@@ -288,6 +233,12 @@ public partial class PainterView : UserControl
             
             // Restore default cursor
             MainCanvas.Cursor = Cursor.Default;
+        }
+        
+        if (_currentFreehandShape != null && e.Pointer.Captured != null)
+        {
+            e.Pointer.Capture(null);
+            _currentFreehandShape = null;
         }
     }
     
