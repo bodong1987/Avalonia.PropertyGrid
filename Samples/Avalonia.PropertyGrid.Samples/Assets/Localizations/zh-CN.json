@@ -329,9 +329,12 @@
     "CreateLine": "创建线段",
     "CreateArrow": "创建箭头",
     "CreateHollowArrow": "创建空心箭头",
+    "Add_Shapes": "新建图元",
+    "Delete_Shape": "删除图元",
     "ArrowShape": "箭头",
     "CircleShape": "圆形",
     "LineShape": "线段",
     "RectangleShape": "矩形",
-    "StarShape": "五角星"
+    "StarShape": "五角星",
+    "PainterDemo_HelpText": "点击上方工具栏图元类型后点击画布创建新图元，右键菜单中也可以新建或删除图元，点击图元可查看和编辑图元属性。"
 }

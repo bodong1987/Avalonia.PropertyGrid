@@ -31,5 +31,14 @@
     "CircleShape": "Circle",
     "LineShape": "Segment",
     "RectangleShape": "Rectangle",
-    "StarShape": "Star"
+    "StarShape": "Star",
+    "CreateRectangle": "Create Rectangle",
+    "CreateCircle": "Create Circle",
+    "CreateLine": "Create Line",
+    "CreateStar": "Create Star",
+    "CreateArrow": "Create Arrow",
+    "DeleteShape": "Delete Shape",
+    "Add_Shapes": "Add Shapes",
+    "Delete_Shape": "Delete Shape",
+    "PainterDemo_HelpText": "Click the element type in the toolbar above and then click the canvas to create a new element. You can also create or delete elements in the right-click menu. Click an element to view and edit its properties."
 }

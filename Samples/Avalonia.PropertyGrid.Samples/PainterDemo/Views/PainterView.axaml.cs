@@ -28,6 +28,8 @@ public partial class PainterView : UserControl
         RoutedEvent.Register<PainterView, ShapeSelectedEventArgs>(
             nameof(ShapeSelected), RoutingStrategies.Bubble);
 
+    private Point _contextMenuPosition;
+    
     public event EventHandler<ShapeSelectedEventArgs> ShapeSelected
     {
         add => AddHandler(ShapeSelectedEvent, value);
@@ -45,6 +47,7 @@ public partial class PainterView : UserControl
         // for demo
         viewModel.Shapes.Add(new CircleShape { X = 50, Y = 50, Radius = 90, FillColor = Colors.Blue });
         viewModel.Shapes.Add(new RectangleShape { X = 350, Y = 200, Width = 260, Height = 240, FillColor = Colors.Green });
+        viewModel.Shapes.Add(new StarShape{ X= 150, Y = 550, Radius = 100, FillColor = Colors.Red });
     }
 
     private void OnShapeCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -64,6 +67,11 @@ public partial class PainterView : UserControl
                 MainCanvas.Children.Remove(pair.Value);
                 _shapesMapping.Remove(pair.Key);
                 _avaloniaShapesMapping.Remove(pair.Value);
+
+                if (viewModel.SelectedShape == pair.Key)
+                {
+                    viewModel.SelectedShape = null;
+                }
             }
         }
 
@@ -71,7 +79,7 @@ public partial class PainterView : UserControl
         {
             if (!_shapesMapping.ContainsKey(shape))
             {
-                var avaloniaShape = AvaloniaShapeFactory.CreateShape(shape);
+                var avaloniaShape = shape.CreateAvaloniaShape();
                 
                 avaloniaShape.PointerEntered += OnAvaloniaShapePointerEntered;
                 avaloniaShape.PointerExited += OnAvaloniaShapePointerExited;
@@ -149,6 +157,21 @@ public partial class PainterView : UserControl
     {
         var point = e.GetPosition(MainCanvas);
         var viewModel = (DataContext as PainterViewModel)!;
+        
+        if (e.GetCurrentPoint(MainCanvas).Properties.IsRightButtonPressed)
+        {
+            _contextMenuPosition = point; // Update the context menu position
+
+            foreach (var shape in _avaloniaShapesMapping)
+            {
+                if (shape.Key.IsPointerOver)
+                {
+                    viewModel.SelectedShape = shape.Value;
+                    break;
+                }
+            }
+            return;
+        }
 
         switch (viewModel.CurrentToolMode)
         {
@@ -265,6 +288,89 @@ public partial class PainterView : UserControl
             
             // Restore default cursor
             MainCanvas.Cursor = Cursor.Default;
+        }
+    }
+    
+    private void AddRectangle_Click(object? sender, RoutedEventArgs e)
+    {
+        var point = _contextMenuPosition;
+        var rectangle = new RectangleShape
+        {
+            X = point.X,
+            Y = point.Y,
+            Width = 300,
+            Height = 250,
+            FillColor = Colors.Gray
+        };
+        (DataContext as PainterViewModel)!.Shapes.Add(rectangle);
+        (DataContext as PainterViewModel)!.SelectedShape = rectangle;
+    }
+
+    private void AddCircle_Click(object? sender, RoutedEventArgs e)
+    {
+        var point = _contextMenuPosition;
+        var circle = new CircleShape
+        {
+            X = point.X,
+            Y = point.Y,
+            Radius = 150,
+            FillColor = Colors.Gray
+        };
+        (DataContext as PainterViewModel)!.Shapes.Add(circle);
+        (DataContext as PainterViewModel)!.SelectedShape = circle;
+    }
+
+    private void AddLine_Click(object? sender, RoutedEventArgs e)
+    {
+        var point = _contextMenuPosition;
+        var line = new LineShape
+        {
+            X = point.X,
+            Y = point.Y,
+            X2 = 100,
+            Y2 = 100,
+            FillColor = Colors.Gray
+        };
+        (DataContext as PainterViewModel)!.Shapes.Add(line);
+        (DataContext as PainterViewModel)!.SelectedShape = line;
+    }
+
+    private void AddStar_Click(object? sender, RoutedEventArgs e)
+    {
+        var point = _contextMenuPosition;
+        var star = new StarShape
+        {
+            X = point.X,
+            Y = point.Y,
+            Radius = 100,
+            FillColor = Colors.Gray
+        };
+        (DataContext as PainterViewModel)!.Shapes.Add(star);
+        (DataContext as PainterViewModel)!.SelectedShape = star;
+    }
+
+    private void AddArrow_Click(object? sender, RoutedEventArgs e)
+    {
+        var point = _contextMenuPosition;
+        var arrow = new ArrowShape
+        {
+            X = point.X,
+            Y = point.Y,
+            Length = 100,
+            HeadHeight = 30,
+            HeadWidth = 30,
+            ShaftWidth = 15,
+            FillColor = Colors.Gray
+        };
+        (DataContext as PainterViewModel)!.Shapes.Add(arrow);
+        (DataContext as PainterViewModel)!.SelectedShape = arrow;
+    }
+
+    private void DeleteShape_Click(object? sender, RoutedEventArgs e)
+    {
+        if ((DataContext as PainterViewModel)!.SelectedShape != null)
+        {
+            (DataContext as PainterViewModel)!.Shapes.Remove((DataContext as PainterViewModel)!.SelectedShape!);
         }
     }
 }
