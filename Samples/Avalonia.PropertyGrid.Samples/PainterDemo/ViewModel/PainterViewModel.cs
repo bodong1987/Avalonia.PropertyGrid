@@ -11,7 +11,7 @@ public enum ToolMode
 {
     Select,
     CreateRectangle,
-    CreateCircle,
+    CreateEllipse,
     CreateLine,
     CreateStar,
     CreateArrow

@@ -16,14 +16,7 @@ public class LineShape : ShapeGeneric<Line>
     public double X2
     {
         get => _x2;
-        set
-        {
-            if (_x2 != value)
-            {
-                _x2 = value;
-                NotifyPropertyChanged();
-            }
-        }
+        set => SetProperty(ref _x2, value);
     }
 
     [Category("Transform")]
@@ -31,14 +24,7 @@ public class LineShape : ShapeGeneric<Line>
     public double Y2
     {
         get => _y2;
-        set
-        {
-            if (_y2 != value)
-            {
-                _y2 = value;
-                NotifyPropertyChanged();
-            }
-        }
+        set => SetProperty(ref _y2, value);
     }
 
     public LineShape()

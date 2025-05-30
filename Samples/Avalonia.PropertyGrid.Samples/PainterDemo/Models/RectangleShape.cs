@@ -15,14 +15,7 @@ public class RectangleShape : ShapeGeneric<Rectangle>
     public double Width
     {
         get => _width;
-        set
-        {
-            if (_width != value)
-            {
-                _width = value;
-                NotifyPropertyChanged();
-            }
-        }
+        set => SetProperty(ref _width, value);
     }
 
     private double _height;
@@ -31,14 +24,7 @@ public class RectangleShape : ShapeGeneric<Rectangle>
     public double Height
     {
         get => _height;
-        set
-        {
-            if (_height != value)
-            {
-                _height = value;
-                NotifyPropertyChanged();
-            }
-        }
+        set => SetProperty(ref _height, value);
     }
 
     protected override void ApplyProperties(Rectangle shape)

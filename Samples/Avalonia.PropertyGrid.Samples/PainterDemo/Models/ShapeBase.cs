@@ -33,14 +33,7 @@ public abstract class ShapeBase : MiniReactiveObject
     public double X
     {
         get => _x;
-        set
-        {
-            if (_x != value)
-            {
-                _x = value;
-                NotifyPropertyChanged();
-            }
-        }
+        set => SetProperty(ref _x, value);
     }
     private double _y;
     [Category("Transform")]
@@ -48,14 +41,7 @@ public abstract class ShapeBase : MiniReactiveObject
     public double Y
     {
         get => _y;
-        set
-        {
-            if (_y != value)
-            {
-                _y = value;
-                NotifyPropertyChanged();
-            }
-        }
+        set => SetProperty(ref _y, value);
     }
     
     private double _rotation;
@@ -66,14 +52,7 @@ public abstract class ShapeBase : MiniReactiveObject
     public double Rotation
     {
         get => _rotation;
-        set
-        {
-            if (_rotation != value)
-            {
-                _rotation = value;
-                NotifyPropertyChanged();
-            }
-        }
+        set => SetProperty(ref _rotation, value);
     }
     #endregion
 
@@ -91,14 +70,7 @@ public abstract class ShapeBase : MiniReactiveObject
     public ShapeFillMode FillMode
     {
         get => _fillMode;
-        set
-        {
-            if (_fillMode != value)
-            {
-                _fillMode = value;
-                NotifyPropertyChanged();
-            }
-        }
+        set => SetProperty(ref _fillMode, value);
     }
 
     private Color _fillColor = Colors.Gray;
@@ -108,14 +80,7 @@ public abstract class ShapeBase : MiniReactiveObject
     public Color FillColor
     {
         get => _fillColor;
-        set
-        {
-            if (_fillColor != value)
-            {
-                _fillColor = value;
-                NotifyPropertyChanged();
-            }
-        }
+        set => SetProperty(ref _fillColor, value);
     }
     
     private Color _strokeColor = Colors.DarkGray;
@@ -124,14 +89,7 @@ public abstract class ShapeBase : MiniReactiveObject
     public Color StrokeColor
     {
         get => _strokeColor;
-        set
-        {
-            if (_strokeColor != value)
-            {
-                _strokeColor = value;
-                NotifyPropertyChanged();
-            }
-        }
+        set => SetProperty(ref _strokeColor, value);
     }
     
     private double _strokeThickness = 1.0;
@@ -140,14 +98,7 @@ public abstract class ShapeBase : MiniReactiveObject
     public double StrokeThickness
     {
         get => _strokeThickness;
-        set
-        {
-            if (_strokeThickness != value)
-            {
-                _strokeThickness = value;
-                NotifyPropertyChanged();
-            }
-        }
+        set => SetProperty(ref _strokeThickness, value);
     }
 
     private double _opacity = 1.0;
@@ -157,14 +108,7 @@ public abstract class ShapeBase : MiniReactiveObject
     public double Opacity
     {
         get => _opacity;
-        set
-        {
-            if (_opacity != value)
-            {
-                _opacity = value;
-                NotifyPropertyChanged();
-            }
-        }
+        set => SetProperty(ref _opacity, value);
     }
     
     private PenLineCap _strokeLineCap = PenLineCap.Flat;
@@ -172,14 +116,7 @@ public abstract class ShapeBase : MiniReactiveObject
     public PenLineCap StrokeLineCap
     {
         get => _strokeLineCap;
-        set
-        {
-            if (_strokeLineCap != value)
-            {
-                _strokeLineCap = value;
-                NotifyPropertyChanged();
-            }
-        }
+        set => SetProperty(ref _strokeLineCap, value);
     }
 
     private PenLineJoin _strokeJoin = PenLineJoin.Miter;
@@ -187,14 +124,7 @@ public abstract class ShapeBase : MiniReactiveObject
     public PenLineJoin StrokeJoin
     {
         get => _strokeJoin;
-        set
-        {
-            if (_strokeJoin != value)
-            {
-                _strokeJoin = value;
-                NotifyPropertyChanged();
-            }
-        }
+        set => SetProperty(ref _strokeJoin, value);
     }
 
     private double _strokeDashOffset;
@@ -203,14 +133,7 @@ public abstract class ShapeBase : MiniReactiveObject
     public double StrokeDashOffset
     {
         get => _strokeDashOffset;
-        set
-        {
-            if (_strokeDashOffset != value)
-            {
-                _strokeDashOffset = value;
-                NotifyPropertyChanged();
-            }
-        }
+        set => SetProperty(ref _strokeDashOffset, value);
     }
 
     private BindingList<double> _strokeDashArray = [];
@@ -219,14 +142,7 @@ public abstract class ShapeBase : MiniReactiveObject
     public BindingList<double> StrokeDashArray
     {
         get => _strokeDashArray;
-        set
-        {
-            if (_strokeDashArray != value)
-            {
-                _strokeDashArray = value;
-                NotifyPropertyChanged();
-            }
-        }
+        set => SetProperty(ref _strokeDashArray, value);
     }
 
     private Stretch _stretch = Stretch.None;
@@ -234,14 +150,7 @@ public abstract class ShapeBase : MiniReactiveObject
     public Stretch Stretch
     {
         get => _stretch;
-        set
-        {
-            if (_stretch != value)
-            {
-                _stretch = value;
-                NotifyPropertyChanged();
-            }
-        }
+        set => SetProperty(ref _stretch, value);
     }
     
     protected readonly SolidColorBrush FillBrush = new (Colors.Black);
@@ -287,13 +196,6 @@ public abstract class ShapeBase : MiniReactiveObject
 
         
         return true;
-    }
-
-    protected void NotifyPropertyChanged([CallerMemberName] string? propertyName = null)
-    {
-        System.Diagnostics.Debug.Assert(propertyName != null);
-        // ReSharper disable once RedundantSuppressNullableWarningExpression
-        RaisePropertyChanged(propertyName!);
     }
     #endregion
 }

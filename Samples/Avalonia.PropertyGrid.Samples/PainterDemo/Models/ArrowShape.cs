@@ -18,14 +18,7 @@ public class ArrowShape : ShapeGenericPolygon
     public double Length
     {
         get => _length;
-        set
-        {
-            if (_length != value)
-            {
-                _length = value;
-                NotifyPropertyChanged();
-            }
-        }
+        set => SetProperty(ref _length, value);
     }
 
     [Category("Transform")]
@@ -33,14 +26,7 @@ public class ArrowShape : ShapeGenericPolygon
     public double ShaftWidth
     {
         get => _shaftWidth;
-        set
-        {
-            if (_shaftWidth != value)
-            {
-                _shaftWidth = value;
-                NotifyPropertyChanged();
-            }
-        }
+        set => SetProperty(ref _shaftWidth, value);
     }
 
     [Category("Transform")]
@@ -48,14 +34,7 @@ public class ArrowShape : ShapeGenericPolygon
     public double HeadWidth
     {
         get => _headWidth;
-        set
-        {
-            if (_headWidth != value)
-            {
-                _headWidth = value;
-                NotifyPropertyChanged();
-            }
-        }
+        set => SetProperty(ref _headWidth, value);
     }
 
     [Category("Transform")]
@@ -63,14 +42,7 @@ public class ArrowShape : ShapeGenericPolygon
     public double HeadHeight
     {
         get => _headHeight;
-        set
-        {
-            if (_headHeight != value)
-            {
-                _headHeight = value;
-                NotifyPropertyChanged();
-            }
-        }
+        set => SetProperty(ref _headHeight, value);
     }
 
     protected override List<Point> GeneratePoints() => CalculateArrowPoints();

@@ -16,14 +16,7 @@ public class StarShape : ShapeGenericPolygon
     public double Radius
     {
         get => _radius;
-        set
-        {
-            if (_radius != value)
-            {
-                _radius = value;
-                NotifyPropertyChanged();
-            }
-        }
+        set => SetProperty(ref _radius, value);
     }
 
     protected override List<Point> GeneratePoints() => CalculateStarPoints(0, 0, Radius);

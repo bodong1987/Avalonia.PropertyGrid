@@ -32,7 +32,28 @@ namespace PropertyModels.ComponentModel
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
         public void RaisePropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        
+        /// <summary>
+        /// help set property
+        /// </summary>
+        /// <param name="field"></param>
+        /// <param name="value"></param>
+        /// <param name="propertyName"></param>
+        /// <typeparam name="T"></typeparam>
+        protected bool SetProperty<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+        {
+            if (!EqualityComparer<T>.Default.Equals(field, value))
+            {
+                field = value;
+                System.Diagnostics.Debug.Assert(propertyName != null);
+                // ReSharper disable once RedundantSuppressNullableWarningExpression
+                RaisePropertyChanged(propertyName!);
 
+                return true;
+            }
+
+            return false;
+        }
         #endregion
     }
 

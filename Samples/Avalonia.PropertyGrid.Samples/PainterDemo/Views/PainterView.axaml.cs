@@ -45,7 +45,7 @@ public partial class PainterView : UserControl
         viewModel.Shapes.CollectionChanged += OnShapeCollectionChanged;
         
         // for demo
-        viewModel.Shapes.Add(new CircleShape { X = 50, Y = 50, Radius = 90, FillColor = Colors.Blue });
+        viewModel.Shapes.Add(new EllipseShape { X = 50, Y = 50, Radius = 90, FillColor = Colors.Blue });
         viewModel.Shapes.Add(new RectangleShape { X = 350, Y = 200, Width = 260, Height = 240, FillColor = Colors.Green });
         viewModel.Shapes.Add(new StarShape{ X= 150, Y = 550, Radius = 100, FillColor = Colors.Red });
     }
@@ -188,8 +188,8 @@ public partial class PainterView : UserControl
                 viewModel.SelectedShape = rectangle;
                 break;
 
-            case ToolMode.CreateCircle:
-                var circle = new CircleShape
+            case ToolMode.CreateEllipse:
+                var circle = new EllipseShape
                 {
                     X = point.X,
                     Y = point.Y,
@@ -306,10 +306,10 @@ public partial class PainterView : UserControl
         (DataContext as PainterViewModel)!.SelectedShape = rectangle;
     }
 
-    private void AddCircle_Click(object? sender, RoutedEventArgs e)
+    private void AddEllipse_Click(object? sender, RoutedEventArgs e)
     {
         var point = _contextMenuPosition;
-        var circle = new CircleShape
+        var circle = new EllipseShape
         {
             X = point.X,
             Y = point.Y,

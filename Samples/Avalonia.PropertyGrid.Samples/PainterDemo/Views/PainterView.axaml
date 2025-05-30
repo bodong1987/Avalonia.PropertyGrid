@@ -17,7 +17,7 @@
             <!-- ReSharper disable Xaml.BindingWithoutContextNotResolved -->
             <RadioButton Content="{ll:Localize Select}" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.Select}}" GroupName="Mode" Margin="4" />
             <RadioButton Content="{ll:Localize CreateRectangle}" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.CreateRectangle}}" GroupName="Mode"  Margin="4"/>
-            <RadioButton Content="{ll:Localize CreateCircle}" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.CreateCircle}}" GroupName="Mode" Margin="4" />
+            <RadioButton Content="{ll:Localize CreateEllipse}" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.CreateEllipse}}" GroupName="Mode" Margin="4" />
             <RadioButton Content="{ll:Localize CreateLine}" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.CreateLine}}" GroupName="Mode" Margin="4" />
             <RadioButton Content="{ll:Localize CreateStar}" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.CreateStar}}" GroupName="Mode" Margin="4" />
             <RadioButton Content="{ll:Localize CreateArrow}" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.CreateArrow}}" GroupName="Mode" Margin="4" />
@@ -36,7 +36,7 @@
                 <ContextMenu>
                     <MenuItem Header="{ll:Localize Add_Shapes}">
                         <MenuItem Header="{ll:Localize CreateRectangle}" Click="AddRectangle_Click"/>
-                        <MenuItem Header="{ll:Localize CreateCircle}" Click="AddCircle_Click"/>
+                        <MenuItem Header="{ll:Localize CreateEllipse}" Click="AddEllipse_Click"/>
                         <MenuItem Header="{ll:Localize CreateLine}" Click="AddLine_Click"/>
                         <MenuItem Header="{ll:Localize CreateStar}" Click="AddStar_Click"/>
                         <MenuItem Header="{ll:Localize CreateArrow}" Click="AddArrow_Click"/>
