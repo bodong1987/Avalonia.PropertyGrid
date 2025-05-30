@@ -22,6 +22,8 @@
                 x:Name="MainCanvas" 
                 Background="#282828"
                 PointerPressed="MainCanvas_PointerPressed"
+                PointerMoved="MainCanvas_PointerMoved"
+                PointerReleased="MainCanvas_PointerReleased"
                 >
         </Canvas>
         <GridSplitter Grid.Column="2" Width="4" Background="Gray" VerticalAlignment="Stretch"  HorizontalAlignment="Center"

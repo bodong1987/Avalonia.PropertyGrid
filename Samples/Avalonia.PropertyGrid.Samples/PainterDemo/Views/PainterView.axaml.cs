@@ -20,6 +20,10 @@ public partial class PainterView : UserControl
     private readonly Dictionary<ShapeBase, AvaloniaShape> _shapesMapping = new ();
     private readonly Dictionary<AvaloniaShape, ShapeBase> _avaloniaShapesMapping = new ();
     
+    private AvaloniaShape? _draggedShape;
+    private Point _dragStartPoint;
+    private Point _shapeStartPoint;
+    
     public static readonly RoutedEvent<ShapeSelectedEventArgs> ShapeSelectedEvent =
         RoutedEvent.Register<PainterView, ShapeSelectedEventArgs>(
             nameof(ShapeSelected), RoutingStrategies.Bubble);
@@ -153,8 +157,8 @@ public partial class PainterView : UserControl
                 {
                     X = point.X,
                     Y = point.Y,
-                    Width = 100, // Default width
-                    Height = 50, // Default height
+                    Width = 300, // Default width
+                    Height = 250, // Default height
                     FillColor = Colors.Gray
                 };
                 viewModel.Shapes.Add(rectangle);
@@ -165,16 +169,52 @@ public partial class PainterView : UserControl
                 {
                     X = point.X,
                     Y = point.Y,
-                    Radius = 50, // Default radius
+                    Radius = 150, // Default radius
                     FillColor = Colors.Gray
                 };
                 viewModel.Shapes.Add(circle);
                 break;
 
             case ToolMode.Select:
+                foreach (var shape in _avaloniaShapesMapping.Keys)
+                {
+                    if (shape.IsPointerOver)
+                    {
+                        _draggedShape = shape;
+                        _dragStartPoint = point;
+                        _shapeStartPoint = new Point(_avaloniaShapesMapping[shape].X, _avaloniaShapesMapping[shape].Y);
+                        e.Pointer.Capture(MainCanvas);
+                        break;
+                    }
+                }
+                break;
             default:
                 // Handle selection logic if needed
                 break;
+        }
+    }
+    
+    private void MainCanvas_PointerMoved(object? sender, PointerEventArgs e)
+    {
+        if (_draggedShape != null && e.Pointer.Captured != null)
+        {
+            var currentPoint = e.GetPosition(MainCanvas);
+            var delta = currentPoint - _dragStartPoint;
+
+            if (_avaloniaShapesMapping.TryGetValue(_draggedShape, out var baseShape))
+            {
+                baseShape.X = _shapeStartPoint.X + delta.X;
+                baseShape.Y = _shapeStartPoint.Y + delta.Y;
+            }
+        }
+    }
+    
+    private void MainCanvas_PointerReleased(object? sender, PointerReleasedEventArgs e)
+    {
+        if (_draggedShape != null && e.Pointer.Captured != null)
+        {
+            e.Pointer.Capture(null);
+            _draggedShape = null;
         }
     }
 }
