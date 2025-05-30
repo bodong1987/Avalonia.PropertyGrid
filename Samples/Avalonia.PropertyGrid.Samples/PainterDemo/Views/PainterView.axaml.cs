@@ -140,6 +140,43 @@ public partial class PainterView : UserControl
             shape.StrokeThickness = 2; // Highlight thickness
         }
     }
+    
+    private void MainCanvas_PointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        var point = e.GetPosition(MainCanvas);
+        var viewModel = (DataContext as PainterViewModel)!;
+
+        switch (viewModel.CurrentToolMode)
+        {
+            case ToolMode.CreateRectangle:
+                var rectangle = new RectangleShape
+                {
+                    X = point.X,
+                    Y = point.Y,
+                    Width = 100, // Default width
+                    Height = 50, // Default height
+                    FillColor = Colors.Gray
+                };
+                viewModel.Shapes.Add(rectangle);
+                break;
+
+            case ToolMode.CreateCircle:
+                var circle = new CircleShape
+                {
+                    X = point.X,
+                    Y = point.Y,
+                    Radius = 50, // Default radius
+                    FillColor = Colors.Gray
+                };
+                viewModel.Shapes.Add(circle);
+                break;
+
+            case ToolMode.Select:
+            default:
+                // Handle selection logic if needed
+                break;
+        }
+    }
 }
 
 #region Event Args

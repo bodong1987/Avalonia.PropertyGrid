@@ -3,16 +3,32 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:pg="clr-namespace:Avalonia.PropertyGrid.Controls;assembly=Avalonia.PropertyGrid"
+             xmlns:lvm="clr-namespace:Avalonia.PropertyGrid.Samples.PainterDemo.ViewModel"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Avalonia.PropertyGrid.Samples.PainterDemo.Views.PainterView">
-    <Grid ColumnDefinitions="3*,Auto,1*">
-        <Canvas Grid.Column="0" x:Name="MainCanvas" Background="#282828">
+    <UserControl.Resources>
+        <lvm:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
+    </UserControl.Resources>
+    
+    <Grid ColumnDefinitions="Auto,6*,Auto,4*">
+        <!-- Toolbar -->
+        <StackPanel Grid.Column="0" Orientation="Vertical" Background="#333333">
+            <RadioButton Content="Select" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.Select}}" GroupName="Mode" />
+            <RadioButton Content="Rectangle" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.CreateRectangle}}" GroupName="Mode" />
+            <RadioButton Content="Circle" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.CreateCircle}}" GroupName="Mode" />
+        </StackPanel>
+        
+        <Canvas Grid.Column="1" 
+                x:Name="MainCanvas" 
+                Background="#282828"
+                PointerPressed="MainCanvas_PointerPressed"
+                >
         </Canvas>
-        <GridSplitter Grid.Column="1" Width="4" Background="Gray" VerticalAlignment="Stretch"  HorizontalAlignment="Center"
+        <GridSplitter Grid.Column="2" Width="4" Background="Gray" VerticalAlignment="Stretch"  HorizontalAlignment="Center"
                       ShowsPreview="False"
                       Cursor="SizeWestEast"
                       ></GridSplitter>
         
-        <pg:PropertyGrid x:Name="ShapePropertyGrid" Grid.Column="2" DataContext="{Binding SelectedShape}" ShowTitle="True"/>
+        <pg:PropertyGrid x:Name="ShapePropertyGrid" Grid.Column="3" DataContext="{Binding SelectedShape}" ShowTitle="True"/>
     </Grid>
 </UserControl>

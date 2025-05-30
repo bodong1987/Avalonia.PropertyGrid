@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel;
 using Avalonia.Controls.Shapes;
 using Avalonia.Media;
+using PropertyModels.ComponentModel;
+
 // ReSharper disable CompareOfFloatsByEqualityOperator
 // ReSharper disable PropertyCanBeMadeInitOnly.Global
 
@@ -10,6 +12,7 @@ public class CircleShape : ShapeBase
 {
     private double _radius;
     [Category("Transform")]
+    [FloatPrecision(0)]
     public double Radius
     {
         get => _radius;

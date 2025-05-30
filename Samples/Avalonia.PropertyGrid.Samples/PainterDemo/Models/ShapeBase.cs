@@ -15,6 +15,7 @@ public abstract class ShapeBase : MiniReactiveObject
     private double _x;
     
     [Category("Transform")]
+    [FloatPrecision(0)]
     public double X
     {
         get => _x;
@@ -29,6 +30,7 @@ public abstract class ShapeBase : MiniReactiveObject
     }
     private double _y;
     [Category("Transform")]
+    [FloatPrecision(0)]
     public double Y
     {
         get => _y;
