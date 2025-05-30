@@ -207,6 +207,20 @@ public partial class PainterView : UserControl
                 };
                 viewModel.Shapes.Add(arrow);
                 break;
+            
+            case ToolMode.CreateHollowArrow:
+                var hollowArrow = new HollowArrowShape()
+                {
+                    X = point.X,
+                    Y = point.Y,
+                    Length = 100,
+                    HeadHeight = 30,
+                    HeadWidth = 30,
+                    ShaftWidth = 15,
+                    FillColor = Colors.Gray
+                };
+                viewModel.Shapes.Add(hollowArrow);
+                break;
 
             case ToolMode.Select:
                 foreach (var shape in _avaloniaShapesMapping.Keys)

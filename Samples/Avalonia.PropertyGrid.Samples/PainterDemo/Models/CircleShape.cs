@@ -29,13 +29,7 @@ public class CircleShape : ShapeBase
     public override Shape CreateAvaloniaShape()
     {
         // Create an Ellipse for CircleShape
-        return new Ellipse
-        {
-            Width = Radius * 2,
-            Height = Radius * 2,
-            Fill = new SolidColorBrush(FillColor),
-            Opacity = Opacity
-        };
+        return new Ellipse();
     }
 
     public override bool UpdateProperties(Shape shape)

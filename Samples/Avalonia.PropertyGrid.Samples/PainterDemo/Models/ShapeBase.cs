@@ -44,7 +44,7 @@ public abstract class ShapeBase : MiniReactiveObject
         }
     }
 
-    private Color _fillColor;
+    private Color _fillColor = Colors.Gray;
     
     [Category("Appearance")]
     public Color FillColor
@@ -55,6 +55,38 @@ public abstract class ShapeBase : MiniReactiveObject
             if (_fillColor != value)
             {
                 _fillColor = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+    
+    private Color _strokeColor = Colors.DarkGray;
+    
+    [Category("Appearance")]
+    public Color StrokeColor
+    {
+        get => _strokeColor;
+        set
+        {
+            if (_strokeColor != value)
+            {
+                _strokeColor = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+    
+    private double _strokeThickness = 1.0;
+    [Category("Appearance")]
+    [FloatPrecision(0)]
+    public double StrokeThickness
+    {
+        get => _strokeThickness;
+        set
+        {
+            if (_strokeThickness != value)
+            {
+                _strokeThickness = value;
                 NotifyPropertyChanged();
             }
         }
@@ -77,12 +109,21 @@ public abstract class ShapeBase : MiniReactiveObject
         }
     }
     
+    protected readonly SolidColorBrush FillBrush = new SolidColorBrush(Colors.Black);
+    protected  readonly SolidColorBrush StrokeBrush = new SolidColorBrush(Colors.White);
+    
     public abstract Shape CreateAvaloniaShape();
 
     public virtual bool UpdateProperties(Shape shape)
     {
-        shape.Fill = new SolidColorBrush(FillColor);
+        FillBrush.Color = FillColor;
+        StrokeBrush.Color = StrokeColor;
+        
+        shape.Fill = FillBrush;
+        shape.Stroke = StrokeBrush;
         shape.Opacity = Opacity;
+        shape.StrokeThickness = StrokeThickness;
+        
         Canvas.SetLeft(shape, X);
         Canvas.SetTop(shape, Y);
         

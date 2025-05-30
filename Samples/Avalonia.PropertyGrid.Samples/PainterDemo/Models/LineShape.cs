@@ -7,6 +7,8 @@ using PropertyModels.ComponentModel;
 // ReSharper disable CompareOfFloatsByEqualityOperator
 // ReSharper disable PropertyCanBeMadeInitOnly.Global
 
+namespace Avalonia.PropertyGrid.Samples.PainterDemo.Models;
+
 public class LineShape : ShapeBase
 {
     private double _x2;
@@ -44,13 +46,7 @@ public class LineShape : ShapeBase
 
     public override Shape CreateAvaloniaShape()
     {
-        return new Line
-        {
-            StartPoint = new Point(0, 0),
-            EndPoint = new Point(X2, Y2),
-            Stroke = new SolidColorBrush(FillColor),
-            StrokeThickness = 2
-        };
+        return new Line();
     }
 
     public override bool UpdateProperties(Shape shape)

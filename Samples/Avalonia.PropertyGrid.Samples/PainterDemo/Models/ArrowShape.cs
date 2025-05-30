@@ -29,12 +29,7 @@ public class ArrowShape : ShapeBase
 
     public override Shape CreateAvaloniaShape()
     {
-        var arrow = new Polyline
-        {
-            Points = CalculateArrowPoints(0, 0, Length),
-            Stroke = new SolidColorBrush(FillColor),
-            StrokeThickness = 2
-        };
+        var arrow = new Polyline();
         return arrow;
     }
 
@@ -54,7 +49,7 @@ public class ArrowShape : ShapeBase
         return false;
     }
 
-    private static IList<Point> CalculateArrowPoints(double startX, double startY, double length)
+    private static List<Point> CalculateArrowPoints(double startX, double startY, double length)
     {
         var points = new List<Point>
         {

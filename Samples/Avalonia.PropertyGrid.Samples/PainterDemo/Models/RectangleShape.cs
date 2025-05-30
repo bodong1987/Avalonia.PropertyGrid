@@ -44,13 +44,7 @@ public class RectangleShape : ShapeBase
     
     public override Shape CreateAvaloniaShape()
     {
-        return new Rectangle()
-        {
-            Width = Width,
-            Height = Height,
-            Fill = new SolidColorBrush(FillColor),
-            Opacity = Opacity
-        };
+        return new Rectangle();
     }
 
     public override bool UpdateProperties(Shape shape)

@@ -30,13 +30,7 @@ public class StarShape : ShapeBase
 
     public override Shape CreateAvaloniaShape()
     {
-        var star = new Polyline
-        {
-            Points = CalculateStarPoints(0, 0, Radius),
-            Stroke = new SolidColorBrush(FillColor),
-            StrokeThickness = 2,
-            Fill = new SolidColorBrush(FillColor)
-        };
+        var star = new Polyline();
         return star;
     }
 

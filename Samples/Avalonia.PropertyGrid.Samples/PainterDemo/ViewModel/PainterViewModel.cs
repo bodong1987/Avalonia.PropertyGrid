@@ -14,7 +14,8 @@ public enum ToolMode
     CreateCircle,
     CreateLine,
     CreateStar,
-    CreateArrow
+    CreateArrow,
+    CreateHollowArrow
 }
 
 public class EnumToBooleanConverter : IValueConverter

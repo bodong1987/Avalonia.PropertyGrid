@@ -327,5 +327,6 @@
     "CreateCircle": "创建圆形",
     "CreateStar": "创建五角星",
     "CreateLine": "创建线段",
-    "CreateArrow": "创建箭头"
+    "CreateArrow": "创建箭头",
+    "CreateHollowArrow": "创建空心箭头"
 }
