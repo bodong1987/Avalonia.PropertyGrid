@@ -51,14 +51,14 @@ public class ArrowShape : ShapeGenericPolygon
     {
         var points = new List<Point>
         {
-            new Point(0, -ShaftWidth / 2), // Start of the shaft
-            new Point(Length - HeadWidth, -ShaftWidth / 2), // End of the shaft
-            new Point(Length - HeadWidth, -HeadHeight / 2), // Top of the arrowhead
-            new Point(Length, 0), // Tip of the arrowhead
-            new Point(Length - HeadWidth, HeadHeight / 2), // Bottom of the arrowhead
-            new Point(Length - HeadWidth, ShaftWidth / 2), // End of the shaft
-            new Point(0, ShaftWidth / 2), // Start of the shaft
-            new Point(0, -ShaftWidth / 2) // Close the shape
+            new(0, -ShaftWidth / 2), // Start of the shaft
+            new(Length - HeadWidth, -ShaftWidth / 2), // End of the shaft
+            new(Length - HeadWidth, -HeadHeight / 2), // Top of the arrowhead
+            new(Length, 0), // Tip of the arrowhead
+            new(Length - HeadWidth, HeadHeight / 2), // Bottom of the arrowhead
+            new(Length - HeadWidth, ShaftWidth / 2), // End of the shaft
+            new(0, ShaftWidth / 2), // Start of the shaft
+            new(0, -ShaftWidth / 2) // Close the shape
         };
 
         return points;

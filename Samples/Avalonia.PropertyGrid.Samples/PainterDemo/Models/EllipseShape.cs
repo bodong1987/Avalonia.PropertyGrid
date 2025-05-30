@@ -27,7 +27,7 @@ public class EllipseShape : ShapeGeneric<Ellipse>
     private double _radius;
     [Category("Transform")]
     [FloatPrecision(0)]
-    [VisibilityPropertyCondition(nameof(EllipseDetailType), Models.EllipseDetailType.Circle)]
+    [VisibilityPropertyCondition(nameof(EllipseDetailType), EllipseDetailType.Circle)]
     public double Radius
     {
         get => _radius;
@@ -44,7 +44,7 @@ public class EllipseShape : ShapeGeneric<Ellipse>
     private double _width;
     [Category("Transform")]
     [FloatPrecision(0)]
-    [VisibilityPropertyCondition(nameof(EllipseDetailType), Models.EllipseDetailType.Ellipse)]
+    [VisibilityPropertyCondition(nameof(EllipseDetailType), EllipseDetailType.Ellipse)]
     public double Width
     {
         get => _width;
@@ -60,7 +60,7 @@ public class EllipseShape : ShapeGeneric<Ellipse>
     private double _height;
     [Category("Transform")]
     [FloatPrecision(0)]
-    [VisibilityPropertyCondition(nameof(EllipseDetailType), Models.EllipseDetailType.Ellipse)]
+    [VisibilityPropertyCondition(nameof(EllipseDetailType), EllipseDetailType.Ellipse)]
     public double Height
     {
         get => _height;

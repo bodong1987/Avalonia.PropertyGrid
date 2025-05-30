@@ -193,12 +193,14 @@ public partial class PainterView : UserControl
                 }
                 break;
             case ToolMode.Brush:
-                _currentFreehandShape = new FreehandShape(){StrokeColor = Colors.Red, FillColor = Colors.Red, StrokeThickness = 2};
+                _currentFreehandShape = new FreehandShape {StrokeColor = Colors.Red, FillColor = Colors.Red, StrokeThickness = 2};
                 _currentFreehandShape.Points.Add(point);
                 viewModel.Shapes.Add(_currentFreehandShape);
                 viewModel.SelectedShape = _currentFreehandShape;
                 e.Pointer.Capture(MainCanvas);
                 break;
+            default:
+                throw new NotImplementedException();
         }
     }
     

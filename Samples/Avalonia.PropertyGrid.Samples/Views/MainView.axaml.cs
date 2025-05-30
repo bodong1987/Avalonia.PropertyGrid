@@ -54,7 +54,7 @@ public partial class MainView : UserControl
         };
     }
     
-    private void OnCurrentCultureChanged(ICultureData? newCulture)
+    private static void OnCurrentCultureChanged(ICultureData? newCulture)
     {
         if (newCulture != null)
         {

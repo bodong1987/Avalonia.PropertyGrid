@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
+﻿using System.ComponentModel;
 using Avalonia.Collections;
 using Avalonia.Controls.Shapes;
-using PropertyModels.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Samples.PainterDemo.Models;
 

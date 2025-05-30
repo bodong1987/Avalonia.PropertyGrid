@@ -9,6 +9,7 @@ using Avalonia.PropertyGrid.Samples.Views;
 using Avalonia.Styling;
 using Avalonia.Themes.Fluent;
 using Avalonia.Themes.Simple;
+using MainWindow = Avalonia.PropertyGrid.Samples.Views.MainWindow;
 
 namespace Avalonia.PropertyGrid.Samples;
 
