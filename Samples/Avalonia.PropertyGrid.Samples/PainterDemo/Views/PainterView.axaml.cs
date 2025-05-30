@@ -293,6 +293,12 @@ public partial class PainterView : UserControl
             
             e.Pointer.Capture(null);
             _creatingShape = null;
+
+            if ((DataContext as PainterViewModel)!.CurrentToolMode != ToolMode.Select &&
+                (DataContext as PainterViewModel)!.CurrentToolMode != ToolMode.Brush)
+            {
+                (DataContext as PainterViewModel)!.CurrentToolMode = ToolMode.Select;
+            }
         }
     }
   

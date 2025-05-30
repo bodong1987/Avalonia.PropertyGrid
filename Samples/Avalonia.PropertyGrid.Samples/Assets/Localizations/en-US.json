@@ -41,5 +41,5 @@
     "FreehandShape": "Freehand",
     "Add_Shapes": "Add Shapes",
     "Delete_Shape": "Delete Shape",
-    "PainterDemo_HelpText": "Create or delete elements in the right-click menu. Click an element to view and edit its properties."
+    "PainterDemo_HelpText": "Select the working mode in the toolbar on the left, right-click to delete the element, click the element in the selection mode to view and edit the element properties, and you can also drag the element."
 }

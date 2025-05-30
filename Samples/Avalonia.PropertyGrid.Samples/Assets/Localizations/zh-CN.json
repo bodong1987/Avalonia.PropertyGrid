@@ -336,7 +336,7 @@
     "LineShape": "线段",
     "RectangleShape": "矩形",
     "StarShape": "五角星",
-    "PainterDemo_HelpText": "右键菜单中可以新建或删除图元，点击图元可查看和编辑图元属性。",
+    "PainterDemo_HelpText": "左侧工具栏选择工作模式，右键删除图元，选择模式下点击图元可查看和编辑图元属性，亦可拖拽图元。",
     "Brush": "画笔",
     "FreehandShape": "自由绘制"
 }

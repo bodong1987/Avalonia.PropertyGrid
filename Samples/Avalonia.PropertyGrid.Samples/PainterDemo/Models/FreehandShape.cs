@@ -30,7 +30,7 @@ public class FreehandShape : ShapeGeneric<Polyline>
     
     protected override void OnFinishCreate(Point endPoint)
     {
-        Points.Add(endPoint);
+        Points.Add(endPoint - new Point(CreatingStartX, CreatingStartY));
         RaisePropertyChanged(nameof(Points));
     }
 }
