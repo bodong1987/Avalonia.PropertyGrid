@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
@@ -43,7 +44,7 @@ public abstract class ShapeBase : MiniReactiveObject
 
     private Color _fillColor;
     
-    [Category("Apperence")]
+    [Category("Appearance")]
     public Color FillColor
     {
         get => _fillColor;
@@ -58,7 +59,9 @@ public abstract class ShapeBase : MiniReactiveObject
     }
 
     private double _opacity = 1.0;
-    [Category("Apperence")]
+    [Category("Appearance")]
+    [Range(0.0, 1.0)]
+    [Trackable(0.0, 1.0)]
     public double Opacity
     {
         get => _opacity;

@@ -207,7 +207,7 @@
     "Personalization": "个性化设置",
     "Security": "安全设置",
     "General": "常规设置",
-    "Appearance": "外观设置",
+    "AppearanceSettings": "外观设置",
     "Themes": "主题设置",
     "Accounts": "账户设置",
     "Firewall": "防火墙设置",
@@ -319,5 +319,7 @@
     "SettingsDemo": "系统设置示例",
     "FeatureDemos": "基础特性示例",
     "Transparency": "透明度",
-    "PainterDemo": "画板示例"
+    "PainterDemo": "画板示例",
+    "Transform": "变换",
+    "Appearance": "外观"
 }

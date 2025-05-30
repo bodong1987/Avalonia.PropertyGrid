@@ -114,7 +114,7 @@ public partial class PainterView : UserControl
                 return;
             }
 
-            ShapePropertyGrid.DataContext = baseShape;
+            (DataContext as PainterViewModel)!.SelectedShape = baseShape;
         }
     }
 

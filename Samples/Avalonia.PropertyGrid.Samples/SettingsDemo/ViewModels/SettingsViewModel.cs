@@ -27,7 +27,7 @@ public class SettingsViewModel : ReactiveObject
         var categories = new[]
         {
             CreateCategory("General",  new GeneralSettings()),
-            CreateCategory("Appearance", new AppearanceSettings()),
+            CreateCategory("AppearanceSettings", new AppearanceSettings()),
             CreateCategory("Themes",  new ThemeSettings()),
             CreateCategory("Accounts", new AccountSettings()),
             CreateCategory("Firewall", new FirewallSettings()),
