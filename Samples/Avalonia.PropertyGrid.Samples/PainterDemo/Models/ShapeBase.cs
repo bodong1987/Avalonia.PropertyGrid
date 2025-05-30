@@ -24,7 +24,8 @@ public enum ShapeFillMode
 public abstract class ShapeBase : MiniReactiveObject
 {
     public string Type => LocalizationService.Default[GetType().Name];
-    
+
+    #region Transform
     private double _x;
     
     [Category("Transform")]
@@ -56,7 +57,27 @@ public abstract class ShapeBase : MiniReactiveObject
             }
         }
     }
+    
+    private double _rotation;
 
+    [Category("Transform")]
+    [Range(0.0, 360.0)]
+    [Trackable(0, 360)]
+    public double Rotation
+    {
+        get => _rotation;
+        set
+        {
+            if (_rotation != value)
+            {
+                _rotation = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+    #endregion
+
+    #region Appearance
     [Browsable(false)]
     [ConditionTarget]
     protected bool IsFillModeVisible { get; set; } = true;
@@ -176,7 +197,7 @@ public abstract class ShapeBase : MiniReactiveObject
         }
     }
 
-    private double _strokeDashOffset = 0.0;
+    private double _strokeDashOffset;
     [Category("Appearance")]
     [FloatPrecision(0)]
     public double StrokeDashOffset
@@ -225,7 +246,9 @@ public abstract class ShapeBase : MiniReactiveObject
     
     protected readonly SolidColorBrush FillBrush = new (Colors.Black);
     protected  readonly SolidColorBrush StrokeBrush = new (Colors.White);
-    
+    #endregion
+
+    #region Methods
     public abstract Shape CreateAvaloniaShape();
 
     public virtual bool UpdateProperties(Shape shape)
@@ -258,6 +281,11 @@ public abstract class ShapeBase : MiniReactiveObject
         Canvas.SetLeft(shape, X);
         Canvas.SetTop(shape, Y);
         
+        var transformGroup = new TransformGroup();
+        transformGroup.Children.Add(new RotateTransform(Rotation, shape.Bounds.Width / 2, shape.Bounds.Height / 2));
+        shape.RenderTransform = transformGroup;
+
+        
         return true;
     }
 
@@ -267,6 +295,7 @@ public abstract class ShapeBase : MiniReactiveObject
         // ReSharper disable once RedundantSuppressNullableWarningExpression
         RaisePropertyChanged(propertyName!);
     }
+    #endregion
 }
 
 public abstract class ShapeGeneric<T> : ShapeBase where T : Shape, new()
