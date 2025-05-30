@@ -324,5 +324,8 @@
     "Appearance": "外观",
     "Select": "选择",
     "CreateRectangle": "创建矩形",
-    "CreateCircle": "创建圆形"
+    "CreateCircle": "创建圆形",
+    "CreateStar": "创建五角星",
+    "CreateLine": "创建线段",
+    "CreateArrow": "创建箭头"
 }

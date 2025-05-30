@@ -174,6 +174,39 @@ public partial class PainterView : UserControl
                 };
                 viewModel.Shapes.Add(circle);
                 break;
+            case ToolMode.CreateLine:
+                var line = new LineShape
+                {
+                    X = point.X,
+                    Y = point.Y,
+                    X2 = 100, // Default end point
+                    Y2 = 100,
+                    FillColor = Colors.Gray
+                };
+                viewModel.Shapes.Add(line);
+                break;
+
+            case ToolMode.CreateStar:
+                var star = new StarShape
+                {
+                    X = point.X,
+                    Y = point.Y,
+                    Radius = 100, // Default radius
+                    FillColor = Colors.Gray
+                };
+                viewModel.Shapes.Add(star);
+                break;
+
+            case ToolMode.CreateArrow:
+                var arrow = new ArrowShape
+                {
+                    X = point.X,
+                    Y = point.Y,
+                    Length = 100, // Default length
+                    FillColor = Colors.Gray
+                };
+                viewModel.Shapes.Add(arrow);
+                break;
 
             case ToolMode.Select:
                 foreach (var shape in _avaloniaShapesMapping.Keys)
@@ -194,6 +227,12 @@ public partial class PainterView : UserControl
             default:
                 // Handle selection logic if needed
                 break;
+        }
+
+        // only use once time
+        if (viewModel.CurrentToolMode != ToolMode.Select)
+        {
+            viewModel.CurrentToolMode = ToolMode.Select;
         }
     }
     

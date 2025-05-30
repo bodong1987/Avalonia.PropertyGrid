@@ -11,7 +11,10 @@ public enum ToolMode
 {
     Select,
     CreateRectangle,
-    CreateCircle
+    CreateCircle,
+    CreateLine,
+    CreateStar,
+    CreateArrow
 }
 
 public class EnumToBooleanConverter : IValueConverter
