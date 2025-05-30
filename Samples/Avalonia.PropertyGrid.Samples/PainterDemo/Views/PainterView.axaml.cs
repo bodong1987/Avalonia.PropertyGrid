@@ -184,6 +184,9 @@ public partial class PainterView : UserControl
                         _dragStartPoint = point;
                         _shapeStartPoint = new Point(_avaloniaShapesMapping[shape].X, _avaloniaShapesMapping[shape].Y);
                         e.Pointer.Capture(MainCanvas);
+                        
+                        MainCanvas.Cursor = new Cursor(StandardCursorType.DragMove);
+                        
                         break;
                     }
                 }
@@ -215,6 +218,9 @@ public partial class PainterView : UserControl
         {
             e.Pointer.Capture(null);
             _draggedShape = null;
+            
+            // Restore default cursor
+            MainCanvas.Cursor = Cursor.Default;
         }
     }
 }

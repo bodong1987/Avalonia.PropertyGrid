@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:pg="clr-namespace:Avalonia.PropertyGrid.Controls;assembly=Avalonia.PropertyGrid"
              xmlns:lvm="clr-namespace:Avalonia.PropertyGrid.Samples.PainterDemo.ViewModel"
+             xmlns:ll="clr-namespace:Avalonia.PropertyGrid.Localization;assembly=Avalonia.PropertyGrid"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Avalonia.PropertyGrid.Samples.PainterDemo.Views.PainterView">
     <UserControl.Resources>
@@ -12,10 +13,11 @@
     
     <Grid ColumnDefinitions="Auto,6*,Auto,4*">
         <!-- Toolbar -->
-        <StackPanel Grid.Column="0" Orientation="Vertical" Background="#333333">
-            <RadioButton Content="Select" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.Select}}" GroupName="Mode" />
-            <RadioButton Content="Rectangle" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.CreateRectangle}}" GroupName="Mode" />
-            <RadioButton Content="Circle" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.CreateCircle}}" GroupName="Mode" />
+        <StackPanel Grid.Column="0" Orientation="Vertical" Background="#333333" Spacing="4" Margin="4">
+            <!-- ReSharper disable Xaml.BindingWithoutContextNotResolved -->
+            <RadioButton Content="{ll:Localize Select}" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.Select}}" GroupName="Mode" />
+            <RadioButton Content="{ll:Localize CreateRectangle}" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.CreateRectangle}}" GroupName="Mode" />
+            <RadioButton Content="{ll:Localize CreateCircle}" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.CreateCircle}}" GroupName="Mode" />
         </StackPanel>
         
         <Canvas Grid.Column="1" 

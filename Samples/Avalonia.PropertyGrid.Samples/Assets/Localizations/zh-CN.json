@@ -321,5 +321,8 @@
     "Transparency": "透明度",
     "PainterDemo": "画板示例",
     "Transform": "变换",
-    "Appearance": "外观"
+    "Appearance": "外观",
+    "Select": "选择",
+    "CreateRectangle": "创建矩形",
+    "CreateCircle": "创建圆形"
 }
