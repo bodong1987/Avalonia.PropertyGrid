@@ -451,29 +451,30 @@ private void OnCustomPropertyOperationControl(object? sender, CustomPropertyOper
 ![Proeprty Operation Example](./Docs/Images/operation-example.png)
 
 ## Description of Samples
-### Basic
+### Feature Demos
+* Basic  
 This page shows the basic functions of PropertyGrid, including the display of various properties and the default editor, etc.  
 Test all adjustable appearance properties.  
 ![Styles](./Docs/Images/Styles.png)
 
-### DataSync
+* DataSync  
 ![DataSync](./Docs/Images/data-sync.png)
 Here you can verify data changes and auto-reload functionality.
 
-### MultiObjects
+* MultiObjects  
 ![Multi-Views](./Docs/Images/Multi-Objects.png)
 You can verify the function of multi-object editing here. Note:   
   
 **some properties do not support editing multiple objects at the same time.**
 
-### CustomObject
+* CustomObject  
 ![CustomObject](./Docs/Images/CustomObject.png)
 Here shows how to create a custom object based on ICustomTypeDescriptor.
 
-### Extends
+* Extends  
 ![Extends](./Docs/Images/extends.png)
 In custom AbstractCellEditFactory, there are only two methods that must be overridden:  
-* HandleNewProperty is used to create the control you want to edit the property, 
+1. HandleNewProperty is used to create the control you want to edit the property, 
 You need to pass the value out through the interface of the framework after the UI edits the data, so as to ensure that other related objects receive the message notification and save the undo redo command.  
 ```C#
     public override Control? HandleNewProperty(PropertyCellContext context)
@@ -498,7 +499,7 @@ You need to pass the value out through the interface of the framework after the 
         return control;
     }
 ```
-* HandleProeprtyChanged method is used to synchronize external data. When the external data changes, the data is reacquired and synchronized to the control.
+2. HandleProeprtyChanged method is used to synchronize external data. When the external data changes, the data is reacquired and synchronized to the control.
 ```C#
     public override bool HandlePropertyChanged(PropertyCellContext context)
     {
@@ -523,25 +524,32 @@ You need to pass the value out through the interface of the framework after the 
         return false;
     }
 ```
-* AbstractCellEditFactory also has a overrideable property ImportPriority. This value determines the order in which the PropertyGrid triggers these Factories. The larger the value, the earlier the trigger.   
-* Overriding the Accept method allows your Factory to only take effect when appropriate.  
-* Override the HandlePropagateVisibility method to customize the filtering scheme
+3. AbstractCellEditFactory also has a overrideable property ImportPriority. This value determines the order in which the PropertyGrid triggers these Factories. The larger the value, the earlier the trigger.   
+4. Overriding the Accept method allows your Factory to only take effect when appropriate.  
+5. Override the HandlePropagateVisibility method to customize the filtering scheme
 
 For example:  
 Under normal circumstances, PropertyGrid does not automatically handle structure properties, because structures have certain particularities. To support such internally unsupported types, you need to extend PropertyGrid yourself. This example shows how to support and edit the structure SVector3.  
 There is also an example of SelectableList customization for reference.  
 More details can be seen in the file TestExtendPropertyGrid.cs.  
 
-### Dynamic Visibility
+* Dynamic Visibility  
 ![DynamicVisibility](./Docs/Images/DynamicVisibility.png)
 Show Dynamic Visibility  
 If you check 'IsShowPath', the Path can be edited.  
 If you select Unix in Platform and input anything in UnixVersion, you can edit the extra properties.
 
-### UndoRedo
+* UndoRedo  
 ![RedoUndo](./Docs/Images/undoredo.png)
 This example shows how to implement undo and redo functions based on the built-in undo-redo framework.
 
+### Settings Demo
+A simple example is used to show how to implement a system settings interface based on PropertyGrid very simply and conveniently.  
+![settings-demo](./Docs/Images/settings-demo.png)  
+
+### Painter Demo
+A simple brush example. You can use this demo to see how to use PropertyGrid in engineering software to quickly display and edit data.  
+![painter-demo](./Docs/Images/painter-demo.png)  
 
 ### Major changes  
 v11.0.4.1  

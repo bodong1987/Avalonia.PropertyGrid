@@ -448,29 +448,29 @@ private void OnCustomPropertyOperationControl(object? sender, CustomPropertyOper
 ![Proeprty Operation Example](./Docs/Images/operation-example.png)
 
 ## 示例描述
-
-### 基本功能
+### 特性示例
+* 基本功能  
 此页面展示了PropertyGrid的基本功能，包括各种属性的显示和默认编辑器等,另外还测试所有可调外观属性。
 ![Styles](./Docs/Images/Styles.png)
 
-### 数据同步
+* 数据同步  
 ![DataSync](./Docs/Images/data-sync.png)
 在这里您可以验证数据更改和自动重新加载功能。
 
-### 多对象编辑
+* 多对象编辑  
 ![Multi-Views](./Docs/Images/Multi-Objects.png)
 您可以在这里验证多对象编辑的功能。注意：  
   
 **某些属性不支持同时编辑多个对象。**
 
-### 自定义对象
+* 自定义对象  
 ![CustomObject](./Docs/Images/CustomObject.png)
 这里展示了如何基于ICustomTypeDescriptor创建自定义对象。  
 
-### 扩展
+* 扩展
 ![Extends](./Docs/Images/extends.png)
 在自定义AbstractCellEditFactory中，只有两个方法必须被重写：
-* HandleNewProperty 用于创建您想要编辑属性的控件，
+1. HandleNewProperty 用于创建您想要编辑属性的控件，
 您需要在UI编辑数据后通过框架的接口传递值，以确保其他相关对象接收到消息通知并保存撤销重做命令。
 ```C#
     public override Control? HandleNewProperty(PropertyCellContext context)
@@ -495,7 +495,7 @@ private void OnCustomPropertyOperationControl(object? sender, CustomPropertyOper
         return control;
     }
 ```  
-* HandlePropertyChanged 方法用于同步外部数据。当外部数据发生变化时，重新获取数据并同步到控件。  
+2. HandlePropertyChanged 方法用于同步外部数据。当外部数据发生变化时，重新获取数据并同步到控件。  
 ```C#
     public override bool HandlePropertyChanged(PropertyCellContext context)
     {
@@ -521,24 +521,32 @@ private void OnCustomPropertyOperationControl(object? sender, CustomPropertyOper
     }
 ```  
 
-* AbstractCellEditFactory 还有一个可重写的属性 ImportPriority。该值决定了 PropertyGrid 触发这些工厂的顺序。值越大，触发越早。
-* 重写 Accept 方法可以让您的工厂仅在适当的时候生效。
-* 重写 HandlePropagateVisibility 方法以自定义过滤方案。
+3. AbstractCellEditFactory 还有一个可重写的属性 ImportPriority。该值决定了 PropertyGrid 触发这些工厂的顺序。值越大，触发越早。
+4. 重写 Accept 方法可以让您的工厂仅在适当的时候生效。
+5. 重写 HandlePropagateVisibility 方法以自定义过滤方案。
 
 例如：  
 在正常情况下，PropertyGrid 不会自动处理结构属性，因为结构具有某些特殊性。要支持此类内部不支持的类型，您需要自行扩展 PropertyGrid。此示例展示了如何支持和编辑结构 SVector3。  
 还有一个关于 SelectableList 自定义的示例供参考。  
 更多细节可以在文件 TestExtendPropertyGrid.cs 中看到。
 
-### 动态可见性
+* 动态可见性
 ![DynamicVisibility](./Docs/Images/DynamicVisibility.png)
 展示动态可见性  
 如果您勾选 'IsShowPath'，则可以编辑路径。  
 如果您在 Platform 中选择 Unix 并在 UnixVersion 中输入任何内容，则可以编辑额外的属性。
 
-### 撤销重做
+* 撤销重做
 ![RedoUndo](./Docs/Images/undoredo.png)
 此示例展示了如何基于内置的撤销重做框架实现撤销和重做功能。
+
+### 设置示例
+一个简单的示例用于展示如何基于PropertyGrid非常简单方便的实现一个系统设置界面。  
+![settings-demo](./Docs/Images/settings-demo.png)  
+
+### 画笔示例
+一个简单的画笔示例，你可以通过该Demo查看如何将PropertyGrid用于工程化软件，用于快速展示和编辑数据。  
+![painter-demo](./Docs/Images/painter-demo.png)
 
 ### 主要更改  
 v11.0.4.1  
