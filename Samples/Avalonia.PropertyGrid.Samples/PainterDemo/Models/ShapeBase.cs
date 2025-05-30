@@ -1,13 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Media;
+using Avalonia.PropertyGrid.Samples.PainterDemo.ViewModel;
 using Avalonia.PropertyGrid.Services;
 using PropertyModels.ComponentModel;
 using PropertyModels.ComponentModel.DataAnnotations;
+using PropertyModels.Extensions;
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
 // ReSharper disable PropertyCanBeMadeInitOnly.Global
@@ -91,7 +95,7 @@ public abstract class ShapeBase : MiniReactiveObject
         set => SetProperty(ref _strokeColor, value);
     }
     
-    private double _strokeThickness = 1.0;
+    private double _strokeThickness = 2.0;
     [Category("Appearance")]
     [FloatPrecision(0)]
     public double StrokeThickness
@@ -154,6 +158,10 @@ public abstract class ShapeBase : MiniReactiveObject
     
     protected readonly SolidColorBrush FillBrush = new (Colors.Black);
     protected  readonly SolidColorBrush StrokeBrush = new (Colors.White);
+
+    protected double CreatingStartX;
+    protected double CreatingStartY;
+    
     #endregion
 
     #region Methods
@@ -196,6 +204,24 @@ public abstract class ShapeBase : MiniReactiveObject
         
         return true;
     }
+
+    public virtual void OnMousePressed(Point startPoint)
+    {
+        CreatingStartX = X = startPoint.X;
+        CreatingStartY = Y = startPoint.Y;
+    }
+
+    public virtual void OnMouseMove(Point point)
+    {
+        OnFinishCreate(point);
+    }
+
+    public virtual void OnMouseReleased(Point point)
+    {
+        OnFinishCreate(point);
+    }
+
+    protected abstract void OnFinishCreate(Point endPoint);
     #endregion
 }
 
@@ -230,4 +256,41 @@ public abstract class ShapeGenericPolygon : ShapeGeneric<Polygon>
     }
     
     protected abstract List<Point> GeneratePoints();
+}
+
+[AttributeUsage(AttributeTargets.Class)]
+public class ShapeDescriptionAttribute : Attribute
+{
+    public readonly ToolMode BindingMode;
+
+    public ShapeDescriptionAttribute(ToolMode bindingMode)
+    {
+        BindingMode = bindingMode;
+    }
+}
+
+public class ShapeFactory
+{
+    private static readonly Dictionary<ToolMode, Type> Creators = new ();
+    
+    static ShapeFactory()
+    {
+        foreach (var type in typeof(ShapeFactory).Assembly.GetTypes().ToList().FindAll(t =>
+                     t is { IsClass: true, IsAbstract: false } && t.IsSubclassOf(typeof(ShapeBase)) &&
+                     t.IsDefined<ShapeDescriptionAttribute>()))
+        {
+            var attr = type.GetAnyCustomAttribute<ShapeDescriptionAttribute>()!;
+            Creators[attr.BindingMode] = type;
+        }
+    }
+
+    public static ShapeBase? NewShape(ToolMode bindingMode)
+    {
+        if (Creators.TryGetValue(bindingMode, out var type))
+        {
+            return Activator.CreateInstance(type) as ShapeBase;
+        }
+
+        return null;
+    }
 }

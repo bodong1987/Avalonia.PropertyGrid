@@ -1,5 +1,7 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using Avalonia.Controls.Shapes;
+using Avalonia.PropertyGrid.Samples.PainterDemo.ViewModel;
 using PropertyModels.ComponentModel;
 using PropertyModels.ComponentModel.DataAnnotations;
 
@@ -14,6 +16,7 @@ public enum EllipseDetailType
     Circle
 }
 
+[ShapeDescription(ToolMode.CreateEllipse)]
 public class EllipseShape : ShapeGeneric<Ellipse>
 {
     private EllipseDetailType _ellipseDetailType;
@@ -84,6 +87,25 @@ public class EllipseShape : ShapeGeneric<Ellipse>
         {
             shape.Width = Radius * 2;
             shape.Height = Radius * 2;    
+        }
+    }
+
+    protected override void OnFinishCreate(Point endPoint)
+    {
+        try
+        {
+            BeginBatchUpdate();
+
+            X = Math.Min(endPoint.X, CreatingStartX);
+            Y = Math.Min(endPoint.Y, CreatingStartY);
+            
+            Width = Math.Abs(endPoint.X - CreatingStartX);
+            Height = Math.Abs(endPoint.Y - CreatingStartY);
+        }
+        finally
+        {
+            EndBatchUpdate();
+            RaisePropertyChanged(nameof(Width));
         }
     }
 }

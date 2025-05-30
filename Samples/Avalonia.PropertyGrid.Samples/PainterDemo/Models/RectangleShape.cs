@@ -1,5 +1,7 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using Avalonia.Controls.Shapes;
+using Avalonia.PropertyGrid.Samples.PainterDemo.ViewModel;
 using PropertyModels.ComponentModel;
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
@@ -7,6 +9,7 @@ using PropertyModels.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Samples.PainterDemo.Models;
 
+[ShapeDescription(ToolMode.CreateRectangle)]
 public class RectangleShape : ShapeGeneric<Rectangle>
 {
     private double _width;
@@ -31,5 +34,24 @@ public class RectangleShape : ShapeGeneric<Rectangle>
     {
         shape.Width = Width;
         shape.Height = Height;
+    }
+    
+    protected override void OnFinishCreate(Point endPoint)
+    {
+        try
+        {
+            BeginBatchUpdate();
+
+            X = Math.Min(endPoint.X, CreatingStartX);
+            Y = Math.Min(endPoint.Y, CreatingStartY);
+            
+            Width = Math.Abs(endPoint.X - CreatingStartX);
+            Height = Math.Abs(endPoint.Y - CreatingStartY);
+        }
+        finally
+        {
+            EndBatchUpdate();
+            RaisePropertyChanged(nameof(Width));
+        }
     }
 }

@@ -1,11 +1,13 @@
 ﻿using System.ComponentModel;
 using Avalonia.Controls.Shapes;
+using Avalonia.PropertyGrid.Samples.PainterDemo.ViewModel;
 using PropertyModels.ComponentModel;
 // ReSharper disable CompareOfFloatsByEqualityOperator
 // ReSharper disable PropertyCanBeMadeInitOnly.Global
 
 namespace Avalonia.PropertyGrid.Samples.PainterDemo.Models;
 
+[ShapeDescription(ToolMode.CreateLine)]
 public class LineShape : ShapeGeneric<Line>
 {
     private double _x2;
@@ -36,5 +38,11 @@ public class LineShape : ShapeGeneric<Line>
     {
         shape.StartPoint = new Point(0, 0);
         shape.EndPoint = new Point(X2, Y2);
+    }
+
+    protected override void OnFinishCreate(Point endPoint)
+    {
+        X2 = endPoint.X - CreatingStartX;
+        Y2 = endPoint.Y - CreatingStartY;
     }
 }

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Avalonia.PropertyGrid.Samples.PainterDemo.ViewModel;
 using PropertyModels.ComponentModel;
 // ReSharper disable CompareOfFloatsByEqualityOperator
 // ReSharper disable PropertyCanBeMadeInitOnly.Global
 
 namespace Avalonia.PropertyGrid.Samples.PainterDemo.Models;
 
+[ShapeDescription(ToolMode.CreateStar)]
 public class StarShape : ShapeGenericPolygon
 {
     private double _radius;
@@ -35,5 +37,20 @@ public class StarShape : ShapeGenericPolygon
         }
 
         return points;
+    }
+    
+    protected override void OnFinishCreate(Point endPoint)
+    {
+        try
+        {
+            BeginBatchUpdate();
+
+            Radius = Math.Sqrt((endPoint.X - X) * (endPoint.X - X) + (endPoint.Y - Y) * (endPoint.Y - Y));
+        }
+        finally
+        {
+            EndBatchUpdate();
+            RaisePropertyChanged(nameof(Radius));
+        }
     }
 }

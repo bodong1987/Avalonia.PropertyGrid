@@ -27,11 +27,36 @@ namespace PropertyModels.ComponentModel
         [Browsable(false)]
         public event PropertyChangedEventHandler? PropertyChanged;
 
+        private bool _batchUpdating = false;
+
+        /// <summary>
+        /// add batch update support
+        /// begin batch update
+        /// </summary>
+        public void BeginBatchUpdate()
+        {
+            _batchUpdating = true;
+        }
+
+        /// <summary>
+        /// finish batch update
+        /// </summary>
+        public void EndBatchUpdate()
+        {
+            _batchUpdating = false;
+        }
+
         /// <summary>
         /// Raises the property changed.
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
-        public void RaisePropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        public void RaisePropertyChanged(string propertyName)
+        {
+            if (!_batchUpdating)
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));      
+            }
+        } 
         
         /// <summary>
         /// help set property

@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using Avalonia.PropertyGrid.Samples.PainterDemo.ViewModel;
 using PropertyModels.ComponentModel;
 // ReSharper disable CompareOfFloatsByEqualityOperator
 // ReSharper disable PropertyCanBeMadeInitOnly.Global
 
 namespace Avalonia.PropertyGrid.Samples.PainterDemo.Models;
 
+[ShapeDescription(ToolMode.CreateArrow)]
 public class ArrowShape : ShapeGenericPolygon
 {
     private double _length;
@@ -62,5 +65,23 @@ public class ArrowShape : ShapeGenericPolygon
         };
 
         return points;
+    }
+
+    protected override void OnFinishCreate(Point endPoint)
+    {
+        try
+        {
+            BeginBatchUpdate();
+
+            Length = Math.Sqrt((endPoint.X - CreatingStartX) * (endPoint.X - CreatingStartX) + (endPoint.Y - CreatingStartY) * (endPoint.Y - CreatingStartY));
+            HeadWidth = 30;
+            HeadHeight = 30;
+            ShaftWidth = 10;
+        }
+        finally
+        {
+            EndBatchUpdate();
+            RaisePropertyChanged(nameof(Length));
+        }
     }
 }

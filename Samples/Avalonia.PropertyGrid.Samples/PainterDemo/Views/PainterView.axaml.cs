@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using Avalonia.Controls;
 using Avalonia.Input;
@@ -28,8 +29,8 @@ public partial class PainterView : UserControl
         RoutedEvent.Register<PainterView, ShapeSelectedEventArgs>(
             nameof(ShapeSelected), RoutingStrategies.Bubble);
 
-    private Point _contextMenuPosition;
-    private FreehandShape? _currentFreehandShape;
+    private ShapeBase? _creatingShape;
+    private AvaloniaShape? _creatingAvaloniaShape;
     
     public event EventHandler<ShapeSelectedEventArgs> ShapeSelected
     {
@@ -56,6 +57,39 @@ public partial class PainterView : UserControl
         RefreshShapes();
     }
 
+    public void RemoveShape(ShapeBase shape)
+    {
+        if (_shapesMapping.TryGetValue(shape, out var avaloniaShape))
+        {
+            MainCanvas.Children.Remove(avaloniaShape);
+            _shapesMapping.Remove(shape);
+            _avaloniaShapesMapping.Remove(avaloniaShape);
+            
+            var viewModel = (DataContext as PainterViewModel)!;
+            if (shape == viewModel.SelectedShape)
+            {
+                viewModel.SelectedShape = null;
+            }
+        }
+    }
+
+    public void AddShape(ShapeBase shape)
+    {
+        var avaloniaShape = shape.CreateAvaloniaShape();
+                
+        avaloniaShape.PointerEntered += OnAvaloniaShapePointerEntered;
+        avaloniaShape.PointerExited += OnAvaloniaShapePointerExited;
+        avaloniaShape.PointerPressed += OnAvaloniaShapePointerPressed;
+
+        shape.PropertyChanged += OnShapePropertyChanged;
+
+        shape.UpdateProperties(avaloniaShape);
+
+        _shapesMapping.Add(shape, avaloniaShape);
+        _avaloniaShapesMapping.Add(avaloniaShape, shape);
+        MainCanvas.Children.Add(avaloniaShape);
+    }
+
     private void RefreshShapes()
     {
         var viewModel = (DataContext as PainterViewModel)!;
@@ -65,14 +99,7 @@ public partial class PainterView : UserControl
             if (!shapes.Contains(pair.Key))
             {
                 // this is removed
-                MainCanvas.Children.Remove(pair.Value);
-                _shapesMapping.Remove(pair.Key);
-                _avaloniaShapesMapping.Remove(pair.Value);
-
-                if (viewModel.SelectedShape == pair.Key)
-                {
-                    viewModel.SelectedShape = null;
-                }
+                RemoveShape(pair.Key);
             }
         }
 
@@ -80,19 +107,7 @@ public partial class PainterView : UserControl
         {
             if (!_shapesMapping.ContainsKey(shape))
             {
-                var avaloniaShape = shape.CreateAvaloniaShape();
-                
-                avaloniaShape.PointerEntered += OnAvaloniaShapePointerEntered;
-                avaloniaShape.PointerExited += OnAvaloniaShapePointerExited;
-                avaloniaShape.PointerPressed += OnAvaloniaShapePointerPressed;
-
-                shape.PropertyChanged += OnShapePropertyChanged;
-
-                shape.UpdateProperties(avaloniaShape);
-
-                _shapesMapping.Add(shape, avaloniaShape);
-                _avaloniaShapesMapping.Add(avaloniaShape, shape);
-                MainCanvas.Children.Add(avaloniaShape);
+                AddShape(shape);
             }
         }
     }
@@ -159,18 +174,18 @@ public partial class PainterView : UserControl
         var point = e.GetPosition(MainCanvas);
         var viewModel = (DataContext as PainterViewModel)!;
         
+        // hook right button pressed, it always used to show context menu
         if (e.GetCurrentPoint(MainCanvas).Properties.IsRightButtonPressed)
         {
-            _contextMenuPosition = point; // Update the context menu position
-
             foreach (var shape in _avaloniaShapesMapping)
             {
                 if (shape.Key.IsPointerOver)
                 {
                     viewModel.SelectedShape = shape.Value;
-                    break;
+                    return;
                 }
             }
+            
             return;
         }
 
@@ -192,15 +207,22 @@ public partial class PainterView : UserControl
                     }
                 }
                 break;
-            case ToolMode.Brush:
-                _currentFreehandShape = new FreehandShape {StrokeColor = Colors.Red, FillColor = Colors.Red, StrokeThickness = 2};
-                _currentFreehandShape.Points.Add(point);
-                viewModel.Shapes.Add(_currentFreehandShape);
-                viewModel.SelectedShape = _currentFreehandShape;
-                e.Pointer.Capture(MainCanvas);
-                break;
             default:
-                throw new NotImplementedException();
+            {
+                var newShape = ShapeFactory.NewShape(viewModel.CurrentToolMode);
+                if (newShape == null)
+                {
+                    Debug.WriteLine($"Failed to create a new shape for mode: {viewModel.CurrentToolMode}");
+                    return;
+                }
+
+                _creatingShape = newShape;
+                
+                var currentPoint = e.GetPosition(MainCanvas);
+                _creatingShape.OnMousePressed(currentPoint);
+            }
+                break;
+                
         }
     }
     
@@ -218,14 +240,31 @@ public partial class PainterView : UserControl
             }
         }
         
-        if (_currentFreehandShape != null && e.Pointer.Captured != null)
+        if (_creatingShape != null && e.Pointer.Captured != null)
         {
             var currentPoint = e.GetPosition(MainCanvas);
-            _currentFreehandShape.Points.Add(currentPoint);
-            _currentFreehandShape.RaisePropertyChanged(nameof(_currentFreehandShape.Points));
+
+            _creatingShape.OnMouseMove(currentPoint);
+
+            if (_creatingAvaloniaShape == null)
+            {
+                _creatingAvaloniaShape = _creatingShape.CreateAvaloniaShape();
+                _creatingShape.UpdateProperties(_creatingAvaloniaShape);
+                MainCanvas.Children.Add(_creatingAvaloniaShape);
+
+                _creatingShape.PropertyChanged += OnCreatingShapePropertyChanged;
+            }
         }
     }
-    
+
+    private void OnCreatingShapePropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (_creatingShape != null && _creatingAvaloniaShape != null)
+        {
+            _creatingShape.UpdateProperties(_creatingAvaloniaShape);
+        }
+    }
+
     private void MainCanvas_PointerReleased(object? sender, PointerReleasedEventArgs e)
     {
         if (_draggedShape != null && e.Pointer.Captured != null)
@@ -237,88 +276,26 @@ public partial class PainterView : UserControl
             MainCanvas.Cursor = Cursor.Default;
         }
         
-        if (_currentFreehandShape != null && e.Pointer.Captured != null)
+        if (_creatingShape != null && e.Pointer.Captured != null)
         {
+            var currentPoint = e.GetPosition(MainCanvas);
+            _creatingShape.OnMouseReleased(currentPoint);
+            
+            if (_creatingAvaloniaShape != null)
+            {
+                MainCanvas.Children.Remove(_creatingAvaloniaShape);
+                _creatingAvaloniaShape = null;
+            }
+            
+            _creatingShape.PropertyChanged -= OnCreatingShapePropertyChanged;
+            (DataContext as PainterViewModel)!.Shapes.Add(_creatingShape);
+            (DataContext as PainterViewModel)!.SelectedShape = _creatingShape;
+            
             e.Pointer.Capture(null);
-            _currentFreehandShape = null;
+            _creatingShape = null;
         }
     }
-    
-    private void AddRectangle_Click(object? sender, RoutedEventArgs e)
-    {
-        var point = _contextMenuPosition;
-        var rectangle = new RectangleShape
-        {
-            X = point.X,
-            Y = point.Y,
-            Width = 300,
-            Height = 250,
-            FillColor = Colors.Gray
-        };
-        (DataContext as PainterViewModel)!.Shapes.Add(rectangle);
-        (DataContext as PainterViewModel)!.SelectedShape = rectangle;
-    }
-
-    private void AddEllipse_Click(object? sender, RoutedEventArgs e)
-    {
-        var point = _contextMenuPosition;
-        var circle = new EllipseShape
-        {
-            X = point.X,
-            Y = point.Y,
-            Radius = 150,
-            FillColor = Colors.Gray
-        };
-        (DataContext as PainterViewModel)!.Shapes.Add(circle);
-        (DataContext as PainterViewModel)!.SelectedShape = circle;
-    }
-
-    private void AddLine_Click(object? sender, RoutedEventArgs e)
-    {
-        var point = _contextMenuPosition;
-        var line = new LineShape
-        {
-            X = point.X,
-            Y = point.Y,
-            X2 = 100,
-            Y2 = 100,
-            FillColor = Colors.Gray
-        };
-        (DataContext as PainterViewModel)!.Shapes.Add(line);
-        (DataContext as PainterViewModel)!.SelectedShape = line;
-    }
-
-    private void AddStar_Click(object? sender, RoutedEventArgs e)
-    {
-        var point = _contextMenuPosition;
-        var star = new StarShape
-        {
-            X = point.X,
-            Y = point.Y,
-            Radius = 100,
-            FillColor = Colors.Gray
-        };
-        (DataContext as PainterViewModel)!.Shapes.Add(star);
-        (DataContext as PainterViewModel)!.SelectedShape = star;
-    }
-
-    private void AddArrow_Click(object? sender, RoutedEventArgs e)
-    {
-        var point = _contextMenuPosition;
-        var arrow = new ArrowShape
-        {
-            X = point.X,
-            Y = point.Y,
-            Length = 100,
-            HeadHeight = 30,
-            HeadWidth = 30,
-            ShaftWidth = 15,
-            FillColor = Colors.Gray
-        };
-        (DataContext as PainterViewModel)!.Shapes.Add(arrow);
-        (DataContext as PainterViewModel)!.SelectedShape = arrow;
-    }
-
+  
     private void DeleteShape_Click(object? sender, RoutedEventArgs e)
     {
         if ((DataContext as PainterViewModel)!.SelectedShape != null)
