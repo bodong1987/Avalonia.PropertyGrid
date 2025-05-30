@@ -29,6 +29,7 @@
                 PointerPressed="MainCanvas_PointerPressed"
                 PointerMoved="MainCanvas_PointerMoved"
                 PointerReleased="MainCanvas_PointerReleased"
+                ClipToBounds="True"
                 >
         </Canvas>
         <GridSplitter Grid.Column="2" Width="4" Background="Gray" VerticalAlignment="Stretch"  HorizontalAlignment="Center"

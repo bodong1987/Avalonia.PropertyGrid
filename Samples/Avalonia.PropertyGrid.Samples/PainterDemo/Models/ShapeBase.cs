@@ -6,6 +6,7 @@ using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Media;
+using Avalonia.PropertyGrid.Services;
 using PropertyModels.ComponentModel;
 using PropertyModels.ComponentModel.DataAnnotations;
 
@@ -22,6 +23,8 @@ public enum ShapeFillMode
 
 public abstract class ShapeBase : MiniReactiveObject
 {
+    public string Type => LocalizationService.Default[GetType().Name];
+    
     private double _x;
     
     [Category("Transform")]

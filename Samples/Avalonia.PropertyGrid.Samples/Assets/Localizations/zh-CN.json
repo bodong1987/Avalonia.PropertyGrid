@@ -328,5 +328,10 @@
     "CreateStar": "创建五角星",
     "CreateLine": "创建线段",
     "CreateArrow": "创建箭头",
-    "CreateHollowArrow": "创建空心箭头"
+    "CreateHollowArrow": "创建空心箭头",
+    "ArrowShape": "箭头",
+    "CircleShape": "圆形",
+    "LineShape": "线段",
+    "RectangleShape": "矩形",
+    "StarShape": "五角星"
 }
