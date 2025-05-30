@@ -1,15 +1,12 @@
 ﻿using System.ComponentModel;
-using Avalonia;
 using Avalonia.Controls.Shapes;
-using Avalonia.Media;
-using Avalonia.PropertyGrid.Samples.PainterDemo.Models;
 using PropertyModels.ComponentModel;
 // ReSharper disable CompareOfFloatsByEqualityOperator
 // ReSharper disable PropertyCanBeMadeInitOnly.Global
 
 namespace Avalonia.PropertyGrid.Samples.PainterDemo.Models;
 
-public class LineShape : ShapeBase
+public class LineShape : ShapeGeneric<Line>
 {
     private double _x2;
     private double _y2;
@@ -44,25 +41,14 @@ public class LineShape : ShapeBase
         }
     }
 
-    public override Shape CreateAvaloniaShape()
+    public LineShape()
     {
-        return new Line();
+        IsFillModeVisible = false;
     }
 
-    public override bool UpdateProperties(Shape shape)
+    protected override void ApplyProperties(Line shape)
     {
-        if (!base.UpdateProperties(shape))
-        {
-            return false;
-        }
-
-        if (shape is Line line)
-        {
-            line.StartPoint = new Point(0, 0);
-            line.EndPoint = new Point(X2, Y2);
-            return true;
-        }
-
-        return false;
-    }    
+        shape.StartPoint = new Point(0, 0);
+        shape.EndPoint = new Point(X2, Y2);
+    }
 }

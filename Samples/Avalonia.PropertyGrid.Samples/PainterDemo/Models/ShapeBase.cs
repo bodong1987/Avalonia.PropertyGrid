@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
 using Avalonia.Collections;
@@ -52,12 +53,17 @@ public abstract class ShapeBase : MiniReactiveObject
             }
         }
     }
+
+    [Browsable(false)]
+    [ConditionTarget]
+    protected bool IsFillModeVisible { get; set; } = true;
     
     private ShapeFillMode _fillMode = ShapeFillMode.Fill;
 
-    [Category("Apperance")]
+    [Category("Appearance")]
     [ConditionTarget]
     [SingleSelectionMode(SingleSelectionMode.ToggleButtonGroup)]
+    [VisibilityPropertyCondition(nameof(IsFillModeVisible), true)]
     public ShapeFillMode FillMode
     {
         get => _fillMode;
@@ -258,4 +264,37 @@ public abstract class ShapeBase : MiniReactiveObject
         // ReSharper disable once RedundantSuppressNullableWarningExpression
         RaisePropertyChanged(propertyName!);
     }
+}
+
+public abstract class ShapeGeneric<T> : ShapeBase where T : Shape, new()
+{
+    public override Shape CreateAvaloniaShape() => new T();
+
+    public override bool UpdateProperties(Shape shape)
+    {
+        if (!base.UpdateProperties(shape))
+        {
+            return false;
+        }
+
+        if (shape is T tShape)
+        {
+            ApplyProperties(tShape);
+            return true;
+        }
+
+        return false;
+    }
+
+    protected abstract void ApplyProperties(T shape);
+}
+
+public abstract class ShapeGenericPolygon : ShapeGeneric<Polygon>
+{
+    protected override void ApplyProperties(Polygon shape)
+    {
+        shape.Points = GeneratePoints();
+    }
+    
+    protected abstract List<Point> GeneratePoints();
 }

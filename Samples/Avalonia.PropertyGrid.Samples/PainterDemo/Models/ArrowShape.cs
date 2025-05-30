@@ -1,16 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
-using Avalonia.Controls.Shapes;
-using Avalonia.Media;
 using PropertyModels.ComponentModel;
 // ReSharper disable CompareOfFloatsByEqualityOperator
 // ReSharper disable PropertyCanBeMadeInitOnly.Global
 
 namespace Avalonia.PropertyGrid.Samples.PainterDemo.Models;
 
-public class ArrowShape : ShapeBase
+public class ArrowShape : ShapeGenericPolygon
 {
     private double _length;
+    private double _shaftWidth;
+    private double _headWidth;
+    private double _headHeight;
 
     [Category("Transform")]
     [FloatPrecision(0)]
@@ -27,38 +28,67 @@ public class ArrowShape : ShapeBase
         }
     }
 
-    public override Shape CreateAvaloniaShape()
+    [Category("Transform")]
+    [FloatPrecision(0)]
+    public double ShaftWidth
     {
-        var arrow = new Polyline();
-        return arrow;
+        get => _shaftWidth;
+        set
+        {
+            if (_shaftWidth != value)
+            {
+                _shaftWidth = value;
+                NotifyPropertyChanged();
+            }
+        }
     }
 
-    public override bool UpdateProperties(Shape shape)
+    [Category("Transform")]
+    [FloatPrecision(0)]
+    public double HeadWidth
     {
-        if (!base.UpdateProperties(shape))
+        get => _headWidth;
+        set
         {
-            return false;
+            if (_headWidth != value)
+            {
+                _headWidth = value;
+                NotifyPropertyChanged();
+            }
         }
-
-        if (shape is Polyline arrow)
-        {
-            arrow.Points = CalculateArrowPoints(0, 0, Length);
-            return true;
-        }
-
-        return false;
     }
 
-    private static List<Point> CalculateArrowPoints(double startX, double startY, double length)
+    [Category("Transform")]
+    [FloatPrecision(0)]
+    public double HeadHeight
+    {
+        get => _headHeight;
+        set
+        {
+            if (_headHeight != value)
+            {
+                _headHeight = value;
+                NotifyPropertyChanged();
+            }
+        }
+    }
+
+    protected override List<Point> GeneratePoints() => CalculateArrowPoints();
+
+    private List<Point> CalculateArrowPoints()
     {
         var points = new List<Point>
         {
-            new Point(startX, startY),
-            new Point(startX + length, startY),
-            new Point(startX + length - 10, startY - 5),
-            new Point(startX + length, startY),
-            new Point(startX + length - 10, startY + 5)
+            new Point(0, -ShaftWidth / 2), // Start of the shaft
+            new Point(Length - HeadWidth, -ShaftWidth / 2), // End of the shaft
+            new Point(Length - HeadWidth, -HeadHeight / 2), // Top of the arrowhead
+            new Point(Length, 0), // Tip of the arrowhead
+            new Point(Length - HeadWidth, HeadHeight / 2), // Bottom of the arrowhead
+            new Point(Length - HeadWidth, ShaftWidth / 2), // End of the shaft
+            new Point(0, ShaftWidth / 2), // Start of the shaft
+            new Point(0, -ShaftWidth / 2) // Close the shape
         };
+
         return points;
     }
 }

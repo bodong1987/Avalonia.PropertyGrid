@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using Avalonia.Controls;
 using Avalonia.PropertyGrid.Services;
 using Avalonia.Reactive;

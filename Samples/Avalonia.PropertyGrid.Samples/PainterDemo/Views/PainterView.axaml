@@ -21,7 +21,6 @@
             <RadioButton Content="{ll:Localize CreateLine}" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.CreateLine}}" GroupName="Mode" />
             <RadioButton Content="{ll:Localize CreateStar}" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.CreateStar}}" GroupName="Mode" />
             <RadioButton Content="{ll:Localize CreateArrow}" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.CreateArrow}}" GroupName="Mode" />
-            <RadioButton Content="{ll:Localize CreateHollowArrow}" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.CreateHollowArrow}}" GroupName="Mode" />
         </StackPanel>
         
         <Canvas Grid.Column="1" 

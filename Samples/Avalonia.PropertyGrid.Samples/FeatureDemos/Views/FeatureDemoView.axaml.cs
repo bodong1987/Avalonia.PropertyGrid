@@ -4,7 +4,6 @@ using Avalonia.PropertyGrid.Controls;
 using Avalonia.PropertyGrid.Samples.FeatureDemos.Models;
 using Avalonia.PropertyGrid.Samples.FeatureDemos.ViewModels;
 using Avalonia.PropertyGrid.ViewModels;
-using Avalonia.Styling;
 using PropertyModels.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Views;

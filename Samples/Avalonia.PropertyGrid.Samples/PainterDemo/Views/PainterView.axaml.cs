@@ -162,6 +162,7 @@ public partial class PainterView : UserControl
                     FillColor = Colors.Gray
                 };
                 viewModel.Shapes.Add(rectangle);
+                viewModel.SelectedShape = rectangle;
                 break;
 
             case ToolMode.CreateCircle:
@@ -173,6 +174,7 @@ public partial class PainterView : UserControl
                     FillColor = Colors.Gray
                 };
                 viewModel.Shapes.Add(circle);
+                viewModel.SelectedShape = circle;
                 break;
             case ToolMode.CreateLine:
                 var line = new LineShape
@@ -184,6 +186,7 @@ public partial class PainterView : UserControl
                     FillColor = Colors.Gray
                 };
                 viewModel.Shapes.Add(line);
+                viewModel.SelectedShape = line;
                 break;
 
             case ToolMode.CreateStar:
@@ -195,21 +198,11 @@ public partial class PainterView : UserControl
                     FillColor = Colors.Gray
                 };
                 viewModel.Shapes.Add(star);
+                viewModel.SelectedShape = star;
                 break;
 
             case ToolMode.CreateArrow:
                 var arrow = new ArrowShape
-                {
-                    X = point.X,
-                    Y = point.Y,
-                    Length = 100, // Default length
-                    FillColor = Colors.Gray
-                };
-                viewModel.Shapes.Add(arrow);
-                break;
-            
-            case ToolMode.CreateHollowArrow:
-                var hollowArrow = new HollowArrowShape()
                 {
                     X = point.X,
                     Y = point.Y,
@@ -219,7 +212,8 @@ public partial class PainterView : UserControl
                     ShaftWidth = 15,
                     FillColor = Colors.Gray
                 };
-                viewModel.Shapes.Add(hollowArrow);
+                viewModel.Shapes.Add(arrow);
+                viewModel.SelectedShape = arrow;
                 break;
 
             case ToolMode.Select:
@@ -237,9 +231,6 @@ public partial class PainterView : UserControl
                         break;
                     }
                 }
-                break;
-            default:
-                // Handle selection logic if needed
                 break;
         }
 

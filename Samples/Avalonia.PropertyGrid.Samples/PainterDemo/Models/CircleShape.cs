@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using Avalonia.Controls.Shapes;
-using Avalonia.Media;
 using PropertyModels.ComponentModel;
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
@@ -8,7 +7,7 @@ using PropertyModels.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Samples.PainterDemo.Models;
 
-public class CircleShape : ShapeBase
+public class CircleShape : ShapeGeneric<Ellipse>
 {
     private double _radius;
     [Category("Transform")]
@@ -26,26 +25,9 @@ public class CircleShape : ShapeBase
         }
     }
 
-    public override Shape CreateAvaloniaShape()
+    protected override void ApplyProperties(Ellipse shape)
     {
-        // Create an Ellipse for CircleShape
-        return new Ellipse();
-    }
-
-    public override bool UpdateProperties(Shape shape)
-    {
-        if (!base.UpdateProperties(shape))
-        {
-            return false;
-        }
-        
-        if (shape is Ellipse ellipse)
-        {
-            ellipse.Width = Radius * 2;
-            ellipse.Height = Radius * 2;
-            return true;
-        }
-        
-        return false;
+        shape.Width = Radius * 2;
+        shape.Height = Radius * 2;
     }
 }

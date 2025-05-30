@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using Avalonia.Controls.Shapes;
-using Avalonia.Media;
 using PropertyModels.ComponentModel;
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
@@ -8,7 +7,7 @@ using PropertyModels.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Samples.PainterDemo.Models;
 
-public class RectangleShape : ShapeBase
+public class RectangleShape : ShapeGeneric<Rectangle>
 {
     private double _width;
     [Category("Transform")]
@@ -41,26 +40,10 @@ public class RectangleShape : ShapeBase
             }
         }
     }
-    
-    public override Shape CreateAvaloniaShape()
-    {
-        return new Rectangle();
-    }
 
-    public override bool UpdateProperties(Shape shape)
+    protected override void ApplyProperties(Rectangle shape)
     {
-        if (!base.UpdateProperties(shape))
-        {
-            return false;
-        }
-        
-        if (shape is Rectangle rectangle)
-        {
-            rectangle.Width = Width;
-            rectangle.Height = Height;
-            return true;
-        }
-        
-        return false;
+        shape.Width = Width;
+        shape.Height = Height;
     }
 }
