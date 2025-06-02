@@ -79,6 +79,7 @@ PropertyModels.ComponentModel.DataAnnotations.EnumProhibitValuesAttribute<T>    
 PropertyModels.ComponentModel.DataAnnotations.EnumProhibitNamesAttribute            /* 基于枚举名称 */
 PropertyModels.ComponentModel.DataAnnotations.IEnumValueAuthorizeAttribute          /* 基于此接口创建自定义枚举值过滤器 */
 PropertyModels.ComponentModel.DataAnnotations.ImagePreviewModeAttribute             /* 设置图像显示模式 */
+PropertyModels.ComponentModel.DataAnnotations.FloatingNumberEqualToleranceAttribute /* 你可以用这个标签来标记一个浮点数的容忍值，当变化差小于这个值时，就认为没有变化。 */  
 PropertyModels.ComponentModel.SingleSelectionModeAttribute                          /* 设置枚举/可选列表视图模式，使用组合框/切换按钮组/单选按钮组 */  
 PropertyModels.ComponentModel.UnitAttribute                                         /* 用于在显示名称旁显示单位 */  
 PropertyModels.ComponentModel.PropertyOperationVisibilityAttribute                  /* 用于指定额外操作区域是否可见，默认值是由属性自行决定。*/  

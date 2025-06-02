@@ -77,10 +77,11 @@ PropertyModels.ComponentModel.DataAnnotations.EnumProhibitValuesAttribute<T>    
 PropertyModels.ComponentModel.DataAnnotations.EnumProhibitNamesAttribute            /* based on enum names */
 PropertyModels.ComponentModel.DataAnnotations.IEnumValueAuthorizeAttribute          /* create your custom enum value filter based on this interface */
 PropertyModels.ComponentModel.DataAnnotations.ImagePreviewModeAttribute             /* set image display mode */
+PropertyModels.ComponentModel.DataAnnotations.FloatingNumberEqualToleranceAttribute /* You can use this tag to mark the tolerance value of a floating point number. When the change difference is less than this value, it is considered that there is no change. */
 PropertyModels.ComponentModel.SingleSelectionModeAttribute                          /* set enum/selectablelist view mode, use combobox/togglebutton group/radiobox group */
 PropertyModels.ComponentModel.UnitAttribute                                         /* used to display a unit next to the display name */  
 PropertyModels.ComponentModel.PropertyOperationVisibilityAttribute                  /* Used to specify whether the additional operation area is visible. The default value is determined by the property. */  
-PropertyModels.ComponentModel.SelectableListDisplayModeAttribute                    /* Used to specify the display view category of the selectable list type. The default is horizontal arrangement + automatic line wrap, and it can also be configured to other types. */  
+PropertyModels.ComponentModel.SelectableListDisplayModeAttribute                    /* Used to specify the display view category of the selectable list type. The default is horizontal arrangement + automatic line wrap, and it can also be configured to other types. */   
 ```
 
 ### Supported Builtin Types

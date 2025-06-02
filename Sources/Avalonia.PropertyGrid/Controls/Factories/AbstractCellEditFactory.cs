@@ -87,6 +87,18 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         }
 
         /// <summary>
+        /// make child factory can override property changed testing
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="value"></param>
+        /// <param name="oldValue"></param>
+        /// <returns></returns>
+        protected virtual bool CheckIsPropertyChanged(PropertyCellContext context, object? value, out object? oldValue)
+        {
+            return context.Property.IsPropertyChanged(context.Target, value, out oldValue);
+        }
+
+        /// <summary>
         /// Sets the and raise.
         /// </summary>
         /// <param name="context">The context.</param>
@@ -95,7 +107,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         protected virtual void SetAndRaise(PropertyCellContext context, Control sourceControl, object? value)
         {
             // If the cell value has changed compared to the associated value...
-            if (context.Property.IsPropertyChanged(context.Target, value, out var oldValue))
+            if (CheckIsPropertyChanged(context, value, out var oldValue))
             {
                 // ...we execute the 'HandleSetValue' command to update the associated value and the view.
                 var command = new GenericCancelableCommand(

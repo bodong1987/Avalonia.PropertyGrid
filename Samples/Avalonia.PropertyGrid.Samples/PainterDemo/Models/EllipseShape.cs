@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using Avalonia.Controls.Shapes;
 using Avalonia.PropertyGrid.Samples.PainterDemo.ViewModel;
 using PropertyModels.ComponentModel;
@@ -21,6 +22,7 @@ public class EllipseShape : ShapeGeneric<Ellipse>
 {
     private EllipseDetailType _ellipseDetailType;
 
+    [ConditionTarget]
     public EllipseDetailType EllipseDetailType
     {
         get => _ellipseDetailType;
@@ -40,6 +42,9 @@ public class EllipseShape : ShapeGeneric<Ellipse>
             {
                 _width = _radius * 2;
                 _height = _radius * 2;
+                
+                RaisePropertyChanged(nameof(Width));
+                RaisePropertyChanged(nameof(Height));
             }
         }
     }
@@ -56,6 +61,8 @@ public class EllipseShape : ShapeGeneric<Ellipse>
             if (SetProperty(ref _width, value))
             {
                 _radius = _width / 2;
+                
+                RaisePropertyChanged(nameof(Radius));
             }
         }
     }
@@ -72,6 +79,8 @@ public class EllipseShape : ShapeGeneric<Ellipse>
             if (SetProperty(ref _height, value))
             {
                 _radius = _height / 2;
+                
+                RaisePropertyChanged(nameof(Radius));
             }
         }
     }
@@ -99,8 +108,10 @@ public class EllipseShape : ShapeGeneric<Ellipse>
             X = Math.Min(endPoint.X, CreatingStartX);
             Y = Math.Min(endPoint.Y, CreatingStartY);
             
-            Width = Math.Abs(endPoint.X - CreatingStartX);
-            Height = Math.Abs(endPoint.Y - CreatingStartY);
+            _width = Math.Abs(endPoint.X - CreatingStartX);
+            _height = Math.Abs(endPoint.Y - CreatingStartY);
+            
+            // Debug.WriteLine($"{_width} {_height}");
         }
         finally
         {

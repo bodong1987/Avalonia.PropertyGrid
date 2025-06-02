@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using Avalonia.Controls;
 using PropertyModels.ComponentModel;
+using PropertyModels.ComponentModel.DataAnnotations;
 using PropertyModels.Extensions;
 using PropertyModels.Utils;
 
@@ -20,6 +21,28 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// </summary>
         /// <value>The import priority.</value>
         public override int ImportPriority => base.ImportPriority - 10000000;
+
+        /// <summary>
+        /// float equal test tolerance
+        /// </summary>
+#pragma warning disable CA2211
+        public static float FloatEqualTolerance = 0.00001f;
+#pragma warning restore CA2211
+        
+        /// <summary>
+        /// double equal tolerance
+        /// </summary>
+#pragma warning disable CA2211
+        public static double DoubleEqualTolerance = 0.00001;
+#pragma warning restore CA2211
+        
+        /// <summary>
+        /// decimal equal tolerance
+        /// </summary>
+#pragma warning disable CA2211
+        public static decimal DecimalEqualTolerance = (decimal)0.00001;
+#pragma warning restore CA2211
+        
 
         /// <summary>
         /// Handles the new property.
@@ -150,6 +173,57 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             {
                 base.HandleReadOnlyStateChanged(control, readOnly);
             }
+        }
+
+        /// <inheritdoc />
+        protected override bool CheckIsPropertyChanged(PropertyCellContext context, object? value, out object? oldValue)
+        {
+            if (context.Property.PropertyType == typeof(double) || 
+                context.Property.PropertyType == typeof(float) ||
+                context.Property.PropertyType == typeof(decimal))
+            {
+                // for .net standard 2.1
+                // ReSharper disable once AssignNullToNotNullAttribute
+                var obj = context.GetValue();
+                oldValue = obj;
+
+                if (obj == null && value == null)
+                {
+                    return false;
+                }
+
+                if (context.Property.PropertyType == typeof(double))
+                {
+                    var oValue = Convert.ToDouble(obj);
+                    var nValue = Convert.ToDouble(value);
+                    
+                    var tolerance = context.Property.GetCustomAttribute<FloatingNumberEqualToleranceAttribute>()?.Tolerance ?? DoubleEqualTolerance;
+
+                    return Math.Abs(nValue - oValue) > tolerance;
+                }
+                
+                if (context.Property.PropertyType == typeof(float))
+                {
+                    var oValue = Convert.ToSingle(obj);
+                    var nValue = Convert.ToSingle(value);
+                    
+                    var tolerance = context.Property.GetCustomAttribute<FloatingNumberEqualToleranceAttribute>()?.Tolerance ?? FloatEqualTolerance;
+
+                    return Math.Abs(nValue - oValue) > tolerance;
+                }
+
+                if (context.Property.PropertyType == typeof(decimal))
+                {
+                    var oValue = Convert.ToDecimal(obj);
+                    var nValue = Convert.ToDecimal(value);
+                    var v = context.Property.GetCustomAttribute<FloatingNumberEqualToleranceAttribute>()?.Tolerance;
+                    var tolerance = v != null ? (decimal)(float)v : DecimalEqualTolerance;
+
+                    return Math.Abs(nValue - oValue) > tolerance;
+                }
+            }
+            
+            return base.CheckIsPropertyChanged(context, value, out oldValue);
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Avalonia.Collections;
 using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
@@ -165,6 +166,15 @@ public abstract class ShapeBase : MiniReactiveObject
     #endregion
 
     #region Methods
+    protected bool SetProperty(ref double field, double value, [CallerMemberName] string? propertyName = null)
+    {
+        if (Math.Abs(field - value) < 0.00001)
+            return false;
+        field = value;
+        RaisePropertyChanged(propertyName!);
+        return true;
+    }
+    
     public abstract Shape CreateAvaloniaShape();
 
     public virtual bool UpdateProperties(Shape shape)

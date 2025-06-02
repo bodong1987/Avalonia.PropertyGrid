@@ -27,6 +27,23 @@
             <RadioButton Content="{ll:Localize CreateStar}" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.CreateStar}}" GroupName="Mode" Margin="4" />
             <RadioButton Content="{ll:Localize CreateArrow}" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.CreateArrow}}" GroupName="Mode" Margin="4" />
             <TextBlock Text="{ll:Localize PainterDemo_HelpText}" MaxWidth="120" TextWrapping="Wrap" Margin="4"></TextBlock>
+            
+            <StackPanel Orientation="Vertical" Margin="6">
+                <Button IsEnabled="{Binding CanUndo}"
+                        Content="{ll:Localize Undo}" Margin="2"
+                        Command="{Binding UndoCommand}"
+                        ToolTip.Tip="{Binding UndoDescription}"
+                ></Button>
+                <Button IsEnabled="{Binding CanRedo}"
+                        Content="{ll:Localize Redo}" Margin="2"
+                        Command="{Binding RedoCommand}"
+                        ToolTip.Tip="{Binding RedoDescription}"
+                ></Button>
+                <Button Content="{ll:Localize Clear}" Margin="2"
+                        Command="{Binding ClearCommand}"
+                        ToolTip.Tip="Clear all cached commands"
+                ></Button>
+            </StackPanel>
         </StackPanel>
         
         <Canvas Grid.Column="1" 
@@ -49,7 +66,11 @@
                       ></GridSplitter>
         
         <ScrollViewer Grid.Column="3">
-            <pg:PropertyGrid x:Name="ShapePropertyGrid" DataContext="{Binding SelectedShape}" ShowTitle="True"/>    
+            <pg:PropertyGrid x:Name="ShapePropertyGrid" 
+                             DataContext="{Binding SelectedShape}" 
+                             ShowTitle="True"
+                             CommandExecuted="OnPropertyGridCommandExecuted"
+                             />    
         </ScrollViewer>
     </Grid>
 </UserControl>

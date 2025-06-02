@@ -8,8 +8,11 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.PropertyGrid.Controls;
 using Avalonia.PropertyGrid.Samples.PainterDemo.Models;
 using Avalonia.PropertyGrid.Samples.PainterDemo.ViewModel;
+using PropertyModels.ComponentModel;
+
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Avalonia.PropertyGrid.Samples.PainterDemo.Views;
@@ -22,8 +25,11 @@ public partial class PainterView : UserControl
     private readonly Dictionary<AvaloniaShape, ShapeBase> _avaloniaShapesMapping = new ();
     
     private AvaloniaShape? _draggedShape;
+    private ShapeBase? _draggedShapeBase;
     private Point _dragStartPoint;
     private Point _shapeStartPoint;
+    private Point _shapeEndPoint;
+    private bool _hasDragged = false;
     
     public static readonly RoutedEvent<ShapeSelectedEventArgs> ShapeSelectedEvent =
         RoutedEvent.Register<PainterView, ShapeSelectedEventArgs>(
@@ -192,13 +198,14 @@ public partial class PainterView : UserControl
         switch (viewModel.CurrentToolMode)
         {
             case ToolMode.Select:
-                foreach (var shape in _avaloniaShapesMapping.Keys)
+                foreach (var (shape, shapeBase) in _avaloniaShapesMapping)
                 {
                     if (shape.IsPointerOver)
                     {
                         _draggedShape = shape;
+                        _draggedShapeBase = shapeBase; 
                         _dragStartPoint = point;
-                        _shapeStartPoint = new Point(_avaloniaShapesMapping[shape].X, _avaloniaShapesMapping[shape].Y);
+                        _shapeStartPoint = new Point(shapeBase.X, shapeBase.Y);
                         e.Pointer.Capture(MainCanvas);
                         
                         MainCanvas.Cursor = new Cursor(StandardCursorType.DragMove);
@@ -235,8 +242,11 @@ public partial class PainterView : UserControl
 
             if (_avaloniaShapesMapping.TryGetValue(_draggedShape, out var baseShape))
             {
+                _hasDragged = true;
+                
                 baseShape.X = _shapeStartPoint.X + delta.X;
                 baseShape.Y = _shapeStartPoint.Y + delta.Y;
+                _shapeEndPoint = new Point(baseShape.X, baseShape.Y);
             }
         }
         
@@ -269,8 +279,34 @@ public partial class PainterView : UserControl
     {
         if (_draggedShape != null && e.Pointer.Captured != null)
         {
+            if (_hasDragged)
+            {
+                _hasDragged = false;
+                
+                var startPos = _shapeStartPoint;
+                var endPos = _shapeEndPoint;
+                var shapeBase = _draggedShapeBase!;
+            
+                var command = new GenericCancelableCommand(
+                    $"Drag {shapeBase!.Type}",
+                    () =>
+                    {
+                        shapeBase.X = endPos.X;
+                        shapeBase.Y = endPos.Y;
+                        return true;
+                    },
+                    () =>
+                    {
+                        shapeBase.X = startPos.X;
+                        shapeBase.Y = startPos.Y;
+                        return true;
+                    });
+                (DataContext as PainterViewModel)?.ExecuteCommand(command);    
+            }
+            
             e.Pointer.Capture(null);
             _draggedShape = null;
+            _draggedShapeBase = null;
             
             // Restore default cursor
             MainCanvas.Cursor = Cursor.Default;
@@ -288,8 +324,28 @@ public partial class PainterView : UserControl
             }
             
             _creatingShape.PropertyChanged -= OnCreatingShapePropertyChanged;
-            (DataContext as PainterViewModel)!.Shapes.Add(_creatingShape);
-            (DataContext as PainterViewModel)!.SelectedShape = _creatingShape;
+
+            var capturedShape = _creatingShape;
+            
+            var command = new GenericCancelableCommand(
+                $"Create {capturedShape.Type}",
+                () =>
+                {
+                    (DataContext as PainterViewModel)!.Shapes.Add(capturedShape);
+                    (DataContext as PainterViewModel)!.SelectedShape = capturedShape;
+                    return true;
+                },
+                () =>
+                {
+                    (DataContext as PainterViewModel)!.Shapes.Remove(capturedShape);
+                    if ((DataContext as PainterViewModel)!.SelectedShape == capturedShape)
+                    {
+                        (DataContext as PainterViewModel)!.SelectedShape = null;
+                    }
+
+                    return true;
+                });
+            (DataContext as PainterViewModel)?.ExecuteCommand(command);
             
             e.Pointer.Capture(null);
             _creatingShape = null;
@@ -304,10 +360,36 @@ public partial class PainterView : UserControl
   
     private void DeleteShape_Click(object? sender, RoutedEventArgs e)
     {
-        if ((DataContext as PainterViewModel)!.SelectedShape != null)
+        var selectedShape = (DataContext as PainterViewModel)?.SelectedShape;
+        if (selectedShape == null)
         {
-            (DataContext as PainterViewModel)!.Shapes.Remove((DataContext as PainterViewModel)!.SelectedShape!);
+            return;
         }
+        
+        var command = new GenericCancelableCommand(
+            $"Remove {selectedShape.Type}",
+            () =>
+            {
+                (DataContext as PainterViewModel)!.Shapes.Remove(selectedShape);
+                if ((DataContext as PainterViewModel)!.SelectedShape == selectedShape)
+                {
+                    (DataContext as PainterViewModel)!.SelectedShape = null;
+                }
+
+                return true;
+            },
+            () =>
+            {
+                (DataContext as PainterViewModel)!.Shapes.Add(selectedShape);
+                (DataContext as PainterViewModel)!.SelectedShape = selectedShape;
+                return true;
+            });
+        (DataContext as PainterViewModel)?.ExecuteCommand(command);
+    }
+
+    private void OnPropertyGridCommandExecuted(object? sender, RoutedCommandExecutedEventArgs e)
+    {
+        (DataContext as PainterViewModel)?.OnCommandExecuted(sender, e);
     }
 }
 
