@@ -11,62 +11,67 @@
         <lvm:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
     </UserControl.Resources>
     
-    <Grid ColumnDefinitions="Auto,6*,Auto,4*">
+    <Grid ColumnDefinitions="Auto,Auto,6*,Auto,4*">
         <!-- Toolbar -->
-        <StackPanel Grid.Column="0" Orientation="Vertical" Background="#333333" Spacing="4" Margin="4">
-            <!-- ReSharper disable Xaml.BindingWithoutContextNotResolved -->
-            <RadioButton Content="{ll:Localize Select}" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.Select}}" GroupName="Mode" Margin="4" />
-            <RadioButton Content="{ll:Localize Brush}" 
-                         IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.Brush}}" 
-                         GroupName="Mode" 
-                         Margin="4" />
-            
-            <RadioButton Content="{ll:Localize CreateLine}" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.CreateLine}}" GroupName="Mode" Margin="4" />
-            <RadioButton Content="{ll:Localize CreateRectangle}" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.CreateRectangle}}" GroupName="Mode"  Margin="4"/>
-            <RadioButton Content="{ll:Localize CreateEllipse}" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.CreateEllipse}}" GroupName="Mode" Margin="4" />
-            <RadioButton Content="{ll:Localize CreateStar}" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.CreateStar}}" GroupName="Mode" Margin="4" />
-            <RadioButton Content="{ll:Localize CreateArrow}" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.CreateArrow}}" GroupName="Mode" Margin="4" />
-            
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{ll:Localize FillColor}" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
-                <ColorPicker Color="{Binding DefaultFillColor}" HorizontalAlignment="Center" VerticalAlignment="Center"></ColorPicker>
+        <ScrollViewer Grid.Column="0">
+            <StackPanel Orientation="Vertical" Background="#333333" Spacing="4" Margin="4">
+                <!-- ReSharper disable Xaml.BindingWithoutContextNotResolved -->
+                <RadioButton Content="{ll:Localize Select}" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.Select}}" GroupName="Mode" Margin="4" />
+                <RadioButton Content="{ll:Localize Brush}" 
+                             IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.Brush}}" 
+                             GroupName="Mode" 
+                             Margin="4" />
+                
+                <RadioButton Content="{ll:Localize CreateLine}" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.CreateLine}}" GroupName="Mode" Margin="4" />
+                <RadioButton Content="{ll:Localize CreateRectangle}" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.CreateRectangle}}" GroupName="Mode"  Margin="4"/>
+                <RadioButton Content="{ll:Localize CreateEllipse}" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.CreateEllipse}}" GroupName="Mode" Margin="4" />
+                <RadioButton Content="{ll:Localize CreateStar}" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.CreateStar}}" GroupName="Mode" Margin="4" />
+                <RadioButton Content="{ll:Localize CreateArrow}" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.CreateArrow}}" GroupName="Mode" Margin="4" />
+                
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{ll:Localize FillColor}" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                    <ColorPicker Color="{Binding DefaultFillColor}" HorizontalAlignment="Center" VerticalAlignment="Center"></ColorPicker>
+                </StackPanel>
+                
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="{ll:Localize BorderColor}" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                    <ColorPicker Color="{Binding DefaultBorderColor}" HorizontalAlignment="Center" VerticalAlignment="Center"></ColorPicker>
+                </StackPanel>
+                
+                <TextBlock Text="{Binding DefaultStrokeThickness, StringFormat={}{0:0}}" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                <Slider Minimum="1" Maximum="50" Value="{Binding DefaultStrokeThickness}"></Slider>
+                            
+                <StackPanel Orientation="Vertical" Margin="6">
+                    <Button IsEnabled="{Binding CanUndo}"
+                            Content="{ll:Localize Undo}" Margin="2"
+                            Command="{Binding UndoCommand}"
+                            ToolTip.Tip="{Binding UndoDescription}"
+                    ></Button>
+                    <Button IsEnabled="{Binding CanRedo}"
+                            Content="{ll:Localize Redo}" Margin="2"
+                            Command="{Binding RedoCommand}"
+                            ToolTip.Tip="{Binding RedoDescription}"
+                    ></Button>
+                    <Button Content="{ll:Localize Clear}" Margin="2"
+                            Command="{Binding ClearCommand}"
+                            ToolTip.Tip="Clear all cached commands"
+                    ></Button>
+                </StackPanel>
+                <TextBlock Text="{ll:Localize PainterDemo_HelpText}" MaxWidth="160" TextWrapping="Wrap" Margin="4"></TextBlock>
             </StackPanel>
-            
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{ll:Localize BorderColor}" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
-                <ColorPicker Color="{Binding DefaultBorderColor}" HorizontalAlignment="Center" VerticalAlignment="Center"></ColorPicker>
-            </StackPanel>
-            
-            <TextBlock Text="{Binding DefaultStrokeThickness, StringFormat={}{0:0}}" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
-            <Slider Minimum="1" Maximum="50" Value="{Binding DefaultStrokeThickness}"></Slider>
-            
-            <TextBlock Text="{ll:Localize PainterDemo_HelpText}" MaxWidth="120" TextWrapping="Wrap" Margin="4"></TextBlock>
-            
-            <StackPanel Orientation="Vertical" Margin="6">
-                <Button IsEnabled="{Binding CanUndo}"
-                        Content="{ll:Localize Undo}" Margin="2"
-                        Command="{Binding UndoCommand}"
-                        ToolTip.Tip="{Binding UndoDescription}"
-                ></Button>
-                <Button IsEnabled="{Binding CanRedo}"
-                        Content="{ll:Localize Redo}" Margin="2"
-                        Command="{Binding RedoCommand}"
-                        ToolTip.Tip="{Binding RedoDescription}"
-                ></Button>
-                <Button Content="{ll:Localize Clear}" Margin="2"
-                        Command="{Binding ClearCommand}"
-                        ToolTip.Tip="Clear all cached commands"
-                ></Button>
-            </StackPanel>
-        </StackPanel>
+        </ScrollViewer>
         
-        <Canvas Grid.Column="1" 
+        <GridSplitter Grid.Column="1" Width="4" Background="Gray" VerticalAlignment="Stretch"  HorizontalAlignment="Center"
+                      ShowsPreview="False"
+                      Cursor="SizeWestEast"></GridSplitter>
+        <Canvas Grid.Column="2" 
                 x:Name="MainCanvas" 
                 Background="#282828"
                 PointerPressed="MainCanvas_PointerPressed"
                 PointerMoved="MainCanvas_PointerMoved"
                 PointerReleased="MainCanvas_PointerReleased"
                 ClipToBounds="True"
+                Margin="4"
                 >
             <Canvas.ContextMenu>
                 <ContextMenu>
@@ -74,12 +79,12 @@
                 </ContextMenu>
             </Canvas.ContextMenu>
         </Canvas>
-        <GridSplitter Grid.Column="2" Width="4" Background="Gray" VerticalAlignment="Stretch"  HorizontalAlignment="Center"
+        <GridSplitter Grid.Column="3" Width="4" Background="Gray" VerticalAlignment="Stretch"  HorizontalAlignment="Center"
                       ShowsPreview="False"
                       Cursor="SizeWestEast"
                       ></GridSplitter>
         
-        <ScrollViewer Grid.Column="3">
+        <ScrollViewer Grid.Column="4">
             <pg:PropertyGrid x:Name="ShapePropertyGrid" 
                              DataContext="{Binding SelectedShape}" 
                              ShowTitle="True"
