@@ -1,3 +1,7 @@
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/bodong1987/Avalonia.PropertyGrid)
+![License](https://img.shields.io/github/license/avaloniaui/avalonia.svg)
+
+
 # Avalonia.PropertyGrid  
 [View English Document](./README.md)  
 

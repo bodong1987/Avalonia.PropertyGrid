@@ -1,4 +1,7 @@
-﻿# Avalonia.PropertyGrid
+﻿[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/bodong1987/Avalonia.PropertyGrid)
+![License](https://img.shields.io/github/license/avaloniaui/avalonia.svg)
+
+# Avalonia.PropertyGrid
 [查看简体中文文档](./README-CHS.md)  
 
 This is a PropertyGrid implementation for Avalonia, you can use it in Avalonia Applications.  
@@ -24,7 +27,7 @@ Its main features are:
 * Support localization and realtime change language without restart
 * Support web  
 
-<a href="https://bodong1987.github.io/Avalonia.PropertyGrid/" target="_blank"> → View Online Demo</a>
+<a href="https://bodong1987.github.io/Avalonia.PropertyGrid/" target="_blank"> → View Online Demo</a>  
 
 ## How To Use
 Use the source code of this project directly or use NUGET Packages:  
@@ -77,7 +80,7 @@ PropertyModels.ComponentModel.DataAnnotations.EnumProhibitValuesAttribute<T>    
 PropertyModels.ComponentModel.DataAnnotations.EnumProhibitNamesAttribute            /* based on enum names */
 PropertyModels.ComponentModel.DataAnnotations.IEnumValueAuthorizeAttribute          /* create your custom enum value filter based on this interface */
 PropertyModels.ComponentModel.DataAnnotations.ImagePreviewModeAttribute             /* set image display mode */
-PropertyModels.ComponentModel.DataAnnotations.FloatingNumberEqualToleranceAttribute /* You can use this tag to mark the tolerance value of a floating point number. When the change difference is less than this value, it is considered that there is no change. */
+PropertyModels.ComponentModel.DataAnnotations.FloatingNumberEqualToleranceAttribute /* You can use this tag to mark the tolerance value of a floating point number. When the change difference is less than this value, it is considered that there is no change. */  
 PropertyModels.ComponentModel.SingleSelectionModeAttribute                          /* set enum/selectablelist view mode, use combobox/togglebutton group/radiobox group */
 PropertyModels.ComponentModel.UnitAttribute                                         /* used to display a unit next to the display name */  
 PropertyModels.ComponentModel.PropertyOperationVisibilityAttribute                  /* Used to specify whether the additional operation area is visible. The default value is determined by the property. */  
