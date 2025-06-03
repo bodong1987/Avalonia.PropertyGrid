@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "Avalonia.PropertyGrid.Samples.Browser",
   "resources": {
-    "hash": "sha256-HR389gdJ6mdfELQ6K9u1Ig1YCJ9QIMek9M9fHzmCS+E=",
+    "hash": "sha256-aGZgG5oB+38kMbekH+RPhwG8/fx/+jQOVmm77qdARNI=",
     "fingerprinting": {
       "Avalonia.Base.hi23v6rqyq.wasm": "Avalonia.Base.wasm",
       "Avalonia.Browser.bsnxfg8utl.wasm": "Avalonia.Browser.wasm",
@@ -17,8 +17,8 @@
       "Avalonia.Metal.a1trlafjv0.wasm": "Avalonia.Metal.wasm",
       "Avalonia.MicroCom.l5a1chlq6c.wasm": "Avalonia.MicroCom.wasm",
       "Avalonia.OpenGL.f91htzqokn.wasm": "Avalonia.OpenGL.wasm",
-      "Avalonia.PropertyGrid.Samples.Browser.6yjt9prp6f.wasm": "Avalonia.PropertyGrid.Samples.Browser.wasm",
-      "Avalonia.PropertyGrid.Samples.bqw57gmyae.wasm": "Avalonia.PropertyGrid.Samples.wasm",
+      "Avalonia.PropertyGrid.Samples.Browser.v09ifrewum.wasm": "Avalonia.PropertyGrid.Samples.Browser.wasm",
+      "Avalonia.PropertyGrid.Samples.zvywqzaq3s.wasm": "Avalonia.PropertyGrid.Samples.wasm",
       "Avalonia.PropertyGrid.q96cztxzyc.wasm": "Avalonia.PropertyGrid.wasm",
       "Avalonia.Remote.Protocol.y9odstt7hi.wasm": "Avalonia.Remote.Protocol.wasm",
       "Avalonia.Skia.0czubqrpyj.wasm": "Avalonia.Skia.wasm",
@@ -241,8 +241,8 @@
       "Avalonia.Metal.a1trlafjv0.wasm": "sha256-vhhoiDN9aXFKTAnSiC2N6ZOAphyVUqLEK2FR08c51NQ=",
       "Avalonia.MicroCom.l5a1chlq6c.wasm": "sha256-qSlOn4m4tp0kEQZMB1f5ZuydnRqyWEKeVxeW9DZ6Zm8=",
       "Avalonia.OpenGL.f91htzqokn.wasm": "sha256-XZYaYdxYapDNdavH/nlY3/YlyBXeL+vTXIbFwznl3jY=",
-      "Avalonia.PropertyGrid.Samples.Browser.6yjt9prp6f.wasm": "sha256-PqeCwW32Mj8hSIH2pnyPApFpK5lnXXTyqpGOXcrpwso=",
-      "Avalonia.PropertyGrid.Samples.bqw57gmyae.wasm": "sha256-87sTyTLL06JqCCHwu/6lb2dmL7MQWa0DoUDd8jBZa1w=",
+      "Avalonia.PropertyGrid.Samples.Browser.v09ifrewum.wasm": "sha256-L5mNyBWUFTsDixm9q30R4I6+mUvfC8rSa/YshTlT4bY=",
+      "Avalonia.PropertyGrid.Samples.zvywqzaq3s.wasm": "sha256-YaE9V8OCworTjUptsHAQgspxDNAphinFWwnRPLh5vr4=",
       "Avalonia.PropertyGrid.q96cztxzyc.wasm": "sha256-Qu77zKW3JULcd6Yli+wjVqWW36E1Li9h47IXcNZLJ9k=",
       "Avalonia.Remote.Protocol.y9odstt7hi.wasm": "sha256-JnzNhEQ7ViQq1kHF022cwWSafeMuDNNTBklkAW1AM/g=",
       "Avalonia.Skia.0czubqrpyj.wasm": "sha256-YJFdLUv2tNRg1K0kMhj/8/7Zmz/KltT2OnyR4JTw0UM=",
