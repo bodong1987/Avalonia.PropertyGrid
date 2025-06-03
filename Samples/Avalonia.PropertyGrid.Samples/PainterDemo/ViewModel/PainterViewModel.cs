@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Windows.Input;
 using Avalonia.Data.Converters;
+using Avalonia.Media;
 using Avalonia.PropertyGrid.Controls;
 using Avalonia.PropertyGrid.Samples.PainterDemo.Models;
 using PropertyModels.ComponentModel;
@@ -56,6 +57,20 @@ public class PainterViewModel : ReactiveObject
         get => _currentToolMode;
         set => SetProperty(ref _currentToolMode, value);
     }
+    #endregion
+
+    #region Default Configs
+
+    public Color DefaultFillColor { get; set; } = Colors.Gray;
+    public Color DefaultBorderColor { get; set; } = Colors.DarkGray;
+    private double _defaultStrokeThickness = 2.0;
+
+    public double DefaultStrokeThickness
+    {
+        get => _defaultStrokeThickness;
+        set => SetProperty(ref _defaultStrokeThickness, value);
+    }
+
     #endregion
 
     #region Commands Support

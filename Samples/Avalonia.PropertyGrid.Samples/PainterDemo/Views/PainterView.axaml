@@ -26,6 +26,20 @@
             <RadioButton Content="{ll:Localize CreateEllipse}" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.CreateEllipse}}" GroupName="Mode" Margin="4" />
             <RadioButton Content="{ll:Localize CreateStar}" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.CreateStar}}" GroupName="Mode" Margin="4" />
             <RadioButton Content="{ll:Localize CreateArrow}" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.CreateArrow}}" GroupName="Mode" Margin="4" />
+            
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{ll:Localize FillColor}" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                <ColorPicker Color="{Binding DefaultFillColor}" HorizontalAlignment="Center" VerticalAlignment="Center"></ColorPicker>
+            </StackPanel>
+            
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{ll:Localize BorderColor}" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                <ColorPicker Color="{Binding DefaultBorderColor}" HorizontalAlignment="Center" VerticalAlignment="Center"></ColorPicker>
+            </StackPanel>
+            
+            <TextBlock Text="{Binding DefaultStrokeThickness, StringFormat={}{0:0}}" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+            <Slider Minimum="1" Maximum="50" Value="{Binding DefaultStrokeThickness}"></Slider>
+            
             <TextBlock Text="{ll:Localize PainterDemo_HelpText}" MaxWidth="120" TextWrapping="Wrap" Margin="4"></TextBlock>
             
             <StackPanel Orientation="Vertical" Margin="6">

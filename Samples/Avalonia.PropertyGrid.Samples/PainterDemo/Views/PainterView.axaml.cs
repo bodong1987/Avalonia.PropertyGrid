@@ -29,7 +29,7 @@ public partial class PainterView : UserControl
     private Point _dragStartPoint;
     private Point _shapeStartPoint;
     private Point _shapeEndPoint;
-    private bool _hasDragged = false;
+    private bool _hasDragged;
     
     public static readonly RoutedEvent<ShapeSelectedEventArgs> ShapeSelectedEvent =
         RoutedEvent.Register<PainterView, ShapeSelectedEventArgs>(
@@ -56,6 +56,51 @@ public partial class PainterView : UserControl
         viewModel.Shapes.Add(new EllipseShape { X = 50, Y = 50, Radius = 90, FillColor = Colors.Blue });
         viewModel.Shapes.Add(new RectangleShape { X = 350, Y = 200, Width = 260, Height = 240, FillColor = Colors.Green });
         viewModel.Shapes.Add(new StarShape{ X= 150, Y = 550, Radius = 100, FillColor = Colors.Red });
+        viewModel.Shapes.Add(new ArrowShape(){ X= 150, Y = 680, Length = 300, ShaftWidth = 10, HeadHeight = 30, HeadWidth = 30, FillColor = Colors.YellowGreen});
+        viewModel.Shapes.Add(new LineShape(){ X= 450, Y = 500, X2 = 250, Y2 = 100, StrokeColor = Colors.DarkRed, StrokeThickness = 4});
+        viewModel.Shapes.Add(new FreehandShape()
+        {
+            X = 450,
+            Y = 50,
+            Rotation = 290,
+            Points = [
+                new Point(50.0, 0.0),    
+                new Point(58.8, 9.8),    
+                new Point(65.5, 19.1),
+                new Point(69.2, 28.5),
+                new Point(70.0, 38.0),   
+                new Point(67.5, 47.0),
+                new Point(62.0, 55.0),
+                new Point(54.0, 61.5),   
+                new Point(44.0, 65.5),
+                new Point(33.0, 66.5),   
+                new Point(22.0, 64.5),
+                new Point(12.0, 60.0),
+                new Point(3.0, 53.0),    
+                new Point(-4.5, 44.0),
+                new Point(-10.0, 34.0),
+                new Point(-13.5, 23.0),  
+                new Point(-15.5, 12.0),
+                new Point(-16.0, 0.0),   
+                new Point(-15.5, -12.0),
+                new Point(-13.5, -23.0), 
+                new Point(-10.0, -34.0),
+                new Point(-4.5, -44.0),
+                new Point(3.0, -53.0),   
+                new Point(12.0, -60.0),
+                new Point(22.0, -64.5),
+                new Point(33.0, -66.5),  
+                new Point(44.0, -65.5),
+                new Point(54.0, -61.5),  
+                new Point(62.0, -55.0),
+                new Point(67.5, -47.0),
+                new Point(70.0, -38.0),  
+                new Point(69.2, -28.5),
+                new Point(65.5, -19.1),
+                new Point(58.8, -9.8),   
+                new Point(50.0, 0.0)     
+            ]
+        });
     }
 
     private void OnShapeCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -171,7 +216,7 @@ public partial class PainterView : UserControl
 
             // Set highlight stroke
             shape.Stroke = new SolidColorBrush(Colors.OrangeRed); // Highlight color
-            shape.StrokeThickness = 4; // Highlight thickness
+            shape.StrokeThickness = shape.StrokeThickness + 4; // Highlight thickness
         }
     }
     
@@ -222,6 +267,10 @@ public partial class PainterView : UserControl
                     Debug.WriteLine($"Failed to create a new shape for mode: {viewModel.CurrentToolMode}");
                     return;
                 }
+
+                newShape.FillColor = viewModel.DefaultFillColor;
+                newShape.StrokeColor = viewModel.DefaultBorderColor;
+                newShape.StrokeThickness = viewModel.DefaultStrokeThickness;
 
                 _creatingShape = newShape;
                 
@@ -288,7 +337,7 @@ public partial class PainterView : UserControl
                 var shapeBase = _draggedShapeBase!;
             
                 var command = new GenericCancelableCommand(
-                    $"Drag {shapeBase!.Type}",
+                    $"Drag {shapeBase.Type}",
                     () =>
                     {
                         shapeBase.X = endPos.X;

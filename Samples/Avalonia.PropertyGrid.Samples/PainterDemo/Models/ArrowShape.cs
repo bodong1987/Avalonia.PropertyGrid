@@ -11,10 +11,10 @@ namespace Avalonia.PropertyGrid.Samples.PainterDemo.Models;
 [ShapeDescription(ToolMode.CreateArrow)]
 public class ArrowShape : ShapeGenericPolygon
 {
-    private double _length;
-    private double _shaftWidth;
-    private double _headWidth;
-    private double _headHeight;
+    private double _length = 10;
+    private double _shaftWidth = 5;
+    private double _headWidth = 10;
+    private double _headHeight = 5;
 
     [Category("Transform")]
     [FloatPrecision(0)]
