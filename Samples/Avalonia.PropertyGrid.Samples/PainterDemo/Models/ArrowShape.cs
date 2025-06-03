@@ -81,9 +81,6 @@ public class ArrowShape : ShapeGenericPolygon
             HeadHeight = Length * 0.1;
             ShaftWidth = Length * 0.05;
 
-            // Calculate the angle of the arrow
-            Rotation = Math.Atan2(endPoint.Y - CreatingStartY, endPoint.X - CreatingStartX) * (180 / Math.PI);
-
             // Set the arrow's position to the starting point
             X = CreatingStartX;
             Y = CreatingStartY;

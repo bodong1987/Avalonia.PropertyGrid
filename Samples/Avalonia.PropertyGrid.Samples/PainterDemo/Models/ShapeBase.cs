@@ -59,6 +59,28 @@ public abstract class ShapeBase : MiniReactiveObject
         set => SetProperty(ref _rotation, value);
     }
     #endregion
+    
+    private double _scaleX = 1.0;
+
+    [Category("Transform")]
+    [Range(0.1, 10.0)]
+    [Trackable(0.1, 10.0)]
+    public double ScaleX
+    {
+        get => _scaleX;
+        set => SetProperty(ref _scaleX, value);
+    }
+    
+    private double _scaleY = 1.0;
+
+    [Category("Transform")]
+    [Range(0.1, 10.0)]
+    [Trackable(0.1, 10.0)]
+    public double ScaleY
+    {
+        get => _scaleY;
+        set => SetProperty(ref _scaleY, value);
+    }
 
     #region Appearance
     [Browsable(false)]
@@ -168,7 +190,7 @@ public abstract class ShapeBase : MiniReactiveObject
     #region Methods
     protected bool SetProperty(ref double field, double value, [CallerMemberName] string? propertyName = null)
     {
-        if (Math.Abs(field - value) < 0.00001)
+        if (Math.Abs(field - value) < 0.0001)
             return false;
         field = value;
         RaisePropertyChanged(propertyName!);
@@ -208,6 +230,7 @@ public abstract class ShapeBase : MiniReactiveObject
         Canvas.SetTop(shape, Y);
         
         var transformGroup = new TransformGroup();
+        transformGroup.Children.Add(new ScaleTransform(ScaleX, ScaleY));
         transformGroup.Children.Add(new RotateTransform(Rotation, shape.Bounds.Width / 2, shape.Bounds.Height / 2));
         shape.RenderTransform = transformGroup;
 
