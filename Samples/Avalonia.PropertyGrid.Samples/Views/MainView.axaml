@@ -11,15 +11,33 @@
              x:Class="Avalonia.PropertyGrid.Samples.Views.MainView">
     <Grid RowDefinitions="*,Auto">
         <TabControl Grid.Row="0" TabStripPlacement="Top" Padding="4">
-            <TabItem Header="{ll:Localize FeatureDemos}">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Source="avares://Avalonia.PropertyGrid.Samples/Assets/images/home.png" Width="24" Height="24" Margin="0,0,4,0"/>
+                        <TextBlock Text="{ll:Localize FeatureDemos}"/>
+                    </StackPanel>
+                </TabItem.Header>
                 <fdv:FeatureDemoView></fdv:FeatureDemoView>
             </TabItem>
         
-            <TabItem Header="{ll:Localize SettingsDemo}">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Source="avares://Avalonia.PropertyGrid.Samples/Assets/images/technology.png" Width="24" Height="24" Margin="0,0,4,0"/>
+                        <TextBlock Text="{ll:Localize SettingsDemo}"/>
+                    </StackPanel>
+                </TabItem.Header>
                 <sd:SettingsView></sd:SettingsView>
             </TabItem>
             
-            <TabItem Header="{ll:Localize PainterDemo}">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Image Source="avares://Avalonia.PropertyGrid.Samples/Assets/images/colormixer.png" Width="24" Height="24" Margin="0,0,4,0"/>
+                        <TextBlock Text="{ll:Localize PainterDemo}"/>
+                    </StackPanel>
+                </TabItem.Header>
                 <pdv:PainterView></pdv:PainterView>
             </TabItem>
         </TabControl>    

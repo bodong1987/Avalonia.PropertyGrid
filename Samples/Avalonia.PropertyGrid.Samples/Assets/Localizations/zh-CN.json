@@ -364,5 +364,18 @@
     "ShaftWidth": "轴宽度",
     "Length": "长度",
     "HeadWidth": "头宽度",
-    "HeadHeight": "头高度"
+    "HeadHeight": "头高度",
+    "Fill": "填充",
+    "Blank": "不填充",
+    "FillMode": "填充模式",
+    "None": "无",
+    "Uniform": "均匀拉伸",
+    "UniformToFill": "均匀填充",
+    "Bevel": "斜切",
+    "Miter": "尖角",
+    "Round": "圆",
+    "Flat": "平直",
+    "Square": "方",
+    "Ellipse": "椭圆",
+    "Circle": "圆"
 }

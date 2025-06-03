@@ -85,7 +85,7 @@ public abstract class ShapeBase : MiniReactiveObject
     #region Appearance
     [Browsable(false)]
     [ConditionTarget]
-    protected bool IsFillModeVisible { get; set; } = true;
+    public bool IsFillModeVisible { get; set; } = true;
     
     private ShapeFillMode _fillMode = ShapeFillMode.Fill;
 
@@ -121,6 +121,7 @@ public abstract class ShapeBase : MiniReactiveObject
     private double _strokeThickness = 2.0;
     [Category("Appearance")]
     [FloatPrecision(0)]
+    [Trackable(1.0, 50.0)]
     public double StrokeThickness
     {
         get => _strokeThickness;
@@ -139,6 +140,7 @@ public abstract class ShapeBase : MiniReactiveObject
     
     private PenLineCap _strokeLineCap = PenLineCap.Flat;
     [Category("Appearance")]
+    [SingleSelectionMode(SingleSelectionMode.ToggleButtonGroup)]
     public PenLineCap StrokeLineCap
     {
         get => _strokeLineCap;
@@ -147,6 +149,7 @@ public abstract class ShapeBase : MiniReactiveObject
 
     private PenLineJoin _strokeJoin = PenLineJoin.Miter;
     [Category("Appearance")]
+    [SingleSelectionMode(SingleSelectionMode.ToggleButtonGroup)]
     public PenLineJoin StrokeJoin
     {
         get => _strokeJoin;
@@ -173,6 +176,7 @@ public abstract class ShapeBase : MiniReactiveObject
 
     private Stretch _stretch = Stretch.None;
     [Category("Appearance")]
+    [SingleSelectionMode(SingleSelectionMode.ToggleButtonGroup)]
     public Stretch Stretch
     {
         get => _stretch;
