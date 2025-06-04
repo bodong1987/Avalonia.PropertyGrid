@@ -156,12 +156,18 @@ namespace Avalonia.PropertyGrid.Localization
 
             if (cultureData != null)
             {
-                CultureData = cultureData;
-
                 if (!cultureData.IsLoaded)
                 {
                     _ = cultureData.Reload();
                 }
+
+                // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+                if (CultureData != null && CultureData != cultureData)
+                {
+                    CultureData.Unload();   
+                }
+                
+                CultureData = cultureData;
             }
         }
 

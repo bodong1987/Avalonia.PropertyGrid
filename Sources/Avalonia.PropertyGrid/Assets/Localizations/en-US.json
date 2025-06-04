@@ -7,8 +7,13 @@
     "UseRegex": "Use Regex",
     "DisplayMode": "Display Mode",
     "ShowTitle": "Show Title",
+    "CategoryOrder": "Category Order",
+    "PropertyOrder": "Property Order",
+    "ExpandAll": "Expand All",
+    "CollapseAll": "Collapse All",
     "InsertNewElement": "Insert a new element before this element",
     "RemoveElement": "Remove this element",
     "AppendNewElement": "Append a new element",
-    "ClearAllElements": "Clear this list"
+    "ClearAllElements": "Clear this list",
+    "MainOptionSettingsTooltip": "Choose your display mode and use some shortcuts"
 }

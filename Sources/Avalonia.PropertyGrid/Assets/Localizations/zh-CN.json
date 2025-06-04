@@ -10,7 +10,7 @@
     "Tree": "树形",
     "Inline": "内联",
     "CategoryOrder": "分类排序",
-    "PropertyOrder": "树形排序",
+    "PropertyOrder": "属性排序",
     "Builtin": "内置",
     "Alphabetic": "字母顺序",
     "ShowTitle": "显示标题",
@@ -36,5 +36,6 @@
     "Change {0} form {1} to {2}": "将属性[{0}]从<{1}>修改为<{2}>",
     "Change {0} selection from {1} to {2}": "属性[{0}]选择项从<{1}>变更为<{2}>",
     "ReadOnly": "只读",
-    "Readonly": "只读"
+    "Readonly": "只读",
+    "MainOptionSettingsTooltip": "选择你的显示模式和使用一些快捷功能"
 }

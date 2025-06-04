@@ -39,6 +39,11 @@ namespace PropertyModels.Localization
         /// </summary>
         /// <returns><c>true</c> if reload success, <c>false</c> otherwise.</returns>
         bool Reload();
+
+        /// <summary>
+        /// Unload all data, release memory 
+        /// </summary>
+        void Unload();
     }
 
     /// <summary>

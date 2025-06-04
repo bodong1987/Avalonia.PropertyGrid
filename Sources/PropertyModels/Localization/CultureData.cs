@@ -70,6 +70,12 @@ namespace PropertyModels.Localization
         /// <returns><c>true</c> if reload success, <c>false</c> otherwise.</returns>
         public abstract bool Reload();
 
+        /// <inheritdoc />
+        public virtual void Unload()
+        {
+            LocalTexts = null;
+        }
+
         /// <summary>
         /// Returns a <see cref="string" /> that represents this instance.
         /// </summary>
