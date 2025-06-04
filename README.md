@@ -578,3 +578,7 @@ v11.1.4.1
 v11.1.4.2  
 
 * Enable Nullable
+
+v11.3.0.18
+* Removed multiple buttons in the header area, integrated them into a pop-up menu of one button, and opened up more options.  
+* The names of some Attributes have been adjusted and some new options have been added. You can see these changes in the code in the documentation and examples.  
