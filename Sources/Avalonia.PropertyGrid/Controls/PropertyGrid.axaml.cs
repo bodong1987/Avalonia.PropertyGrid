@@ -1248,13 +1248,22 @@ namespace Avalonia.PropertyGrid.Controls
                 RefreshVisibilities(ViewModel.FilterPattern.FilterText);
             }
         }
+        #endregion
 
         private void OnOptionsButtonClicked(object? sender, RoutedEventArgs e)
         {
             OptionsContextMenu.Open(sender as Control);
         }
+        
+        private void OnExpandAllClicked(object? sender, RoutedEventArgs e)
+        {
+            ExpandAllCategories();
+        }
 
-        #endregion
+        private void OnCollapseAllClicked(object? sender, RoutedEventArgs e)
+        {
+            CollapseAllCategories();
+        }
 
         #region IDisposable
         /// <summary>

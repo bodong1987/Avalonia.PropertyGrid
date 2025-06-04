@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Data.Converters;
 using Avalonia.PropertyGrid.Controls;
 using Avalonia.PropertyGrid.Controls.Factories.Builtins;
 using Avalonia.PropertyGrid.Controls.Implements;
@@ -618,6 +620,27 @@ namespace Avalonia.PropertyGrid.ViewModels
         public FilterChangedEventArgs(string? filterText)
         {
             FilterText = filterText;
+        }
+    }
+    
+    /// <summary>
+    /// convert enum to bool or bool to enum
+    /// </summary>
+    public class EnumToBooleanConverter : IValueConverter
+    {
+        /// <inheritdoc />
+        public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            if (value == null || parameter == null)
+                return false;
+
+            return value.Equals(parameter);
+        }
+
+        /// <inheritdoc />
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            return value is true ? parameter : AvaloniaProperty.UnsetValue;
         }
     }
 }

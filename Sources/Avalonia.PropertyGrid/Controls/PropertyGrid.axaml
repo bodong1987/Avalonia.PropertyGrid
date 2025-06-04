@@ -4,13 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:ll="clr-namespace:Avalonia.PropertyGrid.Localization;assembly=Avalonia.PropertyGrid"
 			 xmlns:lc="clr-namespace:Avalonia.PropertyGrid.Controls;assembly=Avalonia.PropertyGrid"
+             xmlns:lvm="clr-namespace:Avalonia.PropertyGrid.ViewModels;assembly=Avalonia.PropertyGrid"
              mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="900"
              x:Class="Avalonia.PropertyGrid.Controls.PropertyGrid">
 	<UserControl.Resources>
 		<!-- ReSharper disable once Xaml.RedundantResource -->
 		<Thickness x:Key="ExpanderContentPadding">2</Thickness>
+		<lvm:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
 	</UserControl.Resources>
-
+	
 	<UserControl.Styles>
 		<StyleInclude Source="/Controls/ButtonEdit.axaml"></StyleInclude>
 		<StyleInclude Source="/Controls/CheckedListEdit.axaml"></StyleInclude>
@@ -39,6 +41,25 @@
 						<MenuItem Header="{ll:Localize IsCategoryView}" IsChecked="{Binding $parent[lc:PropertyGrid].ViewModel.IsCategoryView, Mode=TwoWay}" ToggleType="CheckBox" ToolTip.Tip="{ll:Localize ShowStyle}"/>
 						<MenuItem Header="{ll:Localize UseRegex}" IsChecked="{Binding $parent[lc:PropertyGrid].ViewModel.FilterPattern.UseRegex, Mode=TwoWay}" ToggleType="CheckBox" ToolTip.Tip="{ll:Localize UseRegex}"/>
 						<MenuItem Header="{ll:Localize IgnoreCase}" IsChecked="{Binding $parent[lc:PropertyGrid].ViewModel.FilterPattern.IgnoreCase, Mode=TwoWay}" ToggleType="CheckBox" ToolTip.Tip="{ll:Localize IgnoreCase}"/>
+						<Separator></Separator>
+						<MenuItem Header="{ll:Localize AllowQuickFilter}" IsChecked="{Binding $parent[lc:PropertyGrid].AllowQuickFilter, Mode=TwoWay}" ToggleType="CheckBox"></MenuItem>
+						<MenuItem Header="{ll:Localize ShowTitle}" IsChecked="{Binding $parent[lc:PropertyGrid].ShowTitle, Mode=TwoWay}" ToggleType="CheckBox"></MenuItem>
+						<Separator></Separator>
+						<MenuItem Header="{ll:Localize DisplayMode}">
+							<MenuItem Header="{ll:Localize Tree}" IsChecked="{Binding $parent[lc:PropertyGrid].DisplayMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:PropertyGridDisplayMode.Tree}, Mode=TwoWay}" ToggleType="Radio"/>
+							<MenuItem Header="{ll:Localize Inline}" IsChecked="{Binding $parent[lc:PropertyGrid].DisplayMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:PropertyGridDisplayMode.Inline}, Mode=TwoWay}" ToggleType="Radio"/>
+						</MenuItem>
+						<MenuItem Header="{ll:Localize CategoryOrder}">
+							<MenuItem Header="{ll:Localize Builtin}" IsChecked="{Binding $parent[lc:PropertyGrid].CategoryOrderStyle, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:PropertyGridOrderStyle.Builtin}, Mode=TwoWay}" ToggleType="Radio"/>
+							<MenuItem Header="{ll:Localize Alphabetic}" IsChecked="{Binding $parent[lc:PropertyGrid].CategoryOrderStyle, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:PropertyGridOrderStyle.Alphabetic}, Mode=TwoWay}" ToggleType="Radio"/>
+						</MenuItem>
+						<MenuItem Header="{ll:Localize PropertyOrder}">
+							<MenuItem Header="{ll:Localize Builtin}" IsChecked="{Binding $parent[lc:PropertyGrid].PropertyOrderStyle, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:PropertyGridOrderStyle.Builtin}, Mode=TwoWay}" ToggleType="Radio"/>
+							<MenuItem Header="{ll:Localize Alphabetic}" IsChecked="{Binding $parent[lc:PropertyGrid].PropertyOrderStyle, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:PropertyGridOrderStyle.Alphabetic}, Mode=TwoWay}" ToggleType="Radio"/>
+						</MenuItem>
+						<Separator></Separator>
+						<MenuItem Header="{ll:Localize ExpandAll}" Click="OnExpandAllClicked"></MenuItem>
+						<MenuItem Header="{ll:Localize CollapseAll}" Click="OnCollapseAllClicked"></MenuItem>
 					</ContextMenu>
 				</Button.ContextMenu>
 			</Button>
