@@ -11,92 +11,31 @@ using PropertyModels.ComponentModel.DataAnnotations;
 
 namespace Avalonia.PropertyGrid.Samples.PainterDemo.Models;
 
-public enum EllipseDetailType
-{
-    Ellipse,
-    Circle
-}
-
 [ShapeDescription(ToolMode.CreateEllipse)]
 public class EllipseShape : ShapeGeneric<Ellipse>
 {
-    private EllipseDetailType _ellipseDetailType;
-
-    [ConditionTarget]
-    public EllipseDetailType EllipseDetailType
-    {
-        get => _ellipseDetailType;
-        set => SetProperty(ref _ellipseDetailType, value);
-    }
-    
-    private double _radius;
-    [Category("Transform")]
-    [FloatPrecision(0)]
-    [VisibilityPropertyCondition(nameof(EllipseDetailType), EllipseDetailType.Circle)]
-    public double Radius
-    {
-        get => _radius;
-        set
-        {
-            if (SetProperty(ref _radius, value))
-            {
-                _width = _radius * 2;
-                _height = _radius * 2;
-                
-                RaisePropertyChanged(nameof(Width));
-                RaisePropertyChanged(nameof(Height));
-            }
-        }
-    }
-    
     private double _width;
     [Category("Transform")]
     [FloatPrecision(0)]
-    [VisibilityPropertyCondition(nameof(EllipseDetailType), EllipseDetailType.Ellipse)]
     public double Width
     {
         get => _width;
-        set
-        {
-            if (SetProperty(ref _width, value))
-            {
-                _radius = _width / 2;
-                
-                RaisePropertyChanged(nameof(Radius));
-            }
-        }
+        set => SetProperty(ref _width, value);
     }
 
     private double _height;
     [Category("Transform")]
     [FloatPrecision(0)]
-    [VisibilityPropertyCondition(nameof(EllipseDetailType), EllipseDetailType.Ellipse)]
     public double Height
     {
         get => _height;
-        set
-        {
-            if (SetProperty(ref _height, value))
-            {
-                _radius = _height / 2;
-                
-                RaisePropertyChanged(nameof(Radius));
-            }
-        }
+        set => SetProperty(ref _height, value);
     }
 
     protected override void ApplyProperties(Ellipse shape)
     {
-        if (EllipseDetailType == EllipseDetailType.Ellipse)
-        {
-            shape.Width = Width;
-            shape.Height = Height;
-        }
-        else
-        {
-            shape.Width = Radius * 2;
-            shape.Height = Radius * 2;    
-        }
+        shape.Width = Width;
+        shape.Height = Height;
     }
 
     protected override void OnFinishCreate(Point endPoint)
@@ -110,8 +49,6 @@ public class EllipseShape : ShapeGeneric<Ellipse>
             
             _width = Math.Abs(endPoint.X - CreatingStartX);
             _height = Math.Abs(endPoint.Y - CreatingStartY);
-            
-            // Debug.WriteLine($"{_width} {_height}");
         }
         finally
         {
