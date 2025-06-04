@@ -59,6 +59,36 @@ namespace Avalonia.PropertyGrid.Controls
             get => GetValue(IsReadOnlyProperty);
             set => SetValue(IsReadOnlyProperty, value);
         }
+        
+        /// <summary>
+        /// The show button spinner property
+        /// </summary>
+        public static readonly StyledProperty<bool> ShowButtonSpinnerProperty =
+            AvaloniaProperty.Register<TrackableEdit, bool>(nameof(ShowButtonSpinner), true);
+
+        /// <summary>
+        /// Gets or sets ShowButton Spinner state
+        /// </summary>        
+        public bool ShowButtonSpinner
+        {
+            get => GetValue(ShowButtonSpinnerProperty);
+            set => SetValue(ShowButtonSpinnerProperty, value);
+        }
+        
+        /// <summary>
+        /// allow spin
+        /// </summary>
+        public static readonly StyledProperty<bool> AllowSpinProperty =
+            AvaloniaProperty.Register<TrackableEdit, bool>(nameof(AllowSpin), true);
+
+        /// <summary>
+        /// Gets or sets allow spin state
+        /// </summary>        
+        public bool AllowSpin
+        {
+            get => GetValue(AllowSpinProperty);
+            set => SetValue(AllowSpinProperty, value);
+        }
     }
 
     /// <summary>

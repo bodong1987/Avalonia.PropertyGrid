@@ -58,7 +58,6 @@ public abstract class ShapeBase : MiniReactiveObject
         get => _rotation;
         set => SetProperty(ref _rotation, value);
     }
-    #endregion
     
     private double _scaleX = 1.0;
 
@@ -81,7 +80,8 @@ public abstract class ShapeBase : MiniReactiveObject
         get => _scaleY;
         set => SetProperty(ref _scaleY, value);
     }
-
+    #endregion
+    
     #region Appearance
     [Browsable(false)]
     [ConditionTarget]
@@ -99,23 +99,23 @@ public abstract class ShapeBase : MiniReactiveObject
         set => SetProperty(ref _fillMode, value);
     }
 
-    private Color _fillColor = Colors.Gray;
+    private BrushConfiguration _fillBrush = new() { SolidColor = Colors.Gray };
     
     [Category("Appearance")]
     [VisibilityPropertyCondition(nameof(FillMode), ShapeFillMode.Fill)]
-    public Color FillColor
+    public BrushConfiguration FillBrush
     {
-        get => _fillColor;
-        set => SetProperty(ref _fillColor, value);
+        get => _fillBrush;
+        set => SetProperty(ref _fillBrush, value);
     }
     
-    private Color _strokeColor = Colors.DarkGray;
+    private BrushConfiguration _strokeBrush = new () { SolidColor = Colors.DarkGray };
     
     [Category("Appearance")]
-    public Color StrokeColor
+    public BrushConfiguration StrokeBrush
     {
-        get => _strokeColor;
-        set => SetProperty(ref _strokeColor, value);
+        get => _strokeBrush;
+        set => SetProperty(ref _strokeBrush, value);
     }
     
     private double _strokeThickness = 2.0;
@@ -182,13 +182,19 @@ public abstract class ShapeBase : MiniReactiveObject
         get => _stretch;
         set => SetProperty(ref _stretch, value);
     }
-    
-    protected readonly SolidColorBrush FillBrush = new (Colors.Black);
-    protected  readonly SolidColorBrush StrokeBrush = new (Colors.White);
 
     protected double CreatingStartX;
     protected double CreatingStartY;
     
+    #endregion
+
+    #region Constructor
+    protected ShapeBase()
+    {
+        FillBrush.PropertyChanged += (s, e) => RaisePropertyChanged(nameof(FillBrush));
+        StrokeBrush.PropertyChanged += (s, e) => RaisePropertyChanged(nameof(StrokeBrush));
+    }
+
     #endregion
 
     #region Methods
@@ -205,11 +211,8 @@ public abstract class ShapeBase : MiniReactiveObject
 
     public virtual bool UpdateProperties(Shape shape)
     {
-        FillBrush.Color = FillColor;
-        StrokeBrush.Color = StrokeColor;
-        
-        shape.Fill = FillMode == ShapeFillMode.Fill ? FillBrush : null;
-        shape.Stroke = StrokeBrush;
+        shape.Fill = FillMode == ShapeFillMode.Fill ? FillBrush.Brush : null;
+        shape.Stroke = StrokeBrush.Brush;
         shape.Opacity = Opacity;
         shape.StrokeThickness = StrokeThickness;
         shape.StrokeLineCap = StrokeLineCap;

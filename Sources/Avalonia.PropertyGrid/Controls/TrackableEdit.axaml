@@ -17,7 +17,7 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <DataValidationErrors>
-                    <Grid ColumnDefinitions="8*, 2*" HorizontalAlignment="Stretch">
+                    <Grid ColumnDefinitions="8.5*, 1.5*" HorizontalAlignment="Stretch">
                         <Slider Grid.Column="0"
                                 Padding="2" Margin="1"
                                 x:Name="slider"
@@ -39,6 +39,8 @@
                                        Increment="{TemplateBinding Increment, Converter={StaticResource Double2Decimal}}"
                                        FormatString="{TemplateBinding FormatString}"
                                        IsReadOnly="{TemplateBinding IsReadOnly}"
+                                       AllowSpin="{TemplateBinding AllowSpin}"
+                                       ShowButtonSpinner="{TemplateBinding ShowButtonSpinner}"
 								 ></NumericUpDown>
                     </Grid>
                 </DataValidationErrors>

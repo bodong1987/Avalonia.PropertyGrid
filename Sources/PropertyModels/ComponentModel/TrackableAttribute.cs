@@ -33,6 +33,16 @@ namespace PropertyModels.ComponentModel
         public string FormatString { get; set; } = "{0:0.00}";
 
         /// <summary>
+        /// Allow spin
+        /// </summary>
+        public bool AllowSpin { get; set; } = false;
+        
+        /// <summary>
+        /// Show button spinner
+        /// </summary>
+        public bool ShowButtonSpinner { get; set; } = false;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="TrackableAttribute"/> class.
         /// </summary>
         /// <param name="min">The minimum.</param>

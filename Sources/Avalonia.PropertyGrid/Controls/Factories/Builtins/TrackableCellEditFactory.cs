@@ -36,6 +36,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             var attr = context.Property.GetCustomAttribute<TrackableAttribute>()!;
             control.Minimum = attr.Minimum;
             control.Maximum = attr.Maximum;
+            control.AllowSpin = attr.AllowSpin;
+            control.ShowButtonSpinner = attr.ShowButtonSpinner;
 
             if (context.Property.PropertyType == typeof(sbyte) ||
                 context.Property.PropertyType == typeof(byte) ||

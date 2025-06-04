@@ -11,6 +11,10 @@
         <lvm:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
     </UserControl.Resources>
     
+    <UserControl.Styles>
+        <StyleInclude Source="GradientStopView.axaml"></StyleInclude>
+    </UserControl.Styles>
+    
     <Grid ColumnDefinitions="Auto,Auto,6*,Auto,4*">
         <!-- Toolbar -->
         <ScrollViewer Grid.Column="0">

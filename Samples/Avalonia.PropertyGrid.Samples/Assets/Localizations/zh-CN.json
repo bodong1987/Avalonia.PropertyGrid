@@ -377,5 +377,21 @@
     "Flat": "平直",
     "Square": "方",
     "Ellipse": "椭圆",
-    "Circle": "圆"
+    "Circle": "圆",
+    "BrushCategory": "画笔类别",
+    "LinearGradient": "线性渐变",
+    "Solid": "纯色",
+    "SolidColor": "填充色",
+    "RadialGradient": "径向渐变",
+    "GradientStops": "渐变停止点",
+    "FillBrush": "填充画笔",
+    "StrokeBrush": "边框画笔",
+    "LinearGradientStartPointX": "线性渐变起始点X",
+    "LinearGradientStartPointY": "线性渐变起始点Y",
+    "LinearGradientEndPointX": "线性渐变结束点X",
+    "LinearGradientEndPointY": "线性渐变结束点Y",
+    "RadialGradientCenterX": "径向渐变中心点X",
+    "RadialGradientCenterY": "径向渐变中心点Y",
+    "RadialGradientRadiusX": "径向渐变半径X",
+    "RadialGradientRadiusY": "径向渐变半径Y"
 }
