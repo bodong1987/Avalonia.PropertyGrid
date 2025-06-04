@@ -76,7 +76,7 @@ PropertyModels.ComponentModel.AutoCollapseCategoriesAttribute                   
 PropertyModels.ComponentModel.DataAnnotations.DependsOnPropertyAttribute            /* 标记此属性依赖于其他属性 */  
 PropertyModels.ComponentModel.DataAnnotations.FileNameValidationAttribute           /* 标记此属性为文件名，因此控件将直接验证字符串 */  
 PropertyModels.ComponentModel.DataAnnotations.PathBrowsableAttribute                /* 标记字符串属性为路径，因此它将提供一个按钮以显示路径浏览器 */  
-PropertyModels.ComponentModel.DataAnnotations.VisibilityPropertyConditionAttribute  /* 设置此属性将在属性值更改时自动刷新所有可见性。 */  
+PropertyModels.ComponentModel.DataAnnotations.PropertyVisibilityConditionAttribute  /* 设置此属性将在属性值更改时自动刷新所有可见性。 */  
 PropertyModels.ComponentModel.DataAnnotations.EnumPermitValuesAttribute<T>          /* 对于单个属性配置，强制设置允许的枚举值 */
 PropertyModels.ComponentModel.DataAnnotations.EnumPermitNamesAttribute              /* 基于枚举名称 */
 PropertyModels.ComponentModel.DataAnnotations.EnumProhibitValuesAttribute<T>        /* 对于单个属性配置，强制禁止某些枚举值出现在候选列表中 */
@@ -274,14 +274,14 @@ public IEnumerable<SimpleObject> multiObjects => new SimpleObject[] { multiObjec
         [ConditionTarget]
         public bool IsShowPath { get; set; } = true;
 
-        [VisibilityPropertyCondition(nameof(IsShowPath), true)]
+        [PropertyVisibilityCondition(nameof(IsShowPath), true)]
         [PathBrowsable(Filters = "Image Files(*.jpg;*.png;*.bmp;*.tag)|*.jpg;*.png;*.bmp;*.tag")]
         public string Path { get; set; } = "";
 
         [ConditionTarget]
         public PlatformID Platform { get; set; } = PlatformID.Win32NT;
 
-        [VisibilityPropertyCondition(nameof(Platform), PlatformID.Unix)]
+        [PropertyVisibilityCondition(nameof(Platform), PlatformID.Unix)]
         [ConditionTarget]
         public string UnixVersion { get; set; } = "";
 
@@ -291,7 +291,7 @@ public IEnumerable<SimpleObject> multiObjects => new SimpleObject[] { multiObjec
         [ConditionTarget]
         public bool IsShowUnixLoginInfo => IsShowPath && Platform == PlatformID.Unix && UnixVersion.IsNotNullOrEmpty();
 
-        [VisibilityPropertyCondition(nameof(IsShowUnixLoginInfo), true)]
+        [PropertyVisibilityCondition(nameof(IsShowUnixLoginInfo), true)]
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public LoginInfo unixLogInInfo { get; set; } = new LoginInfo();
     }

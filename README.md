@@ -73,7 +73,7 @@ PropertyModels.ComponentModel.AutoCollapseCategoriesAttribute                   
 PropertyModels.ComponentModel.DataAnnotations.DependsOnPropertyAttribute            /* mark this property is depends on the other property */  
 PropertyModels.ComponentModel.DataAnnotations.FileNameValidationAttribute           /* mark this property is filename, so control will validate the string directly */  
 PropertyModels.ComponentModel.DataAnnotations.PathBrowsableAttribute                /* mark string property is path, so it will provide a button to show path browser*/  
-PropertyModels.ComponentModel.DataAnnotations.VisibilityPropertyConditionAttribute  /* set this property will auto refresh all visiblity when this proeprty value changed. */  
+PropertyModels.ComponentModel.DataAnnotations.PropertyVisibilityConditionAttribute  /* set this property will auto refresh all visiblity when this proeprty value changed. */  
 PropertyModels.ComponentModel.DataAnnotations.EnumPermitValuesAttribute<T>          /* For a single attribute configuration, force the allowed enumeration values ​​to be set */
 PropertyModels.ComponentModel.DataAnnotations.EnumPermitNamesAttribute              /* based on enum names */
 PropertyModels.ComponentModel.DataAnnotations.EnumProhibitValuesAttribute<T>        /* For individual attribute configurations, certain enumeration values ​​are forcibly prohibited from appearing in the candidate list */
@@ -272,14 +272,14 @@ By setting Attribute, you can make certain Properties only displayed when condit
         [ConditionTarget]
         public bool IsShowPath { get; set; } = true;
 
-        [VisibilityPropertyCondition(nameof(IsShowPath), true)]
+        [PropertyVisibilityCondition(nameof(IsShowPath), true)]
         [PathBrowsable(Filters = "Image Files(*.jpg;*.png;*.bmp;*.tag)|*.jpg;*.png;*.bmp;*.tag")]
         public string Path { get; set; } = "";
 
         [ConditionTarget]
         public PlatformID Platform { get; set; } = PlatformID.Win32NT;
 
-        [VisibilityPropertyCondition(nameof(Platform), PlatformID.Unix)]
+        [PropertyVisibilityCondition(nameof(Platform), PlatformID.Unix)]
         [ConditionTarget]
         public string UnixVersion { get; set; } = "";
 
@@ -289,7 +289,7 @@ By setting Attribute, you can make certain Properties only displayed when condit
         [ConditionTarget]
         public bool IsShowUnixLoginInfo => IsShowPath && Platform == PlatformID.Unix && UnixVersion.IsNotNullOrEmpty();
 
-        [VisibilityPropertyCondition(nameof(IsShowUnixLoginInfo), true)]
+        [PropertyVisibilityCondition(nameof(IsShowUnixLoginInfo), true)]
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public LoginInfo unixLogInInfo { get; set; } = new LoginInfo();
     }
