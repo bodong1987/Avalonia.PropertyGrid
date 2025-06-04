@@ -75,8 +75,11 @@
 			<GridSplitter Grid.Column="1"></GridSplitter>
 			<TextBlock x:Name="ColumnProperties" Margin="6, 0, 2, 2" Text="{ll:Localize Properties}" Grid.Column="2"></TextBlock>
 		</Grid>
-		<Grid x:Name="PropertiesGrid" Grid.Row="3">
+		<ScrollViewer Grid.Row="3">
+			<Grid x:Name="PropertiesGrid">
 			
-		</Grid>
+			</Grid>	
+		</ScrollViewer>
+		
 	</Grid>
 </UserControl>

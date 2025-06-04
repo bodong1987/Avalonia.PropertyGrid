@@ -25,22 +25,20 @@
         <TabControl TabStripPlacement="Left" Grid.Row="0" Padding="4">
             <TabItem Header="{ll:Localize Basic}">
                 <Grid RowDefinitions="*,Auto">
-                    <ScrollViewer>
                         <!-- ReSharper disable Xaml.PossibleNullReferenceException -->
-                        <pgc:PropertyGrid
-                            x:Name="StylesPropertyGrid"
-                            CustomPropertyDescriptorFilter="OnCustomPropertyDescriptorFilter"
-                            Margin="2"
-                            DataContext="{Binding SimpleObject}"
-                            AllowFilter="{Binding DataContext.AllowFilter, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                            DisplayMode="{Binding DataContext.DisplayMode, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
-                            ShowStyle="{Binding DataContext.ShowStyle, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
-                            ShowTitle="{Binding DataContext.IsShowTitle, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
-                            AllowQuickFilter="{Binding DataContext.AllowQuickFilter, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
-                            AllCategoriesExpanded="{Binding DataContext.IsAllExpanded, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
-                            NameWidth="280">
-                        </pgc:PropertyGrid>
-                    </ScrollViewer>
+                    <pgc:PropertyGrid
+                        x:Name="StylesPropertyGrid"
+                        CustomPropertyDescriptorFilter="OnCustomPropertyDescriptorFilter"
+                        Margin="2"
+                        DataContext="{Binding SimpleObject}"
+                        AllowFilter="{Binding DataContext.AllowFilter, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                        DisplayMode="{Binding DataContext.DisplayMode, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
+                        ShowStyle="{Binding DataContext.ShowStyle, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
+                        ShowTitle="{Binding DataContext.IsShowTitle, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
+                        AllowQuickFilter="{Binding DataContext.AllowQuickFilter, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
+                        AllCategoriesExpanded="{Binding DataContext.IsAllExpanded, RelativeSource={RelativeSource AncestorType=UserControl}, Mode=TwoWay}"
+                        NameWidth="280">
+                    </pgc:PropertyGrid>
                     <StackPanel Orientation="Vertical" Grid.Row="1">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Display_Mode}"></TextBlock>
@@ -148,15 +146,11 @@
             <TabItem Header="{ll:Localize CustomObject}">
                 <Grid ColumnDefinitions="1*, 2, 1*">
                     <Expander IsExpanded="True" Margin="2" Grid.Column="0" Header="ICustomTypeDescriptor" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-                        <ScrollViewer>
-                            <pgc:PropertyGrid Margin="4" DataContext="{Binding CustomOptions}"></pgc:PropertyGrid>
-                        </ScrollViewer>
+                        <pgc:PropertyGrid Margin="4" DataContext="{Binding CustomOptions}"></pgc:PropertyGrid>
                     </Expander>
                     <GridSplitter Grid.Column="1"></GridSplitter>
                     <Expander IsExpanded="True" Margin="2" Grid.Column="2" Header="TypeDescriptionProvider" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-                        <ScrollViewer >
-                            <pgc:PropertyGrid Margin="4" DataContext="{Binding CustomObject}"></pgc:PropertyGrid>
-                        </ScrollViewer>
+                        <pgc:PropertyGrid Margin="4" DataContext="{Binding CustomObject}"></pgc:PropertyGrid>
                     </Expander>
                 </Grid>
             </TabItem>
@@ -171,7 +165,6 @@
                         <Expander IsExpanded="True" Header="{ll:Localize Extends}" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
                             <lv:TestExtendPropertyGrid Margin="2" DataContext="{Binding ExtendsObject}"></lv:TestExtendPropertyGrid>
                         </Expander>
-
                     </Grid>
                 </ScrollViewer>
             </TabItem>
@@ -200,12 +193,10 @@
                                 ToolTip.Tip="Clear all cached commands"
                                 ></Button>
                     </StackPanel>
-                    <ScrollViewer Grid.Row="1">
-                        <pgc:PropertyGrid x:Name="PropertyGridRedoUndo"
-                                          Margin="4"
-                                          DataContext="{Binding CancelableObject}"
-                                          ></pgc:PropertyGrid>
-                    </ScrollViewer>
+                    <pgc:PropertyGrid Grid.Row="1" x:Name="PropertyGridRedoUndo"
+                                      Margin="4"
+                                      DataContext="{Binding CancelableObject}"
+                    ></pgc:PropertyGrid>
                 </Grid>
 
             </TabItem>
