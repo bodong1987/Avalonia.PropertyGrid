@@ -31,7 +31,11 @@
 							  IsVisible="{Binding Model.IsEditable, RelativeSource={RelativeSource TemplatedParent}}"
 							  ToolTip.Tip="{ll:Localize AppendNewElement}"
 							  FontSize="18"
-							  >N</Button>
+							  >
+						  <Button.Content>
+							  <Image Source="/Assets/Images/new.png" Width="24" Height="24"></Image>
+						  </Button.Content>
+					  </Button>
 					  <Button Grid.Row="0" x:Name="ClearElements" 
 					          Grid.Column="3" 
 					          Margin="2" 
@@ -44,7 +48,11 @@
 					          IsVisible="{Binding Model.IsEditable, RelativeSource={RelativeSource TemplatedParent}}"
 					          ToolTip.Tip="{ll:Localize ClearAllElements}"
 					          FontSize="18"
-					  >U</Button>
+					  >
+						  <Button.Content>
+							  <Image Source="/Assets/Images/clear.png" Width="24" Height="24"></Image>
+						  </Button.Content>
+					  </Button>
 					  <ItemsControl Grid.Column="0" x:Name="ItemsPresenter"
 									ItemsSource="{Binding Model.Elements, RelativeSource={RelativeSource TemplatedParent}}"
 									Grid.Row="1"

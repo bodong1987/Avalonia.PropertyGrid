@@ -27,7 +27,11 @@
     <AvaloniaResource Include="Assets\Localizations\en-US.json" />
     <AvaloniaResource Include="Assets\Localizations\ru-RU.json" />
     <AvaloniaResource Include="Assets\Localizations\zh-CN.json" />    
-    <AvaloniaResource Include="Assets\Images\options.png" />
+    <AvaloniaResource Include="Assets\Images\options.png" />    
+    <AvaloniaResource Include="Assets\Images\add.png" />    
+    <AvaloniaResource Include="Assets\Images\delete.png" />
+      <AvaloniaResource Include="Assets\Images\new.png" />
+      <AvaloniaResource Include="Assets\Images\clear.png" />
   </ItemGroup>
 
   <ItemGroup>
