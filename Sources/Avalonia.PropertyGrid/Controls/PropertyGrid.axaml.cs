@@ -307,6 +307,24 @@ namespace Avalonia.PropertyGrid.Controls
             get => GetValue(PropertyOperationVisibilityProperty);
             set => SetValue(PropertyOperationVisibilityProperty, value);
         }
+
+        /// <summary>
+        /// export this property
+        /// so user can redefine the style of it
+        /// </summary>
+        public Button DefaultOptionsButton => OptionsButton;
+        
+        /// <summary>
+        /// export default options context menu
+        /// so user can add more menu item to it
+        /// </summary>
+        public ContextMenu DefaultOptionsContextMenu => OptionsContextMenu;
+
+        /// <summary>
+        /// default header grid
+        /// user can append more elements in it
+        /// </summary>
+        public Grid DefaultHeaderGrid => HeaderGrid;
         #endregion
 
         #region Events

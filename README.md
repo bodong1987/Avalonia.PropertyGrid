@@ -85,6 +85,7 @@ PropertyModels.ComponentModel.SingleSelectionModeAttribute                      
 PropertyModels.ComponentModel.UnitAttribute                                         /* used to display a unit next to the display name */  
 PropertyModels.ComponentModel.PropertyOperationVisibilityAttribute                  /* Used to specify whether the additional operation area is visible. The default value is determined by the property. */  
 PropertyModels.ComponentModel.SelectableListDisplayModeAttribute                    /* Used to specify the display view category of the selectable list type. The default is horizontal arrangement + automatic line wrap, and it can also be configured to other types. */   
+PropertyModels.ComponentModel.ExpandableObjectDisplayModeAttribute                  /* You can control the display mode of the sub-objects to be expanded. Through these configurations, you can control whether the sub-objects display categories, sorting, etc. */  
 ```
 
 ### Supported Builtin Types

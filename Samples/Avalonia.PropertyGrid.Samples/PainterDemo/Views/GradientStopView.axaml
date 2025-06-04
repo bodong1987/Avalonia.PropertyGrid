@@ -9,12 +9,11 @@
         <!-- Set Defaults -->
         <Setter Property="Template">
             <ControlTemplate>
-                <StackPanel Orientation="Horizontal">
-                    <ColorPicker Color="{Binding Color}"></ColorPicker>
-                    <TextBlock Text="{Binding Offset, StringFormat={}{0:F2}}" VerticalAlignment="Center"></TextBlock>
-                    <Slider Value="{Binding Offset}" Minimum="0" Maximum="1" VerticalAlignment="Center" Width="100"></Slider>
-                </StackPanel>
-                
+                <Grid ColumnDefinitions="Auto,Auto,*">
+                    <ColorPicker Grid.Column="0" Color="{Binding Color}"></ColorPicker>
+                    <TextBlock Grid.Column="1" Text="{Binding Offset, StringFormat={}{0:F2}}" VerticalAlignment="Center"></TextBlock>
+                    <Slider Grid.Column="2" Value="{Binding Offset}" Minimum="0" Maximum="1"></Slider>
+                </Grid>
             </ControlTemplate>
         </Setter>
     </Style>

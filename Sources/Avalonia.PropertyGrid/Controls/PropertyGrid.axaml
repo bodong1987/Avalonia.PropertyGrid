@@ -32,7 +32,7 @@
 		  >
 			<!-- ReSharper disable once Xaml.StyleClassNotFound -->
 			<TextBox Classes="clearButton" x:Name="SearchTextBox" VerticalAlignment="Center" VerticalContentAlignment="Center" Watermark="{ll:Localize Search}" Grid.Column="0" Text="{Binding $parent[lc:PropertyGrid].ViewModel.FilterPattern.FilterText}" ></TextBox>
-			<Button Grid.Column="1" Margin="2" Click="OnOptionsButtonClicked" VerticalContentAlignment="Center" VerticalAlignment="Center" Padding="2">
+			<Button x:Name="OptionsButton" Grid.Column="1" Margin="2" Click="OnOptionsButtonClicked" VerticalContentAlignment="Center" VerticalAlignment="Center" Padding="2">
 				<Button.Content>
 					<Image Source="/Assets/Images/options.png" Width="24" Height="24"></Image>
 				</Button.Content>

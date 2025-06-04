@@ -20,6 +20,7 @@ namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Models
 
         public PlatformID ServerType { get; set; } = PlatformID.Unix;
 
+        [ExpandableObjectDisplayMode(IsCategoryVisible = NullableBooleanType.No)]
         public EncryptData EncryptPolicy { get; set; } = new();
     }
 

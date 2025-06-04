@@ -29,8 +29,8 @@
                         </Slider>
                         <NumericUpDown Grid.Column="1"
                                        x:Name="numericUpDown"
-                                       Padding="2"
-                                       Margin="1"
+                                       Padding="1"
+                                       Margin="10"
                                        FontFamily="{x:Static lu:FontUtils.DefaultFontFamily}"
                                        VerticalContentAlignment="Center"
                                        Minimum="{Binding Minimum, Converter={StaticResource Double2Decimal}, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"

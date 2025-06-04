@@ -18,7 +18,7 @@
     <Grid ColumnDefinitions="Auto,Auto,6*,Auto,4*">
         <!-- Toolbar -->
         <ScrollViewer Grid.Column="0">
-            <StackPanel Orientation="Vertical" Background="#333333" Spacing="4" Margin="4">
+            <StackPanel Orientation="Vertical" Spacing="4" Margin="4">
                 <!-- ReSharper disable Xaml.BindingWithoutContextNotResolved -->
                 <RadioButton Content="{ll:Localize Select}" IsChecked="{Binding CurrentToolMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:ToolMode.Select}}" GroupName="Mode" Margin="4" />
                 <RadioButton Content="{ll:Localize Brush}" 
@@ -42,8 +42,11 @@
                     <ColorPicker Color="{Binding DefaultBorderColor}" HorizontalAlignment="Center" VerticalAlignment="Center"></ColorPicker>
                 </StackPanel>
                 
-                <TextBlock Text="{Binding DefaultStrokeThickness, StringFormat={}{0:0}}" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
-                <Slider Minimum="1" Maximum="50" Value="{Binding DefaultStrokeThickness}"></Slider>
+                <Grid ColumnDefinitions="Auto, Auto, *">
+                    <TextBlock Grid.Column="0" Text="{ll:Localize StrokeThickness}" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0, 2, 0"></TextBlock>
+                    <TextBlock Grid.Column="1" Text="{Binding DefaultStrokeThickness, StringFormat={}{0:0}}" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                    <Slider Grid.Column="2" Minimum="1" Maximum="50" Value="{Binding DefaultStrokeThickness}"></Slider>    
+                </Grid>
                             
                 <StackPanel Orientation="Vertical" Margin="6">
                     <Button IsEnabled="{Binding CanUndo}"

@@ -103,6 +103,7 @@ public abstract class ShapeBase : MiniReactiveObject
     
     [Category("Appearance")]
     [PropertyVisibilityCondition(nameof(FillMode), ShapeFillMode.Fill)]
+    [ExpandableObjectDisplayMode(IsCategoryVisible = NullableBooleanType.No)]
     public BrushConfiguration FillBrush
     {
         get => _fillBrush;
@@ -112,6 +113,7 @@ public abstract class ShapeBase : MiniReactiveObject
     private BrushConfiguration _strokeBrush = new () { SolidColor = Colors.DarkGray };
     
     [Category("Appearance")]
+    [ExpandableObjectDisplayMode(IsCategoryVisible = NullableBooleanType.No)]
     public BrushConfiguration StrokeBrush
     {
         get => _strokeBrush;

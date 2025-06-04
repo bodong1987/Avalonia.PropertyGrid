@@ -75,6 +75,16 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <value>The show style.</value>
         PropertyGridShowStyle ShowStyle { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the order of category
+        /// </summary>
+        PropertyGridOrderStyle CategoryOrderStyle { get; set; }
+
+        /// <summary>
+        /// Gets or sets the order of properties
+        /// </summary>
+        PropertyGridOrderStyle PropertyOrderStyle { get; set; }
 
         /// <summary>
         /// Gets or sets the width of the name.

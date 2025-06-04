@@ -66,8 +66,35 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             Debug.Assert(propertyGrid.RootPropertyGrid != null);
             Debug.Assert(!Equals(propertyGrid.RootPropertyGrid, propertyGrid));
 
-            propertyGrid.DisplayMode = context.Root.DisplayMode;
-            propertyGrid.ShowStyle = context.Root.ShowStyle;
+            var attr = propertyDescriptor.GetCustomAttribute<ExpandableObjectDisplayModeAttribute>() ??
+                       propertyDescriptor.PropertyType.GetAnyCustomAttribute<ExpandableObjectDisplayModeAttribute>();
+
+            propertyGrid.DisplayMode = attr == null || attr.IsTreeMode == NullableBooleanType.Undefined
+                ? context.Root.DisplayMode
+                : (attr.IsTreeMode is NullableBooleanType.Yes
+                    ? PropertyGridDisplayMode.Tree
+                    : PropertyGridDisplayMode.Inline);
+            
+            propertyGrid.ShowStyle = attr == null || attr.IsCategoryVisible == NullableBooleanType.Undefined
+                ? context.Root.ShowStyle
+                : (attr.IsCategoryVisible is NullableBooleanType.Yes
+                    ? PropertyGridShowStyle.Category
+                    : PropertyGridShowStyle.Tiled);
+            
+            propertyGrid.CategoryOrderStyle =
+                attr == null || attr.IsCategoryBuiltinOrder == NullableBooleanType.Undefined
+                    ? context.Root.CategoryOrderStyle
+                    : (attr.IsCategoryBuiltinOrder is NullableBooleanType.Yes
+                        ? PropertyGridOrderStyle.Builtin
+                        : PropertyGridOrderStyle.Alphabetic);
+            
+            propertyGrid.PropertyOrderStyle =
+                attr == null || attr.IsPropertyBuiltinOrder == NullableBooleanType.Undefined
+                    ? context.Root.PropertyOrderStyle
+                    : (attr.IsPropertyBuiltinOrder is NullableBooleanType.Yes
+                        ? PropertyGridOrderStyle.Builtin
+                        : PropertyGridOrderStyle.Alphabetic);
+            
             propertyGrid.NameWidth = context.Root.NameWidth;
             propertyGrid.AllowFilter = false;
             propertyGrid.AllowQuickFilter = false;

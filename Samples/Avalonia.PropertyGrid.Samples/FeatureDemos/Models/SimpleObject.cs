@@ -24,17 +24,15 @@ namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Models
         {
             Description = description;
 
-            using (var stream = AssetLoader.Open(new Uri($"avares://{GetType().Assembly.GetName().Name}/Assets/avalonia-banner.png")))
-            {
-                AvaloniaBanner = new Media.Imaging.Bitmap(stream);
-            }
+            using var stream = AssetLoader.Open(new Uri($"avares://{GetType().Assembly.GetName().Name}/Assets/avalonia-banner.png"));
+            AvaloniaBanner = new Media.Imaging.Bitmap(stream);
 
-            foreach (var name in new[] { "au.png", "bl.png", "ca.png", "cn.png" })
-            {
-                using var stream = AssetLoader.Open(new Uri($"avares://{GetType().Assembly.GetName().Name}/Assets/country-flags/{name}"));
-                var image = new Media.Imaging.Bitmap(stream);
-                ImageList.Add(image);
-            }
+            // foreach (var name in new[] { "au.png", "bl.png", "ca.png", "cn.png" })
+            // {
+            //     using var stream = AssetLoader.Open(new Uri($"avares://{GetType().Assembly.GetName().Name}/Assets/country-flags/{name}"));
+            //     var image = new Media.Imaging.Bitmap(stream);
+            //     ImageList.Add(image);
+            // }
         }
 
         public override string ToString() => $"({GetHashCode()}){Description}";
@@ -42,10 +40,10 @@ namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Models
         [Category("Imaging")]
         public IImage AvaloniaBanner { get; set; }
 
-        [Category("ImagingList")]
-        [ImagePreviewMode(Stretch = StretchType.None)]
+        // [Category("ImagingList")]
+        //[ImagePreviewMode(Stretch = StretchType.None)]
         // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
-        public BindingList<IImage> ImageList { get; set; } = [];
+        // public BindingList<IImage> ImageList { get; set; } = [];
 
         [Category("Path")]
         [DisplayName("Target Path")]
@@ -374,6 +372,7 @@ namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Models
         [Category("Expandable")]
         [DisplayName("Login User Data")]
         [TypeConverter(typeof(ExpandableObjectConverter))]
+        [ExpandableObjectDisplayMode(IsCategoryVisible = NullableBooleanType.No)]
         public LoginInfo loginInfo { get; set; } = new();
 
         [Category("Font")]
