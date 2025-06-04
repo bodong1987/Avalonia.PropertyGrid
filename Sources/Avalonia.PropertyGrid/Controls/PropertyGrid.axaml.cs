@@ -1249,6 +1249,11 @@ namespace Avalonia.PropertyGrid.Controls
             }
         }
 
+        private void OnOptionsButtonClicked(object? sender, RoutedEventArgs e)
+        {
+            OptionsContextMenu.Open(sender as Control);
+        }
+
         #endregion
 
         #region IDisposable

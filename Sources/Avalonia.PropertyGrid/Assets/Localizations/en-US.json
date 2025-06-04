@@ -1,6 +1,7 @@
 ﻿{
     "ShowGroup": "Show Category",
     "ShowStyle": "Show Style",
+    "IsCategoryView": "Is Category View",
     "IgnoreCase": "Ignore Case",
     "UseRegex": "Use Regex",
     "InsertNewElement": "Insert a new element before this element",

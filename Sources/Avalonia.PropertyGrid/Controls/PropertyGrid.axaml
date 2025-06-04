@@ -25,14 +25,23 @@
 	
 	<Grid RowDefinitions="Auto,Auto,Auto,*">
 		<Grid x:Name="HeaderGrid"
-			  ColumnDefinitions="*,Auto, Auto, Auto"
+			  ColumnDefinitions="*,Auto"
 			  Margin="2"
 		  >
 			<!-- ReSharper disable once Xaml.StyleClassNotFound -->
 			<TextBox Classes="clearButton" x:Name="SearchTextBox" VerticalAlignment="Center" VerticalContentAlignment="Center" Watermark="{ll:Localize Search}" Grid.Column="0" Text="{Binding $parent[lc:PropertyGrid].ViewModel.FilterPattern.FilterText}" ></TextBox>
-			<ToggleButton x:Name="ShowStyleButton" Margin="2" Content="{Binding $parent[lc:PropertyGrid].ViewModel.ShowStyleText}" Grid.Column="1" IsChecked="{Binding $parent[lc:PropertyGrid].ViewModel.IsCategoryView}" ToolTip.Tip="{ll:Localize ShowStyle}"></ToggleButton>
-			<ToggleButton Margin="2" Content="R" Grid.Column="2" IsChecked="{Binding $parent[lc:PropertyGrid].ViewModel.FilterPattern.UseRegex}" ToolTip.Tip="{ll:Localize UseRegex}"></ToggleButton>
-			<ToggleButton Margin="2" Content="K" Grid.Column="3" IsChecked="{Binding $parent[lc:PropertyGrid].ViewModel.FilterPattern.IgnoreCase}" ToolTip.Tip="{ll:Localize IgnoreCase}"></ToggleButton>
+			<Button Grid.Column="1" Margin="2" Click="OnOptionsButtonClicked" VerticalContentAlignment="Center" VerticalAlignment="Center">
+				<Button.Content>
+					<Image Source="/Assets/Images/options.png" Width="20" Height="20"></Image>
+				</Button.Content>
+				<Button.ContextMenu>
+					<ContextMenu x:Name="OptionsContextMenu">
+						<MenuItem Header="{ll:Localize IsCategoryView}" IsChecked="{Binding $parent[lc:PropertyGrid].ViewModel.IsCategoryView, Mode=TwoWay}" ToggleType="CheckBox" ToolTip.Tip="{ll:Localize ShowStyle}"/>
+						<MenuItem Header="{ll:Localize UseRegex}" IsChecked="{Binding $parent[lc:PropertyGrid].ViewModel.FilterPattern.UseRegex, Mode=TwoWay}" ToggleType="CheckBox" ToolTip.Tip="{ll:Localize UseRegex}"/>
+						<MenuItem Header="{ll:Localize IgnoreCase}" IsChecked="{Binding $parent[lc:PropertyGrid].ViewModel.FilterPattern.IgnoreCase, Mode=TwoWay}" ToggleType="CheckBox" ToolTip.Tip="{ll:Localize IgnoreCase}"/>
+					</ContextMenu>
+				</Button.ContextMenu>
+			</Button>
 		</Grid>
 		<lc:CheckedMask x:Name="FastFilterBox" Grid.Row="1" Model="{Binding $parent[lc:PropertyGrid].ViewModel.CategoryFilter}"></lc:CheckedMask>
 		<Grid x:Name="SplitterGrid" Grid.Row="2">
