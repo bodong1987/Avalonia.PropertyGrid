@@ -27,7 +27,7 @@ namespace PropertyModels.ComponentModel
         [Browsable(false)]
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        private bool _batchUpdating = false;
+        private bool _batchUpdating;
 
         /// <summary>
         /// add batch update support

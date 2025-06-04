@@ -261,6 +261,7 @@ namespace PropertyModels.ComponentModel
         /// Gets the type converter for this property.
         /// </summary>
         /// <value>The converter.</value>
+        // ReSharper disable once RedundantSuppressNullableWarningExpression
         public override TypeConverter Converter => Descriptors[0].Converter!;
 
         /// <summary>
@@ -398,7 +399,7 @@ namespace PropertyModels.ComponentModel
 
             if (valuesArray.Length != Descriptors.Length || valuesArray.Length != componentsArray.Length)
             {
-                throw new ArgumentOutOfRangeException();
+                throw new ArgumentOutOfRangeException(nameof(values));
             }
 
             for (var i = 0; i < Descriptors.Length; i++)
@@ -411,6 +412,7 @@ namespace PropertyModels.ComponentModel
         /// Gets the name of the category to which the member belongs, as specified in the <see cref="T:System.ComponentModel.CategoryAttribute" />.
         /// </summary>
         /// <value>The category.</value>
+        // ReSharper disable once NullCoalescingConditionIsAlwaysNotNullAccordingToAPIContract
         public override string Category => Descriptors[0].Category ?? string.Empty;
 
         #region IEnumerable

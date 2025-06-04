@@ -1,4 +1,5 @@
 ﻿using System;
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
 namespace PropertyModels.ComponentModel
 {

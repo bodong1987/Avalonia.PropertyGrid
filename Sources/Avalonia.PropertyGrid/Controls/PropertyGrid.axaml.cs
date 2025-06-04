@@ -963,7 +963,7 @@ namespace Avalonia.PropertyGrid.Controls
             var property = propertyDescriptor;
             
             var context = new PropertyCellContext(null, RootPropertyGrid ?? this, this, target, propertyDescriptor);
-            var result = new BuildPropertyCellEditResult()
+            var result = new BuildPropertyCellEditResult
             {
                 Context = context
             };

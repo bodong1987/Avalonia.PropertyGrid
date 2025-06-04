@@ -409,10 +409,8 @@ namespace Avalonia.PropertyGrid.Controls
                         {
                             return new WrapPanel { Orientation = Orientation.Horizontal, ItemSpacing = 4};
                         }
-                        else
-                        {
-                            return new StackPanel { Orientation = orientation, Spacing = 4};
-                        }
+
+                        return new StackPanel { Orientation = orientation, Spacing = 4};
                     })
                 };
 

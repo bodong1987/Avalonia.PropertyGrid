@@ -26,6 +26,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// float equal test tolerance
         /// </summary>
 #pragma warning disable CA2211
+        // ReSharper disable once FieldCanBeMadeReadOnly.Global
+        // ReSharper disable once ConvertToConstant.Global
         public static float FloatEqualTolerance = 0.00001f;
 #pragma warning restore CA2211
         
@@ -33,6 +35,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// double equal tolerance
         /// </summary>
 #pragma warning disable CA2211
+        // ReSharper disable once FieldCanBeMadeReadOnly.Global
+        // ReSharper disable once ConvertToConstant.Global
         public static double DoubleEqualTolerance = 0.00001;
 #pragma warning restore CA2211
         
@@ -40,6 +44,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// decimal equal tolerance
         /// </summary>
 #pragma warning disable CA2211
+        // ReSharper disable once FieldCanBeMadeReadOnly.Global
+        // ReSharper disable once ConvertToConstant.Global
         public static decimal DecimalEqualTolerance = (decimal)0.00001;
 #pragma warning restore CA2211
         

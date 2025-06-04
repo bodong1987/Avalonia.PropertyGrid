@@ -137,7 +137,9 @@ namespace PropertyModels.Collections
         {
             get
             {
+#pragma warning disable CS8601 
                 List<object> list = [.. _itemsCore];
+#pragma warning restore CS8601 
 
                 return [.. list];
             }
