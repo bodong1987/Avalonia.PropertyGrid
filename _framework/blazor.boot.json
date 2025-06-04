@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "Avalonia.PropertyGrid.Samples.Browser",
   "resources": {
-    "hash": "sha256-wTBeeQTwlqA0as927X8DRjuJMj0YWhxLnb7HI2yIW+c=",
+    "hash": "sha256-IIimDQAtieSqKr3EYEVRTEyWMjUpNP4Mrb6DT0SUPPM=",
     "fingerprinting": {
       "Avalonia.Base.hi23v6rqyq.wasm": "Avalonia.Base.wasm",
       "Avalonia.Browser.bsnxfg8utl.wasm": "Avalonia.Browser.wasm",
@@ -17,8 +17,8 @@
       "Avalonia.Metal.a1trlafjv0.wasm": "Avalonia.Metal.wasm",
       "Avalonia.MicroCom.l5a1chlq6c.wasm": "Avalonia.MicroCom.wasm",
       "Avalonia.OpenGL.f91htzqokn.wasm": "Avalonia.OpenGL.wasm",
-      "Avalonia.PropertyGrid.Samples.Browser.as134ukphv.wasm": "Avalonia.PropertyGrid.Samples.Browser.wasm",
-      "Avalonia.PropertyGrid.Samples.ivmapy0l4v.wasm": "Avalonia.PropertyGrid.Samples.wasm",
+      "Avalonia.PropertyGrid.Samples.Browser.9cpqacwanp.wasm": "Avalonia.PropertyGrid.Samples.Browser.wasm",
+      "Avalonia.PropertyGrid.Samples.34qfn1r0gl.wasm": "Avalonia.PropertyGrid.Samples.wasm",
       "Avalonia.PropertyGrid.70cvqixmrs.wasm": "Avalonia.PropertyGrid.wasm",
       "Avalonia.Remote.Protocol.y9odstt7hi.wasm": "Avalonia.Remote.Protocol.wasm",
       "Avalonia.Skia.0czubqrpyj.wasm": "Avalonia.Skia.wasm",
@@ -241,8 +241,8 @@
       "Avalonia.Metal.a1trlafjv0.wasm": "sha256-vhhoiDN9aXFKTAnSiC2N6ZOAphyVUqLEK2FR08c51NQ=",
       "Avalonia.MicroCom.l5a1chlq6c.wasm": "sha256-qSlOn4m4tp0kEQZMB1f5ZuydnRqyWEKeVxeW9DZ6Zm8=",
       "Avalonia.OpenGL.f91htzqokn.wasm": "sha256-XZYaYdxYapDNdavH/nlY3/YlyBXeL+vTXIbFwznl3jY=",
-      "Avalonia.PropertyGrid.Samples.Browser.as134ukphv.wasm": "sha256-NpjpBVfG1a+/Ed7dyHZQOfFaUv3UXPvW5Rpn3dgtYkk=",
-      "Avalonia.PropertyGrid.Samples.ivmapy0l4v.wasm": "sha256-sqyCTEjquEKSlPMyOUr3CIxNtZSbgK2mrpyCwfgF49Q=",
+      "Avalonia.PropertyGrid.Samples.Browser.9cpqacwanp.wasm": "sha256-yXy+cc+y83B1TgVa6hYGhowBxDUa2ZNZYGhNFC95sjQ=",
+      "Avalonia.PropertyGrid.Samples.34qfn1r0gl.wasm": "sha256-8/ydpUMiY4oVMKMULHBuNi/GfbRH2PsmWDx5vLphTRU=",
       "Avalonia.PropertyGrid.70cvqixmrs.wasm": "sha256-h8AFq7g+g/Qmq1lKt6R3QvWDFuqXx+sfzn+m4Dia8Cc=",
       "Avalonia.Remote.Protocol.y9odstt7hi.wasm": "sha256-JnzNhEQ7ViQq1kHF022cwWSafeMuDNNTBklkAW1AM/g=",
       "Avalonia.Skia.0czubqrpyj.wasm": "sha256-YJFdLUv2tNRg1K0kMhj/8/7Zmz/KltT2OnyR4JTw0UM=",
