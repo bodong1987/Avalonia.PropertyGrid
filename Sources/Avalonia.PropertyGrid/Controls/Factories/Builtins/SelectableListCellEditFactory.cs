@@ -95,10 +95,14 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             {
                 ICheckableListEdit control = attr.Mode == SingleSelectionMode.ToggleButtonGroup ? new ToggleButtonGroupListEdit
                 {
-                    Items = list?.Values ?? []
+                    Items = list?.Values ?? [],
+                    ElementMinWidth = attr.ElementMinWidth,
+                    ElementMinHeight = attr.ElementMinHeight
                 } : new RadioButtonListEdit
                 {
-                    Items = list?.Values ?? []
+                    Items = list?.Values ?? [],
+                    ElementMinWidth = attr.ElementMinWidth,
+                    ElementMinHeight = attr.ElementMinHeight
                 };
 
                 if (propertyDescriptor.GetCustomAttribute<SelectableListDisplayModeAttribute>() is { } displayModeAttr)

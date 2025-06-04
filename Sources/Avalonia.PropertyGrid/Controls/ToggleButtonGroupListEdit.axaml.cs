@@ -104,6 +104,24 @@ namespace Avalonia.PropertyGrid.Controls
             get => Model.EnableRaiseCheckedItemChangedEvent;
             set => Model.EnableRaiseCheckedItemChangedEvent = value;
         }
+        
+        /// <summary>
+        /// set for each element min width
+        /// </summary>
+        public double ElementMinWidth
+        {
+            get => Model.MinWidth;
+            set => Model.MinWidth = value;
+        }
+        
+        /// <summary>
+        /// set for each element height width
+        /// </summary>
+        public double ElementMinHeight
+        {
+            get => Model.MinHeight;
+            set => Model.MinHeight = value;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ToggleButtonGroupListEdit"/> class.

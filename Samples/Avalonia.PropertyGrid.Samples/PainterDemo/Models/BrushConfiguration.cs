@@ -89,7 +89,7 @@ public class BrushConfiguration : ReactiveObject
     #region SolidColorBrush
     private Color _solidColor = Colors.Gray;
 
-    [VisibilityPropertyCondition(nameof(BrushCategory), BrushCategory.Solid)]
+    [PropertyVisibilityCondition(nameof(BrushCategory), BrushCategory.Solid)]
     public Color SolidColor
     {
         get => _solidColor;
@@ -114,7 +114,7 @@ public class BrushConfiguration : ReactiveObject
         new (){Color = Colors.LightBlue, Offset = 1.0},
     ];
 
-    [VisibilityPropertyCondition(nameof(IsGradientBrush), true)]
+    [PropertyVisibilityCondition(nameof(IsGradientBrush), true)]
     public BindingList<GradientStop> GradientStops
     {
         get => _gradientStops;
@@ -125,7 +125,7 @@ public class BrushConfiguration : ReactiveObject
     #region LinearGradientBrush
     private double _linearGradientStartPointX;
 
-    [VisibilityPropertyCondition(nameof(BrushCategory), BrushCategory.LinearGradient)]
+    [PropertyVisibilityCondition(nameof(BrushCategory), BrushCategory.LinearGradient)]
     [Trackable(0, 1)]
     [Range(0, 1)]
     public double LinearGradientStartPointX
@@ -136,7 +136,7 @@ public class BrushConfiguration : ReactiveObject
     
     private double _linearGradientStartPointY;
 
-    [VisibilityPropertyCondition(nameof(BrushCategory), BrushCategory.LinearGradient)]
+    [PropertyVisibilityCondition(nameof(BrushCategory), BrushCategory.LinearGradient)]
     [Trackable(0, 1)]
     [Range(0, 1)]
     public double LinearGradientStartPointY
@@ -147,7 +147,7 @@ public class BrushConfiguration : ReactiveObject
     
     private double _linearGradientEndPointX = 100;
 
-    [VisibilityPropertyCondition(nameof(BrushCategory), BrushCategory.LinearGradient)]
+    [PropertyVisibilityCondition(nameof(BrushCategory), BrushCategory.LinearGradient)]
     [Trackable(0, 1)]
     [Range(0, 1)]
     public double LinearGradientEndPointX
@@ -158,7 +158,7 @@ public class BrushConfiguration : ReactiveObject
     
     private double _linearGradientEndPointY = 100;
 
-    [VisibilityPropertyCondition(nameof(BrushCategory), BrushCategory.LinearGradient)]
+    [PropertyVisibilityCondition(nameof(BrushCategory), BrushCategory.LinearGradient)]
     [Trackable(0, 1)]
     [Range(0, 1)]
     public double LinearGradientEndPointY
@@ -172,7 +172,7 @@ public class BrushConfiguration : ReactiveObject
 
     private double _radialGradientCenterX = 0.5;
 
-    [VisibilityPropertyCondition(nameof(BrushCategory), BrushCategory.RadialGradient)]
+    [PropertyVisibilityCondition(nameof(BrushCategory), BrushCategory.RadialGradient)]
     [Trackable(0, 1)]
     [Range(0, 1)]
     public double RadialGradientCenterX
@@ -183,7 +183,7 @@ public class BrushConfiguration : ReactiveObject
     
     private double _radialGradientCenterY = 0.5;
 
-    [VisibilityPropertyCondition(nameof(BrushCategory), BrushCategory.RadialGradient)]
+    [PropertyVisibilityCondition(nameof(BrushCategory), BrushCategory.RadialGradient)]
     [Trackable(0, 1)]
     [Range(0, 1)]
     public double RadialGradientCenterY
@@ -194,7 +194,7 @@ public class BrushConfiguration : ReactiveObject
     
     private double _radialGradientRadiusX = 0.5;
 
-    [VisibilityPropertyCondition(nameof(BrushCategory), BrushCategory.RadialGradient)]
+    [PropertyVisibilityCondition(nameof(BrushCategory), BrushCategory.RadialGradient)]
     [Trackable(0, 1)]
     [Range(0, 1)]
     public double RadialGradientRadiusX
@@ -205,7 +205,7 @@ public class BrushConfiguration : ReactiveObject
     
     private double _radialGradientRadiusY = 0.5;
 
-    [VisibilityPropertyCondition(nameof(BrushCategory), BrushCategory.RadialGradient)]
+    [PropertyVisibilityCondition(nameof(BrushCategory), BrushCategory.RadialGradient)]
     [Trackable(0, 1)]
     [Range(0, 1)]
     public double RadialGradientRadiusY

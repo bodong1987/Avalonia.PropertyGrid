@@ -30,7 +30,7 @@ public class AppearanceSettings : ReactiveObject
     
     [Category("Fonts")]
     [DisplayName("System Font")]
-    [VisibilityPropertyCondition(nameof(UseCustomFont), true)]
+    [PropertyVisibilityCondition(nameof(UseCustomFont), true)]
     public FontFamily SystemFont { get; set; } = FontFamily.Default;
 
     [Category("Effects")]

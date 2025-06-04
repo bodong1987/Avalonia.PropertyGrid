@@ -19,7 +19,12 @@
 					  </ItemsControl.ItemsPanel>
 					  <ItemsControl.ItemTemplate>
 						  <DataTemplate>
-							  <ToggleButton IsChecked="{Binding IsChecked, Mode=TwoWay}" Margin="2">
+							  <ToggleButton IsChecked="{Binding IsChecked, Mode=TwoWay}" Margin="2" 
+							                MinWidth="{Binding MinWidth}"
+							                MinHeight="{Binding MinHeight}"
+							                VerticalContentAlignment="Center"
+							                HorizontalContentAlignment="Center"
+							                >
 								  <TextBlock Text="{Binding Name}"></TextBlock>
 							  </ToggleButton>
 						  </DataTemplate>

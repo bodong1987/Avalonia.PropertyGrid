@@ -35,6 +35,16 @@ public class SingleSelectionModeAttribute : Attribute
     /// Mode
     /// </summary>
     public readonly SingleSelectionMode Mode;
+    
+    /// <summary>
+    /// min width for each element
+    /// </summary>
+    public double ElementMinWidth { get; set; }
+    
+    /// <summary>
+    /// min height for each element
+    /// </summary>
+    public double ElementMinHeight { get; set; }
 
     /// <summary>
     /// construct this instance

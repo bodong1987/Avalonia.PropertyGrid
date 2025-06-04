@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Reflection;
 
 namespace PropertyModels.ComponentModel.DataAnnotations
 {
@@ -53,11 +54,11 @@ namespace PropertyModels.ComponentModel.DataAnnotations
 
 
     /// <summary>
-    /// Class VisibilityPropertyConditionAttribute.
+    /// Class PropertyVisibilityConditionAttribute.
     /// Implements the <see cref="PropertyModels.ComponentModel.DataAnnotations.AbstractVisibilityConditionAttribute" />
     /// </summary>
     /// <seealso cref="PropertyModels.ComponentModel.DataAnnotations.AbstractVisibilityConditionAttribute" />
-    public class VisibilityPropertyConditionAttribute : AbstractVisibilityConditionAttribute
+    public class PropertyVisibilityConditionAttribute : AbstractVisibilityConditionAttribute
     {
         /// <summary>
         /// The property name
@@ -77,11 +78,11 @@ namespace PropertyModels.ComponentModel.DataAnnotations
         public ConditionLogicType LogicType { get; set; } = ConditionLogicType.Default;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="VisibilityPropertyConditionAttribute"/> class.
+        /// Initializes a new instance of the <see cref="PropertyVisibilityConditionAttribute"/> class.
         /// </summary>
         /// <param name="propertyName">Name of the property.</param>
         /// <param name="visibleValue">The visible value.</param>
-        public VisibilityPropertyConditionAttribute(string propertyName, object visibleValue)
+        public PropertyVisibilityConditionAttribute(string propertyName, object visibleValue)
         {
             PropertyName = propertyName;
             VisibleValue = visibleValue;
@@ -106,7 +107,7 @@ namespace PropertyModels.ComponentModel.DataAnnotations
                 return IsVisible(pd?.GetValue(component));
             }
 
-            var property = component.GetType().GetProperty(PropertyName);
+            var property = component.GetType().GetProperty(PropertyName, BindingFlags.Public|BindingFlags.Instance|BindingFlags.NonPublic);
 
             return IsVisible(property?.GetValue(component));
         }

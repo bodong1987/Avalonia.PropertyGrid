@@ -12,14 +12,14 @@ namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Models
         [ConditionTarget]
         public bool IsShowPath { get; set; } = true;
 
-        [VisibilityPropertyCondition(nameof(IsShowPath), true)]
+        [PropertyVisibilityCondition(nameof(IsShowPath), true)]
         [PathBrowsable(Filters = "Image Files(*.jpg;*.png;*.bmp;*.tag)|*.jpg;*.png;*.bmp;*.tag")]
         public string Path { get; set; } = string.Empty;
 
         [ConditionTarget]
         public PlatformID Platform { get; set; } = PlatformID.Win32NT;
 
-        [VisibilityPropertyCondition(nameof(Platform), PlatformID.Unix)]
+        [PropertyVisibilityCondition(nameof(Platform), PlatformID.Unix)]
         [ConditionTarget]
         public string UnixVersion { get; set; } = string.Empty;
 
@@ -29,7 +29,7 @@ namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Models
         [ConditionTarget]
         public bool IsShowUnixLoginInfo => IsShowPath && Platform == PlatformID.Unix && UnixVersion.IsNotNullOrEmpty();
 
-        [VisibilityPropertyCondition(nameof(IsShowUnixLoginInfo), true)]
+        [PropertyVisibilityCondition(nameof(IsShowUnixLoginInfo), true)]
         [TypeConverter(typeof(ExpandableObjectConverter))]
         // ReSharper disable once InconsistentNaming
         public LoginInfo unixLogInInfo { get; set; } = new();

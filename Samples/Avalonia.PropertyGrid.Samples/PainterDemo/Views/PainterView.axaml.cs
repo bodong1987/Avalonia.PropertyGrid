@@ -55,11 +55,11 @@ public partial class PainterView : UserControl
         viewModel.Shapes.CollectionChanged += OnShapeCollectionChanged;
         
         // for demo
-        viewModel.Shapes.Add(new EllipseShape { X = 50, Y = 50, Width = 90, Height = 90 });
-        viewModel.Shapes.Add(new RectangleShape { X = 350, Y = 200, Width = 260, Height = 240 });
-        viewModel.Shapes.Add(new StarShape{ X= 150, Y = 550, Radius = 100 });
-        viewModel.Shapes.Add(new ArrowShape(){ X= 150, Y = 680, Length = 300, ShaftWidth = 10, HeadHeight = 30, HeadWidth = 30});
-        viewModel.Shapes.Add(new LineShape(){ X= 450, Y = 500, X2 = 250, Y2 = 100, StrokeThickness = 4});
+        viewModel.Shapes.Add(new EllipseShape { X = 50, Y = 50, Width = 90, Height = 90, FillBrush = {SolidColor = Colors.Chocolate}});
+        viewModel.Shapes.Add(new RectangleShape { X = 350, Y = 200, Width = 260, Height = 240, FillBrush = {SolidColor = Colors.DarkGreen} });
+        viewModel.Shapes.Add(new StarShape{ X= 150, Y = 550, Radius = 100, FillBrush = {SolidColor = Colors.Firebrick} });
+        viewModel.Shapes.Add(new ArrowShape(){ X= 150, Y = 680, Length = 300, ShaftWidth = 10, HeadHeight = 30, HeadWidth = 30, FillBrush = {SolidColor = Colors.Maroon}});
+        viewModel.Shapes.Add(new LineShape(){ X= 450, Y = 500, X2 = 250, Y2 = 100, StrokeThickness = 4, StrokeBrush = {SolidColor = Colors.YellowGreen}});
     }
 
     private void OnShapeCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)

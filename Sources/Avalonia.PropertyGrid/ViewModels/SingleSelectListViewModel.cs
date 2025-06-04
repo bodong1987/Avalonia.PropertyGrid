@@ -40,6 +40,40 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// <value><c>true</c> if [enable raise checked items changed event]; otherwise, <c>false</c>.</value>
         internal bool EnableRaiseCheckedItemChangedEvent { get; set; } = true;
 
+        private double _minWidth;
+
+        public double MinWidth
+        {
+            get => _minWidth;
+            set
+            {
+                if (SetProperty(ref _minWidth, value))
+                {
+                    foreach (var item in Items)
+                    {
+                        item.MinWidth = value;
+                    }
+                }
+            } 
+        }
+
+        private double _minHeight;
+
+        public double MinHeight
+        {
+            get => _minHeight;
+            set
+            {
+                if (SetProperty(ref _minHeight, value))
+                {
+                    foreach (var item in Items)
+                    {
+                        item.MinHeight = value;
+                    }
+                }
+            } 
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="SingleSelectListViewModel"/> class.
         /// </summary>
@@ -100,6 +134,12 @@ namespace Avalonia.PropertyGrid.ViewModels
         public void AddRange(IEnumerable<object> items)
         {
             _items.AddRange(items.Select(x => new SingleSelectListItemViewModel(this, x)));
+            
+            foreach (var item in _items)
+            {
+                item.MinWidth = _minWidth;
+                item.MinHeight = _minHeight;
+            }
 
             RaisePropertyChanged(nameof(Items));
 
@@ -215,6 +255,22 @@ namespace Avalonia.PropertyGrid.ViewModels
                     RaisePropertyChanged(nameof(IsChecked));
                 }
             }
+        }
+        
+        private double _minWidth;
+
+        public double MinWidth
+        {
+            get => _minWidth;
+            set => SetProperty(ref _minWidth, value);
+        }
+
+        private double _minHeight;
+
+        public double MinHeight
+        {
+            get => _minHeight;
+            set => SetProperty(ref _minHeight, value);
         }
 
         /// <summary>

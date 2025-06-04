@@ -19,7 +19,10 @@
 					  </ItemsControl.ItemsPanel>
 					  <ItemsControl.ItemTemplate>
 						  <DataTemplate>
-							  <RadioButton IsChecked="{Binding IsChecked, Mode=TwoWay}">
+							  <RadioButton IsChecked="{Binding IsChecked, Mode=TwoWay}"
+							               MinWidth="{Binding MinWidth}"
+							               MinHeight="{Binding MinHeight}"
+							               >
 								  <TextBlock Text="{Binding Name}"></TextBlock>
 							  </RadioButton>
 						  </DataTemplate>

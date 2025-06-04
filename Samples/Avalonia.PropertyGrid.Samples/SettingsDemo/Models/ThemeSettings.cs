@@ -24,7 +24,7 @@ public class ThemeSettings : ReactiveObject
 
     [Category("Advanced")]
     [DisplayName("Custom Font")]
-    [VisibilityPropertyCondition(nameof(UseCustomFont), true)]
+    [PropertyVisibilityCondition(nameof(UseCustomFont), true)]
     public FontFamily CustomFont { get; set; } = FontFamily.Default;
 
     [Category("Advanced")]

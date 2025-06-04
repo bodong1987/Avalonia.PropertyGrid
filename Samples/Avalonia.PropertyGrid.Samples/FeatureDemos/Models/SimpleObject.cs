@@ -114,7 +114,7 @@ namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Models
         public GenderType GenderRadioView { get; set; } = GenderType.Male;
 
         [Category("Enum")]
-        [SingleSelectionMode(SingleSelectionMode.ToggleButtonGroup)]
+        [SingleSelectionMode(SingleSelectionMode.ToggleButtonGroup, ElementMinWidth = 100)]
         public GenderType GenderToggleGroupView { get; set; } = GenderType.Female;
 
         [Category("Enum")]

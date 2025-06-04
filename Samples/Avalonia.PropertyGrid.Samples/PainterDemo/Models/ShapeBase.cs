@@ -91,8 +91,8 @@ public abstract class ShapeBase : MiniReactiveObject
 
     [Category("Appearance")]
     [ConditionTarget]
-    [SingleSelectionMode(SingleSelectionMode.ToggleButtonGroup)]
-    [VisibilityPropertyCondition(nameof(IsFillModeVisible), true)]
+    [SingleSelectionMode(SingleSelectionMode.ToggleButtonGroup, ElementMinWidth = 80)]
+    [PropertyVisibilityCondition(nameof(IsFillModeVisible), true)]
     public ShapeFillMode FillMode
     {
         get => _fillMode;
@@ -102,7 +102,7 @@ public abstract class ShapeBase : MiniReactiveObject
     private BrushConfiguration _fillBrush = new() { SolidColor = Colors.Gray };
     
     [Category("Appearance")]
-    [VisibilityPropertyCondition(nameof(FillMode), ShapeFillMode.Fill)]
+    [PropertyVisibilityCondition(nameof(FillMode), ShapeFillMode.Fill)]
     public BrushConfiguration FillBrush
     {
         get => _fillBrush;
@@ -140,7 +140,7 @@ public abstract class ShapeBase : MiniReactiveObject
     
     private PenLineCap _strokeLineCap = PenLineCap.Flat;
     [Category("Appearance")]
-    [SingleSelectionMode(SingleSelectionMode.ToggleButtonGroup)]
+    [SingleSelectionMode(SingleSelectionMode.ToggleButtonGroup, ElementMinWidth = 80)]
     public PenLineCap StrokeLineCap
     {
         get => _strokeLineCap;
@@ -149,7 +149,7 @@ public abstract class ShapeBase : MiniReactiveObject
 
     private PenLineJoin _strokeJoin = PenLineJoin.Miter;
     [Category("Appearance")]
-    [SingleSelectionMode(SingleSelectionMode.ToggleButtonGroup)]
+    [SingleSelectionMode(SingleSelectionMode.ToggleButtonGroup, ElementMinWidth = 80)]
     public PenLineJoin StrokeJoin
     {
         get => _strokeJoin;
@@ -176,7 +176,7 @@ public abstract class ShapeBase : MiniReactiveObject
 
     private Stretch _stretch = Stretch.None;
     [Category("Appearance")]
-    [SingleSelectionMode(SingleSelectionMode.ToggleButtonGroup)]
+    [SingleSelectionMode(SingleSelectionMode.ToggleButtonGroup, ElementMinWidth = 80)]
     public Stretch Stretch
     {
         get => _stretch;

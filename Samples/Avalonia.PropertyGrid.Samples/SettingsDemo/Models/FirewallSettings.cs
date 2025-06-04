@@ -42,7 +42,7 @@ public class FirewallSettings : ReactiveObject
     [Category("Logging")]
     [DisplayName("Log Retention (days)")]
     [Range(1, 365)]
-    [VisibilityPropertyCondition(nameof(EnableLogging), true)]
+    [PropertyVisibilityCondition(nameof(EnableLogging), true)]
     public int LogRetentionDays { get; set; } = 30;
 }
 
