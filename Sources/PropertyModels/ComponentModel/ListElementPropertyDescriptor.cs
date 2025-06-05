@@ -3,6 +3,8 @@ using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
 
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+
 namespace PropertyModels.ComponentModel
 {
     /// <summary>
@@ -35,6 +37,11 @@ namespace PropertyModels.ComponentModel
         /// </summary>
         /// <value>The index.</value>
         public int Index { get; }
+        
+        /// <summary>
+        /// Value changed events
+        /// </summary>
+        public event EventHandler<ListElementValueChangedEventArgs>? ValueChanged;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ListElementPropertyDescriptor" /> class.
@@ -65,7 +72,7 @@ namespace PropertyModels.ComponentModel
         public override object? GetValue(object? component)
         {
             Debug.Assert(component is IList);
-
+            
             return (component as IList)![Index];
         }
 
@@ -85,7 +92,11 @@ namespace PropertyModels.ComponentModel
         {
             Debug.Assert(component is IList);
 
+            var oldValue = (component as IList)![Index];
+            
             (component as IList)![Index] = value;
+            
+            ValueChanged?.Invoke(this, new ListElementValueChangedEventArgs(this, oldValue, value));
         }
 
         /// <summary>
@@ -96,4 +107,43 @@ namespace PropertyModels.ComponentModel
         public override bool ShouldSerializeValue(object component) => false;
     }
 
+    /// <summary>
+    /// notify set property by property descriptor
+    /// </summary>
+    public class ListElementValueChangedEventArgs : EventArgs
+    {
+        /// <summary>
+        /// property descriptor
+        /// </summary>
+        public readonly ListElementPropertyDescriptor PropertyDescriptor;
+        
+        /// <summary>
+        /// old value
+        /// </summary>
+        public readonly object? OldValue;
+        
+        /// <summary>
+        /// new value
+        /// </summary>
+        public readonly object? NewValue;
+
+        /// <summary>
+        /// get element index
+        /// </summary>
+        public int Index => PropertyDescriptor.Index;
+
+        /// <summary>
+        /// constructor
+        /// </summary>
+        /// <param name="propertyDescriptor"></param>
+        /// <param name="oldValue"></param>
+        /// <param name="newValue"></param>
+        public ListElementValueChangedEventArgs(ListElementPropertyDescriptor propertyDescriptor, object? oldValue,
+            object? newValue)
+        {
+            PropertyDescriptor = propertyDescriptor;
+            OldValue = oldValue;
+            NewValue = newValue;
+        }
+    }
 }

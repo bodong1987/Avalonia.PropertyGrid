@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -291,35 +292,59 @@ namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Models
         [Trackable(-1000, 1000, Increment = 1, FormatString = "{0:0}")]
         [PropertyOperationVisibility(PropertyOperationVisibility.Visible)]
         public int NumberWithOperations { get; set; } = 100;
-
+        
         [Category("Array")]
-        public BindingList<string> stringList { get; set; } = ["bodong", "china"];
-
+        public string[] stringArray { get; set; } = ["bodong", "china"];
+        
         [Category("Array")]
+        public bool[] boolArray { get; set; } = [true, false];
+        
+        [Category("Array")]
+        public PlatformID[] enumArray { get; set; } = [PlatformID.Win32NT, PlatformID.MacOSX, PlatformID.Unix];
+
+        [Category("Array")] 
+        public Vector3[] Vec3Array { get; set; } = [new(1, 2, 3), new(7, 8, 9)];
+
+        [Category("List")] 
+        public List<string> stringList { get; set; } = ["John", "David", "bodong"];
+        
+        [Category("List")] 
+        public List<bool> boolList { get; set; } = [true, false];
+        
+        [Category("List")]
+        public List<PlatformID> enumList { get; set; } = [PlatformID.MacOSX, PlatformID.Unix];
+        
+        [Category("List")]
+        public List<Vector3> Vec3List { get; set; } = [new(1, 2, 3), new(7, 8, 9)];
+        
+        [Category("BindingList")]
+        public BindingList<string> stringBindingList { get; set; } = ["bodong", "china"];
+
+        [Category("BindingList")]
         [DisplayName("Not Editable")]
         [Editable(false)]
-        public BindingList<string> stringListNotEditable { get; set; } = ["bodong", "china"];
+        public BindingList<string> stringBindingListNotEditable { get; set; } = ["bodong", "china"];
 
-        [Category("Array")]
+        [Category("BindingList")]
         [DisplayName("Readonly List")]
         [ReadOnly(true)]
-        public BindingList<string> stringListReadonly { get; set; } = ["bodong", "china"];
+        public BindingList<string> stringBindingListReadonly { get; set; } = ["bodong", "china"];
 
-        [Category("Array")]
-        public BindingList<bool> boolList { get; set; } = [true, false];
+        [Category("BindingList")]
+        public BindingList<bool> boolBindingList { get; set; } = [true, false];
 
-        [Category("Array")]
-        public BindingList<PlatformID> enumList { get; set; } = [PlatformID.Win32NT, PlatformID.Unix];
+        [Category("BindingList")]
+        public BindingList<PlatformID> enumBindingList { get; set; } = [PlatformID.Win32NT, PlatformID.Unix];
 
-        [Category("Array")]
-        public BindingList<Vector3> Vec3List { get; set; } = [new(1024.0f, 2048.0f, 4096.0f)];
+        [Category("BindingList")]
+        public BindingList<Vector3> Vec3BindingList { get; set; } = [new(1024.0f, 2048.0f, 4096.0f)];
 
-        [Category("Array")]
+        [Category("BindingList")]
         [Length(1, 10)]
         public BindingList<int> LengthLimitedList { get; set; } = [10, 20, 30];
         
         [Category("Collections")]
-        public ObservableCollection<string> collectionList { get; set; } = ["bodong", "china"];
+        public ObservableCollection<string> stringCollection { get; set; } = ["bodong", "china"];
         
         [Category("Collections")]
         public ObservableCollection<bool> boolCollection { get; set; } = [true, false];
@@ -380,7 +405,7 @@ namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Models
         public System.Drawing.Color Color2 { get; set; } = System.Drawing.Color.FromArgb(255, 122, 50, 177);
 
         [Category("Color")]
-        public BindingList<System.Drawing.Color> ColorList { get; set; } = [System.Drawing.Color.Pink, System.Drawing.Color.Purple];
+        public BindingList<System.Drawing.Color> ColorBindingList { get; set; } = [System.Drawing.Color.Pink, System.Drawing.Color.Purple];
 
         [Category("Expandable")]
         [DisplayName("Login User Data")]
@@ -422,11 +447,11 @@ namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Models
 
         [Category("Readonly")]
         [ReadOnly(true)]
-        public BindingList<int> ReadonlyIntArray { get; set; } = [1, 2, 3];
+        public BindingList<int> ReadonlyIntBindingList { get; set; } = [1, 2, 3];
 
         [Category("Readonly")]
         [ReadOnly(true)]
-        public BindingList<string> ReadonlyStringArray { get; set; } = ["Hello", "World", "!!!"];
+        public BindingList<string> ReadonlyStringBindingList { get; set; } = ["Hello", "World", "!!!"];
 
         [Category("Readonly")]
         [ReadOnly(true)]

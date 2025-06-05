@@ -2,9 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using System.Linq;
 using Avalonia.Controls;
 using Avalonia.PropertyGrid.Services;
 using PropertyModels.ComponentModel;
@@ -14,7 +16,6 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
     /// <summary>
     /// Class ObservableCollectionCellEditFactory.
-    /// support BindingList/ObservableCollection
     /// Implements the <see cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
     /// </summary>
     /// <seealso cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
@@ -27,15 +28,21 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <value>The import priority.</value>
         public override int ImportPriority => base.ImportPriority - 1000000;
 
-        private static readonly List<Type> SupportedCollectionTypes =
+        private static readonly List<Type> ObservableCollectionInterfaceTypes =
         [
-            typeof(BindingList<>),
-            typeof(ObservableCollection<>)
+            typeof(INotifyCollectionChanged),
+            typeof(IBindingList)
         ];
 
-        private static bool IsSupportedCollectionType(Type type)
+        /// <summary>
+        /// check if this type observable
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static bool IsCollectionObservable(Type type)
         {
-            return type.IsGenericType && SupportedCollectionTypes.Contains(type.GetGenericTypeDefinition());
+            var interfaces = type.GetInterfaces();
+            return ObservableCollectionInterfaceTypes.Any(iter => interfaces.Contains(iter));
         }
 
         /// <summary>
@@ -45,9 +52,10 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <returns><c>true</c> if [is acceptable type] [the specified pd]; otherwise, <c>false</c>.</returns>
         private static bool IsAcceptableType(PropertyDescriptor pd)
         {
-            var type = GetElementType(pd);
-
-            return type != null;
+            var type = pd.PropertyType;
+            
+            return type.IsArray || (type.IsGenericType && type.GetInterfaces()
+                .Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IList<>)));
         }
 
         /// <summary>
@@ -57,9 +65,14 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <returns><c>true</c> if [is editable type] [the specified pd]; otherwise, <c>false</c>.</returns>
         private static bool IsEditableType(PropertyDescriptor pd)
         {
+            if (pd.PropertyType.IsArray)
+            {
+                return false;
+            }
+            
             var type = GetElementType(pd);
 
-            return type is { IsAbstract: false };
+            return type is { IsAbstract: false } && IsCollectionObservable(pd.PropertyType);
         }
 
         /// <summary>
@@ -69,12 +82,12 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <returns>Type.</returns>
         private static Type? GetElementType(PropertyDescriptor pd)
         {
-            if (pd.PropertyType.IsGenericType && IsSupportedCollectionType(pd.PropertyType))
+            if (pd.PropertyType.IsArray)
             {
-                return pd.PropertyType.GetGenericArguments()[0];
+                return pd.PropertyType.GetElementType();
             }
-
-            return null;
+            
+            return pd.PropertyType.IsGenericType ? pd.PropertyType.GetGenericArguments()[0] : null;
         }
 
         /// <summary>

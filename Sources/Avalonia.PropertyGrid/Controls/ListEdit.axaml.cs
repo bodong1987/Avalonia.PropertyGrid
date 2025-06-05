@@ -596,6 +596,10 @@ namespace Avalonia.PropertyGrid.Controls
             {
                 notifyList.CollectionChanged += OnCollectionChanged;
             }
+            else
+            {
+                property.ValueChanged += OnValueChanged;
+            }
 
             model.PropertyChanged += OnPropertyChanged;
         }
@@ -640,6 +644,11 @@ namespace Avalonia.PropertyGrid.Controls
             }
             
             ValueChanged?.Invoke(this, EventArgs.Empty);
+        }
+        
+        private void OnValueChanged(object? sender, ListElementValueChangedEventArgs e)
+        {
+            ValueChanged?.Invoke(this, EventArgs.Empty);   
         }
     }
     #endregion
