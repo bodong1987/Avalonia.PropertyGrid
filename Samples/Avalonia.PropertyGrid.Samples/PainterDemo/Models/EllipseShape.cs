@@ -1,10 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using Avalonia.Controls.Shapes;
 using Avalonia.PropertyGrid.Samples.PainterDemo.ViewModel;
 using PropertyModels.ComponentModel;
-using PropertyModels.ComponentModel.DataAnnotations;
 
 // ReSharper disable CompareOfFloatsByEqualityOperator
 // ReSharper disable PropertyCanBeMadeInitOnly.Global

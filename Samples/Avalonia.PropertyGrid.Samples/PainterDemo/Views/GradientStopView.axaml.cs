@@ -56,7 +56,7 @@ internal class GradientStopCellEditFactory : AbstractCellEditFactory
 
     public override bool HandlePropertyChanged(PropertyCellContext context)
     {
-        if (context?.Property.PropertyType != typeof(GradientStop)) return false;
+        if (context.Property.PropertyType != typeof(GradientStop)) return false;
 
         if (context.CellEdit is GradientStopView control)
         {

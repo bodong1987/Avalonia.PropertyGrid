@@ -10,8 +10,11 @@
         <Setter Property="Template">
             <ControlTemplate>
                 <Grid ColumnDefinitions="Auto,Auto,*">
+                    <!-- ReSharper disable once Xaml.BindingWithoutContextNotResolved -->
                     <ColorPicker Grid.Column="0" Color="{Binding Color}"></ColorPicker>
+                    <!-- ReSharper disable once Xaml.BindingWithoutContextNotResolved -->
                     <TextBlock Grid.Column="1" Text="{Binding Offset, StringFormat={}{0:F2}}" VerticalAlignment="Center"></TextBlock>
+                    <!-- ReSharper disable once Xaml.BindingWithoutContextNotResolved -->
                     <Slider Grid.Column="2" Value="{Binding Offset}" Minimum="0" Maximum="1"></Slider>
                 </Grid>
             </ControlTemplate>

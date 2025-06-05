@@ -4,7 +4,6 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform;
-using Avalonia.PropertyGrid.Samples.FeatureDemos.Views;
 using Avalonia.PropertyGrid.Samples.Views;
 using Avalonia.Styling;
 using Avalonia.Themes.Fluent;

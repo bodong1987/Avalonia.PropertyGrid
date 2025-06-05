@@ -9,6 +9,7 @@ using Avalonia.PropertyGrid.Controls;
 using Avalonia.PropertyGrid.Samples.PainterDemo.Models;
 using PropertyModels.ComponentModel;
 // ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
 
 namespace Avalonia.PropertyGrid.Samples.PainterDemo.ViewModel;
 
@@ -48,7 +49,7 @@ public class PainterViewModel : ReactiveObject
     public ShapeBase? SelectedShape
     {
         get => _selectedShape;
-        set => SetProperty(ref this._selectedShape, value);
+        set => SetProperty(ref _selectedShape, value);
     }
     
     private ToolMode _currentToolMode = ToolMode.Select;

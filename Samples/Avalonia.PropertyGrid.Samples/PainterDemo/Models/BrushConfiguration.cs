@@ -111,7 +111,7 @@ public class BrushConfiguration : ReactiveObject
 
     private BindingList<GradientStop> _gradientStops = [
         new (){Color = Colors.Firebrick, Offset = 0},
-        new (){Color = Colors.LightBlue, Offset = 1.0},
+        new (){Color = Colors.LightBlue, Offset = 1.0}
     ];
 
     [PropertyVisibilityCondition(nameof(IsGradientBrush), true)]
