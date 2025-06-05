@@ -40,6 +40,7 @@ namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Models
         public override string ToString() => $"({GetHashCode()}){Description}";
 
         [Category("Imaging")]
+        [Description("The Banner of Avalonia")]
         public IImage AvaloniaBanner { get; set; }
 
         // [Category("ImagingList")]
@@ -51,6 +52,7 @@ namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Models
         [DisplayName("Target Path")]
         [PathBrowsable(Filters = "Image Files(*.jpg;*.png;*.bmp;*.tag)|*.jpg;*.png;*.bmp;*.tag")]
         [Watermark("Image Path")]
+        [Description("Select an image file")]
         public string? ImagePath { get; set; }
 
         [Category("Path")]

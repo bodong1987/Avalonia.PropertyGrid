@@ -50,7 +50,7 @@ System.ComponentModel.CategoryAttribute                     /* set property cate
 System.ComponentModel.BrowsableAttribute                    /* used to hide a property */    
 System.ComponentModel.ReadOnlyAttribute                     /* make property readonly */  
 System.ComponentModel.DisplayNameAttribute                  /* set friendly name */  
-System.ComponentModel.DescriptionAttribute                  /* set long description text */  
+System.ComponentModel.DescriptionAttribute                  /* set long description text, When you point the mouse to the title, the corresponding Tooltip will appear. */  
 System.ComponentModel.PasswordPropertyTextAttribute         /* mark text property is password */  
 System.ComponentModel.DataAnnotations.EditableAttribute     /* mark list property can add/remove/clear elements */  
 System.ComponentModel.DataAnnotations.RangeAttribute        /* set numeric range */  

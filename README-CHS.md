@@ -52,7 +52,7 @@ System.ComponentModel.CategoryAttribute                     /* 设置属性类�
 System.ComponentModel.BrowsableAttribute                    /* 用于隐藏属性 */
 System.ComponentModel.ReadOnlyAttribute                     /* 使属性只读 */
 System.ComponentModel.DisplayNameAttribute                  /* 设置友好名称 */
-System.ComponentModel.DescriptionAttribute                  /* 设置长描述文本 */
+System.ComponentModel.DescriptionAttribute                  /* 设置长描述文本 鼠标指向标题会出现对应的Tooltip */
 System.ComponentModel.PasswordPropertyTextAttribute         /* 标记文本属性为密码 */
 System.ComponentModel.DataAnnotations.EditableAttribute     /* 标记列表属性可以添加/删除/清除元素 */  
 System.ComponentModel.DataAnnotations.RangeAttribute        /* 设置数值范围 */
