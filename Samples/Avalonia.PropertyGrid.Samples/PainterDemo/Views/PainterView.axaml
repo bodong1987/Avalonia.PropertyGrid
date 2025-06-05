@@ -48,7 +48,7 @@
                     <Slider Grid.Column="2" Minimum="1" Maximum="50" Value="{Binding DefaultStrokeThickness}"></Slider>    
                 </Grid>
                             
-                <StackPanel Orientation="Vertical" Margin="6">
+                <StackPanel Orientation="Horizontal" Margin="6">
                     <Button IsEnabled="{Binding CanUndo}"
                             Content="{ll:Localize Undo}" Margin="2"
                             Command="{Binding UndoCommand}"
@@ -59,6 +59,7 @@
                             Command="{Binding RedoCommand}"
                             ToolTip.Tip="{Binding RedoDescription}"
                     ></Button>
+                    <Separator></Separator>
                     <Button Content="{ll:Localize Clear}" Margin="2"
                             Command="{Binding ClearCommand}"
                             ToolTip.Tip="Clear all cached commands"
