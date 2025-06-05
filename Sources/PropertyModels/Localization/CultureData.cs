@@ -15,7 +15,7 @@ namespace PropertyModels.Localization
         /// The local texts
         /// </summary>
         // ReSharper disable once FieldCanBeMadeReadOnly.Global
-        protected Dictionary<string, string>? LocalTexts = null;
+        protected Dictionary<string, string>? LocalTexts;
 
         /// <summary>
         /// Gets the culture.
