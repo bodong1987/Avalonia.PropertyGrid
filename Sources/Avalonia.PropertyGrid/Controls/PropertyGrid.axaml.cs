@@ -849,6 +849,19 @@ namespace Avalonia.PropertyGrid.Controls
                 expander.HorizontalAlignment = HorizontalAlignment.Stretch;
                 expander.Margin = new Thickness(DisplayMode == PropertyGridDisplayMode.Inline ? 0 : 2);
                 expander.Padding = new Thickness(DisplayMode == PropertyGridDisplayMode.Inline ? 0 : 2);
+                
+                // set expander's background color with the parent grid background color
+                expander.Bind(
+                    BackgroundProperty,
+                    new Binding("Background") 
+                    { 
+                        RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor)
+                        {
+                            AncestorType = typeof(Grid),
+                            AncestorLevel = 1
+                        } 
+                    }
+                );
 
                 // expander.Header = categoryInfo.Key;
                 expander.SetLocalizeBinding(HeaderedContentControl.HeaderProperty, categoryInfo.Key);
