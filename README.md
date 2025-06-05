@@ -104,7 +104,11 @@ PropertyModels.ComponentModel.ExpandableObjectDisplayModeAttribute              
     double  
     string  
     enum/[Flags]enum  
-    System.ComponentModel.BindingList<>  
+    /* All containers that implement the IList<T> interface support display and editing, but containers that do not implement the IBindingList or INotifyCollectionChanged interface do not support data synchronization and adding, deleting, clearing, etc. in the editor.*/
+    T[] /* Add/Insert/Remove/Clear and datasync is not supported */  
+    System.Collections.Generic.List<T> /* Add/Insert/Remove/Clear and datasync is not supported */  
+    System.ComponentModel.BindingList<T>  
+    System.Collections.ObjectModel.ObservableCollection<T>
     System.DateTime/System.DateTimeOffset/System.DateTime?/System.DateTimeOffset?  
     System.TimeSpan/System.TimeSpan?      
     System.Drawing.Color/Avalonia.Media.Color  
@@ -583,3 +587,7 @@ v11.1.4.2
 v11.3.0.18
 * Removed multiple buttons in the header area, integrated them into a pop-up menu of one button, and opened up more options.  
 * The names of some Attributes have been adjusted and some new options have been added. You can see these changes in the code in the documentation and examples.  
+* Built-in scroll bar, by default, PropertyGrid header is fixed at the top when scrolling  
+
+v11.3.0.21
+* New display and editing support for common containers has been added, but there are certain limitations. Containers that implement observable interfaces will not have the ability to dynamically add, delete, clear, and other operations.

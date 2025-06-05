@@ -218,7 +218,7 @@ namespace Avalonia.PropertyGrid.Samples.FeatureDemos.ViewModels
                 DisplayName = "BindingList Value",
                 Description = "Custom type = BindingList",
                 Value = new BindingList<int> { 1024, 2048, 4096 },
-                ExtraAttributes = [new CategoryAttribute("Array")]
+                ExtraAttributes = [new CategoryAttribute("BindingList")]
             });
 
             CustomOptions.AddProperty(new ScriptableObject
@@ -227,7 +227,7 @@ namespace Avalonia.PropertyGrid.Samples.FeatureDemos.ViewModels
                 DisplayName = "Not Editable List",
                 Description = "Custom type = BindingList(Not Editable)",
                 Value = new BindingList<int> { 1024, 2048, 4096 },
-                ExtraAttributes = [new CategoryAttribute("Array"), new EditableAttribute(false)]
+                ExtraAttributes = [new CategoryAttribute("BindingList"), new EditableAttribute(false)]
             });
 
             CustomOptions.AddProperty(new ScriptableObject
@@ -236,7 +236,7 @@ namespace Avalonia.PropertyGrid.Samples.FeatureDemos.ViewModels
                 DisplayName = "ReadOnly List",
                 Description = "Custom type = BindingList(Readonly)",
                 Value = new BindingList<int> { 1024, 2048, 4096 },
-                ExtraAttributes = [new CategoryAttribute("Array"), new ReadOnlyAttribute(true)]
+                ExtraAttributes = [new CategoryAttribute("BindingList"), new ReadOnlyAttribute(true)]
             });
         }
         #endregion
