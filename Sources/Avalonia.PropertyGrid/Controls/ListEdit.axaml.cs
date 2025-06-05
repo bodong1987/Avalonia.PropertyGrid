@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
@@ -204,16 +205,24 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="value">The value.</param>
         private void OnDataListChanged(IList previousValue, IList value)
         {
-            if (previousValue is IBindingList pblist)
+            if (previousValue is IBindingList previousBindingList)
             {
-                pblist.ListChanged -= OnListChanged;
+                previousBindingList.ListChanged -= OnListChanged;
+            }
+            else if (previousValue is INotifyCollectionChanged previousCollection)
+            {
+                previousCollection.CollectionChanged -= OnCollectionChanged;
             }
 
             Model.List = value;
 
-            if (value is IBindingList blist)
+            if (value is IBindingList currentBindingList)
             {
-                blist.ListChanged += OnListChanged;
+                currentBindingList.ListChanged += OnListChanged;
+            }
+            else if (value is INotifyCollectionChanged currentCollection)
+            {
+                currentCollection.CollectionChanged += OnCollectionChanged;
             }
         }
 
@@ -283,6 +292,23 @@ namespace Avalonia.PropertyGrid.Controls
             else if (e.ListChangedType == ListChangedType.ItemChanged)
             {
                 var et = new ListRoutedEventArgs(ElementValueChangedEvent, Model.List, e.NewIndex);
+                RaiseEvent(et);
+            }
+        }
+
+        private void OnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            // ReSharper disable once MergeIntoLogicalPattern
+            if (e.Action == NotifyCollectionChangedAction.Add ||
+                e.Action == NotifyCollectionChangedAction.Remove ||
+                e.Action == NotifyCollectionChangedAction.Reset ||
+                e.Action == NotifyCollectionChangedAction.Move)
+            {
+                Model.RaisePropertyChanged(nameof(Model.List));
+            }
+            else if (e.Action == NotifyCollectionChangedAction.Replace)
+            {
+                var et = new ListRoutedEventArgs(ElementValueChangedEvent, Model.List, e.NewStartingIndex);
                 RaiseEvent(et);
             }
         }
@@ -562,9 +588,13 @@ namespace Avalonia.PropertyGrid.Controls
             InsertCommand = ReactiveCommand.Create(() => insertCommand.Execute(this));
             RemoveCommand = ReactiveCommand.Create(() => removeCommand.Execute(this));
 
-            if (list is IBindingList blist)
+            if (list is IBindingList bindingList)
             {
-                blist.ListChanged += OnListChanged;
+                bindingList.ListChanged += OnListChanged;
+            }
+            else if (list is INotifyCollectionChanged notifyList)
+            {
+                notifyList.CollectionChanged += OnCollectionChanged;
             }
 
             model.PropertyChanged += OnPropertyChanged;
@@ -599,6 +629,16 @@ namespace Avalonia.PropertyGrid.Controls
                 return;
             }
 
+            ValueChanged?.Invoke(this, EventArgs.Empty);
+        }
+        
+        private void OnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action != NotifyCollectionChangedAction.Replace || e.NewStartingIndex != Property.Index)
+            {
+                return;
+            }
+            
             ValueChanged?.Invoke(this, EventArgs.Empty);
         }
     }

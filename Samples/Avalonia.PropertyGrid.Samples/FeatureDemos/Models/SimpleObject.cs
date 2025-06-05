@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
@@ -316,6 +317,18 @@ namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Models
         [Category("Array")]
         [Length(1, 10)]
         public BindingList<int> LengthLimitedList { get; set; } = [10, 20, 30];
+        
+        [Category("Collections")]
+        public ObservableCollection<string> collectionList { get; set; } = ["bodong", "china"];
+        
+        [Category("Collections")]
+        public ObservableCollection<bool> boolCollection { get; set; } = [true, false];
+        
+        [Category("Collections")]
+        public ObservableCollection<PlatformID> enumCollection { get; set; } = [PlatformID.Win32NT, PlatformID.Unix];
+        
+        [Category("Collections")]
+        public ObservableCollection<Vector3> Vec3Collection { get; set; } = [new(1024.0f, 2048, 4096.0)];
 
         [Category("Checked List")]
         public CheckedList<string> CheckedListString { get; set; } = new(["bodong", "John", "David"], ["bodong"]);

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
@@ -11,11 +13,12 @@ using PropertyModels.Extensions;
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
     /// <summary>
-    /// Class BindingListCellEditFactory.
+    /// Class ObservableCollectionCellEditFactory.
+    /// support BindingList/ObservableCollection
     /// Implements the <see cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
     /// </summary>
     /// <seealso cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
-    public class BindingListCellEditFactory : AbstractCellEditFactory
+    public class ObservableCollectionCellEditFactory : AbstractCellEditFactory
     {
         /// <summary>
         /// Gets the import priority.
@@ -23,6 +26,17 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// </summary>
         /// <value>The import priority.</value>
         public override int ImportPriority => base.ImportPriority - 1000000;
+
+        private static readonly List<Type> SupportedCollectionTypes =
+        [
+            typeof(BindingList<>),
+            typeof(ObservableCollection<>)
+        ];
+
+        private static bool IsSupportedCollectionType(Type type)
+        {
+            return type.IsGenericType && SupportedCollectionTypes.Contains(type.GetGenericTypeDefinition());
+        }
 
         /// <summary>
         /// Determines whether [is acceptable type] [the specified pd].
@@ -55,7 +69,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <returns>Type.</returns>
         private static Type? GetElementType(PropertyDescriptor pd)
         {
-            if (pd.PropertyType.IsGenericType && pd.PropertyType.GetGenericTypeDefinition() == typeof(BindingList<>))
+            if (pd.PropertyType.IsGenericType && IsSupportedCollectionType(pd.PropertyType))
             {
                 return pd.PropertyType.GetGenericArguments()[0];
             }
@@ -117,7 +131,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             if (context.CellEdit is ListEdit ae)
             {
-                var value = context.GetValue() as IBindingList;
+                var value = context.GetValue() as IList;
 
                 ae.DataList = value;
 
@@ -156,7 +170,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         {
             Debug.Assert(e.Index != -1);
 
-            var value = context.GetValue() as IBindingList;
+            var value = context.GetValue() as IList;
 
             Debug.Assert(value != null);
 
@@ -211,7 +225,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <param name="control">The control.</param>
         protected virtual void HandleClearElements(object? s, ListRoutedEventArgs e, PropertyCellContext context, ListEdit control)
         {
-            var value = context.GetValue() as IBindingList;
+            var value = context.GetValue() as IList;
 
             Debug.Assert(value != null);
 
@@ -256,7 +270,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         {
             Debug.Assert(e.Index != -1);
 
-            var value = context.GetValue() as IBindingList;
+            var value = context.GetValue() as IList;
 
             Debug.Assert(value != null);
 
@@ -298,7 +312,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <param name="control">The control.</param>
         protected virtual void HandleNewElement(object? s, ListRoutedEventArgs e, PropertyCellContext context, ListEdit control)
         {
-            var value = context.GetValue() as IBindingList;
+            var value = context.GetValue() as IList;
 
             Debug.Assert(value != null);
 

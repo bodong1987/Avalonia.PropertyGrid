@@ -16,6 +16,7 @@
     "String": "字符串",
     "Enum": "枚举",
     "Array": "数组",
+    "Collections": "集合",
     "Boolean": "布尔值",
     "Checked List": "可选列表",
     "Color": "颜色",
