@@ -7,7 +7,7 @@ using PropertyModels.Utils;
 namespace Avalonia.PropertyGrid.UnitTests.Model
 {
     [TestClass]
-    public class UnitTest_Utils
+    public class UnitTestUtils
     {
         [TestMethod]
         public void Test_PropertyDescriptorBuilder()
