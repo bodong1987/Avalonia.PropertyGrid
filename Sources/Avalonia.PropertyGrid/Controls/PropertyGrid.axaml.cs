@@ -973,7 +973,7 @@ namespace Avalonia.PropertyGrid.Controls
             if (control == null)
             {
 #if DEBUG
-                Debug.WriteLine($"Warning: Failed build property control for property:{property.Name}({property.PropertyType}");
+                Debug.WriteLine($"Warning: Failed build property control for property:{property.Name}({property.PropertyType})(IsMultipleObject={context.Property is MultiObjectPropertyDescriptor})");
 #endif
                 return result;
             }

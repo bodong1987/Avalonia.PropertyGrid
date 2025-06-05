@@ -20,6 +20,10 @@
 	  <Configurations>Debug;Release;Development</Configurations>
   </PropertyGroup>
 
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Development|AnyCPU'">
+		<DefineConstants>DEBUG;TRACE</DefineConstants>
+	</PropertyGroup>
+	
   <ItemGroup>
     <None Include="..\README_PropertyModels.md">
       <Pack>True</Pack>
