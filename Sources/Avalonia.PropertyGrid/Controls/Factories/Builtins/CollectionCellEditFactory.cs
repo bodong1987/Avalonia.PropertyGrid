@@ -15,11 +15,11 @@ using PropertyModels.Extensions;
 namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
     /// <summary>
-    /// Class ObservableCollectionCellEditFactory.
+    /// Class CollectionCellEditFactory.
     /// Implements the <see cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
     /// </summary>
     /// <seealso cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
-    public class ObservableCollectionCellEditFactory : AbstractCellEditFactory
+    public class CollectionCellEditFactory : AbstractCellEditFactory
     {
         /// <summary>
         /// Gets the import priority.
