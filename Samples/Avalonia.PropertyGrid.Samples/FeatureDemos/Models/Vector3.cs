@@ -5,6 +5,7 @@ using PropertyModels.ComponentModel;
 namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Models
 {
     [TypeConverter(typeof(ExpandableObjectConverter))]
+    [ExpandableObjectDisplayMode(IsCategoryVisible = NullableBooleanType.No)]
     public class Vector3 : MiniReactiveObject
     {
         private double _x, _y, _z;
