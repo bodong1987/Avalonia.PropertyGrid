@@ -4,7 +4,7 @@ using PropertyModels.Utils;
 namespace Avalonia.PropertyGrid.UnitTests.Model
 {
     [TestClass]
-    public class UnitTest_DecimalConvertUtils
+    public class UnitTestDecimalConvertUtils
     {
         [TestMethod]
         public void Test_ConvertTo_Byte()

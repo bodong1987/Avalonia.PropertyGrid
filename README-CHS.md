@@ -107,7 +107,11 @@ float
 double  
 string  
 enum/[Flags]enum  
-System.ComponentModel.BindingList<>  
+/* 所有实现了IList<T>接口的容器都支持显示和编辑，但是未实现IBindingList或者INotifyCollectionChanged接口的容器并不支持数据同步和在编辑器中增加、删除、清空等操作*/
+T[] /* 不支持添加/插入/删除/清除和数据同步 */  
+System.Collections.Generic.List<T> /* 不支持添加/插入/删除/清除和数据同步 */  
+System.ComponentModel.BindingList<T>  
+System.Collections.ObjectModel.ObservableCollection<T>
 System.DateTime/System.DateTimeOffset/System.DateTime?/System.DateTimeOffset?  
 System.TimeSpan/System.TimeSpan?      
 System.Drawing.Color/Avalonia.Media.Color  
@@ -577,3 +581,7 @@ v11.1.4.2
 v11.3.0.18
 * 移除了头部区域的多个按钮，整合到了一个按钮的弹出菜单中，并开放了更多选项。  
 * 调整了部分Attributes的名称，新增了一些选项，你可以通过文档和示例中的代码看到这些变化。  
+* 内置了滚动条，默认情况下滚动时PropertyGrid头部固定在上部  
+
+v11.3.0.21
+* 新增了针对普通容器的显示和编辑支持，但是有一定限制，为实现可观察接口的容器将不具备动态新增、删除、清空等操作的能力。
