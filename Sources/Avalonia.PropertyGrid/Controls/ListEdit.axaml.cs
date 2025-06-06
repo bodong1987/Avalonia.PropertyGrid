@@ -91,13 +91,13 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The selected items changed event
         /// </summary>
-        public static readonly RoutedEvent<ListRoutedEventArgs> NewElementEvent =
-            RoutedEvent.Register<ListEdit, ListRoutedEventArgs>(nameof(NewElement), RoutingStrategies.Bubble);
+        public static readonly RoutedEvent<RoutedEventArgs> NewElementEvent =
+            RoutedEvent.Register<ListEdit, RoutedEventArgs>(nameof(NewElement), RoutingStrategies.Bubble);
 
         /// <summary>
         /// Creates new element.
         /// </summary>
-        public event EventHandler<ListRoutedEventArgs> NewElement
+        public event EventHandler<RoutedEventArgs> NewElement
         {
             add => AddHandler(NewElementEvent, value);
             remove => RemoveHandler(NewElementEvent, value);
@@ -106,13 +106,13 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The clear elements event
         /// </summary>
-        public static readonly RoutedEvent<ListRoutedEventArgs> ClearElementsEvent =
-           RoutedEvent.Register<ListEdit, ListRoutedEventArgs>(nameof(ClearElements), RoutingStrategies.Bubble);
+        public static readonly RoutedEvent<RoutedEventArgs> ClearElementsEvent =
+           RoutedEvent.Register<ListEdit, RoutedEventArgs>(nameof(ClearElements), RoutingStrategies.Bubble);
 
         /// <summary>
         /// Occurs when [clear elements].
         /// </summary>
-        public event EventHandler<ListRoutedEventArgs> ClearElements
+        public event EventHandler<RoutedEventArgs> ClearElements
         {
             add => AddHandler(ClearElementsEvent, value);
             remove => RemoveHandler(ClearElementsEvent, value);
@@ -121,13 +121,13 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The insert element event
         /// </summary>
-        public static readonly RoutedEvent<ListRoutedEventArgs> InsertElementEvent =
-            RoutedEvent.Register<ListEdit, ListRoutedEventArgs>(nameof(InsertElement), RoutingStrategies.Bubble);
+        public static readonly RoutedEvent<RoutedEventArgs> InsertElementEvent =
+            RoutedEvent.Register<ListEdit, RoutedEventArgs>(nameof(InsertElement), RoutingStrategies.Bubble);
 
         /// <summary>
         /// Occurs when [insert element].
         /// </summary>
-        public event EventHandler<ListRoutedEventArgs> InsertElement
+        public event EventHandler<RoutedEventArgs> InsertElement
         {
             add => AddHandler(InsertElementEvent, value);
             remove => RemoveHandler(InsertElementEvent, value);
@@ -136,13 +136,13 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The remove elements event
         /// </summary>
-        public static readonly RoutedEvent<ListRoutedEventArgs> RemoveElementsEvent =
-           RoutedEvent.Register<ListEdit, ListRoutedEventArgs>(nameof(RemoveElement), RoutingStrategies.Bubble);
+        public static readonly RoutedEvent<RoutedEventArgs> RemoveElementsEvent =
+           RoutedEvent.Register<ListEdit, RoutedEventArgs>(nameof(RemoveElement), RoutingStrategies.Bubble);
 
         /// <summary>
         /// Occurs when [remove element].
         /// </summary>
-        public event EventHandler<ListRoutedEventArgs> RemoveElement
+        public event EventHandler<RoutedEventArgs> RemoveElement
         {
             add => AddHandler(RemoveElementsEvent, value);
             remove => RemoveHandler(RemoveElementsEvent, value);
@@ -151,13 +151,13 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The element value changed event
         /// </summary>
-        public static readonly RoutedEvent<ListRoutedEventArgs> ElementValueChangedEvent =
-            RoutedEvent.Register<ListEdit, ListRoutedEventArgs>(nameof(ElementValueChanged), RoutingStrategies.Bubble);
+        public static readonly RoutedEvent<RoutedEventArgs> ElementValueChangedEvent =
+            RoutedEvent.Register<ListEdit, RoutedEventArgs>(nameof(ElementValueChanged), RoutingStrategies.Bubble);
 
         /// <summary>
         /// Occurs when [element value changed].
         /// </summary>
-        public event EventHandler<ListRoutedEventArgs> ElementValueChanged
+        public event EventHandler<RoutedEventArgs> ElementValueChanged
         {
             add => AddHandler(ElementValueChangedEvent, value);
             remove => RemoveHandler(ElementValueChangedEvent, value);

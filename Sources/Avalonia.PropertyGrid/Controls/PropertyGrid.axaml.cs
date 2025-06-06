@@ -289,14 +289,14 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The custom property descriptor filter event
         /// </summary>
-        public static readonly RoutedEvent<CustomPropertyDescriptorFilterEventArgs> CustomPropertyDescriptorFilterEvent =
-            RoutedEvent.Register<PropertyGrid, CustomPropertyDescriptorFilterEventArgs>(
+        public static readonly RoutedEvent<RoutedEventArgs> CustomPropertyDescriptorFilterEvent =
+            RoutedEvent.Register<PropertyGrid, RoutedEventArgs>(
                 nameof(CustomPropertyDescriptorFilter), RoutingStrategies.Bubble);
 
         /// <summary>
         /// Occurs when [custom property descriptor filter].
         /// </summary>
-        public event EventHandler<CustomPropertyDescriptorFilterEventArgs> CustomPropertyDescriptorFilter
+        public event EventHandler<RoutedEventArgs> CustomPropertyDescriptorFilter
         {
             add => AddHandler(CustomPropertyDescriptorFilterEvent, value);
             remove => RemoveHandler(CustomPropertyDescriptorFilterEvent, value);
@@ -379,8 +379,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// you can use this to custom your controls.
         /// assign your control to e.CustomControl
         /// </summary>
-        public static readonly RoutedEvent<RoutedEventArgs>
-            CustomPropertyOperationControlEvent = 
+        public static readonly RoutedEvent<RoutedEventArgs> CustomPropertyOperationControlEvent = 
             RoutedEvent.Register<PropertyGrid, RoutedEventArgs>(
                 nameof(CustomPropertyOperationControl), RoutingStrategies.Bubble);
 
@@ -445,7 +444,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Property got focus event
         /// </summary>
-        public static readonly RoutedEvent PropertyGotFocusEvent =
+        public static readonly RoutedEvent<RoutedEventArgs> PropertyGotFocusEvent =
             RoutedEvent.Register<PropertyGrid, RoutedEventArgs>(
                 nameof(PropertyGotFocus), 
                 RoutingStrategies.Bubble
@@ -463,7 +462,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Property got focus event
         /// </summary>
-        public static readonly RoutedEvent PropertyLostFocusEvent =
+        public static readonly RoutedEvent<RoutedEventArgs> PropertyLostFocusEvent =
             RoutedEvent.Register<PropertyGrid, RoutedEventArgs>(
                 nameof(PropertyLostFocus), 
                 RoutingStrategies.Bubble
@@ -526,15 +525,15 @@ namespace Avalonia.PropertyGrid.Controls
             ColumnName.PropertyChanged += OnColumnNamePropertyChanged;
         }
 
-        private void OnCustomPropertyDescriptorFilter(object? sender, CustomPropertyDescriptorFilterEventArgs e)
+        private void OnCustomPropertyDescriptorFilter(object? sender, RoutedEventArgs e)
         {
             if (RootPropertyGrid is PropertyGrid pg)
             {
-                pg.BroadcastCustomPropertyDescriptorFilterEvent(sender, e);
+                pg.BroadcastCustomPropertyDescriptorFilterEvent(sender, (e as CustomPropertyDescriptorFilterEventArgs)!);
             }
             else
             {
-                BroadcastCustomPropertyDescriptorFilterEvent(sender, e);
+                BroadcastCustomPropertyDescriptorFilterEvent(sender, (e as CustomPropertyDescriptorFilterEventArgs)!);
             }
         }
 

@@ -78,9 +78,9 @@ public partial class FeatureDemoView : UserControl
         }
     }
 
-    private void OnCustomPropertyDescriptorFilter(object sender, CustomPropertyDescriptorFilterEventArgs e)
+    private void OnCustomPropertyDescriptorFilter(object sender, RoutedEventArgs args)
     {
-        if (e is { TargetObject: SimpleObject, PropertyDescriptor.Name: "ThreeStates2" })
+        if (args is CustomPropertyDescriptorFilterEventArgs { TargetObject: SimpleObject, PropertyDescriptor.Name: nameof(SimpleObject.ThreeStates2) } e)
         {
             e.IsVisible = true;
             e.Handled = true;

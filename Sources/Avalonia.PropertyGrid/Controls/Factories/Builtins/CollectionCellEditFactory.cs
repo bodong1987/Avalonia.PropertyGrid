@@ -120,11 +120,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             Debug.Assert(control.Model.Collection != null);
 
-            control.NewElement += (s, e) => HandleNewElement(s, e, context, control);
-            control.InsertElement += (s, e) => HandleInsertElement(s, e, context, control);
-            control.RemoveElement += (s, e) => HandleRemoveElement(s, e, context, control);
-            control.ClearElements += (s, e) => HandleClearElements(s, e, context, control);
-            control.ElementValueChanged += (s, e) => HandleElementValueChanged(s, e, context, control);
+            control.NewElement += (s, e) => HandleNewElement(s, (e as ListRoutedEventArgs)!, context, control);
+            control.InsertElement += (s, e) => HandleInsertElement(s, (e as ListRoutedEventArgs)!, context, control);
+            control.RemoveElement += (s, e) => HandleRemoveElement(s, (e as ListRoutedEventArgs)!, context, control);
+            control.ClearElements += (s, e) => HandleClearElements(s, (e as ListRoutedEventArgs)!, context, control);
+            control.ElementValueChanged += (s, e) => HandleElementValueChanged(s, (e as ListRoutedEventArgs)!, context, control);
 
             return control;
         }

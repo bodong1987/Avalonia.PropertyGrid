@@ -31,14 +31,14 @@ public partial class PainterView : UserControl
     private Point _shapeEndPoint;
     private bool _hasDragged;
     
-    public static readonly RoutedEvent<ShapeSelectedEventArgs> ShapeSelectedEvent =
-        RoutedEvent.Register<PainterView, ShapeSelectedEventArgs>(
+    public static readonly RoutedEvent<RoutedEventArgs> ShapeSelectedEvent =
+        RoutedEvent.Register<PainterView, RoutedEventArgs>(
             nameof(ShapeSelected), RoutingStrategies.Bubble);
 
     private ShapeBase? _creatingShape;
     private AvaloniaShape? _creatingAvaloniaShape;
     
-    public event EventHandler<ShapeSelectedEventArgs> ShapeSelected
+    public event EventHandler<RoutedEventArgs> ShapeSelected
     {
         add => AddHandler(ShapeSelectedEvent, value);
         remove => RemoveHandler(ShapeSelectedEvent, value);
