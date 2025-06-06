@@ -441,6 +441,42 @@ namespace Avalonia.PropertyGrid.Controls
             add => AddHandler(CommandExecutedEvent, value);
             remove => RemoveHandler(CommandExecutedEvent, value);
         }
+        
+        /// <summary>
+        /// Property got focus event
+        /// </summary>
+        public static readonly RoutedEvent PropertyGotFocusEvent =
+            RoutedEvent.Register<PropertyGrid, PropertyGotFocusEventArgs>(
+                nameof(PropertyGotFocus), 
+                RoutingStrategies.Bubble
+            );
+
+        /// <summary>
+        /// property got focus event handler
+        /// </summary>
+        public event EventHandler<PropertyGotFocusEventArgs> PropertyGotFocus
+        {
+            add => AddHandler(PropertyGotFocusEvent, value);
+            remove => RemoveHandler(PropertyGotFocusEvent, value);
+        }
+        
+        /// <summary>
+        /// Property got focus event
+        /// </summary>
+        public static readonly RoutedEvent PropertyLostFocusEvent =
+            RoutedEvent.Register<PropertyGrid, PropertyLostFocusEventArgs>(
+                nameof(PropertyLostFocus), 
+                RoutingStrategies.Bubble
+            );
+
+        /// <summary>
+        /// property got focus event handler
+        /// </summary>
+        public event EventHandler<PropertyLostFocusEventArgs> PropertyLostFocus
+        {
+            add => AddHandler(PropertyLostFocusEvent, value);
+            remove => RemoveHandler(PropertyLostFocusEvent, value);
+        }
         #endregion
 
         /// <summary>
@@ -1075,6 +1111,18 @@ namespace Avalonia.PropertyGrid.Controls
             control.Margin = new Thickness(shouldUseInlineMode ? 0 : 4);
             factory.HandleReadOnlyStateChanged(control, context.IsReadOnly);
 
+            control.GotFocus += (ss, ee) =>
+            {
+                var args = new PropertyGotFocusEventArgs(context);
+                RaiseEvent(args);
+            };
+            
+            control.LostFocus += (ss, ee) =>
+            {
+                var args = new PropertyLostFocusEventArgs(context);
+                RaiseEvent(args);
+            };
+
             grid.Children.Add(control);
 
             var cellInfo = new PropertyGridCellInfo(context)
@@ -1500,6 +1548,46 @@ namespace Avalonia.PropertyGrid.Controls
             Context = context;
             DefaultNameBlock = defaultBlock;
             CustomNameBlock = defaultBlock;
+        }
+    }
+    
+    /// <summary>
+    /// property got focus event args
+    /// </summary>
+    public class PropertyGotFocusEventArgs : RoutedEventArgs
+    {
+        /// <summary>
+        /// property cell context
+        /// </summary>
+        public readonly PropertyCellContext Context;
+    
+        /// <summary>
+        /// constructor
+        /// </summary>
+        /// <param name="context"></param>
+        public PropertyGotFocusEventArgs(PropertyCellContext context) : base(PropertyGrid.PropertyGotFocusEvent)
+        {
+            Context = context;
+        }
+    }
+    
+    /// <summary>
+    /// property got focus event args
+    /// </summary>
+    public class PropertyLostFocusEventArgs : RoutedEventArgs
+    {
+        /// <summary>
+        /// property cell context
+        /// </summary>
+        public readonly PropertyCellContext Context;
+    
+        /// <summary>
+        /// constructor
+        /// </summary>
+        /// <param name="context"></param>
+        public PropertyLostFocusEventArgs(PropertyCellContext context) : base(PropertyGrid.PropertyLostFocusEvent)
+        {
+            Context = context;
         }
     }
     #endregion
