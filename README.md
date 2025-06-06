@@ -104,9 +104,9 @@ PropertyModels.ComponentModel.ExpandableObjectDisplayModeAttribute              
     double  
     string  
     enum/[Flags]enum  
-    /* All containers that implement the IList<T> interface support display and editing, but containers that do not implement the IBindingList or INotifyCollectionChanged interface do not support data synchronization and adding, deleting, clearing, etc. in the editor.*/
+    /* All containers and arrays that implement the IList<T> interface support display and editing, but containers that do not implement the IBindingList or INotifyCollectionChanged interface do not support data synchronization. */
     T[] /* Add/Insert/Remove/Clear and datasync is not supported */  
-    System.Collections.Generic.List<T> /* Add/Insert/Remove/Clear and datasync is not supported */  
+    System.Collections.Generic.List<T> /* datasync is not supported */  
     System.ComponentModel.BindingList<T>  
     System.Collections.ObjectModel.ObservableCollection<T>
     System.DateTime/System.DateTimeOffset/System.DateTime?/System.DateTimeOffset?  

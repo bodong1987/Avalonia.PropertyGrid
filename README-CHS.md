@@ -107,9 +107,9 @@ float
 double  
 string  
 enum/[Flags]enum  
-/* 所有实现了IList<T>接口的容器都支持显示和编辑，但是未实现IBindingList或者INotifyCollectionChanged接口的容器并不支持数据同步和在编辑器中增加、删除、清空等操作*/
+/* 所有实现了IList<T>接口的容器和数组都支持显示和编辑，但是未实现IBindingList或者INotifyCollectionChanged接口的容器并不支持数据同步*/
 T[] /* 不支持添加/插入/删除/清除和数据同步 */  
-System.Collections.Generic.List<T> /* 不支持添加/插入/删除/清除和数据同步 */  
+System.Collections.Generic.List<T> /* 不支持数据同步 */  
 System.ComponentModel.BindingList<T>  
 System.Collections.ObjectModel.ObservableCollection<T>
 System.DateTime/System.DateTimeOffset/System.DateTime?/System.DateTimeOffset?  
