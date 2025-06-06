@@ -145,7 +145,7 @@ public class BrushConfiguration : ReactiveObject
         set => SetProperty(ref _linearGradientStartPointY, value);
     }
     
-    private double _linearGradientEndPointX = 100;
+    private double _linearGradientEndPointX = 1;
 
     [PropertyVisibilityCondition(nameof(BrushCategory), BrushCategory.LinearGradient)]
     [Trackable(0, 1)]
@@ -156,7 +156,7 @@ public class BrushConfiguration : ReactiveObject
         set => SetProperty(ref _linearGradientEndPointX, value);
     }
     
-    private double _linearGradientEndPointY = 100;
+    private double _linearGradientEndPointY = 1;
 
     [PropertyVisibilityCondition(nameof(BrushCategory), BrushCategory.LinearGradient)]
     [Trackable(0, 1)]
