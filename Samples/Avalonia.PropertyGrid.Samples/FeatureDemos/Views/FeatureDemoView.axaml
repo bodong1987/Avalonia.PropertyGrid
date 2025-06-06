@@ -19,6 +19,24 @@
     <UserControl.Styles>
         <StyleInclude Source="/FeatureDemos/Views/Vector3View.axaml"></StyleInclude>
         <StyleInclude Source="/FeatureDemos/Views/CountryView.axaml"></StyleInclude>
+        
+        <Style Selector="Border.header-border">
+            <Setter Property="BorderBrush" Value="Gray" />
+            <Setter Property="BorderThickness" Value="0.5" />
+            <Setter Property="CornerRadius" Value="5,5,0,0" />
+            <Setter Property="Padding" Value="10" />
+        </Style>
+        <Style Selector="TextBlock.header">
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+        
+        <Style Selector="Border.thin">
+            <Setter Property="BorderBrush" Value="Gray" />
+            <Setter Property="BorderThickness" Value="0.5" />
+            <Setter Property="CornerRadius" Value="0,0,5,5" />
+            <Setter Property="Margin" Value="0,0,0,15" />
+        </Style>
     </UserControl.Styles>
 
     <Grid RowDefinitions="*">
@@ -77,45 +95,67 @@
             <TabItem Header="{ll:Localize MultiObjects}">
                 <ScrollViewer>
                     <Grid ColumnDefinitions="1*,2,1*,2,1*">
+                        <Border Grid.Column="0" Classes="header-border">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Classes="header" Text="{ll:Localize MultiObjects}"></TextBlock>
+                                <pgc:PropertyGrid Margin="2" DataContext="{Binding MultiObjects}"></pgc:PropertyGrid>
+                            </StackPanel>   
+                        </Border>
+                        
                         <GridSplitter Grid.Column="1"></GridSplitter>
+                        <Border Grid.Column="2" Classes="header-border">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Classes="header" Text="{ll:Localize FirstObject}"></TextBlock>
+                                <pgc:PropertyGrid IsReadOnly="True" Margin="2" DataContext="{Binding MultiObject0}"></pgc:PropertyGrid>
+                            </StackPanel>   
+                        </Border>
+                        
                         <GridSplitter Grid.Column="3"></GridSplitter>
-                        <StackPanel Grid.Column="0" Orientation="Vertical">
-                            <TextBlock Text="{ll:Localize MultiObjects}"></TextBlock>
-                            <pgc:PropertyGrid Margin="2" DataContext="{Binding MultiObjects}"></pgc:PropertyGrid>
-                        </StackPanel>
-                        <StackPanel Orientation="Vertical" Grid.Column="2">
-                            <TextBlock Text="{ll:Localize FirstObject}"></TextBlock>
-                            <pgc:PropertyGrid IsReadOnly="True" Margin="2" DataContext="{Binding MultiObject0}"></pgc:PropertyGrid>
-                        </StackPanel>
-                        <StackPanel Orientation="Vertical" Grid.Column="4">
-                            <TextBlock Text="{ll:Localize SecondObject}"></TextBlock>
-                            <pgc:PropertyGrid IsReadOnly="True" Margin="2" DataContext="{Binding MultiObject1}"></pgc:PropertyGrid>
-                        </StackPanel>
+                        <Border Grid.Column="4" Classes="header-border">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Classes="header" Text="{ll:Localize SecondObject}"></TextBlock>
+                                <pgc:PropertyGrid IsReadOnly="True" Margin="2" DataContext="{Binding MultiObject1}"></pgc:PropertyGrid>
+                            </StackPanel>   
+                        </Border>
                     </Grid>
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="{ll:Localize CustomObject}">
-                <Grid ColumnDefinitions="1*, 2, 1*">
-                    <Expander IsExpanded="True" Margin="2" Grid.Column="0" Header="ICustomTypeDescriptor" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-                        <pgc:PropertyGrid Margin="4" DataContext="{Binding CustomOptions}"></pgc:PropertyGrid>
-                    </Expander>
-                    <GridSplitter Grid.Column="1"></GridSplitter>
-                    <Expander IsExpanded="True" Margin="2" Grid.Column="2" Header="TypeDescriptionProvider" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-                        <pgc:PropertyGrid Margin="4" DataContext="{Binding CustomObject}"></pgc:PropertyGrid>
-                    </Expander>
-                </Grid>
+                <ScrollViewer>
+                    <Grid ColumnDefinitions="1*, 2, 1*">
+                        <Border Grid.Column="0" Classes="header-border">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Classes="header" Text="ICustomTypeDescriptor"></TextBlock>
+                                <pgc:PropertyGrid Margin="4" DataContext="{Binding CustomOptions}"></pgc:PropertyGrid>
+                            </StackPanel>   
+                        </Border>
+                        <GridSplitter Grid.Column="1"></GridSplitter>
+                        <Border Grid.Column="2" Classes="header-border">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Classes="header" Text="TypeDescriptionProvider"></TextBlock>
+                                <pgc:PropertyGrid Margin="4" DataContext="{Binding CustomObject}"></pgc:PropertyGrid>
+                            </StackPanel>
+                        </Border>
+                    </Grid>    
+                </ScrollViewer>
             </TabItem>
 
             <TabItem Header="{ll:Localize Extends}">
                 <ScrollViewer>
                     <Grid ColumnDefinitions="1*,2,1*">
-                        <Expander IsExpanded="True" Margin="2" Grid.Column="0" Header="{ll:Localize Native}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-                            <pgc:PropertyGrid DataContext="{Binding ExtendsObject}"></pgc:PropertyGrid>
-                        </Expander>
+                        <Border Grid.Column="0" Classes="header-border">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Classes="header" Text="{ll:Localize Default-BuiltIn}"></TextBlock>
+                                <pgc:PropertyGrid DataContext="{Binding ExtendsObject}"></pgc:PropertyGrid>
+                            </StackPanel>   
+                        </Border>
                         <GridSplitter Grid.Column="1"></GridSplitter>
-                        <Expander IsExpanded="True" Header="{ll:Localize Extends}" Grid.Column="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-                            <lv:TestExtendPropertyGrid Margin="2" DataContext="{Binding ExtendsObject}"></lv:TestExtendPropertyGrid>
-                        </Expander>
+                        <Border Grid.Column="2" Classes="header-border">
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Classes="header" Text="{ll:Localize User-Extends}"></TextBlock>
+                                <lv:TestExtendPropertyGrid Margin="2" DataContext="{Binding ExtendsObject}"></lv:TestExtendPropertyGrid>
+                            </StackPanel>   
+                        </Border>
                     </Grid>
                 </ScrollViewer>
             </TabItem>
@@ -149,7 +189,6 @@
                                       DataContext="{Binding CancelableObject}"
                     ></pgc:PropertyGrid>
                 </Grid>
-
             </TabItem>
         </TabControl>
     </Grid>

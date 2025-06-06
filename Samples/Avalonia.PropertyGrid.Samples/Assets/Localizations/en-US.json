@@ -10,6 +10,8 @@
     "All_Expand": "All Expand",
     "Display_Mode": "Display Mode",
     "customLabel": "Custom Label",
+    "Default-BuiltIn": "System Default",
+    "User-Extends": "User Extends",
     "Show_Property_Operation": "Show Property Operations",
     "CellEdit_Alignment": "CellEdit Alignment",
     "ServiceDefaultView": "Service[Default View]",
