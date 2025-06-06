@@ -30,6 +30,7 @@ namespace Avalonia.PropertyGrid.Controls
     public partial class PropertyGrid : UserControl, IPropertyGrid
     {
         #region Properties
+        #region Visible Properties
         /// <summary>
         /// The is header visible property
         /// </summary>
@@ -98,6 +99,26 @@ namespace Avalonia.PropertyGrid.Controls
             set => SetValue(IsCategoryVisibleProperty, value);
         }
         
+        /// <summary>
+        /// global option for extra property button
+        /// </summary>
+        public static readonly StyledProperty<PropertyOperationVisibility> PropertyOperationVisibilityProperty =
+            AvaloniaProperty.Register<PropertyGrid, PropertyOperationVisibility>(nameof(PropertyOperationVisibility), 
+                defaultValue: PropertyOperationVisibility.Default, // default is hidden
+                inherits: true);
+
+        /// <summary>
+        /// global option for extra property button
+        /// </summary>
+        public PropertyOperationVisibility PropertyOperationVisibility
+        {
+            get => GetValue(PropertyOperationVisibilityProperty);
+            set => SetValue(PropertyOperationVisibilityProperty, value);
+        }
+        #endregion
+
+        #region Appearance Properties
+
         /// <summary>
         /// cell edit alignment type
         /// </summary>
@@ -184,7 +205,9 @@ namespace Avalonia.PropertyGrid.Controls
             get => GetValue(NameWidthProperty);
             set => SetValue(NameWidthProperty, value);
         }
+        #endregion
 
+        #region Behavior Properties
         /// <summary>
         /// The IsReadOnly property
         /// </summary>
@@ -200,7 +223,29 @@ namespace Avalonia.PropertyGrid.Controls
             get => GetValue(IsReadOnlyProperty);
             set => SetValue(IsReadOnlyProperty, value);
         }
+        
+        private readonly List<Expander> _categoryExpanders = [];
+        
+        /// <summary>
+        /// is all categories expanded property
+        /// </summary>
+        public static readonly StyledProperty<bool> AllCategoriesExpandedProperty = 
+            AvaloniaProperty.Register<PropertyGrid, bool>(nameof(AllCategoriesExpanded), 
+                defaultValue: true,
+                inherits: true); 
 
+        /// <summary>
+        /// is all categories expanded
+        /// </summary>
+        public bool AllCategoriesExpanded
+        {
+            get => GetValue(AllCategoriesExpandedProperty);
+            set => SetValue(AllCategoriesExpandedProperty, value);
+        }
+
+        #endregion
+
+        #region Extends Properties
         /// <summary>
         /// Top header content
         /// allow user custom this area
@@ -249,6 +294,26 @@ namespace Avalonia.PropertyGrid.Controls
         }
         
         /// <summary>
+        /// export this property
+        /// so user can redefine the style of it
+        /// </summary>
+        public Button DefaultOptionsButton => OptionsButton;
+        
+        /// <summary>
+        /// export default options context menu
+        /// so user can add more menu item to it
+        /// </summary>
+        public ContextMenu DefaultOptionsContextMenu => OptionsContextMenu;
+
+        /// <summary>
+        /// default header grid
+        /// user can append more elements in it
+        /// </summary>
+        public Grid DefaultHeaderGrid => InternalHeaderGrid;
+        #endregion
+
+        #region Base Properties
+        /// <summary>
         /// The view model
         /// </summary>
         internal PropertyGridViewModel ViewModel { get; } = new();
@@ -285,7 +350,10 @@ namespace Avalonia.PropertyGrid.Controls
         }
 
         private IPropertyGrid? _rootPropertyGrid;
-        
+        #endregion
+        #endregion
+
+        #region Events
         /// <summary>
         /// The custom property descriptor filter event
         /// </summary>
@@ -302,62 +370,6 @@ namespace Avalonia.PropertyGrid.Controls
             remove => RemoveHandler(CustomPropertyDescriptorFilterEvent, value);
         }
         
-        private readonly List<Expander> _categoryExpanders = [];
-        
-        /// <summary>
-        /// is all categories expanded property
-        /// </summary>
-        public static readonly StyledProperty<bool> AllCategoriesExpandedProperty = 
-            AvaloniaProperty.Register<PropertyGrid, bool>(nameof(AllCategoriesExpanded), 
-                defaultValue: true,
-                inherits: true); 
-
-        /// <summary>
-        /// is all categories expanded
-        /// </summary>
-        public bool AllCategoriesExpanded
-        {
-            get => GetValue(AllCategoriesExpandedProperty);
-            set => SetValue(AllCategoriesExpandedProperty, value);
-        }
-
-        /// <summary>
-        /// global option for extra property button
-        /// </summary>
-        public static readonly StyledProperty<PropertyOperationVisibility> PropertyOperationVisibilityProperty =
-            AvaloniaProperty.Register<PropertyGrid, PropertyOperationVisibility>(nameof(PropertyOperationVisibility), 
-                defaultValue: PropertyOperationVisibility.Default, // default is hidden
-                inherits: true);
-
-        /// <summary>
-        /// global option for extra property button
-        /// </summary>
-        public PropertyOperationVisibility PropertyOperationVisibility
-        {
-            get => GetValue(PropertyOperationVisibilityProperty);
-            set => SetValue(PropertyOperationVisibilityProperty, value);
-        }
-
-        /// <summary>
-        /// export this property
-        /// so user can redefine the style of it
-        /// </summary>
-        public Button DefaultOptionsButton => OptionsButton;
-        
-        /// <summary>
-        /// export default options context menu
-        /// so user can add more menu item to it
-        /// </summary>
-        public ContextMenu DefaultOptionsContextMenu => OptionsContextMenu;
-
-        /// <summary>
-        /// default header grid
-        /// user can append more elements in it
-        /// </summary>
-        public Grid DefaultHeaderGrid => InternalHeaderGrid;
-        #endregion
-
-        #region Events
         /// <summary>
         /// The custom name block event
         /// </summary>
@@ -478,6 +490,7 @@ namespace Avalonia.PropertyGrid.Controls
         }
         #endregion
 
+        #region Constructors
         /// <summary>
         /// Initializes static members of the <see cref="PropertyGrid"/> class.
         /// </summary>
@@ -524,7 +537,21 @@ namespace Avalonia.PropertyGrid.Controls
 
             ColumnName.PropertyChanged += OnColumnNamePropertyChanged;
         }
+        
+        
+#if DEBUG
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
+        public override string ToString()
+        {
+            return $"[{GetHashCode()}]{base.ToString()}";
+        }
+#endif
+        #endregion
 
+        #region Base PropertyChanged Handlers
         private void OnCustomPropertyDescriptorFilter(object? sender, RoutedEventArgs e)
         {
             if (RootPropertyGrid is PropertyGrid pg)
@@ -538,18 +565,7 @@ namespace Avalonia.PropertyGrid.Controls
         }
 
         private void BroadcastCustomPropertyDescriptorFilterEvent(object? sender, CustomPropertyDescriptorFilterEventArgs e) => RaiseEvent(e);
-
-#if DEBUG
-        /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
-        /// </summary>
-        /// <returns>A <see cref="System.String" /> that represents this instance.</returns>
-        public override string ToString()
-        {
-            return $"[{GetHashCode()}]{base.ToString()}";
-        }
-#endif
-
+        
         /// <summary>
         /// Handles the <see cref="E:ViewModelPropertyChanged" /> event.
         /// </summary>
@@ -615,7 +631,9 @@ namespace Avalonia.PropertyGrid.Controls
                 ViewModel.Context = DataContext;
             }
         }
+        #endregion
 
+        #region Interface Methods
         /// <summary>
         /// Gets the cell edit factory collection.
         /// </summary>
@@ -639,9 +657,9 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <returns>IPropertyGridCellInfoCache.</returns>
         public IPropertyGridCellInfoCache GetCellInfoCache() => _cellInfoCache;
+        #endregion
 
         #region Styled Properties Handler
-        
         private static void IsHeaderVisibleChanged(AvaloniaPropertyChangedEventArgs e)
         {
             if (e.Sender is PropertyGrid sender)
@@ -784,9 +802,7 @@ namespace Avalonia.PropertyGrid.Controls
         {
             BuildPropertiesView();
         }
-
-        #endregion
-
+        
         /// <summary>
         /// Handles the <see cref="E:PropertyDescriptorChanged" /> event.
         /// </summary>
@@ -801,7 +817,9 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="e">The <see cref="FilterChangedEventArgs"/> instance containing the event data.</param>
         private void OnFilterChanged(object? sender, FilterChangedEventArgs e) => RefreshVisibilities(e.FilterText);
 
+        #endregion
 
+        #region Open Methods
         /// <inheritdoc />
         public void ExpandAllCategories() => 
             _categoryExpanders.ForEach(e => e.IsExpanded = true);
@@ -810,6 +828,9 @@ namespace Avalonia.PropertyGrid.Controls
         public void CollapseAllCategories() => 
             _categoryExpanders.ForEach(e => e.IsExpanded = false);
 
+        #endregion
+
+        #region Cell Builders
         /// <summary>
         /// Builds the properties view.
         /// </summary>
@@ -864,6 +885,7 @@ namespace Avalonia.PropertyGrid.Controls
 
             SyncNameWidth(width, false);
         }
+        #endregion
 
         #region Categories
         /// <summary>
@@ -1355,6 +1377,7 @@ namespace Avalonia.PropertyGrid.Controls
         }
         #endregion
 
+        #region Common UI Event Handlers
         private void OnOptionsButtonClicked(object? sender, RoutedEventArgs e)
         {
             OptionsContextMenu.Open(sender as Control);
@@ -1369,6 +1392,7 @@ namespace Avalonia.PropertyGrid.Controls
         {
             CollapseAllCategories();
         }
+        #endregion
 
         #region IDisposable
         /// <summary>
