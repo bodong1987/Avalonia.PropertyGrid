@@ -1,0 +1,25 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:Avalonia.PropertyGrid.Controls">
+    <Design.PreviewWith>
+        <controls:PreviewableSlider />
+    </Design.PreviewWith>
+
+    <Style Selector="controls|PreviewableSlider">
+        <!-- Set Defaults -->
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Slider x:Name="slider"
+                        Minimum="{TemplateBinding Minimum, Mode=TwoWay}"
+                        Maximum="{TemplateBinding Maximum, Mode=TwoWay}"
+                        Value="{TemplateBinding Value, Mode=TwoWay}"
+                        IsEnabled="{TemplateBinding IsEnabled, Mode=TwoWay}"
+                        Orientation="{TemplateBinding Orientation, Mode=TwoWay}"
+                        TickFrequency="{TemplateBinding TickFrequency, Mode=TwoWay}"
+                        IsSnapToTickEnabled="{TemplateBinding IsSnapToTickEnabled, Mode=TwoWay}" 
+                    >
+                </Slider>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

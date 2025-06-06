@@ -61,6 +61,10 @@
     <Compile Update="Controls\BindiListElementPlaceholderEdit.axaml.cs">
       <DependentUpon>BindiListElementPlaceholderEdit.axaml</DependentUpon>
     </Compile>
+    <Compile Update="Controls\PreviewableSlider.axaml.cs">
+      <DependentUpon>PreviewableSlider.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 	
 	<PropertyGroup>		

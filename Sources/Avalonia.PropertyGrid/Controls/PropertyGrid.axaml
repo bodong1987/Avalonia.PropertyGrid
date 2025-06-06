@@ -21,6 +21,7 @@
 		<StyleInclude Source="/Controls/TrackableEdit.axaml"></StyleInclude>
 		<StyleInclude Source="/Controls/ToggleButtonGroupListEdit.axaml"></StyleInclude>
 		<StyleInclude Source="/Controls/RadioButtonListEdit.axaml"></StyleInclude>
+		<StyleInclude Source="/Controls/PreviewableSlider.axaml"></StyleInclude>
         <StyleInclude Source="avares://Avalonia.Controls.ColorPicker/Themes/Fluent/Fluent.xaml"/>
 		<StyleInclude Source="avares://Avalonia.Controls.ColorPicker/Themes/Simple/Simple.xaml"/>
 	</UserControl.Styles>

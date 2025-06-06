@@ -3,7 +3,6 @@ using System.Globalization;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Data.Converters;
-using Avalonia.Input;
 using Avalonia.Interactivity;
 using PropertyModels.Utils;
 
@@ -122,99 +121,31 @@ namespace Avalonia.PropertyGrid.Controls
             add => AddHandler(RealValueChangedEvent, value);
             remove => RemoveHandler(RealValueChangedEvent, value);
         }
-        
-        private bool _isDragging;
-        private double _preDragValue;
+
+        private void OnPreviewValueChanged(object? sender, RoutedEventArgs args)
+        {
+            RaiseEvent(new RoutedEventArgs(PreviewValueChangedEvent, this));
+        }
+
+        private void OnRealValueChanged(object? sender, RoutedEventArgs args)
+        {
+            if (args is RealValueChangedEventArgs e)
+            {
+                RaiseEvent(new RealValueChangedEventArgs(e.Reason, e.OldValue, RealValueChangedEvent, this));    
+            }
+        }
 
         /// <inheritdoc />
         protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
         {
             base.OnApplyTemplate(e);
             
-            var slider = e.NameScope.Find<Slider>("slider");
+            var slider = e.NameScope.Find<PreviewableSlider>("slider");
             if (slider != null)
             {
-                slider.AddHandler(Thumb.DragStartedEvent, OnDragStarted);
-                slider.AddHandler(Thumb.DragCompletedEvent, OnDragCompleted);
+                slider.PreviewValueChanged += OnPreviewValueChanged;
+                slider.RealValueChanged += OnRealValueChanged;
             }
-
-            ValueChanged += OnLocalValueChanged;
-        }
-
-        private void OnLocalValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
-        {
-            RaiseEvent(_isDragging
-                ? new RoutedEventArgs(PreviewValueChangedEvent, this)
-                : new RealValueChangedEventArgs(RealValueChangedReason.NotDragging, double.NaN, RealValueChangedEvent, this));
-
-            e.Handled = true;
-        }
-
-        private void OnDragStarted(object? sender, VectorEventArgs e)
-        {
-            _isDragging = true;
-            _preDragValue = Value; 
-            e.Handled = true;
-        }
-
-        private void OnDragCompleted(object? sender, VectorEventArgs e)
-        {
-            if (!_isDragging) return;
-        
-            _isDragging = false;
-        
-            if (Math.Abs(_preDragValue - Value) > double.Epsilon)
-            {
-                RaiseEvent(new RealValueChangedEventArgs( RealValueChangedReason.DragEnd, _preDragValue, RealValueChangedEvent, this));
-            }
-        
-            e.Handled = true;
-        }
-    }
-
-    /// <summary>
-    /// real value change reason
-    /// </summary>
-    public enum RealValueChangedReason
-    {
-        /// <summary>
-        /// change by not drag
-        /// </summary>
-        NotDragging,
-        
-        /// <summary>
-        /// finish drag
-        /// </summary>
-        DragEnd
-    }
-    
-    /// <summary>
-    /// Real value changed event args
-    /// </summary>
-    public class RealValueChangedEventArgs : RoutedEventArgs
-    {
-        /// <summary>
-        /// reason
-        /// </summary>
-        public readonly RealValueChangedReason Reason;
-
-        /// <summary>
-        /// start drag value 
-        /// </summary>
-        public readonly double OldValue;
-
-        /// <summary>
-        /// construct this event args
-        /// </summary>
-        /// <param name="reason"></param>
-        /// <param name="oldValue">old value(optional)</param>
-        /// <param name="routedEvent"></param>
-        /// <param name="source"></param>
-        public RealValueChangedEventArgs(RealValueChangedReason reason, double oldValue, RoutedEvent? routedEvent, object? source) :
-            base(routedEvent, source)
-        {
-            Reason = reason;
-            OldValue = oldValue;
         }
     }
 

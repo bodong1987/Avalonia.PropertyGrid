@@ -18,17 +18,16 @@
             <ControlTemplate>
                 <DataValidationErrors>
                     <Grid ColumnDefinitions="8.5*, 1.5*" HorizontalAlignment="Stretch">
-                        <Slider Grid.Column="0"
-                                Padding="2" Margin="1"
+                        <controls:PreviewableSlider Grid.Column="0"
                                 x:Name="slider"
+                                Padding="2" Margin="1"
                                 Minimum="{Binding Minimum, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
                                 Maximum="{Binding Maximum, RelativeSource={RelativeSource TemplatedParent}, Mode=OneWay}"
                                 Value="{Binding Value, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
                                 IsEnabled="{TemplateBinding IsReadOnly, Converter={StaticResource InverseBooleanConverter}}"
 						  >
-                        </Slider>
+                        </controls:PreviewableSlider>
                         <NumericUpDown Grid.Column="1"
-                                       x:Name="numericUpDown"
                                        Padding="1"
                                        Margin="10"
                                        FontFamily="{x:Static lu:FontUtils.DefaultFontFamily}"
