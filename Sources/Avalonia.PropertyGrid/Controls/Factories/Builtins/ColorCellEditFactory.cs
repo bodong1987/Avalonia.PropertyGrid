@@ -36,6 +36,28 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         }
 
         /// <summary>
+        /// make child factory can override property changed testing
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="value"></param>
+        /// <param name="oldValue"></param>
+        /// <returns></returns>
+        protected override bool CheckIsPropertyChanged(PropertyCellContext context, object? value, out object? oldValue)
+        {
+            if (context.Property.PropertyType == typeof(Color))
+            {
+                var color1 = (Color)value!;
+                oldValue = context.GetValue();
+                
+                var color2 = (Color)oldValue!;
+                
+                return color1.ToArgb() != color2.ToArgb();
+            }
+            
+            return base.CheckIsPropertyChanged(context, value, out oldValue);   
+        }
+
+        /// <summary>
         /// Handles the new property.
         /// </summary>
         /// <param name="context">The context.</param>

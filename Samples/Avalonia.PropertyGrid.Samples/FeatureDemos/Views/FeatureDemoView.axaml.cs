@@ -28,7 +28,7 @@ public partial class FeatureDemoView : UserControl
 
         InitializeComponent();
 
-        PropertyGridRedoUndo.CommandExecuted += OnCommandExecuted;
+        // PropertyGridRedoUndo.CommandExecuted += OnCommandExecuted;
 
         ((FeatureDemoViewModel)DataContext).PropertyChanged += OnPropertyChanged;
         

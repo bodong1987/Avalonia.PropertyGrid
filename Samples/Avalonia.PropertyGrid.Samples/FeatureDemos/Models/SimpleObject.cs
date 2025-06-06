@@ -53,33 +53,33 @@ namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Models
         [PathBrowsable(Filters = "Image Files(*.jpg;*.png;*.bmp;*.tag)|*.jpg;*.png;*.bmp;*.tag")]
         [Watermark("Image Path")]
         [Description("Select an image file")]
-        public string? ImagePath { get; set; }
+        public string ImagePath { get; set; } = "";
 
         [Category("Path")]
         [DisplayName("User Home")]
         [PathBrowsable(PathBrowsableType.Directory, InitialFileName = "C:\\Users")]
         [Watermark("Select Home")]
         [Description("Select the user's home directory")]
-        public string? UserHome { get; set; }
+        public string UserHome { get; set; } = "";
 
         [Category("Path")]
         [DisplayName("My Pictures")]
         [PathBrowsable(PathBrowsableType.Directory)]
         [Description("Directory where your pictures are stored")]
-        public string? MyPicturesDirectory { get; set; } = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+        public string MyPicturesDirectory { get; set; } = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
 
         [Category("String")]
         [DisplayName("Target Name")]
         [Watermark("Your Target Name")]
         [ControlClasses("clearButton")]
         [Description("Enter the target name")]
-        public string? Name { get; set; }
+        public string Name { get; set; } = "";
 
         [Category("String")]
         [PasswordPropertyText(true)]
         [Watermark("Input your password")]
         [Description("Enter your password")]
-        public string? Password { get; set; }
+        public string Password { get; set; } = "";
 
         [Category("Boolean")]
         [Description("Encrypt data for security")]
@@ -220,12 +220,12 @@ namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Models
         [Description("Select ID from list")]
         public SelectableList<int> IdList { get; set; } = new([100, 1000, 1024], 1000);
 
-        private string? _SourceImagePath;
+        private string _SourceImagePath = "";
         [Category("DataValidation")]
         [PathBrowsable(Filters = "Image Files(*.jpg;*.png;*.bmp;*.tag)|*.jpg;*.png;*.bmp;*.tag")]
         [Watermark("This path can be validated")]
         [Description("Path to source image with validation")]
-        public string? SourceImagePath
+        public string SourceImagePath
         {
             get => _SourceImagePath;
             set
@@ -247,7 +247,7 @@ namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Models
         [Category("DataValidation")]
         [Required(ErrorMessage = "Can not be null")]
         [Description("String that must not be null")]
-        public string? ValidateString { get; set; }
+        public string ValidateString { get; set; } = "";
 
         [Category("DataValidation")]
         [Description("Select platforms with validation")]

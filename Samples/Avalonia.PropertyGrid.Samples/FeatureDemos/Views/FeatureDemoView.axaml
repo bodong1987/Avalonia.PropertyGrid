@@ -187,6 +187,7 @@
                     <pgc:PropertyGrid Grid.Row="1" x:Name="PropertyGridRedoUndo"
                                       Margin="4"
                                       DataContext="{Binding CancelableObject}"
+                                      CommandExecuted="OnCommandExecuted"
                     ></pgc:PropertyGrid>
                 </Grid>
             </TabItem>
