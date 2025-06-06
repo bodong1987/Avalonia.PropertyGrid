@@ -106,10 +106,10 @@ namespace Avalonia.PropertyGrid.ViewModels
 
     /// <summary>
     /// Class PropertyGridViewModel.
-    /// Implements the <see cref="ReactiveObject" />
+    /// Implements the <see cref="MiniReactiveObject" />
     /// </summary>
-    /// <seealso cref="ReactiveObject" />
-    internal class PropertyGridViewModel : ReactiveObject, IPropertyGridFilterContext
+    /// <seealso cref="MiniReactiveObject" />
+    internal class PropertyGridViewModel : MiniReactiveObject, IPropertyGridFilterContext
     {
         /// <summary>
         /// Gets or sets the filter pattern.
@@ -135,13 +135,7 @@ namespace Avalonia.PropertyGrid.ViewModels
         public PropertyGridDisplayMode DisplayMode
         {
             get;
-            set
-            {
-                if (field != value)
-                {
-                    _ = this.RaiseAndSetIfChanged(ref field, value);
-                }
-            }
+            set => this.RaiseAndSetIfChanged(ref field, value);
         } = PropertyGridDisplayMode.Tree;
 
         /// <summary>
@@ -151,7 +145,7 @@ namespace Avalonia.PropertyGrid.ViewModels
         public bool IsCategoryVisible
         {
             get;
-            set => SetProperty(ref field, value);
+            set => this.RaiseAndSetIfChanged(ref field, value);
         } = true;
 
         
@@ -162,13 +156,7 @@ namespace Avalonia.PropertyGrid.ViewModels
         public PropertyGridOrderStyle PropertyOrderStyle
         {
             get;
-            set
-            {
-                if (field != value)
-                {
-                    _ = this.RaiseAndSetIfChanged(ref field, value);
-                }
-            }
+            set => this.RaiseAndSetIfChanged(ref field, value);
         } = PropertyGridOrderStyle.Builtin;
 
         /// <summary>
@@ -178,13 +166,7 @@ namespace Avalonia.PropertyGrid.ViewModels
         public PropertyGridOrderStyle CategoryOrderStyle
         {
             get;
-            set
-            {
-                if (field != value)
-                {
-                    _ = this.RaiseAndSetIfChanged(ref field, value);
-                }
-            }
+            set => this.RaiseAndSetIfChanged(ref field, value);
         } = PropertyGridOrderStyle.Builtin;
 
         /// <summary>
@@ -194,13 +176,7 @@ namespace Avalonia.PropertyGrid.ViewModels
         public bool IsReadOnly
         {
             get;
-            set
-            {
-                if (field != value)
-                {
-                    _ = this.RaiseAndSetIfChanged(ref field, value);
-                }
-            }
+            set => this.RaiseAndSetIfChanged(ref field, value);
         }
 
         /// <summary>

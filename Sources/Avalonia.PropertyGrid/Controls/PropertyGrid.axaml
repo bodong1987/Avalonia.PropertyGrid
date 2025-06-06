@@ -42,12 +42,12 @@
 				</Button.Content>
 				<Button.ContextMenu>
 					<ContextMenu x:Name="OptionsContextMenu">
-						<MenuItem Header="{ll:Localize IsCategoryView}" IsChecked="{Binding $parent[lc:PropertyGrid].ViewModel.IsCategoryView, Mode=TwoWay}" ToggleType="CheckBox" ToolTip.Tip="{ll:Localize ShowStyle}"/>
+						<MenuItem Header="{ll:Localize IsCategoryVisible}" IsChecked="{Binding $parent[lc:PropertyGrid].ViewModel.IsCategoryVisible, Mode=TwoWay}" ToggleType="CheckBox" ToolTip.Tip="{ll:Localize ShowStyle}"/>
 						<MenuItem Header="{ll:Localize UseRegex}" IsChecked="{Binding $parent[lc:PropertyGrid].ViewModel.FilterPattern.UseRegex, Mode=TwoWay}" ToggleType="CheckBox" ToolTip.Tip="{ll:Localize UseRegex}"/>
 						<MenuItem Header="{ll:Localize IgnoreCase}" IsChecked="{Binding $parent[lc:PropertyGrid].ViewModel.FilterPattern.IgnoreCase, Mode=TwoWay}" ToggleType="CheckBox" ToolTip.Tip="{ll:Localize IgnoreCase}"/>
 						<Separator></Separator>
-						<MenuItem Header="{ll:Localize AllowQuickFilter}" IsChecked="{Binding $parent[lc:PropertyGrid].IsQuickFilterVisible, Mode=TwoWay}" ToggleType="CheckBox"></MenuItem>
-						<MenuItem Header="{ll:Localize ShowTitle}" IsChecked="{Binding $parent[lc:PropertyGrid].IsTitleVisible, Mode=TwoWay}" ToggleType="CheckBox"></MenuItem>
+						<MenuItem Header="{ll:Localize IsQuickFilterVisible}" IsChecked="{Binding $parent[lc:PropertyGrid].IsQuickFilterVisible, Mode=TwoWay}" ToggleType="CheckBox"></MenuItem>
+						<MenuItem Header="{ll:Localize IsTitleVisible}" IsChecked="{Binding $parent[lc:PropertyGrid].IsTitleVisible, Mode=TwoWay}" ToggleType="CheckBox"></MenuItem>
 						<Separator></Separator>
 						<MenuItem Header="{ll:Localize DisplayMode}">
 							<MenuItem Header="{ll:Localize Tree}" IsChecked="{Binding $parent[lc:PropertyGrid].DisplayMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:PropertyGridDisplayMode.Tree}, Mode=TwoWay}" ToggleType="Radio"/>
