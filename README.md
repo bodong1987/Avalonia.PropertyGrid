@@ -550,7 +550,11 @@ If you select Unix in Platform and input anything in UnixVersion, you can edit t
 
 * UndoRedo  
 ![RedoUndo](./Docs/Images/undoredo.png)
-This example shows how to implement undo and redo functions based on the built-in undo-redo framework.
+This example shows how to implement undo and redo functions based on the built-in undo-redo framework.  
+
+* Custom
+![custom-propertygrid](./Docs/Images/custom-propertygrid.png)
+This sample shows how to add custom controls in the reserved area of ​​PropertyGrid.  
 
 ### Settings Demo
 A simple example is used to show how to implement a system settings interface based on PropertyGrid very simply and conveniently.  

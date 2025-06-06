@@ -548,7 +548,11 @@ private void OnCustomPropertyOperationControl(object? sender, CustomPropertyOper
 
 * 撤销重做
 ![RedoUndo](./Docs/Images/undoredo.png)
-此示例展示了如何基于内置的撤销重做框架实现撤销和重做功能。
+此示例展示了如何基于内置的撤销重做框架实现撤销和重做功能。  
+
+* 自定义
+![custom-propertygrid](./Docs/Images/custom-propertygrid.png)
+这个示例展示了如何在PropertyGrid预留的区域中添加自定义控件。
 
 ### 设置示例
 一个简单的示例用于展示如何基于PropertyGrid非常简单方便的实现一个系统设置界面。  
