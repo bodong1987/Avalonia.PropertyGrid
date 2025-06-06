@@ -273,6 +273,17 @@ namespace Avalonia.PropertyGrid.Controls
         }
 
         /// <summary>
+        /// force reload list data
+        /// </summary>
+        public void RaiseUnObservableListChangedEvent()
+        {
+            if (Model.List != null && !Model.List.GetType().IsArray && Model.List is not IBindingList && Model.List is not INotifyCollectionChanged )
+            {
+                Model.RaisePropertyChanged(nameof(Model.List));
+            }
+        }
+
+        /// <summary>
         /// Handles the <see cref="E:ListChanged" /> event.
         /// </summary>
         /// <param name="sender">The sender.</param>
@@ -334,7 +345,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <value>The array.</value>
         // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public IList? List { get; internal set; }
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="ListRoutedEventArgs" /> class.
         /// </summary>

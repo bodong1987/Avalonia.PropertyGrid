@@ -71,7 +71,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             
             var type = GetElementType(pd);
 
-            return type is { IsAbstract: false } && IsCollectionObservable(pd.PropertyType);
+            return type is { IsAbstract: false };
         }
 
         /// <summary>
@@ -186,19 +186,24 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             Debug.Assert(value != null);
 
-            if (e.Index >= 0 && e.Index < value.Count)
+            var index = e.Index;
+            var oldCount = value.Count;
+            
+            if (index >= 0 && index < oldCount)
             {
-                var oldElement = value[e.Index];
+                var oldElement = value[index];
 
                 var command = new GenericCancelableCommand(
-                    string.Format(LocalizationService.Default["Remove array element at {0}"], e.Index),
+                    string.Format(LocalizationService.Default["Remove array element at {0} of {1}"], index, oldCount),
                     () =>
                     {
-                        if (e.Index >= 0 && e.Index < value.Count)
+                        if (index >= 0 && index < oldCount)
                         {
-                            value.RemoveAt(e.Index);
+                            value.RemoveAt(index);
 
                             HandleRaiseEvent(context.CellEdit!, context);
+                            
+                            control.RaiseUnObservableListChangedEvent();
 
                             return true;
                         }
@@ -207,19 +212,19 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     },
                     () =>
                     {
-                        if (e.Index < value.Count)
+                        if (index < oldCount)
                         {
-                            value.Insert(e.Index, oldElement);
+                            value.Insert(index, oldElement);
 
                             HandleRaiseEvent(context.CellEdit!, context);
+                            
+                            control.RaiseUnObservableListChangedEvent();
 
                             return true;
                         }
 
                         return false;
-                    },
-                    () => e.Index >= 0 && e.Index < value.Count,
-                    () => e.Index >= 0 && e.Index < value.Count)
+                    })
                 {
                     Tag = "Remove"
                 };
@@ -250,6 +255,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     value.Clear();
 
                     HandleRaiseEvent(context.CellEdit!, context);
+                    
+                    control.RaiseUnObservableListChangedEvent();
 
                     return true;
                 },
@@ -261,6 +268,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     }
 
                     HandleRaiseEvent(context.CellEdit!, context);
+                    
+                    control.RaiseUnObservableListChangedEvent();
 
                     return true;
                 })
@@ -288,26 +297,31 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
             var newElement = ObjectCreator.Create(GetElementType(context.Property)!);
 
+            var index = e.Index;
+            var oldCount = value.Count;
+            
             var command = new GenericCancelableCommand(
-                string.Format(LocalizationService.Default["Insert a new element at {0}"], e.Index),
+                string.Format(LocalizationService.Default["Insert a new element at {0} of {1}"], index, oldCount),
                 () =>
                 {
-                    value.Insert(e.Index, newElement);
+                    value.Insert(index, newElement);
 
                     HandleRaiseEvent(context.CellEdit!, context);
+                    
+                    control.RaiseUnObservableListChangedEvent();
 
                     return true;
                 },
                 () =>
                 {
-                    value.RemoveAt(e.Index);
+                    value.RemoveAt(index);
 
                     HandleRaiseEvent(context.CellEdit!, context);
+                    
+                    control.RaiseUnObservableListChangedEvent();
 
                     return true;
-                },
-                () => e.Index >= 0 && e.Index <= value.Count,
-                () => e.Index >= 0 && e.Index < value.Count)
+                })
             {
                 Tag = "Insert"
             };
@@ -337,6 +351,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     _ = value.Add(newElement);
 
                     HandleRaiseEvent(context.CellEdit!, context);
+                    
+                    control.RaiseUnObservableListChangedEvent();
 
                     return true;
                 },
@@ -345,6 +361,8 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     value.RemoveAt(value.Count - 1);
 
                     HandleRaiseEvent(context.CellEdit!, context);
+                    
+                    control.RaiseUnObservableListChangedEvent();
 
                     return true;
                 },
