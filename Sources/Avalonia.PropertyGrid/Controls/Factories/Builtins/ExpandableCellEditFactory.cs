@@ -53,7 +53,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             var border = new Border
             {
                 BorderBrush = Brushes.Gray,
-                BorderThickness = new Thickness(context.Root.DisplayMode == PropertyGridDisplayMode.Inline ? 0 : 0.5),
+                BorderThickness = new Thickness(context.Root.LayoutStyle == PropertyGridLayoutStyle.Inline ? 0 : 0.5),
                 CornerRadius = new CornerRadius(0, 0, 5, 5),
                 Margin = new Thickness(0)
             };
@@ -69,11 +69,11 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             var attr = propertyDescriptor.GetCustomAttribute<ExpandableObjectDisplayModeAttribute>() ??
                        propertyDescriptor.PropertyType.GetAnyCustomAttribute<ExpandableObjectDisplayModeAttribute>();
 
-            propertyGrid.DisplayMode = attr == null || attr.IsTreeMode == NullableBooleanType.Undefined
-                ? context.Root.DisplayMode
+            propertyGrid.LayoutStyle = attr == null || attr.IsTreeMode == NullableBooleanType.Undefined
+                ? context.Root.LayoutStyle
                 : (attr.IsTreeMode is NullableBooleanType.Yes
-                    ? PropertyGridDisplayMode.Tree
-                    : PropertyGridDisplayMode.Inline);
+                    ? PropertyGridLayoutStyle.Tree
+                    : PropertyGridLayoutStyle.Inline);
             
             propertyGrid.IsCategoryVisible = attr == null || attr.IsCategoryVisible == NullableBooleanType.Undefined
                 ? context.Root.IsCategoryVisible

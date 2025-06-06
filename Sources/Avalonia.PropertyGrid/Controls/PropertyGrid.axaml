@@ -49,9 +49,9 @@
 						<MenuItem Header="{ll:Localize IsQuickFilterVisible}" IsChecked="{Binding $parent[lc:PropertyGrid].IsQuickFilterVisible, Mode=TwoWay}" ToggleType="CheckBox"></MenuItem>
 						<MenuItem Header="{ll:Localize IsTitleVisible}" IsChecked="{Binding $parent[lc:PropertyGrid].IsTitleVisible, Mode=TwoWay}" ToggleType="CheckBox"></MenuItem>
 						<Separator></Separator>
-						<MenuItem Header="{ll:Localize DisplayMode}">
-							<MenuItem Header="{ll:Localize Tree}" IsChecked="{Binding $parent[lc:PropertyGrid].DisplayMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:PropertyGridDisplayMode.Tree}, Mode=TwoWay}" ToggleType="Radio"/>
-							<MenuItem Header="{ll:Localize Inline}" IsChecked="{Binding $parent[lc:PropertyGrid].DisplayMode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:PropertyGridDisplayMode.Inline}, Mode=TwoWay}" ToggleType="Radio"/>
+						<MenuItem Header="{ll:Localize LayoutStyle}">
+							<MenuItem Header="{ll:Localize Tree}" IsChecked="{Binding $parent[lc:PropertyGrid].LayoutStyle, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:PropertyGridLayoutStyle.Tree}, Mode=TwoWay}" ToggleType="Radio"/>
+							<MenuItem Header="{ll:Localize Inline}" IsChecked="{Binding $parent[lc:PropertyGrid].LayoutStyle, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:PropertyGridLayoutStyle.Inline}, Mode=TwoWay}" ToggleType="Radio"/>
 						</MenuItem>
 						<MenuItem Header="{ll:Localize CategoryOrder}">
 							<MenuItem Header="{ll:Localize Builtin}" IsChecked="{Binding $parent[lc:PropertyGrid].CategoryOrderStyle, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static lvm:PropertyGridOrderStyle.Builtin}, Mode=TwoWay}" ToggleType="Radio"/>

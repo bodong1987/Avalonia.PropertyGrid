@@ -62,7 +62,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Gets or sets the display mode.
         /// </summary>
         /// <value>The display mode.</value>
-        PropertyGridDisplayMode DisplayMode { get; set; }
+        PropertyGridLayoutStyle LayoutStyle { get; set; }
         
         /// <summary>
         /// is header visible, include search box, options, quick filter panel

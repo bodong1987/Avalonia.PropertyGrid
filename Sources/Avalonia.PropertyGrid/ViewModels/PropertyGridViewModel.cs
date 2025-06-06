@@ -20,9 +20,9 @@ using PropertyModels.Utils;
 namespace Avalonia.PropertyGrid.ViewModels
 {
     /// <summary>
-    /// Enum PropertyGridDisplayMode
+    /// Enum PropertyGridLayoutStyle
     /// </summary>
-    public enum PropertyGridDisplayMode
+    public enum PropertyGridLayoutStyle
     {
         /// <summary>
         /// Use tree.
@@ -132,11 +132,11 @@ namespace Avalonia.PropertyGrid.ViewModels
         /// Gets or sets the display mode.
         /// </summary>
         /// <value>The display mode.</value>
-        public PropertyGridDisplayMode DisplayMode
+        public PropertyGridLayoutStyle DisplayMode
         {
             get;
             set => this.RaiseAndSetIfChanged(ref field, value);
-        } = PropertyGridDisplayMode.Tree;
+        } = PropertyGridLayoutStyle.Tree;
 
         /// <summary>
         /// Gets or sets is category visible.

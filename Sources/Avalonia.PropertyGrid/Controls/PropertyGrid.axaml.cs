@@ -115,20 +115,20 @@ namespace Avalonia.PropertyGrid.Controls
         }
 
         /// <summary>
-        /// The display mode property
+        /// The layout style property
         /// </summary>
-        public static readonly StyledProperty<PropertyGridDisplayMode> DisplayModeProperty =
-            AvaloniaProperty.Register<PropertyGrid, PropertyGridDisplayMode>(nameof(DisplayMode));
+        public static readonly StyledProperty<PropertyGridLayoutStyle> LayoutStyleProperty =
+            AvaloniaProperty.Register<PropertyGrid, PropertyGridLayoutStyle>(nameof(LayoutStyle));
 
         /// <summary>
-        /// Gets or sets the display mode.
+        /// Gets or sets the layout style
         /// </summary>
-        /// <value>The display mode.</value>
+        /// <value>The layout style.</value>
         [Category("Views")]
-        public PropertyGridDisplayMode DisplayMode
+        public PropertyGridLayoutStyle LayoutStyle
         {
-            get => GetValue(DisplayModeProperty);
-            set => SetValue(DisplayModeProperty, value);
+            get => GetValue(LayoutStyleProperty);
+            set => SetValue(LayoutStyleProperty, value);
         }
 
         /// <summary>
@@ -485,7 +485,7 @@ namespace Avalonia.PropertyGrid.Controls
         {
             _ = IsHeaderVisibleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(IsHeaderVisibleChanged));
             _ = IsQuickFilterVisibleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(IsQuickFilterVisibleChanged));
-            _ = DisplayModeProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<PropertyGridDisplayMode>>(OnDisplayModeChanged));
+            _ = LayoutStyleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<PropertyGridLayoutStyle>>(OnDisplayModeChanged));
             _ = IsCategoryVisibleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(IsCategoryVisibleChanged));
             _ = CategoryOrderStyleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<PropertyGridOrderStyle>>(OnCategoryOrderStyleChanged));
             _ = PropertyOrderStyleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<PropertyGridOrderStyle>>(OnPropertyOrderStyleChanged));
@@ -559,7 +559,7 @@ namespace Avalonia.PropertyGrid.Controls
         {
             if (e.PropertyName == nameof(ViewModel.DisplayMode))
             {
-                DisplayMode = ViewModel.DisplayMode;
+                LayoutStyle = ViewModel.DisplayMode;
                 BuildPropertiesView();
             }
             else if (e.PropertyName == nameof(ViewModel.IsCategoryVisible))
@@ -671,7 +671,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Called when [display mode changed].
         /// </summary>
         /// <param name="e">The e.</param>
-        private static void OnDisplayModeChanged(AvaloniaPropertyChangedEventArgs<PropertyGridDisplayMode> e)
+        private static void OnDisplayModeChanged(AvaloniaPropertyChangedEventArgs<PropertyGridLayoutStyle> e)
         {
             if (e.Sender is PropertyGrid sender)
             {
@@ -684,7 +684,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <param name="oldValue">The old value.</param>
         /// <param name="newValue">The new value.</param>
-        private void OnDisplayModeChanged(Optional<PropertyGridDisplayMode> oldValue, BindingValue<PropertyGridDisplayMode> newValue) => ViewModel.DisplayMode = newValue.Value;
+        private void OnDisplayModeChanged(Optional<PropertyGridLayoutStyle> oldValue, BindingValue<PropertyGridLayoutStyle> newValue) => ViewModel.DisplayMode = newValue.Value;
 
         /// <summary>
         /// Called when [show style changed].
@@ -909,8 +909,8 @@ namespace Avalonia.PropertyGrid.Controls
                 expander.IsExpanded = AllCategoriesExpanded && autoCollapseCategoriesAttribute?.ShouldAutoCollapse(categoryInfo.Key) != true;
                 expander.HorizontalContentAlignment = HorizontalAlignment.Stretch;
                 expander.HorizontalAlignment = HorizontalAlignment.Stretch;
-                expander.Margin = new Thickness(DisplayMode == PropertyGridDisplayMode.Inline ? 0 : 2);
-                expander.Padding = new Thickness(DisplayMode == PropertyGridDisplayMode.Inline ? 0 : 2);
+                expander.Margin = new Thickness(LayoutStyle == PropertyGridLayoutStyle.Inline ? 0 : 2);
+                expander.Padding = new Thickness(LayoutStyle == PropertyGridLayoutStyle.Inline ? 0 : 2);
                 
                 // set expander's background color with the parent grid background color
                 expander.Bind(
@@ -1062,7 +1062,7 @@ namespace Avalonia.PropertyGrid.Controls
             grid.RowDefinitions.Add(new RowDefinition(GridLength.Auto));
 
             Control? nameControl = null;
-            var shouldUseInlineMode = DisplayMode == PropertyGridDisplayMode.Inline && property.IsExpandableType();
+            var shouldUseInlineMode = LayoutStyle == PropertyGridLayoutStyle.Inline && property.IsExpandableType();
             if (shouldUseInlineMode)
             {
                 var propertyGrid = control.GetVisualChildren().OfType<PropertyGrid>().FirstOrDefault();

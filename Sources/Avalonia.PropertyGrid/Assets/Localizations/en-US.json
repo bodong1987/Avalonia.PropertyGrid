@@ -6,6 +6,7 @@
     "IgnoreCase": "Ignore Case",
     "UseRegex": "Use Regex",
     "DisplayMode": "Display Mode",
+    "LayoutStyle": "Layout Style",
     "IsTitleVisible": "Show Title",
     "CategoryOrder": "Category Order",
     "PropertyOrder": "Property Order",
