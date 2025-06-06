@@ -190,8 +190,50 @@
                     ></pgc:PropertyGrid>
                 </Grid>
             </TabItem>
+            
+            <TabItem Header="{ll:Localize Custom-PropertyGrid}">
+                <pgc:PropertyGrid DataContext="{Binding SimpleObject}" PropertyGotFocus="OnPropertyGotFocus" PropertyLostFocus="OnPropertyLostFocus">
+                    <pgc:PropertyGrid.TopHeaderContent>
+                        <HyperlinkButton IsEnabled="True"
+                                         NavigateUri="https://github.com/bodong1987/Avalonia.PropertyGrid">
+                            <TextBlock Text="Powered by Avalonia.PropertyGrid" />
+                        </HyperlinkButton>
+                    </pgc:PropertyGrid.TopHeaderContent>
+                    <pgc:PropertyGrid.MiddleContent>
+                        <Button Content="{ll:Localize Welcome}"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                Margin="10"
+                                MinWidth="100"
+                                Command="{Binding ShowManagedNotificationCommand, RelativeSource={RelativeSource AncestorType=lv:FeatureDemoView}}">
+                            <Button.Styles>
+                                <Style>
+                                    <Style.Resources>
+                                        <SolidColorBrush x:Key="ThemeBorderMidBrush">Red</SolidColorBrush>
+                                        <SolidColorBrush x:Key="ThemeControlHighBrush">DarkRed</SolidColorBrush>
+                                        <SolidColorBrush x:Key="ButtonBorderBrush">Red</SolidColorBrush>
+                                        <SolidColorBrush x:Key="ButtonBackground">DarkRed</SolidColorBrush>
+                                        <SolidColorBrush x:Key="ButtonBackgroundPointerOver">Red</SolidColorBrush>
+                                        <SolidColorBrush x:Key="ButtonBackgroundPressed">OrangeRed</SolidColorBrush>
+                                        <SolidColorBrush x:Key="ButtonForeground">White</SolidColorBrush>
+                                        <SolidColorBrush x:Key="ButtonForegroundPointerOver">Black</SolidColorBrush>
+                                        <SolidColorBrush x:Key="ButtonForegroundPressed">Black</SolidColorBrush>
+                                    </Style.Resources>
+                                </Style>
+                            </Button.Styles>
+                        </Button>
+                    </pgc:PropertyGrid.MiddleContent>
+                    
+                    <pgc:PropertyGrid.BottomContent>
+                        <Border Classes="thin"
+                                Padding="15"
+                                Margin="4"
+                                >
+                            <TextBlock Margin="10" Text="{Binding CurrentPropertyName, RelativeSource={RelativeSource AncestorType=lv:FeatureDemoView}}"></TextBlock>
+                        </Border>
+                    </pgc:PropertyGrid.BottomContent>
+                </pgc:PropertyGrid>
+            </TabItem>
         </TabControl>
     </Grid>
-
-
 </UserControl>

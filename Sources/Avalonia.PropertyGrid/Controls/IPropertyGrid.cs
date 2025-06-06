@@ -100,12 +100,12 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// Occurs when [command executing].
         /// </summary>
-        event EventHandler<RoutedCommandExecutingEventArgs> CommandExecuting;
+        event EventHandler<RoutedEventArgs> CommandExecuting;
 
         /// <summary>
         /// Occurs when [command executed].
         /// </summary>
-        event EventHandler<RoutedCommandExecutedEventArgs> CommandExecuted;
+        event EventHandler<RoutedEventArgs> CommandExecuted;
     }
 
     /// <summary>

@@ -396,9 +396,9 @@ public partial class PainterView : UserControl
         (DataContext as PainterViewModel)?.ExecuteCommand(command);
     }
 
-    private void OnPropertyGridCommandExecuted(object? sender, RoutedCommandExecutedEventArgs e)
+    private void OnPropertyGridCommandExecuted(object? sender, RoutedEventArgs e)
     {
-        (DataContext as PainterViewModel)?.OnCommandExecuted(sender, e);
+        (DataContext as PainterViewModel)?.OnCommandExecuted(sender, (e as RoutedCommandExecutedEventArgs)!);
     }
 }
 

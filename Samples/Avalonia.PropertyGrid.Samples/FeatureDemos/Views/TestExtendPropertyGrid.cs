@@ -1,6 +1,7 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
+using Avalonia.Interactivity;
 using Avalonia.Layout;
 using Avalonia.PropertyGrid.Controls;
 using Avalonia.PropertyGrid.Controls.Factories;
@@ -29,110 +30,118 @@ namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Views
         {
             CustomNameBlock += (s, e) =>
             {
-                if(e.Context.Property.Name == nameof(TestExtendsObject.customLabel))
+                if (e is CustomNameBlockEventArgs { Context.Property.Name: nameof(TestExtendsObject.customLabel) } ee)
                 {
-                    var button = new Button { Content = LocalizationService.Default[e.Context.Property.DisplayName] };
+                    var button = new Button { Content = LocalizationService.Default[ee.Context.Property.DisplayName] };
                     
-                    button.Click += (ss, ee) =>
+                    button.Click += (_,_) =>
                     {
-                        button.Content = $"{LocalizationService.Default[e.Context.Property.DisplayName]} {++_customLabelClickCount}";
+                        button.Content = $"{LocalizationService.Default[ee.Context.Property.DisplayName]} {++_customLabelClickCount}";
                     };
 
-                    LocalizationService.Default.OnCultureChanged += (ss, ee) =>
+                    LocalizationService.Default.OnCultureChanged += (_,_) =>
                     {
                         button.Content =
-                            $"{LocalizationService.Default[e.Context.Property.DisplayName]} {_customLabelClickCount}";
+                            $"{LocalizationService.Default[ee.Context.Property.DisplayName]} {_customLabelClickCount}";
                     };
 
-                    e.CustomNameBlock = button;
-                }                
+                    ee.CustomNameBlock = button;
+                }
             };
 
             CustomPropertyOperationControl += OnCustomPropertyOperationControl;
             CustomPropertyOperationMenuOpening += OnCustomPropertyOperationMenuOpening;
         }
 
-        private static void OnCustomPropertyOperationMenuOpening(object? sender, CustomPropertyDefaultOperationEventArgs e)
+        private static void OnCustomPropertyOperationMenuOpening(object? sender, RoutedEventArgs args)
         {
-            if (!e.Context.Property.IsDefined<PropertyOperationVisibilityAttribute>())
+            if (args is CustomPropertyDefaultOperationEventArgs e)
             {
-                return;
-            }
-
-            if (e.Context.Property.Name == nameof(TestExtendsObject.CustomOperationMenuNumber))
-            {
-                if (e.StageType == PropertyDefaultOperationStageType.Init)
+                if (!e.Context.Property.IsDefined<PropertyOperationVisibilityAttribute>())
                 {
-                    e.DefaultButton.SetLocalizeBinding(ContentProperty, "Operation");    
+                    return;
                 }
-                else if (e.StageType == PropertyDefaultOperationStageType.MenuOpening)
+
+                if (e.Context.Property.Name == nameof(TestExtendsObject.CustomOperationMenuNumber))
                 {
-                    // If you don't want to create the menu every time, you can move it to Init, so you don't have to Clear it here.
-                    e.Menu.Items.Clear();
+                    if (e.StageType == PropertyDefaultOperationStageType.Init)
+                    {
+                        e.DefaultButton.SetLocalizeBinding(ContentProperty, "Operation");    
+                    }
+                    else if (e.StageType == PropertyDefaultOperationStageType.MenuOpening)
+                    {
+                        // If you don't want to create the menu every time, you can move it to Init, so you don't have to Clear it here.
+                        e.Menu.Items.Clear();
                         
-                    var minMenuItem = new MenuItem();
-                    minMenuItem.SetLocalizeBinding(HeaderedSelectingItemsControl.HeaderProperty, "Min");
-                    minMenuItem.Click += (s, args) => 
-                    {
-                        e.Context.Factory!.SetPropertyValue(e.Context, 0);
-                    };
+                        var minMenuItem = new MenuItem();
+                        minMenuItem.SetLocalizeBinding(HeaderedSelectingItemsControl.HeaderProperty, "Min");
+                        minMenuItem.Click += (_,_) => 
+                        {
+                            e.Context.Factory!.SetPropertyValue(e.Context, 0);
+                        };
 
-                    var maxMenuItem = new MenuItem();
-                    maxMenuItem.SetLocalizeBinding(HeaderedSelectingItemsControl.HeaderProperty, "Max");
-                    maxMenuItem.Click += (s, args) => 
-                    {
-                        e.Context.Factory!.SetPropertyValue(e.Context, 1024); 
-                    };
+                        var maxMenuItem = new MenuItem();
+                        maxMenuItem.SetLocalizeBinding(HeaderedSelectingItemsControl.HeaderProperty, "Max");
+                        maxMenuItem.Click += (_,_) => 
+                        {
+                            e.Context.Factory!.SetPropertyValue(e.Context, 1024); 
+                        };
                 
-                    var errorMenuItem = new MenuItem();
-                    errorMenuItem.SetLocalizeBinding(HeaderedSelectingItemsControl.HeaderProperty, "GenError");
-                    errorMenuItem.Click += (s, args) =>
-                    {
-                        e.Context.Factory!.SetPropertyValue(e.Context, 1024000);
-                    };
+                        var errorMenuItem = new MenuItem();
+                        errorMenuItem.SetLocalizeBinding(HeaderedSelectingItemsControl.HeaderProperty, "GenError");
+                        errorMenuItem.Click += (_,_) =>
+                        {
+                            e.Context.Factory!.SetPropertyValue(e.Context, 1024000);
+                        };
 
-                    e.Menu.Items.Add(minMenuItem);
-                    e.Menu.Items.Add(maxMenuItem);
-                    e.Menu.Items.Add(errorMenuItem);
+                        e.Menu.Items.Add(minMenuItem);
+                        e.Menu.Items.Add(maxMenuItem);
+                        e.Menu.Items.Add(errorMenuItem);
+                    }
                 }
             }
+            
+            
         }
 
-        private static void OnCustomPropertyOperationControl(object? sender, CustomPropertyOperationControlEventArgs e)
+        private static void OnCustomPropertyOperationControl(object? sender, RoutedEventArgs args)
         {
-            if (!e.Context.Property.IsDefined<PropertyOperationVisibilityAttribute>())
+            if (args is CustomPropertyOperationControlEventArgs e)
             {
-                return;
-            }
-
-            if (e.Context.Property.Name == nameof(TestExtendsObject.CustomOperationControlNumber))
-            {
-                var stackPanel = new StackPanel
+                if (!e.Context.Property.IsDefined<PropertyOperationVisibilityAttribute>())
                 {
-                    Orientation = Orientation.Horizontal
-                };
+                    return;
+                }
 
-                var minButton = new Button();
-                minButton.SetLocalizeBinding(ContentProperty, "Min");
-                minButton.Click += (ss, ee) =>
+                if (e.Context.Property.Name == nameof(TestExtendsObject.CustomOperationControlNumber))
                 {
-                    // please use factory interface, so you can raise command event 
-                    e.Context.Factory!.SetPropertyValue(e.Context, 0);
-                };
+                    var stackPanel = new StackPanel
+                    {
+                        Orientation = Orientation.Horizontal
+                    };
+
+                    var minButton = new Button();
+                    minButton.SetLocalizeBinding(ContentProperty, "Min");
+                    minButton.Click += (ss, ee) =>
+                    {
+                        // please use factory interface, so you can raise command event 
+                        e.Context.Factory!.SetPropertyValue(e.Context, 0);
+                    };
                 
-                stackPanel.Children.Add(minButton);
+                    stackPanel.Children.Add(minButton);
                 
-                var maxButton = new Button();
-                maxButton.SetLocalizeBinding(ContentProperty, "Max");
-                maxButton.Click += (ss, ee) =>
-                {
-                    // please use factory interface, so you can raise command event 
-                    e.Context.Factory!.SetPropertyValue(e.Context, 1024);
-                };
+                    var maxButton = new Button();
+                    maxButton.SetLocalizeBinding(ContentProperty, "Max");
+                    maxButton.Click += (ss, ee) =>
+                    {
+                        // please use factory interface, so you can raise command event 
+                        e.Context.Factory!.SetPropertyValue(e.Context, 1024);
+                    };
 
-                stackPanel.Children.Add(maxButton);
+                    stackPanel.Children.Add(maxButton);
 
-                e.CustomControl = stackPanel;
+                    e.CustomControl = stackPanel;
+                }
             }
         }
     }

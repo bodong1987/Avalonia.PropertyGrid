@@ -361,14 +361,14 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The custom name block event
         /// </summary>
-        public static readonly RoutedEvent<CustomNameBlockEventArgs> CustomNameBlockEvent = 
-            RoutedEvent.Register<PropertyGrid, CustomNameBlockEventArgs>(nameof(CustomNameBlock),
+        public static readonly RoutedEvent<RoutedEventArgs> CustomNameBlockEvent = 
+            RoutedEvent.Register<PropertyGrid, RoutedEventArgs>(nameof(CustomNameBlock),
                 RoutingStrategies.Bubble);
 
         /// <summary>
         /// Occurs when [custom name block].
         /// </summary>
-        public event EventHandler<CustomNameBlockEventArgs> CustomNameBlock
+        public event EventHandler<RoutedEventArgs> CustomNameBlock
         {
             add => AddHandler(CustomNameBlockEvent, value);
             remove => RemoveHandler(CustomNameBlockEvent, value);
@@ -379,15 +379,15 @@ namespace Avalonia.PropertyGrid.Controls
         /// you can use this to custom your controls.
         /// assign your control to e.CustomControl
         /// </summary>
-        public static readonly RoutedEvent<CustomPropertyOperationControlEventArgs>
+        public static readonly RoutedEvent<RoutedEventArgs>
             CustomPropertyOperationControlEvent = 
-            RoutedEvent.Register<PropertyGrid, CustomPropertyOperationControlEventArgs>(
+            RoutedEvent.Register<PropertyGrid, RoutedEventArgs>(
                 nameof(CustomPropertyOperationControl), RoutingStrategies.Bubble);
 
         /// <summary>
         /// Occurs when [custom name block].
         /// </summary>
-        public event EventHandler<CustomPropertyOperationControlEventArgs> CustomPropertyOperationControl
+        public event EventHandler<RoutedEventArgs> CustomPropertyOperationControl
         {
             add => AddHandler(CustomPropertyOperationControlEvent, value);
             remove => RemoveHandler(CustomPropertyOperationControlEvent, value);
@@ -396,8 +396,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// custom menu items
         /// </summary>
-        public static readonly RoutedEvent<CustomPropertyDefaultOperationEventArgs> CustomPropertyOperationMenuOpeningEvent = 
-            RoutedEvent.Register<PropertyGrid, CustomPropertyDefaultOperationEventArgs>(
+        public static readonly RoutedEvent<RoutedEventArgs> CustomPropertyOperationMenuOpeningEvent = 
+            RoutedEvent.Register<PropertyGrid, RoutedEventArgs>(
                 nameof(CustomPropertyOperationMenuOpening), 
                 RoutingStrategies.Bubble
             );
@@ -405,7 +405,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// custom menu items
         /// </summary>
-        public event EventHandler<CustomPropertyDefaultOperationEventArgs> CustomPropertyOperationMenuOpening
+        public event EventHandler<RoutedEventArgs> CustomPropertyOperationMenuOpening
         {
             add => AddHandler(CustomPropertyOperationMenuOpeningEvent, value);
             remove => RemoveHandler(CustomPropertyOperationMenuOpeningEvent, value);
@@ -415,13 +415,13 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The command executing event
         /// </summary>
-        public static readonly RoutedEvent<RoutedCommandExecutingEventArgs> CommandExecutingEvent =
-            RoutedEvent.Register<PropertyGrid, RoutedCommandExecutingEventArgs>(nameof(CommandExecuting), RoutingStrategies.Bubble);
+        public static readonly RoutedEvent<RoutedEventArgs> CommandExecutingEvent =
+            RoutedEvent.Register<PropertyGrid, RoutedEventArgs>(nameof(CommandExecuting), RoutingStrategies.Bubble);
 
         /// <summary>
         /// Occurs when [command executing].
         /// </summary>
-        public event EventHandler<RoutedCommandExecutingEventArgs> CommandExecuting
+        public event EventHandler<RoutedEventArgs> CommandExecuting
         {
             add => AddHandler(CommandExecutingEvent, value);
             remove => RemoveHandler(CommandExecutingEvent, value);
@@ -430,13 +430,13 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// The command executed event
         /// </summary>
-        public static readonly RoutedEvent<RoutedCommandExecutedEventArgs> CommandExecutedEvent =
-            RoutedEvent.Register<PropertyGrid, RoutedCommandExecutedEventArgs>(nameof(CommandExecuted), RoutingStrategies.Bubble);
+        public static readonly RoutedEvent<RoutedEventArgs> CommandExecutedEvent =
+            RoutedEvent.Register<PropertyGrid, RoutedEventArgs>(nameof(CommandExecuted), RoutingStrategies.Bubble);
 
         /// <summary>
         /// Occurs when [command executed].
         /// </summary>
-        public event EventHandler<RoutedCommandExecutedEventArgs> CommandExecuted
+        public event EventHandler<RoutedEventArgs> CommandExecuted
         {
             add => AddHandler(CommandExecutedEvent, value);
             remove => RemoveHandler(CommandExecutedEvent, value);
@@ -446,7 +446,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Property got focus event
         /// </summary>
         public static readonly RoutedEvent PropertyGotFocusEvent =
-            RoutedEvent.Register<PropertyGrid, PropertyGotFocusEventArgs>(
+            RoutedEvent.Register<PropertyGrid, RoutedEventArgs>(
                 nameof(PropertyGotFocus), 
                 RoutingStrategies.Bubble
             );
@@ -454,7 +454,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// property got focus event handler
         /// </summary>
-        public event EventHandler<PropertyGotFocusEventArgs> PropertyGotFocus
+        public event EventHandler<RoutedEventArgs> PropertyGotFocus
         {
             add => AddHandler(PropertyGotFocusEvent, value);
             remove => RemoveHandler(PropertyGotFocusEvent, value);
@@ -464,7 +464,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Property got focus event
         /// </summary>
         public static readonly RoutedEvent PropertyLostFocusEvent =
-            RoutedEvent.Register<PropertyGrid, PropertyLostFocusEventArgs>(
+            RoutedEvent.Register<PropertyGrid, RoutedEventArgs>(
                 nameof(PropertyLostFocus), 
                 RoutingStrategies.Bubble
             );
@@ -472,7 +472,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// <summary>
         /// property got focus event handler
         /// </summary>
-        public event EventHandler<PropertyLostFocusEventArgs> PropertyLostFocus
+        public event EventHandler<RoutedEventArgs> PropertyLostFocus
         {
             add => AddHandler(PropertyLostFocusEvent, value);
             remove => RemoveHandler(PropertyLostFocusEvent, value);
