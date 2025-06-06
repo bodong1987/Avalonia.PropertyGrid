@@ -4,11 +4,13 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Data;
 using Avalonia.Interactivity;
 using Avalonia.Layout;
+using Avalonia.Media;
 using Avalonia.PropertyGrid.Controls.Implements;
 using Avalonia.PropertyGrid.Localization;
 using Avalonia.PropertyGrid.Services;
@@ -923,6 +925,7 @@ namespace Avalonia.PropertyGrid.Controls
                     {
                         var tb = new TextBlock();
                         tb.SetInlinesBinding(categoryInfo.Key);
+                        tb.FontWeight = FontWeight.Bold;
 
                         return tb;
                     })
@@ -933,22 +936,27 @@ namespace Avalonia.PropertyGrid.Controls
                 expander.HorizontalAlignment = HorizontalAlignment.Stretch;
                 expander.Margin = new Thickness(LayoutStyle == PropertyGridLayoutStyle.Inline ? 0 : 2);
                 expander.Padding = new Thickness(LayoutStyle == PropertyGridLayoutStyle.Inline ? 0 : 2);
-                
-                // set expander's background color with the parent grid background color
-                expander.Bind(
-                    BackgroundProperty,
-                    new Binding("Background") 
-                    { 
-                        RelativeSource = new RelativeSource(RelativeSourceMode.FindAncestor)
-                        {
-                            AncestorType = typeof(Grid),
-                            AncestorLevel = 1
-                        } 
-                    }
-                );
-
-                // expander.Header = categoryInfo.Key;
+                expander.Background = null;
                 expander.SetLocalizeBinding(HeaderedContentControl.HeaderProperty, categoryInfo.Key);
+
+                expander.TemplateApplied += (_, _) =>
+                {
+                    var contentPresenter = expander.GetTemplateChildren()
+                        .OfType<ContentPresenter>()
+                        .FirstOrDefault(c => c.Name == "PART_ContentPresenter");
+    
+                    if (contentPresenter != null)
+                    {
+                        contentPresenter.Margin = new Thickness(
+                            8, 
+                            contentPresenter.Margin.Top,
+                            contentPresenter.Margin.Right,
+                            contentPresenter.Margin.Bottom
+                        );
+                    }
+                };
+                
+                
                 _categoryExpanders.Add(expander);
 
                 var grid = new Grid();
