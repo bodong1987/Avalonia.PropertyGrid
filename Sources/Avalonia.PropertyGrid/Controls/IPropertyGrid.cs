@@ -50,13 +50,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// Gets or sets a value indicating whether [show title].
         /// </summary>
         /// <value><c>true</c> if [show title]; otherwise, <c>false</c>.</value>
-        bool ShowTitle { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether [allow filter].
-        /// </summary>
-        /// <value><c>true</c> if [allow filter]; otherwise, <c>false</c>.</value>
-        bool AllowFilter { get; set; }
+        bool IsTitleVisible { get; set; }
 
         /// <summary>
         /// Gets or sets Is Readonly flag
@@ -69,12 +63,17 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <value>The display mode.</value>
         PropertyGridDisplayMode DisplayMode { get; set; }
+        
+        /// <summary>
+        /// is header visible, include search box, options, quick filter panel
+        /// </summary>
+        bool IsHeaderVisible { get; set; }
 
         /// <summary>
-        /// Gets or sets the show style.
+        /// Gets or sets is category visible.
         /// </summary>
-        /// <value>The show style.</value>
-        PropertyGridShowStyle ShowStyle { get; set; }
+        /// <value>is category visible.</value>
+        bool IsCategoryVisible { get; set; }
         
         /// <summary>
         /// Gets or sets the order of category

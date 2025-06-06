@@ -31,71 +31,71 @@ namespace Avalonia.PropertyGrid.Controls
     {
         #region Properties
         /// <summary>
-        /// The allow filter property
+        /// The is header visible property
         /// </summary>
-        public static readonly StyledProperty<bool> AllowFilterProperty =
-            AvaloniaProperty.Register<PropertyGrid, bool>(nameof(AllowFilter), true);
+        public static readonly StyledProperty<bool> IsHeaderVisibleProperty =
+            AvaloniaProperty.Register<PropertyGrid, bool>(nameof(IsHeaderVisible), true);
 
         /// <summary>
-        /// Gets or sets a value indicating whether [allow filter].
+        /// Gets or sets is header visible.
         /// </summary>
-        /// <value><c>true</c> if [allow filter]; otherwise, <c>false</c>.</value>
+        /// <value><c>true</c> if [header visible]; otherwise, <c>false</c>.</value>
         [Category("Views")]
-        public bool AllowFilter
+        public bool IsHeaderVisible
         {
-            get => GetValue(AllowFilterProperty); 
-            set => SetValue(AllowFilterProperty, value);
+            get => GetValue(IsHeaderVisibleProperty); 
+            set => SetValue(IsHeaderVisibleProperty, value);
         }
-
-        /// <summary>
-        /// The allow toggle view property
-        /// </summary>
-        public static readonly StyledProperty<bool> AllowToggleViewProperty =
-            AvaloniaProperty.Register<PropertyGrid, bool>(nameof(AllowToggleView), true);
-
-        /// <summary>
-        /// Gets or sets a value indicating whether [allow toggle view].
-        /// </summary>
-        /// <value><c>true</c> if [allow toggle view]; otherwise, <c>false</c>.</value>
-        [Category("Views")]
-        public bool AllowToggleView
-        {
-            get => GetValue(AllowToggleViewProperty); 
-            set => SetValue(AllowToggleViewProperty, value);
-        }
-
+        
         /// <summary>
         /// The allow quick filter property
         /// </summary>
-        public static readonly StyledProperty<bool> AllowQuickFilterProperty =
-            AvaloniaProperty.Register<PropertyGrid, bool>(nameof(AllowQuickFilter), true);
+        public static readonly StyledProperty<bool> IsQuickFilterVisibleProperty =
+            AvaloniaProperty.Register<PropertyGrid, bool>(nameof(IsQuickFilterVisible), true);
 
         /// <summary>
         /// Gets or sets a value indicating whether [allow quick filter].
         /// </summary>
         /// <value><c>true</c> if [allow quick filter]; otherwise, <c>false</c>.</value>
         [Category("Views")]
-        public bool AllowQuickFilter
+        public bool IsQuickFilterVisible
         {
-            get => GetValue(AllowQuickFilterProperty); 
-            set => SetValue(AllowQuickFilterProperty, value);
+            get => GetValue(IsQuickFilterVisibleProperty); 
+            set => SetValue(IsQuickFilterVisibleProperty, value);
         }
 
         /// <summary>
         /// The show title property
         /// </summary>
-        public static readonly StyledProperty<bool> ShowTitleProperty =
-            AvaloniaProperty.Register<PropertyGrid, bool>(nameof(ShowTitle), true);
+        public static readonly StyledProperty<bool> IsTitleVisibleProperty =
+            AvaloniaProperty.Register<PropertyGrid, bool>(nameof(IsTitleVisible), true);
 
         /// <summary>
         /// Gets or sets a value indicating whether [show title].
         /// </summary>
         /// <value><c>true</c> if [show title]; otherwise, <c>false</c>.</value>
         [Category("Views")]
-        public bool ShowTitle
+        public bool IsTitleVisible
         {
-            get => GetValue(ShowTitleProperty); 
-            set => SetValue(ShowTitleProperty, value);
+            get => GetValue(IsTitleVisibleProperty); 
+            set => SetValue(IsTitleVisibleProperty, value);
+        }
+        
+        /// <summary>
+        /// The is category visible property
+        /// </summary>
+        public static readonly StyledProperty<bool> IsCategoryVisibleProperty =
+            AvaloniaProperty.Register<PropertyGrid, bool>(nameof(IsCategoryVisible));
+
+        /// <summary>
+        /// Gets or sets is category visible.
+        /// </summary>
+        /// <value>is category visible.</value>
+        [Category("Views")]
+        public bool IsCategoryVisible
+        {
+            get => GetValue(IsCategoryVisibleProperty);
+            set => SetValue(IsCategoryVisibleProperty, value);
         }
         
         /// <summary>
@@ -129,23 +129,6 @@ namespace Avalonia.PropertyGrid.Controls
         {
             get => GetValue(DisplayModeProperty);
             set => SetValue(DisplayModeProperty, value);
-        }
-
-        /// <summary>
-        /// The show style property
-        /// </summary>
-        public static readonly StyledProperty<PropertyGridShowStyle> ShowStyleProperty =
-            AvaloniaProperty.Register<PropertyGrid, PropertyGridShowStyle>(nameof(ShowStyle));
-
-        /// <summary>
-        /// Gets or sets the show style.
-        /// </summary>
-        /// <value>The show style.</value>
-        [Category("Views")]
-        public PropertyGridShowStyle ShowStyle
-        {
-            get => GetValue(ShowStyleProperty);
-            set => SetValue(ShowStyleProperty, value);
         }
 
         /// <summary>
@@ -218,6 +201,53 @@ namespace Avalonia.PropertyGrid.Controls
             set => SetValue(IsReadOnlyProperty, value);
         }
 
+        /// <summary>
+        /// Top header content
+        /// allow user custom this area
+        /// </summary>
+        public static readonly StyledProperty<object> TopHeaderContentProperty =
+            AvaloniaProperty.Register<PropertyGrid, object>(nameof(TopHeaderContent));
+        
+        /// <summary>
+        /// Top header content
+        /// </summary>
+        public object TopHeaderContent
+        {
+            get => GetValue(TopHeaderContentProperty);
+            set => SetValue(TopHeaderContentProperty, value);
+        }
+        
+        /// <summary>
+        /// middle area
+        /// allow user custom this area
+        /// </summary>
+        public static readonly StyledProperty<object> MiddleContentProperty =
+            AvaloniaProperty.Register<PropertyGrid, object>(nameof(MiddleContent));
+        
+        /// <summary>
+        /// middle area
+        /// </summary>
+        public object MiddleContent
+        {
+            get => GetValue(MiddleContentProperty);
+            set => SetValue(MiddleContentProperty, value);
+        }
+        
+        /// <summary>
+        /// bottom content area, allow user custom this area
+        /// </summary>
+        public static readonly StyledProperty<object> BottomContentProperty =
+            AvaloniaProperty.Register<PropertyGrid, object>(nameof(BottomContent));
+        
+        /// <summary>
+        /// bottom content area
+        /// </summary>
+        public object BottomContent
+        {
+            get => GetValue(BottomContentProperty);
+            set => SetValue(BottomContentProperty, value);
+        }
+        
         /// <summary>
         /// The view model
         /// </summary>
@@ -324,7 +354,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// default header grid
         /// user can append more elements in it
         /// </summary>
-        public Grid DefaultHeaderGrid => HeaderGrid;
+        public Grid DefaultHeaderGrid => InternalHeaderGrid;
         #endregion
 
         #region Events
@@ -418,13 +448,13 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         static PropertyGrid()
         {
-            _ = AllowFilterProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnAllowFilterChanged));
-            _ = AllowQuickFilterProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnAllowQuickFilterChanged));
+            _ = IsHeaderVisibleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(IsHeaderVisibleChanged));
+            _ = IsQuickFilterVisibleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(IsQuickFilterVisibleChanged));
             _ = DisplayModeProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<PropertyGridDisplayMode>>(OnDisplayModeChanged));
-            _ = ShowStyleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<PropertyGridShowStyle>>(OnShowStyleChanged));
+            _ = IsCategoryVisibleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(IsCategoryVisibleChanged));
             _ = CategoryOrderStyleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<PropertyGridOrderStyle>>(OnCategoryOrderStyleChanged));
             _ = PropertyOrderStyleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<PropertyGridOrderStyle>>(OnPropertyOrderStyleChanged));
-            _ = ShowTitleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnShowTitleChanged));
+            _ = IsTitleVisibleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnShowTitleChanged));
             _ = NameWidthProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<double>>(OnNameWidthChanged));
             _ = IsReadOnlyProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnIsReadOnlyPropertyChanged));
             _ = AllCategoriesExpandedProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(e => 
@@ -497,9 +527,9 @@ namespace Avalonia.PropertyGrid.Controls
                 DisplayMode = ViewModel.DisplayMode;
                 BuildPropertiesView();
             }
-            else if (e.PropertyName == nameof(ViewModel.ShowStyle))
+            else if (e.PropertyName == nameof(ViewModel.IsCategoryVisible))
             {
-                ShowStyle = ViewModel.ShowStyle;
+                IsCategoryVisible = ViewModel.IsCategoryVisible;
                 BuildPropertiesView();
             }
             else if (e.PropertyName == nameof(ViewModel.CategoryOrderStyle))
@@ -576,15 +606,12 @@ namespace Avalonia.PropertyGrid.Controls
         public IPropertyGridCellInfoCache GetCellInfoCache() => _cellInfoCache;
 
         #region Styled Properties Handler
-        /// <summary>
-        /// Handles the <see cref="E:AllowFilterChanged" /> event.
-        /// </summary>
-        /// <param name="e">The <see cref="AvaloniaPropertyChangedEventArgs"/> instance containing the event data.</param>
-        private static void OnAllowFilterChanged(AvaloniaPropertyChangedEventArgs e)
+        
+        private static void IsHeaderVisibleChanged(AvaloniaPropertyChangedEventArgs e)
         {
             if (e.Sender is PropertyGrid sender)
             {
-                sender.OnAllowFilterChanged(e.OldValue, e.NewValue);
+                sender.IsHeaderVisibleChanged(e.OldValue, e.NewValue);
             }
         }
 
@@ -593,7 +620,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <param name="oldValue">The old value.</param>
         /// <param name="newValue">The new value.</param>
-        private void OnAllowFilterChanged(object? oldValue, object? newValue) => HeaderGrid.IsVisible = (bool)newValue!;
+        private void IsHeaderVisibleChanged(object? oldValue, object? newValue) => InternalHeaderGrid.IsVisible = (bool)newValue!;
 
         private static void OnNameWidthChanged(AvaloniaPropertyChangedEventArgs e)
         {
@@ -628,11 +655,11 @@ namespace Avalonia.PropertyGrid.Controls
         /// Called when [show style changed].
         /// </summary>
         /// <param name="e">The e.</param>
-        private static void OnShowStyleChanged(AvaloniaPropertyChangedEventArgs<PropertyGridShowStyle> e)
+        private static void IsCategoryVisibleChanged(AvaloniaPropertyChangedEventArgs<bool> e)
         {
             if (e.Sender is PropertyGrid sender)
             {
-                sender.OnShowStyleChanged(e.OldValue, e.NewValue);
+                sender.IsCategoryVisibleChanged(e.OldValue, e.NewValue);
             }
         }
 
@@ -641,7 +668,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <param name="oldValue">The old value.</param>
         /// <param name="newValue">The new value.</param>
-        private void OnShowStyleChanged(Optional<PropertyGridShowStyle> oldValue, BindingValue<PropertyGridShowStyle> newValue) => ViewModel.ShowStyle = newValue.Value;
+        private void IsCategoryVisibleChanged(Optional<bool> oldValue, BindingValue<bool> newValue) => ViewModel.IsCategoryVisible = newValue.Value;
 
         private static void OnCategoryOrderStyleChanged(AvaloniaPropertyChangedEventArgs<PropertyGridOrderStyle> e)
         {
@@ -687,15 +714,15 @@ namespace Avalonia.PropertyGrid.Controls
 
         private void OnIsReadOnlyPropertyChanged(bool oldValue, bool newValue) => ViewModel.IsReadOnly = newValue;
 
-        private static void OnAllowQuickFilterChanged(AvaloniaPropertyChangedEventArgs<bool> e)
+        private static void IsQuickFilterVisibleChanged(AvaloniaPropertyChangedEventArgs<bool> e)
         {
             if (e.Sender is PropertyGrid sender)
             {
-                sender.OnAllowQuickFilterChanged(e.OldValue.Value, e.NewValue.Value);
+                sender.IsQuickFilterVisibleChanged(e.OldValue.Value, e.NewValue.Value);
             }
         }
 
-        private void OnAllowQuickFilterChanged(bool oldValue, bool newValue) => FastFilterBox.IsVisible = newValue;
+        private void IsQuickFilterVisibleChanged(bool oldValue, bool newValue) => FastFilterBox.IsVisible = newValue;
 
         private static void OnPropertyOperationVisibilityPropertyChanged(AvaloniaPropertyChangedEventArgs<PropertyOperationVisibility> e)
         {
@@ -776,7 +803,7 @@ namespace Avalonia.PropertyGrid.Controls
 
                 referencePath.BeginScope(target.GetType().Name);
 
-                if (ViewModel.ShowStyle == PropertyGridShowStyle.Category)
+                if (ViewModel.IsCategoryVisible)
                 {
                     BuildCategoryPropertiesView(target, referencePath, ViewModel.CategoryOrderStyle, ViewModel.PropertyOrderStyle);
                 }

@@ -22,38 +22,6 @@ public partial class FeatureDemoView : UserControl
         PropertyGridRedoUndo.CommandExecuted += OnCommandExecuted;
 
         ((FeatureDemoViewModel)DataContext).PropertyChanged += OnPropertyChanged;
-
-        DisplayModeComboBox.SelectionChanged += (sender, e) =>
-        {
-            if (DisplayModeComboBox.SelectedItem is PropertyGridDisplayMode displayMode)
-            {
-                StylesPropertyGrid.DisplayMode = displayMode;
-            }
-        };
-
-        ShowStyleComboBox.SelectionChanged += (sender, e) =>
-        {
-            if (ShowStyleComboBox.SelectedItem is PropertyGridShowStyle showStyle)
-            {
-                StylesPropertyGrid.ShowStyle = showStyle;
-            }
-        };
-
-        CategoryOrderComboBox.SelectionChanged += (sender, e) =>
-        {
-            if (CategoryOrderComboBox.SelectedItem is PropertyGridOrderStyle showStyle)
-            {
-                StylesPropertyGrid.CategoryOrderStyle = showStyle;
-            }
-        };
-
-        PropertyOrderComboBox.SelectionChanged += (sender, e) =>
-        {
-            if (PropertyOrderComboBox.SelectedItem is PropertyGridOrderStyle showStyle)
-            {
-                StylesPropertyGrid.PropertyOrderStyle = showStyle;
-            }
-        };
         
         PropertyOperationComboBox.SelectionChanged += (sender, e) =>
         {
@@ -74,23 +42,7 @@ public partial class FeatureDemoView : UserControl
 
     private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(_mainVm.ShowStyle))
-        {
-            StylesPropertyGrid.ShowStyle = _mainVm.ShowStyle;
-        }
-        else if (e.PropertyName == nameof(_mainVm.IsShowTitle))
-        {
-            StylesPropertyGrid.ShowTitle = _mainVm.IsShowTitle;
-        }
-        else if (e.PropertyName == nameof(_mainVm.AllowFilter))
-        {
-            StylesPropertyGrid.AllowFilter = _mainVm.AllowFilter;
-        }
-        else if (e.PropertyName == nameof(_mainVm.AllowQuickFilter))
-        {
-            StylesPropertyGrid.AllowQuickFilter = _mainVm.AllowQuickFilter;
-        }
-        else if (e.PropertyName == nameof(_mainVm.DefaultNameWidth))
+        if (e.PropertyName == nameof(_mainVm.DefaultNameWidth))
         {
             StylesPropertyGrid.NameWidth = _mainVm.DefaultNameWidth;
         }

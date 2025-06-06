@@ -94,7 +94,7 @@
         
         <pg:PropertyGrid x:Name="ShapePropertyGrid" 
                          DataContext="{Binding SelectedShape}" 
-                         ShowTitle="True"
+                         IsTitleVisible="True"
                          CommandExecuted="OnPropertyGridCommandExecuted"
                          Grid.Column="4"
         />    

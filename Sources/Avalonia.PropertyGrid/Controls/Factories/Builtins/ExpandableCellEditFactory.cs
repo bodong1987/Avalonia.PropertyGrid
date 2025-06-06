@@ -75,11 +75,9 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     ? PropertyGridDisplayMode.Tree
                     : PropertyGridDisplayMode.Inline);
             
-            propertyGrid.ShowStyle = attr == null || attr.IsCategoryVisible == NullableBooleanType.Undefined
-                ? context.Root.ShowStyle
-                : (attr.IsCategoryVisible is NullableBooleanType.Yes
-                    ? PropertyGridShowStyle.Category
-                    : PropertyGridShowStyle.Tiled);
+            propertyGrid.IsCategoryVisible = attr == null || attr.IsCategoryVisible == NullableBooleanType.Undefined
+                ? context.Root.IsCategoryVisible
+                : (attr.IsCategoryVisible is NullableBooleanType.Yes);
             
             propertyGrid.CategoryOrderStyle =
                 attr == null || attr.IsCategoryBuiltinOrder == NullableBooleanType.Undefined
@@ -96,9 +94,9 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                         : PropertyGridOrderStyle.Alphabetic);
             
             propertyGrid.NameWidth = context.Root.NameWidth;
-            propertyGrid.AllowFilter = false;
-            propertyGrid.AllowQuickFilter = false;
-            propertyGrid.ShowTitle = false;
+            propertyGrid.IsHeaderVisible = false;
+            propertyGrid.IsQuickFilterVisible = false;
+            propertyGrid.IsTitleVisible = false;
             propertyGrid.DataContext = null;
 
             border.Child = propertyGrid;

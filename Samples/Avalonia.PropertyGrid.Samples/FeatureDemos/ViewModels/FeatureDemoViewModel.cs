@@ -38,61 +38,6 @@ namespace Avalonia.PropertyGrid.Samples.FeatureDemos.ViewModels
         }
 
         #region View
-        private PropertyGridDisplayMode _displayMode = PropertyGridDisplayMode.Tree;
-        public PropertyGridDisplayMode DisplayMode
-        {
-            get => _displayMode;
-            set
-            {
-                if (_displayMode != value)
-                {
-                    this.RaiseAndSetIfChanged(ref _displayMode, value);
-                }
-            }
-        }
-        
-        private PropertyGridShowStyle _showStyle = PropertyGridShowStyle.Category;
-        public PropertyGridShowStyle ShowStyle
-        {
-            get => _showStyle;
-            set
-            {
-                if (_showStyle != value)
-                {
-                    this.RaiseAndSetIfChanged(ref _showStyle, value);
-                }
-            }
-        }
-
-        private bool _allowFilter = true;
-        public bool AllowFilter
-        {
-            get => _allowFilter;
-            set => this.RaiseAndSetIfChanged(ref _allowFilter, value);
-        }
-
-        private bool _allowQuickFilter = true;
-        public bool AllowQuickFilter
-        {
-            get => _allowQuickFilter;
-            set => this.RaiseAndSetIfChanged(ref _allowQuickFilter, value);
-        }
-
-        private bool _isShowTitle = true;
-        public bool IsShowTitle
-        {
-            get => _isShowTitle;
-            set => this.RaiseAndSetIfChanged(ref _isShowTitle, value);
-        }
-
-        private bool _isAllExpanded = true;
-
-        public bool IsAllExpanded
-        {
-            get => _isAllExpanded;
-            set => this.RaiseAndSetIfChanged(ref _isAllExpanded, value);
-        }
-
         private bool _isReadOnly;
         public bool IsReadOnly
         {

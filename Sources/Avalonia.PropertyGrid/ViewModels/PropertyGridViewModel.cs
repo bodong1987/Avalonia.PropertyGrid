@@ -36,22 +36,6 @@ namespace Avalonia.PropertyGrid.ViewModels
     }
 
     /// <summary>
-    /// Enum PropertyGridShowStyle
-    /// </summary>
-    public enum PropertyGridShowStyle
-    {
-        /// <summary>
-        /// Use category.
-        /// </summary>
-        Category,
-
-        /// <summary>
-        /// Use tiled mode.
-        /// </summary>
-        Tiled
-    }
-
-    /// <summary>
     /// Enum PropertyGridOrderStyle
     /// </summary>
     public enum PropertyGridOrderStyle
@@ -161,47 +145,16 @@ namespace Avalonia.PropertyGrid.ViewModels
         } = PropertyGridDisplayMode.Tree;
 
         /// <summary>
-        /// Gets or sets the show style.
+        /// Gets or sets is category visible.
         /// </summary>
-        /// <value>The show style.</value>
-        public PropertyGridShowStyle ShowStyle
+        /// <value>is category visible.</value>
+        public bool IsCategoryVisible
         {
             get;
-            set
-            {
-                if (field != value)
-                {
-                    _ = this.RaiseAndSetIfChanged(ref field, value);
+            set => SetProperty(ref field, value);
+        } = true;
 
-                    RaisePropertyChanged(nameof(ShowStyleText));
-                }
-            }
-        } = PropertyGridShowStyle.Category;
-
-        /// <summary>
-        /// Gets a value indicating whether [show style type].
-        /// </summary>
-        /// <value><c>null</c> if [show style type] contains no value, <c>true</c> if [show style type]; otherwise, <c>false</c>.</value>
-        public bool IsCategoryView
-        {
-            get => ShowStyle == PropertyGridShowStyle.Category;
-            set => ShowStyle = value ? PropertyGridShowStyle.Category : PropertyGridShowStyle.Tiled;
-        }
-
-        /// <summary>
-        /// Gets the show style text.
-        /// </summary>
-        /// <value>The show style text.</value>
-        public string ShowStyleText
-        {
-            get =>
-                ShowStyle switch
-                {
-                    PropertyGridShowStyle.Tiled => "T",
-                    _ => "C"
-                };
-        }
-
+        
         /// <summary>
         /// Gets the property order style
         /// </summary>
