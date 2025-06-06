@@ -51,7 +51,7 @@
   </ItemGroup>
 
     <ItemGroup Condition="'$(Configuration)' != 'Development'">
-        <PackageReference Include="bodong.PropertyModels" Version="11.3.0.21" />
+        <PackageReference Include="bodong.PropertyModels" Version="11.3.1" />
     </ItemGroup>
   <ItemGroup Condition="'$(Configuration)' == 'Development'">
     <ProjectReference Include="..\PropertyModels\PropertyModels.csproj" />
