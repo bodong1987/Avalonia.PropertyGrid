@@ -7,17 +7,17 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
     /// <summary>
     /// Class ProgressCellEditFactory.
-    /// Implements the <see cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
+    /// Implements the <see cref="Avalonia.PropertyGrid.Controls.Factories.Builtins.NumericCellEditFactory" />
     /// </summary>
-    /// <seealso cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
-    public class ProgressCellEditFactory : AbstractCellEditFactory
+    /// <seealso cref="Avalonia.PropertyGrid.Controls.Factories.Builtins.NumericCellEditFactory" />
+    public class ProgressCellEditFactory: NumericCellEditFactory
     {
         /// <summary>
         /// Gets the import priority.
         /// The larger the value, the earlier the object will be processed
         /// </summary>
         /// <value>The import priority.</value>
-        public override int ImportPriority => base.ImportPriority - 900000;
+        public override int ImportPriority => base.ImportPriority + 101;
 
         /// <summary>
         /// Handles the new property.

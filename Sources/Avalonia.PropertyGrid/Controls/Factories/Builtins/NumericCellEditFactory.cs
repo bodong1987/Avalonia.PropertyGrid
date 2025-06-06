@@ -122,7 +122,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 try
                 {
                     var value = Convert.ChangeType(control.Value, propertyDescriptor.PropertyType);
-                    SetAndRaise(context, control, value);
+                    SetAndRaise(context, control, value, context.GetValue());
                 }
                 catch (Exception ex)
                 {
@@ -182,25 +182,20 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         }
 
         /// <inheritdoc />
-        protected override bool CheckIsPropertyChanged(PropertyCellContext context, object? value, out object? oldValue)
+        protected override bool CheckIsPropertyChanged(PropertyCellContext context, object? value, object? oldValue)
         {
             if (context.Property.PropertyType == typeof(double) || 
                 context.Property.PropertyType == typeof(float) ||
                 context.Property.PropertyType == typeof(decimal))
             {
-                // for .net standard 2.1
-                // ReSharper disable once AssignNullToNotNullAttribute
-                var obj = context.GetValue();
-                oldValue = obj;
-
-                if (obj == null && value == null)
+                if (oldValue == null && value == null)
                 {
                     return false;
                 }
 
                 if (context.Property.PropertyType == typeof(double))
                 {
-                    var oValue = Convert.ToDouble(obj);
+                    var oValue = Convert.ToDouble(oldValue);
                     var nValue = Convert.ToDouble(value);
                     
                     var tolerance = context.Property.GetCustomAttribute<FloatingNumberEqualToleranceAttribute>()?.Tolerance ?? DoubleEqualTolerance;
@@ -210,7 +205,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 
                 if (context.Property.PropertyType == typeof(float))
                 {
-                    var oValue = Convert.ToSingle(obj);
+                    var oValue = Convert.ToSingle(oldValue);
                     var nValue = Convert.ToSingle(value);
                     
                     var tolerance = context.Property.GetCustomAttribute<FloatingNumberEqualToleranceAttribute>()?.Tolerance ?? FloatEqualTolerance;
@@ -220,7 +215,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 
                 if (context.Property.PropertyType == typeof(decimal))
                 {
-                    var oValue = Convert.ToDecimal(obj);
+                    var oValue = Convert.ToDecimal(oldValue);
                     var nValue = Convert.ToDecimal(value);
                     var v = context.Property.GetCustomAttribute<FloatingNumberEqualToleranceAttribute>()?.Tolerance;
                     var tolerance = v != null ? (decimal)(float)v : DecimalEqualTolerance;
@@ -229,7 +224,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 }
             }
             
-            return base.CheckIsPropertyChanged(context, value, out oldValue);
+            return base.CheckIsPropertyChanged(context, value, oldValue);
         }
     }
 }

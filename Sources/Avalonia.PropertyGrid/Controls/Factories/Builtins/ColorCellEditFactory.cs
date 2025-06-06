@@ -42,19 +42,17 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
         /// <param name="value"></param>
         /// <param name="oldValue"></param>
         /// <returns></returns>
-        protected override bool CheckIsPropertyChanged(PropertyCellContext context, object? value, out object? oldValue)
+        protected override bool CheckIsPropertyChanged(PropertyCellContext context, object? value, object? oldValue)
         {
             if (context.Property.PropertyType == typeof(Color))
             {
                 var color1 = (Color)value!;
-                oldValue = context.GetValue();
-                
                 var color2 = (Color)oldValue!;
                 
                 return color1.ToArgb() != color2.ToArgb();
             }
             
-            return base.CheckIsPropertyChanged(context, value, out oldValue);   
+            return base.CheckIsPropertyChanged(context, value, oldValue);   
         }
 
         /// <summary>

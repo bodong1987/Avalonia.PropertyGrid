@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Globalization;
+using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Data.Converters;
+using Avalonia.Input;
+using Avalonia.Interactivity;
 using PropertyModels.Utils;
 
 namespace Avalonia.PropertyGrid.Controls
@@ -88,6 +91,130 @@ namespace Avalonia.PropertyGrid.Controls
         {
             get => GetValue(AllowSpinProperty);
             set => SetValue(AllowSpinProperty, value);
+        }
+  
+        /// <summary>
+        /// when you drag with thumb, it will raise preview value changed event
+        /// </summary>
+        public static readonly RoutedEvent<RoutedEventArgs> PreviewValueChangedEvent =
+            RoutedEvent.Register<TrackableEdit, RoutedEventArgs>(nameof(PreviewValueChanged), RoutingStrategies.Bubble);
+        
+        /// <summary>
+        /// when you drag with thumb, it will raise preview value changed event
+        /// </summary>
+        public event EventHandler<RoutedEventArgs> PreviewValueChanged
+        {
+            add => AddHandler(PreviewValueChangedEvent, value);
+            remove => RemoveHandler(PreviewValueChangedEvent, value);
+        }
+       
+        /// <summary>
+        /// not drag or change by other operation
+        /// </summary>
+        public static readonly RoutedEvent<RoutedEventArgs> RealValueChangedEvent =
+            RoutedEvent.Register<TrackableEdit, RoutedEventArgs>(nameof(RealValueChanged), RoutingStrategies.Bubble);
+        
+        /// <summary>
+        /// not drag or change by other operation
+        /// </summary>
+        public event EventHandler<RoutedEventArgs> RealValueChanged
+        {
+            add => AddHandler(RealValueChangedEvent, value);
+            remove => RemoveHandler(RealValueChangedEvent, value);
+        }
+        
+        private bool _isDragging;
+        private double _preDragValue;
+
+        /// <inheritdoc />
+        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+        {
+            base.OnApplyTemplate(e);
+            
+            var slider = e.NameScope.Find<Slider>("slider");
+            if (slider != null)
+            {
+                slider.AddHandler(Thumb.DragStartedEvent, OnDragStarted);
+                slider.AddHandler(Thumb.DragCompletedEvent, OnDragCompleted);
+            }
+
+            ValueChanged += OnLocalValueChanged;
+        }
+
+        private void OnLocalValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
+        {
+            RaiseEvent(_isDragging
+                ? new RoutedEventArgs(PreviewValueChangedEvent, this)
+                : new RealValueChangedEventArgs(RealValueChangedReason.NotDragging, double.NaN, RealValueChangedEvent, this));
+
+            e.Handled = true;
+        }
+
+        private void OnDragStarted(object? sender, VectorEventArgs e)
+        {
+            _isDragging = true;
+            _preDragValue = Value; 
+            e.Handled = true;
+        }
+
+        private void OnDragCompleted(object? sender, VectorEventArgs e)
+        {
+            if (!_isDragging) return;
+        
+            _isDragging = false;
+        
+            if (Math.Abs(_preDragValue - Value) > double.Epsilon)
+            {
+                RaiseEvent(new RealValueChangedEventArgs( RealValueChangedReason.DragEnd, _preDragValue, RealValueChangedEvent, this));
+            }
+        
+            e.Handled = true;
+        }
+    }
+
+    /// <summary>
+    /// real value change reason
+    /// </summary>
+    public enum RealValueChangedReason
+    {
+        /// <summary>
+        /// change by not drag
+        /// </summary>
+        NotDragging,
+        
+        /// <summary>
+        /// finish drag
+        /// </summary>
+        DragEnd
+    }
+    
+    /// <summary>
+    /// Real value changed event args
+    /// </summary>
+    public class RealValueChangedEventArgs : RoutedEventArgs
+    {
+        /// <summary>
+        /// reason
+        /// </summary>
+        public readonly RealValueChangedReason Reason;
+
+        /// <summary>
+        /// start drag value 
+        /// </summary>
+        public readonly double OldValue;
+
+        /// <summary>
+        /// construct this event args
+        /// </summary>
+        /// <param name="reason"></param>
+        /// <param name="oldValue">old value(optional)</param>
+        /// <param name="routedEvent"></param>
+        /// <param name="source"></param>
+        public RealValueChangedEventArgs(RealValueChangedReason reason, double oldValue, RoutedEvent? routedEvent, object? source) :
+            base(routedEvent, source)
+        {
+            Reason = reason;
+            OldValue = oldValue;
         }
     }
 

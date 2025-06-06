@@ -73,7 +73,7 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         /// <inheritdoc />
         public virtual void SetPropertyValue(PropertyCellContext context, object? value)
         {
-            SetAndRaise(context, context.CellEdit!, value);
+            SetAndRaise(context, context.CellEdit!, value, context.GetValue());
         }
 
         /// <summary>
@@ -93,21 +93,33 @@ namespace Avalonia.PropertyGrid.Controls.Factories
         /// <param name="value"></param>
         /// <param name="oldValue"></param>
         /// <returns></returns>
-        protected virtual bool CheckIsPropertyChanged(PropertyCellContext context, object? value, out object? oldValue)
+        protected virtual bool CheckIsPropertyChanged(PropertyCellContext context, object? value, object? oldValue)
         {
-            return context.Property.IsPropertyChanged(context.Target, value, out oldValue);
+            return context.Property.IsPropertyChanged(context.Target, value, oldValue);
         }
 
         /// <summary>
-        /// Sets the and raise.
+        /// Sets and raise.
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="sourceControl">The source control.</param>
         /// <param name="value">The value.</param>
-        protected virtual void SetAndRaise(PropertyCellContext context, Control sourceControl, object? value)
+        protected void SetAndRaise(PropertyCellContext context, Control sourceControl, object? value)
+        {
+            SetAndRaise(context, sourceControl, value, context.GetValue());
+        }
+
+        /// <summary>
+        /// Sets and raise.
+        /// </summary>
+        /// <param name="context">The context.</param>
+        /// <param name="sourceControl">The source control.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="oldValue">old value</param>
+        protected virtual void SetAndRaise(PropertyCellContext context, Control sourceControl, object? value, object? oldValue)
         {
             // If the cell value has changed compared to the associated value...
-            if (CheckIsPropertyChanged(context, value, out var oldValue))
+            if (CheckIsPropertyChanged(context, value, oldValue))
             {
                 // ...we execute the 'HandleSetValue' command to update the associated value and the view.
                 var command = new GenericCancelableCommand(

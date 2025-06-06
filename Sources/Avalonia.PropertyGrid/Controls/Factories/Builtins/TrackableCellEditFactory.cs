@@ -7,17 +7,17 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
 {
     /// <summary>
     /// Class TrackableCellEditFactory.
-    /// Implements the <see cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
+    /// Implements the <see cref="Avalonia.PropertyGrid.Controls.Factories.Builtins.NumericCellEditFactory" />
     /// </summary>
-    /// <seealso cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
-    public class TrackableCellEditFactory : AbstractCellEditFactory
+    /// <seealso cref="Avalonia.PropertyGrid.Controls.Factories.Builtins.NumericCellEditFactory" />
+    public class TrackableCellEditFactory : NumericCellEditFactory
     {
         /// <summary>
         /// Gets the import priority.
         /// The larger the value, the earlier the object will be processed
         /// </summary>
         /// <value>The import priority.</value>
-        public override int ImportPriority => base.ImportPriority - 99999;
+        public override int ImportPriority => base.ImportPriority + 100;
 
         /// <summary>
         /// Handles the new property.
@@ -85,12 +85,32 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                 }
             }
 
-            control.ValueChanged += (s, e) =>
+            control.RealValueChanged += (s, e) =>
             {
                 try
                 {
-                    var value = Convert.ChangeType(e.NewValue, context.Property.PropertyType);
-                    SetAndRaise(context, control, value);
+                    var value = Convert.ChangeType(control.Value, context.Property.PropertyType);
+
+                    var args = (e as RealValueChangedEventArgs)!;
+                    
+                    SetAndRaise(context, control, value,
+                        args.Reason == RealValueChangedReason.DragEnd
+                            ? Convert.ChangeType(args.OldValue, context.Property.PropertyType)
+                            : context.GetValue());
+                }
+                catch (Exception ex)
+                {
+                    DataValidationErrors.SetErrors(control, [ex.Message]);
+                }
+            };
+
+            control.PreviewValueChanged += (s, e) =>
+            {
+                try
+                {
+                    // just set value, don't generate a command
+                    var value = Convert.ChangeType(control.Value, context.Property.PropertyType);
+                    HandleSetValue(control, context, value);
                 }
                 catch (Exception ex)
                 {

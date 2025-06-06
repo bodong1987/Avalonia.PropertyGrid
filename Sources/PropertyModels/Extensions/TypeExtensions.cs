@@ -417,7 +417,7 @@ namespace PropertyModels.Extensions
         /// <param name="property">The property.</param>
         /// <param name="component">The component.</param>
         /// <param name="value">The value.</param>
-        public static void SetAndRaiseEvent(this PropertyDescriptor property, object? component, object? value) => SetAndRaiseEvent(property, component, value, out _);
+        public static void SetAndRaiseEvent(this PropertyDescriptor property, object? component, object? value) => SetAndRaiseEvent(property, component, value, property.GetValue(component!));
 
         /// <summary>
         /// Sets and raise event.
@@ -429,9 +429,9 @@ namespace PropertyModels.Extensions
         /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
         // ReSharper disable once UnusedMethodReturnValue.Global
         // ReSharper disable once OutParameterValueIsAlwaysDiscarded.Global
-        public static bool SetAndRaiseEvent(this PropertyDescriptor property, object? component, object? value, out object? oldValue)
+        public static bool SetAndRaiseEvent(this PropertyDescriptor property, object? component, object? value, object? oldValue)
         {
-            if (!IsPropertyChanged(property, component, value, out oldValue))
+            if (!IsPropertyChanged(property, component, value, oldValue))
             {
                 return false;
             }
@@ -462,19 +462,14 @@ namespace PropertyModels.Extensions
         /// <param name="value">The value.</param>
         /// <param name="oldValue">The old value.</param>
         /// <returns><c>true</c> if [is property changed] [the specified component]; otherwise, <c>false</c>.</returns>
-        public static bool IsPropertyChanged(this PropertyDescriptor property, object? component, object? value, out object? oldValue)
+        public static bool IsPropertyChanged(this PropertyDescriptor property, object? component, object? value, object? oldValue)
         {
-            // for .net standard 2.1
-            // ReSharper disable once AssignNullToNotNullAttribute
-            var obj = property.GetValue(component);
-            oldValue = obj;
-
-            if (obj == null && value == null)
+            if (oldValue == null && value == null)
             {
                 return false;
             }
 
-            return obj == null || value == null || !obj.Equals(value);
+            return oldValue == null || value == null || !oldValue.Equals(value);
         }
 
         /// <summary>
