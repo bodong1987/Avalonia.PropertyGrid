@@ -210,7 +210,6 @@ namespace Avalonia.PropertyGrid.Controls
                 if (Math.Abs(NameWidth - value) > double.Epsilon)
                 {
                     SetValue(NameWidthProperty, value);
-                    NameWidthChanged.Invoke(this, EventArgs.Empty);
                 }
             }
         }
@@ -518,6 +517,7 @@ namespace Avalonia.PropertyGrid.Controls
             _ = PropertyOrderStyleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<PropertyGridOrderStyle>>(OnPropertyOrderStyleChanged));
             _ = IsTitleVisibleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnShowTitleChanged));
             _ = IsReadOnlyProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnIsReadOnlyPropertyChanged));
+            _ = NameWidthProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<double>>(OnNameWidthChanged));
             _ = AllCategoriesExpandedProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(e => 
             {
                 if (e.Sender is PropertyGrid pg && pg._categoryExpanders.Any())
@@ -739,6 +739,19 @@ namespace Avalonia.PropertyGrid.Controls
         }
 
         private void OnIsReadOnlyPropertyChanged(bool oldValue, bool newValue) => BuildPropertiesView();
+        
+        private static void OnNameWidthChanged(AvaloniaPropertyChangedEventArgs e)
+        {
+            if (e.Sender is PropertyGrid sender)
+            {
+                sender.OnNameWidthChanged(e.OldValue, e.NewValue);
+            }
+        }
+
+        private void OnNameWidthChanged(object? oldValue, object? newValue)
+        {
+            NameWidthChanged?.Invoke(this, EventArgs.Empty);
+        }
 
         private static void IsQuickFilterVisibleChanged(AvaloniaPropertyChangedEventArgs<bool> e)
         {

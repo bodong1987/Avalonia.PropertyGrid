@@ -15,23 +15,19 @@ namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Views;
 
 public partial class FeatureDemoView : UserControl
 {
-    private readonly FeatureDemoViewModel _mainVm;
-
     public ICommand ShowManagedNotificationCommand { get; }
     
     public WindowNotificationManager? NotificationManager { get; set; }
     
     public FeatureDemoView()
     {
-        _mainVm = new FeatureDemoViewModel();
-        DataContext = _mainVm;
+        var mainVm = new FeatureDemoViewModel();
+        DataContext = mainVm;
 
         InitializeComponent();
 
         // PropertyGridRedoUndo.CommandExecuted += OnCommandExecuted;
 
-        ((FeatureDemoViewModel)DataContext).PropertyChanged += OnPropertyChanged;
-        
         PropertyOperationComboBox.SelectionChanged += (sender, e) =>
         {
             if (PropertyOperationComboBox.SelectedItem is PropertyOperationVisibility visibility)
@@ -65,18 +61,6 @@ public partial class FeatureDemoView : UserControl
         
         NotificationManager = new WindowNotificationManager(TopLevel.GetTopLevel(this)!);
     } 
-
-    private void OnPropertyChanged(object? sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName == nameof(_mainVm.DefaultNameWidth))
-        {
-            StylesPropertyGrid.NameWidth = _mainVm.DefaultNameWidth;
-        }
-        else if (e.PropertyName == nameof(_mainVm.IsReadOnly))
-        {
-            StylesPropertyGrid.IsReadOnly = _mainVm.IsReadOnly;
-        }
-    }
 
     private void OnCustomPropertyDescriptorFilter(object sender, RoutedEventArgs args)
     {

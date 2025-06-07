@@ -48,8 +48,7 @@
                         x:Name="StylesPropertyGrid"
                         CustomPropertyDescriptorFilter="OnCustomPropertyDescriptorFilter"
                         Margin="2"
-                        DataContext="{Binding SimpleObject}"
-                        NameWidth="280">
+                        DataContext="{Binding SimpleObject}">
                     </pgc:PropertyGrid>
                     <StackPanel Orientation="Vertical" Grid.Row="1">
                         <StackPanel Orientation="Horizontal">
@@ -76,8 +75,10 @@
                                 </ComboBox.Items>
                             </ComboBox>
                             <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Readonly}"></TextBlock>
-                            <ToggleSwitch IsChecked="{Binding IsReadOnly}" Margin="4"></ToggleSwitch>
-                            <Slider Minimum="60" Maximum="400" Value="{Binding DefaultNameWidth}" Margin="4" Width="180"></Slider>
+                            <ToggleSwitch IsChecked="{Binding #StylesPropertyGrid.IsReadOnly, Mode=TwoWay}" Margin="4"></ToggleSwitch>
+                            <Slider Minimum="50" Maximum="1000" 
+                                    Value="{Binding #StylesPropertyGrid.NameWidth, Mode=TwoWay}" 
+                                    Margin="4" Width="280" />
                         </StackPanel>
                     </StackPanel>
                 </Grid>
@@ -162,7 +163,7 @@
 
             <TabItem Header="{ll:Localize Dynamic_Visibility}">
                 <ScrollViewer>
-                    <pgc:PropertyGrid Margin="4" DataContext="{Binding DynamicVisibility}"></pgc:PropertyGrid>
+                    <pgc:PropertyGrid Margin="4" DataContext="{Binding DynamicVisibility}" NameWidth="450"></pgc:PropertyGrid>
                 </ScrollViewer>
             </TabItem>
 

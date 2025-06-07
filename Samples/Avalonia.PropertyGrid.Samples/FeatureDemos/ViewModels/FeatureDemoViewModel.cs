@@ -38,20 +38,6 @@ namespace Avalonia.PropertyGrid.Samples.FeatureDemos.ViewModels
         }
 
         #region View
-        private bool _isReadOnly;
-        public bool IsReadOnly
-        {
-            get => _isReadOnly;
-            set => this.RaiseAndSetIfChanged(ref _isReadOnly, value);
-        }
-
-        private double _defaultNameWidth = 280;
-        public double DefaultNameWidth
-        {
-            get => _defaultNameWidth;
-            set => this.RaiseAndSetIfChanged(ref _defaultNameWidth, value);
-        }
-        
         private PropertyOperationVisibility _showPropertyOperation = PropertyOperationVisibility.Default;
         public PropertyOperationVisibility ShowPropertyOperation
         {
