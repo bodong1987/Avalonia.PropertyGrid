@@ -129,57 +129,6 @@ namespace Avalonia.PropertyGrid.ViewModels
         }
 
         /// <summary>
-        /// Gets or sets the display mode.
-        /// </summary>
-        /// <value>The display mode.</value>
-        public PropertyGridLayoutStyle DisplayMode
-        {
-            get;
-            set => this.RaiseAndSetIfChanged(ref field, value);
-        } = PropertyGridLayoutStyle.Tree;
-
-        /// <summary>
-        /// Gets or sets is category visible.
-        /// </summary>
-        /// <value>is category visible.</value>
-        public bool IsCategoryVisible
-        {
-            get;
-            set => this.RaiseAndSetIfChanged(ref field, value);
-        } = true;
-
-        
-        /// <summary>
-        /// Gets the property order style
-        /// </summary>
-        /// <value>The show style </value>
-        public PropertyGridOrderStyle PropertyOrderStyle
-        {
-            get;
-            set => this.RaiseAndSetIfChanged(ref field, value);
-        } = PropertyGridOrderStyle.Builtin;
-
-        /// <summary>
-        /// Gets the category order style
-        /// </summary>
-        /// <value>The show style </value>
-        public PropertyGridOrderStyle CategoryOrderStyle
-        {
-            get;
-            set => this.RaiseAndSetIfChanged(ref field, value);
-        } = PropertyGridOrderStyle.Builtin;
-
-        /// <summary>
-        /// Gets the readonly flag
-        /// </summary>
-        /// <value>The readonly flag </value>
-        public bool IsReadOnly
-        {
-            get;
-            set => this.RaiseAndSetIfChanged(ref field, value);
-        }
-
-        /// <summary>
         /// Gets or sets the category filter.
         /// </summary>
         /// <value>The category filter.</value>

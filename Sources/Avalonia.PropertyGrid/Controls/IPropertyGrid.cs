@@ -90,6 +90,11 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <value>The width of the name.</value>
         double NameWidth { get; set; }
+        
+        /// <summary>
+        /// Name width changed event
+        /// </summary>
+        event EventHandler NameWidthChanged;
 
         /// <summary>
         /// Gets or sets the root property grid.

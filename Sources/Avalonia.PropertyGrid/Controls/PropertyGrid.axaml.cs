@@ -88,7 +88,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// The is category visible property
         /// </summary>
         public static readonly StyledProperty<bool> IsCategoryVisibleProperty =
-            AvaloniaProperty.Register<PropertyGrid, bool>(nameof(IsCategoryVisible));
+            AvaloniaProperty.Register<PropertyGrid, bool>(nameof(IsCategoryVisible), true);
 
         /// <summary>
         /// Gets or sets is category visible.
@@ -205,8 +205,20 @@ namespace Avalonia.PropertyGrid.Controls
         public double NameWidth
         {
             get => GetValue(NameWidthProperty);
-            set => SetValue(NameWidthProperty, value);
+            set
+            {
+                if (Math.Abs(NameWidth - value) > double.Epsilon)
+                {
+                    SetValue(NameWidthProperty, value);
+                    NameWidthChanged.Invoke(this, EventArgs.Empty);
+                }
+            }
         }
+
+        /// <summary>
+        /// Name width changed events
+        /// </summary>
+        public event EventHandler NameWidthChanged;
         #endregion
 
         #region Behavior Properties
@@ -339,14 +351,14 @@ namespace Avalonia.PropertyGrid.Controls
             {
                 if (_rootPropertyGrid != null)
                 {
-                    _rootPropertyGrid.PropertyChanged -= OnRootPropertyGridPropertyChanged;
+                    _rootPropertyGrid.NameWidthChanged -= OnRootNameWidthChanged;
                 }
 
                 _rootPropertyGrid = value;
 
                 if (_rootPropertyGrid != null)
                 {
-                    _rootPropertyGrid.PropertyChanged += OnRootPropertyGridPropertyChanged;
+                    _rootPropertyGrid.NameWidthChanged += OnRootNameWidthChanged;
                 }
             }
         }
@@ -505,7 +517,6 @@ namespace Avalonia.PropertyGrid.Controls
             _ = CategoryOrderStyleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<PropertyGridOrderStyle>>(OnCategoryOrderStyleChanged));
             _ = PropertyOrderStyleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<PropertyGridOrderStyle>>(OnPropertyOrderStyleChanged));
             _ = IsTitleVisibleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnShowTitleChanged));
-            _ = NameWidthProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<double>>(OnNameWidthChanged));
             _ = IsReadOnlyProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(OnIsReadOnlyPropertyChanged));
             _ = AllCategoriesExpandedProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(e => 
             {
@@ -532,14 +543,13 @@ namespace Avalonia.PropertyGrid.Controls
 
             ViewModel.PropertyDescriptorChanged += OnPropertyDescriptorChanged;
             ViewModel.FilterChanged += OnFilterChanged;
-            ViewModel.PropertyChanged += OnViewModelPropertyChanged;
             ViewModel.CustomPropertyDescriptorFilter += OnCustomPropertyDescriptorFilter;
 
             InitializeComponent();
 
             ColumnName.PropertyChanged += OnColumnNamePropertyChanged;
+            NameWidthChanged += OnNameWidthChanged;
         }
-        
         
 #if DEBUG
         /// <summary>
@@ -569,55 +579,16 @@ namespace Avalonia.PropertyGrid.Controls
         private void BroadcastCustomPropertyDescriptorFilterEvent(object? sender, CustomPropertyDescriptorFilterEventArgs e) => RaiseEvent(e);
         
         /// <summary>
-        /// Handles the <see cref="E:ViewModelPropertyChanged" /> event.
+        /// handle root name width changed.
         /// </summary>
         /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="PropertyChangedEventArgs"/> instance containing the event data.</param>
-        private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(ViewModel.DisplayMode))
-            {
-                LayoutStyle = ViewModel.DisplayMode;
-                BuildPropertiesView();
-            }
-            else if (e.PropertyName == nameof(ViewModel.IsCategoryVisible))
-            {
-                IsCategoryVisible = ViewModel.IsCategoryVisible;
-                BuildPropertiesView();
-            }
-            else if (e.PropertyName == nameof(ViewModel.CategoryOrderStyle))
-            {
-                CategoryOrderStyle = ViewModel.CategoryOrderStyle;
-                BuildPropertiesView();
-            }
-            else if (e.PropertyName == nameof(ViewModel.PropertyOrderStyle))
-            {
-                PropertyOrderStyle = ViewModel.PropertyOrderStyle;
-                BuildPropertiesView();
-            }
-            else if (e.PropertyName == nameof(ViewModel.IsReadOnly))
-            {
-                IsReadOnly = ViewModel.IsReadOnly;
-                BuildPropertiesView();
-            }
-        }
-
-        /// <summary>
-        /// Handles the <see cref="E:ViewModelPropertyChanged" /> event of the root property grid.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="PropertyChangedEventArgs"/> instance containing the event data.</param>
-        private void OnRootPropertyGridPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        /// <param name="e"></param>
+        private void OnRootNameWidthChanged(object? sender, EventArgs e)
         {
             if (sender is IPropertyGrid propertyGrid)
             {
                 // ReSharper disable once ConvertSwitchStatementToSwitchExpression
-                switch (e.PropertyName)
-                {
-                    case nameof(IPropertyGrid.NameWidth):
-                        NameWidth = propertyGrid.NameWidth;
-                        break;
-                }
+                NameWidth = propertyGrid.NameWidth;
             }
         }
 
@@ -676,16 +647,16 @@ namespace Avalonia.PropertyGrid.Controls
         /// <param name="oldValue">The old value.</param>
         /// <param name="newValue">The new value.</param>
         private void IsHeaderVisibleChanged(object? oldValue, object? newValue) => InternalHeaderGrid.IsVisible = (bool)newValue!;
-
-        private static void OnNameWidthChanged(AvaloniaPropertyChangedEventArgs e)
+        
+        private void OnNameWidthChanged(object? sender, EventArgs e)
         {
-            if (e.Sender is PropertyGrid sender)
-            {
-                sender.OnNameWidthChanged(e.OldValue, e.NewValue);
-            }
+            // change column width first
+            var newWidth = NameWidth;
+            SplitterGrid.ColumnDefinitions[0].Width = new GridLength(newWidth);
+            
+            // let's sync this width to all name text 
+            SyncNameWidth(newWidth, false);
         }
-
-        private void OnNameWidthChanged(object? oldValue, object? newValue) => SplitterGrid.ColumnDefinitions[0].Width = new GridLength((double)newValue!);
 
         /// <summary>
         /// Called when [display mode changed].
@@ -703,8 +674,8 @@ namespace Avalonia.PropertyGrid.Controls
         /// Called when [display mode changed].
         /// </summary>
         /// <param name="oldValue">The old value.</param>
-        /// <param name="newValue">The new value.</param>
-        private void OnDisplayModeChanged(Optional<PropertyGridLayoutStyle> oldValue, BindingValue<PropertyGridLayoutStyle> newValue) => ViewModel.DisplayMode = newValue.Value;
+        /// <param name="newValue">The newValue.</param>
+        private void OnDisplayModeChanged(Optional<PropertyGridLayoutStyle> oldValue, BindingValue<PropertyGridLayoutStyle> newValue) => BuildPropertiesView();
 
         /// <summary>
         /// Called when [show style changed].
@@ -723,7 +694,7 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         /// <param name="oldValue">The old value.</param>
         /// <param name="newValue">The new value.</param>
-        private void IsCategoryVisibleChanged(Optional<bool> oldValue, BindingValue<bool> newValue) => ViewModel.IsCategoryVisible = newValue.Value;
+        private void IsCategoryVisibleChanged(Optional<bool> oldValue, BindingValue<bool> newValue) => BuildPropertiesView();
 
         private static void OnCategoryOrderStyleChanged(AvaloniaPropertyChangedEventArgs<PropertyGridOrderStyle> e)
         {
@@ -733,7 +704,7 @@ namespace Avalonia.PropertyGrid.Controls
             }
         }
 
-        private void OnCategoryOrderStyleChanged(Optional<PropertyGridOrderStyle> oldValue, BindingValue<PropertyGridOrderStyle> newValue) => ViewModel.CategoryOrderStyle = newValue.Value;
+        private void OnCategoryOrderStyleChanged(Optional<PropertyGridOrderStyle> oldValue, BindingValue<PropertyGridOrderStyle> newValue) => BuildPropertiesView();
 
         private static void OnPropertyOrderStyleChanged(AvaloniaPropertyChangedEventArgs<PropertyGridOrderStyle> e)
         {
@@ -743,7 +714,7 @@ namespace Avalonia.PropertyGrid.Controls
             }
         }
 
-        private void OnPropertyOrderStyleChanged(Optional<PropertyGridOrderStyle> oldValue, BindingValue<PropertyGridOrderStyle> newValue) => ViewModel.PropertyOrderStyle = newValue.Value;
+        private void OnPropertyOrderStyleChanged(Optional<PropertyGridOrderStyle> oldValue, BindingValue<PropertyGridOrderStyle> newValue) => BuildPropertiesView();
 
         private static void OnShowTitleChanged(AvaloniaPropertyChangedEventArgs<bool> e)
         {
@@ -767,7 +738,7 @@ namespace Avalonia.PropertyGrid.Controls
             }
         }
 
-        private void OnIsReadOnlyPropertyChanged(bool oldValue, bool newValue) => ViewModel.IsReadOnly = newValue;
+        private void OnIsReadOnlyPropertyChanged(bool oldValue, bool newValue) => BuildPropertiesView();
 
         private static void IsQuickFilterVisibleChanged(AvaloniaPropertyChangedEventArgs<bool> e)
         {
@@ -861,11 +832,11 @@ namespace Avalonia.PropertyGrid.Controls
 
                 referencePath.BeginScope(target.GetType().Name);
 
-                if (ViewModel.IsCategoryVisible)
+                if (IsCategoryVisible)
                 {
-                    BuildCategoryPropertiesView(target, referencePath, ViewModel.CategoryOrderStyle, ViewModel.PropertyOrderStyle);
+                    BuildCategoryPropertiesView(target, referencePath, CategoryOrderStyle, PropertyOrderStyle);
                 }
-                else if (ViewModel.PropertyOrderStyle == PropertyGridOrderStyle.Alphabetic)
+                else if (PropertyOrderStyle == PropertyGridOrderStyle.Alphabetic)
                 {
                     BuildAlphabeticPropertiesView(target, referencePath);
                 }
@@ -882,10 +853,9 @@ namespace Avalonia.PropertyGrid.Controls
             AddPropertyChangedObservers(_cellInfoCache.Children);
 
             RefreshVisibilities(ViewModel.FilterPattern.FilterText);
-
-            var width = ColumnName.Bounds.Width;
-
-            SyncNameWidth(width, false);
+            
+            // force refresh
+            NameWidthChanged.Invoke(this, EventArgs.Empty);
         }
         #endregion
 
@@ -1316,9 +1286,9 @@ namespace Avalonia.PropertyGrid.Controls
         {
             if (e.Property == BoundsProperty)
             {
-                var width = (sender as TextBlock)!.Bounds.Width;
+                var width = SplitterGrid.ColumnDefinitions[0].Width.Value;
 
-                SyncNameWidth(width, false);
+                NameWidth = width;
             }
         }
         #endregion
@@ -1412,7 +1382,7 @@ namespace Avalonia.PropertyGrid.Controls
         {
             if (_rootPropertyGrid != null)
             {
-                _rootPropertyGrid.PropertyChanged -= OnRootPropertyGridPropertyChanged;
+                _rootPropertyGrid.NameWidthChanged -= OnRootNameWidthChanged;
             }
         }
 

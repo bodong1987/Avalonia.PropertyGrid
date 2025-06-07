@@ -43,7 +43,7 @@
 				</Button.Content>
 				<Button.ContextMenu>
 					<ContextMenu x:Name="OptionsContextMenu">
-						<MenuItem Header="{ll:Localize IsCategoryVisible}" IsChecked="{Binding $parent[lc:PropertyGrid].ViewModel.IsCategoryVisible, Mode=TwoWay}" ToggleType="CheckBox" ToolTip.Tip="{ll:Localize ShowStyle}"/>
+						<MenuItem Header="{ll:Localize IsCategoryVisible}" IsChecked="{Binding $parent[lc:PropertyGrid].IsCategoryVisible, Mode=TwoWay}" ToggleType="CheckBox" ToolTip.Tip="{ll:Localize ShowStyle}"/>
 						<MenuItem Header="{ll:Localize UseRegex}" IsChecked="{Binding $parent[lc:PropertyGrid].ViewModel.FilterPattern.UseRegex, Mode=TwoWay}" ToggleType="CheckBox" ToolTip.Tip="{ll:Localize UseRegex}"/>
 						<MenuItem Header="{ll:Localize IgnoreCase}" IsChecked="{Binding $parent[lc:PropertyGrid].ViewModel.FilterPattern.IgnoreCase, Mode=TwoWay}" ToggleType="CheckBox" ToolTip.Tip="{ll:Localize IgnoreCase}"/>
 						<Separator></Separator>
@@ -74,15 +74,15 @@
 		<ContentControl x:Name="MiddleArea" Grid.Row="2"
 		                Content="{Binding $parent[lc:PropertyGrid].MiddleContent}"/>
 		
-		<Grid x:Name="SplitterGrid" Grid.Row="3">
+		<Grid x:Name="SplitterGrid" Grid.Row="3" Margin="8,0,0,0">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="200" MinWidth="60"></ColumnDefinition>
 				<ColumnDefinition Width="2"></ColumnDefinition>
 				<ColumnDefinition Width="*"></ColumnDefinition>				
 			</Grid.ColumnDefinitions>
-			<TextBlock x:Name="ColumnName" Margin="8,0,2,2" Text="{ll:Localize Name}" Grid.Column="0"></TextBlock>
+			<TextBlock x:Name="ColumnName" Padding="4" FontSize="18" Margin="8,0,2,2" Text="{ll:Localize Name}" Grid.Column="0" FontWeight="Bold"></TextBlock>
 			<GridSplitter Grid.Column="1"></GridSplitter>
-			<TextBlock x:Name="ColumnProperties" Margin="6, 0, 2, 2" Text="{ll:Localize Properties}" Grid.Column="2"></TextBlock>
+			<TextBlock x:Name="ColumnProperties" Padding="4" FontSize="18" Margin="6, 0, 2, 2" Text="{ll:Localize Properties}" Grid.Column="2" FontWeight="Bold"></TextBlock>
 		</Grid>
 		<ScrollViewer Grid.Row="4">
 			<Grid x:Name="PropertiesGrid">
