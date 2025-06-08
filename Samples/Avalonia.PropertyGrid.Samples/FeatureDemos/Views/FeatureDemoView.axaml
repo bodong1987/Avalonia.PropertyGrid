@@ -7,7 +7,7 @@
              xmlns:apv="clr-namespace:Avalonia.PropertyGrid.ViewModels;assembly=Avalonia.PropertyGrid"
 		     xmlns:lv="clr-namespace:Avalonia.PropertyGrid.Samples.FeatureDemos.Views"
 			 xmlns:ll="clr-namespace:Avalonia.PropertyGrid.Localization;assembly=Avalonia.PropertyGrid"
-			 xmlns:componentModel="clr-namespace:PropertyModels.ComponentModel;assembly=PropertyModels"
+             xmlns:apu="clr-namespace:Avalonia.PropertyGrid.Utils;assembly=Avalonia.PropertyGrid"
 			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Avalonia.PropertyGrid.Samples.FeatureDemos.Views.FeatureDemoView"
              x:DataType="vm:FeatureDemoViewModel">
@@ -53,26 +53,18 @@
                     <StackPanel Orientation="Vertical" Grid.Row="1">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Show_Property_Operation}"/>
-                            <ComboBox x:Name="PropertyOperationComboBox" 
-                                      Margin="4" 
+                            <ComboBox Margin="4" 
                                       VerticalAlignment="Center"
-                                      SelectedItem="{Binding ShowPropertyOperation, Mode=TwoWay}">
-                                <ComboBox.Items>
-                                    <componentModel:PropertyOperationVisibility>Default</componentModel:PropertyOperationVisibility>
-                                    <componentModel:PropertyOperationVisibility>Visible</componentModel:PropertyOperationVisibility>
-                                    <componentModel:PropertyOperationVisibility>Hidden</componentModel:PropertyOperationVisibility>
-                                </ComboBox.Items>
+                                      SelectedItem="{Binding #StylesPropertyGrid.PropertyOperationVisibility, Mode=TwoWay}"
+                                      ItemsSource="{Binding Source={x:Static apu:PropertyGridEnumValuesHelper.PropertyOperationVisibilityValues}}"
+                                      >
                             </ComboBox>
                             <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize CellEdit_Alignment}"/>
-                            <ComboBox x:Name="CellEditAlignmentComboBox" 
-                                      Margin="4" 
+                            <ComboBox Margin="4" 
                                       VerticalAlignment="Center"
-                                      SelectedItem="{Binding CellEditAlignment, Mode=TwoWay}">
-                                <ComboBox.Items>
-                                    <apv:CellEditAlignmentType>Default</apv:CellEditAlignmentType>
-                                    <apv:CellEditAlignmentType>Stretch</apv:CellEditAlignmentType>
-                                    <apv:CellEditAlignmentType>Compact</apv:CellEditAlignmentType>
-                                </ComboBox.Items>
+                                      SelectedItem="{Binding #StylesPropertyGrid.CellEditAlignment, Mode=TwoWay}"
+                                      ItemsSource="{Binding Source={x:Static apu:PropertyGridEnumValuesHelper.CellEditAlignmentTypeValues}}"
+                                      >
                             </ComboBox>
                             <TextBlock VerticalAlignment="Center" Margin="4" Text="{ll:Localize Readonly}"></TextBlock>
                             <ToggleSwitch IsChecked="{Binding #StylesPropertyGrid.IsReadOnly, Mode=TwoWay}" Margin="4"></ToggleSwitch>

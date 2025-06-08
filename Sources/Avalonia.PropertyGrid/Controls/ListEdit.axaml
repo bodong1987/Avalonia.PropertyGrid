@@ -2,10 +2,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="using:Avalonia.PropertyGrid.Controls"
 		xmlns:ll="using:Avalonia.PropertyGrid.Localization"
+        xmlns:utils="clr-namespace:Avalonia.PropertyGrid.Utils"
 		>
   <Design.PreviewWith>
     <controls:ListEdit />
   </Design.PreviewWith>
+	
+	<Styles.Resources>
+		<utils:BooleanNegationConverter x:Key="BooleanNegationConverter"/>
+	</Styles.Resources>
 
   <Style Selector="controls|ListEdit">
     <!-- Set Defaults -->
@@ -31,7 +36,13 @@
 							  IsVisible="{Binding Model.IsEditable, RelativeSource={RelativeSource TemplatedParent}}"
 							  ToolTip.Tip="{ll:Localize AppendNewElement}"
 							  FontSize="18"
+							  IsEnabled="{Binding Model.IsReadOnly, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanNegationConverter}}"
 							  >
+						  <Button.Styles>
+							  <Style Selector="Button:disabled Image">
+								  <Setter Property="Opacity" Value="0.5"/>
+							  </Style>
+						  </Button.Styles>
 						  <Button.Content>
 							  <Image Source="/Assets/Images/new.png" Width="24" Height="24"></Image>
 						  </Button.Content>
@@ -48,7 +59,13 @@
 					          IsVisible="{Binding Model.IsEditable, RelativeSource={RelativeSource TemplatedParent}}"
 					          ToolTip.Tip="{ll:Localize ClearAllElements}"
 					          FontSize="18"
+					          IsEnabled="{Binding Model.IsReadOnly, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanNegationConverter}}"
 					  >
+						  <Button.Styles>
+							  <Style Selector="Button:disabled Image">
+								  <Setter Property="Opacity" Value="0.5"/>
+							  </Style>
+						  </Button.Styles>
 						  <Button.Content>
 							  <Image Source="/Assets/Images/clear.png" Width="24" Height="24"></Image>
 						  </Button.Content>

@@ -4,11 +4,16 @@
         xmlns:controls="using:Avalonia.PropertyGrid.Controls"
 		xmlns:ll="using:Avalonia.PropertyGrid.Localization"
         xmlns:local="clr-namespace:Avalonia.PropertyGrid.Controls"
+        xmlns:utils="clr-namespace:Avalonia.PropertyGrid.Utils"
         d:DataContext="{d:DesignInstance Type=local:ListElementDataDesc, IsDesignTimeCreatable=True}"
 		>
   <Design.PreviewWith>
     <controls:ListElementEdit />
   </Design.PreviewWith>
+	
+	<Styles.Resources>
+		<utils:BooleanNegationConverter x:Key="BooleanNegationConverter"/>
+	</Styles.Resources>
 
   <Style Selector="controls|ListElementEdit">
     <!-- Set Defaults -->
@@ -35,8 +40,14 @@
 						  Command="{TemplateBinding InsertCommand}"
 						  ToolTip.Tip="{ll:Localize InsertNewElement}"
 						  IsVisible="{Binding IsEditable}"
+						  IsEnabled="{Binding IsReadOnly, Converter={StaticResource BooleanNegationConverter}}"
 						  FontSize="18"
 						  >
+					  <Button.Styles>
+						  <Style Selector="Button:disabled Image">
+							  <Setter Property="Opacity" Value="0.5"/>
+						  </Style>
+					  </Button.Styles>
 					  <Button.Content>
 						  <Image Source="/Assets/Images/add.png" Width="24" Height="24"></Image>
 					  </Button.Content>
@@ -52,8 +63,14 @@
 						  Command="{TemplateBinding RemoveCommand}"
 						  ToolTip.Tip="{ll:Localize RemoveElement}"
 						  IsVisible="{Binding IsEditable}"
+						  IsEnabled="{Binding IsReadOnly, Converter={StaticResource BooleanNegationConverter}}"
 						  FontSize="18"
 						  >
+					  <Button.Styles>
+						  <Style Selector="Button:disabled Image">
+							  <Setter Property="Opacity" Value="0.5"/>
+						  </Style>
+					  </Button.Styles>
 					  <Button.Content>
 						  <Image Source="/Assets/Images/delete.png" Width="24" Height="24"></Image>
 					  </Button.Content>

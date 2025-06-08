@@ -738,7 +738,23 @@ namespace Avalonia.PropertyGrid.Controls
             }
         }
 
-        private void OnIsReadOnlyPropertyChanged(bool oldValue, bool newValue) => BuildPropertiesView();
+        private void OnIsReadOnlyPropertyChanged(bool oldValue, bool newValue)
+        {
+            ChangeReadonlyStateRecursively(_cellInfoCache, newValue);
+        }
+
+        private static void ChangeReadonlyStateRecursively(IPropertyGridCellInfoContainer cellInfoContainer, bool isReadonly)
+        {
+            if (cellInfoContainer is IPropertyGridCellInfo { Context: { Factory: not null, CellEdit: not null } } info)
+            {
+                info.Context.Factory.HandleReadOnlyStateChanged(info.Context.CellEdit, isReadonly);
+            }
+
+            foreach (var cell in cellInfoContainer.Children)
+            {
+                ChangeReadonlyStateRecursively(cell, isReadonly);
+            }
+        }
         
         private static void OnNameWidthChanged(AvaloniaPropertyChangedEventArgs e)
         {

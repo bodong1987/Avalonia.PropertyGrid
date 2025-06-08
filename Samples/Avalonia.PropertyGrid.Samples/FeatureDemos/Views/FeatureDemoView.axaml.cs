@@ -25,24 +25,6 @@ public partial class FeatureDemoView : UserControl
         DataContext = mainVm;
 
         InitializeComponent();
-
-        // PropertyGridRedoUndo.CommandExecuted += OnCommandExecuted;
-
-        PropertyOperationComboBox.SelectionChanged += (sender, e) =>
-        {
-            if (PropertyOperationComboBox.SelectedItem is PropertyOperationVisibility visibility)
-            {
-                StylesPropertyGrid.PropertyOperationVisibility = visibility;
-            }
-        };
-
-        CellEditAlignmentComboBox.SelectionChanged += (sender, e) =>
-        {
-            if (CellEditAlignmentComboBox.SelectedItem is CellEditAlignmentType cellEditAlignment)
-            {
-                StylesPropertyGrid.CellEditAlignment = cellEditAlignment;
-            }
-        };
         
         ShowManagedNotificationCommand = ReactiveCommand.Create(() =>
         {

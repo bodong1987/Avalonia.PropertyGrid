@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using Avalonia.Controls;
 
@@ -44,6 +45,7 @@ namespace Avalonia.PropertyGrid.Controls
             if (oldValue != null)
             {
                 oldValue.ValueChanged -= OnElementValueChanged;
+                oldValue.PropertyChanged -= OnElementPropertyChanged;
             }
 
             MainBorder.Child = null;
@@ -54,6 +56,7 @@ namespace Avalonia.PropertyGrid.Controls
             }
 
             value.ValueChanged += OnElementValueChanged;
+            value.PropertyChanged += OnElementPropertyChanged;
 
             Debug.Assert(value.Context != null);
             Debug.Assert(value.Context.Root != null);
@@ -75,7 +78,6 @@ namespace Avalonia.PropertyGrid.Controls
             }
         }
 
-
         private void OnElementValueChanged(object? sender, EventArgs e)
         {
             if (DataContext is not ListElementDataDesc)
@@ -89,6 +91,25 @@ namespace Avalonia.PropertyGrid.Controls
                 Debug.Assert(_context!.CellEdit != null);
 
                 _ = _context.Factory.HandlePropertyChanged(_context);
+            }
+        }
+        
+        private void OnElementPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (DataContext is not ListElementDataDesc desc)
+            {
+                return;
+            }
+
+            if (e.PropertyName == nameof(desc.IsReadOnly))
+            {
+                if (_context is { Factory: not null })
+                {
+                    Debug.Assert(_context != null);
+                    Debug.Assert(_context!.CellEdit != null);
+
+                    _context.Factory.HandleReadOnlyStateChanged(_context.CellEdit, _context.IsReadOnly || desc.IsReadOnly);
+                }
             }
         }
     }
