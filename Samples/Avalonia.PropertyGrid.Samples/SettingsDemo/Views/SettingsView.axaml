@@ -24,7 +24,7 @@
             <TabControl.ContentTemplate>
                 <DataTemplate>
                     <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
-                    <pgc:PropertyGrid IsTitleVisible="False" 
+                    <pgc:PropertyGrid IsTitleVisible="False"
                                       NameWidth="200"
                                       DataContext="{Binding Settings}"
                                       Margin="10"

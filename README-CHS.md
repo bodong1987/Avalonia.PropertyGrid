@@ -355,11 +355,13 @@ public class TestExtendPropertyGrid : Controls.PropertyGrid
 ```C#
 public class TestExtendPropertyGrid : Controls.PropertyGrid
 {
-    static TestExtendPropertyGrid()
+    public TestExtendPropertyGrid()
     {
-        CellEditFactoryService.Default.AddFactory(new Vector3CellEditFactory());
-        CellEditFactoryService.Default.AddFactory(new CountryInfoCellEditFactory());
-        CellEditFactoryService.Default.AddFactory(new ToggleSwitchCellEditFactory());
+        Factories.AddFactory(new Vector3CellEditFactory());
+        Factories.AddFactory(new CountryInfoCellEditFactory());
+        Factories.AddFactory(new ToggleSwitchCellEditFactory());
+
+        // ...
     }
 }
 ```  

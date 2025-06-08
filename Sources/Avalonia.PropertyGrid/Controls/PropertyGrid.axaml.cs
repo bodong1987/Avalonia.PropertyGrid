@@ -766,7 +766,7 @@ namespace Avalonia.PropertyGrid.Controls
 
         private void OnNameWidthChanged(object? oldValue, object? newValue)
         {
-            NameWidthChanged?.Invoke(this, EventArgs.Empty);
+            NameWidthChanged.Invoke(this, EventArgs.Empty);
         }
 
         private static void IsQuickFilterVisibleChanged(AvaloniaPropertyChangedEventArgs<bool> e)

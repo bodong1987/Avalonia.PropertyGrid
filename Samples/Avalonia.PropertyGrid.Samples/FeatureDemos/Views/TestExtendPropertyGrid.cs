@@ -17,17 +17,14 @@ namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Views
 {
     public class TestExtendPropertyGrid : Controls.PropertyGrid
     {
-        static TestExtendPropertyGrid()
-        {
-            CellEditFactoryService.Default.AddFactory(new Vector3CellEditFactory());
-            CellEditFactoryService.Default.AddFactory(new CountryInfoCellEditFactory());
-            CellEditFactoryService.Default.AddFactory(new ToggleSwitchCellEditFactory());
-        }
-
         private int _customLabelClickCount;
 
         public TestExtendPropertyGrid()
         {
+            Factories.AddFactory(new Vector3CellEditFactory());
+            Factories.AddFactory(new CountryInfoCellEditFactory());
+            Factories.AddFactory(new ToggleSwitchCellEditFactory());
+            
             CustomNameBlock += (s, e) =>
             {
                 if (e is CustomNameBlockEventArgs { Context.Property.Name: nameof(TestExtendsObject.customLabel) } ee)
