@@ -1,5 +1,7 @@
 ﻿using System;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
+using Avalonia.Media;
 using PropertyModels.ComponentModel;
 using PropertyModels.Extensions;
 
@@ -85,6 +87,29 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             }
 
             return false;
+        }
+
+        /// <inheritdoc />
+        public override void HandleReadOnlyStateChanged(Control control, bool readOnly)
+        {
+            base.HandleReadOnlyStateChanged(control, readOnly);
+            
+            if (control is ProgressBar progressBar)
+            {
+                if (readOnly)
+                {
+                    // Change the foreground color to a lighter shade to indicate read-only
+                    progressBar.Foreground = Brushes.Gray;
+                    // Optionally, change the opacity
+                    progressBar.Opacity = 0.5;
+                }
+                else
+                {
+                    // Reset to default styles
+                    progressBar.ClearValue(TemplatedControl.ForegroundProperty);
+                    progressBar.Opacity = 1.0;
+                }
+            }
         }
     }
 }
