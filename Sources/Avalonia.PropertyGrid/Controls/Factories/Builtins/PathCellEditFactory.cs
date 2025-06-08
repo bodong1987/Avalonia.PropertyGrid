@@ -123,6 +123,10 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             if (control is ButtonEdit be)
             {
                 be.IsReadOnly = readOnly;
+                
+                // Change appearance when read-only
+                be.Opacity = readOnly ? 0.8 : // Lower opacity to indicate read-only
+                    1.0; // Reset opacity
             }
             else
             {

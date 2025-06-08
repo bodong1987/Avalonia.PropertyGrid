@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Layout;
 using Avalonia.Media;
 using Avalonia.PropertyGrid.Localization;
@@ -119,6 +120,10 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             if (control is TextBox textBox)
             {
                 textBox.IsReadOnly = readOnly;
+                
+                // Change appearance when read-only
+                textBox.Opacity = readOnly ? 0.8 : // Lower opacity to indicate read-only
+                    1.0; // Reset opacity
             }
             else
             {

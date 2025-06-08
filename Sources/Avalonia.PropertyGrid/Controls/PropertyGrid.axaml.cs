@@ -747,7 +747,7 @@ namespace Avalonia.PropertyGrid.Controls
         {
             if (cellInfoContainer is IPropertyGridCellInfo { Context: { Factory: not null, CellEdit: not null } } info)
             {
-                info.Context.Factory.HandleReadOnlyStateChanged(info.Context.CellEdit, isReadonly);
+                info.Context.Factory.HandleReadOnlyStateChanged(info.Context.CellEdit, isReadonly || info.Context.IsReadOnly);
             }
 
             foreach (var cell in cellInfoContainer.Children)

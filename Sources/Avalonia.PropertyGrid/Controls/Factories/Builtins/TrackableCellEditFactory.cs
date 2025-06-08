@@ -168,6 +168,10 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
             if (control is TrackableEdit te)
             {
                 te.IsReadOnly = readOnly;
+                
+                // Change appearance when read-only
+                control.Opacity = readOnly ? 0.8 : // Lower opacity to indicate read-only
+                    1.0; // Reset opacity
             }
             else
             {
