@@ -8,24 +8,26 @@
     <Style Selector="controls|CheckedListEdit">
         <Setter Property="Template">
             <ControlTemplate>
-                <Border BorderBrush="Gray" BorderThickness="0.5" CornerRadius="0,0,5,5" Margin="0">
-                    <ItemsControl x:Name="ItemsPresenter"
-                                  ItemsSource="{Binding Model.Items, RelativeSource={RelativeSource TemplatedParent}}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal">
-                                    <CheckBox Margin="2,0,2,0" IsChecked="{Binding IsChecked, Mode=TwoWay}">
-                                        <TextBlock Margin="2,0,2,0" Text="{Binding Name}" VerticalAlignment="Center"></TextBlock>    
-                                    </CheckBox>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </Border>
+                <DataValidationErrors>
+                    <Border BorderBrush="Gray" BorderThickness="0.5" CornerRadius="0,0,5,5" Margin="0">
+                        <ItemsControl x:Name="ItemsPresenter"
+                                      ItemsSource="{Binding Model.Items, RelativeSource={RelativeSource TemplatedParent}}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <CheckBox Margin="2,0,2,0" IsChecked="{Binding IsChecked, Mode=TwoWay}">
+                                            <TextBlock Margin="2,0,2,0" Text="{Binding Name}" VerticalAlignment="Center"></TextBlock>    
+                                        </CheckBox>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Border>
+                </DataValidationErrors>
             </ControlTemplate>
         </Setter>
     </Style>

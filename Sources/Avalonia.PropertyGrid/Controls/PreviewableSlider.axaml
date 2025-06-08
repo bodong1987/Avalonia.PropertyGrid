@@ -9,16 +9,18 @@
         <!-- Set Defaults -->
         <Setter Property="Template">
             <ControlTemplate>
-                <Slider x:Name="slider"
-                        Minimum="{TemplateBinding Minimum, Mode=TwoWay}"
-                        Maximum="{TemplateBinding Maximum, Mode=TwoWay}"
-                        Value="{TemplateBinding Value, Mode=TwoWay}"
-                        IsEnabled="{TemplateBinding IsEnabled, Mode=TwoWay}"
-                        Orientation="{TemplateBinding Orientation, Mode=TwoWay}"
-                        TickFrequency="{TemplateBinding TickFrequency, Mode=TwoWay}"
-                        IsSnapToTickEnabled="{TemplateBinding IsSnapToTickEnabled, Mode=TwoWay}" 
+                <DataValidationErrors>
+                    <Slider x:Name="slider"
+                            Minimum="{TemplateBinding Minimum, Mode=TwoWay}"
+                            Maximum="{TemplateBinding Maximum, Mode=TwoWay}"
+                            Value="{TemplateBinding Value, Mode=TwoWay}"
+                            IsEnabled="{TemplateBinding IsEnabled, Mode=TwoWay}"
+                            Orientation="{TemplateBinding Orientation, Mode=TwoWay}"
+                            TickFrequency="{TemplateBinding TickFrequency, Mode=TwoWay}"
+                            IsSnapToTickEnabled="{TemplateBinding IsSnapToTickEnabled, Mode=TwoWay}" 
                     >
-                </Slider>
+                    </Slider>
+                </DataValidationErrors>
             </ControlTemplate>
         </Setter>
     </Style>

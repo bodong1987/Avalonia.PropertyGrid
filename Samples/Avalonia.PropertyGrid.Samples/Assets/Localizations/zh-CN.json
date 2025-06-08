@@ -519,5 +519,7 @@
     "Readonly 3D vector": "只读3D向量",
     "Readonly checked list of platform IDs": "只读平台 ID 复选列表",
     "Readonly login information": "只读登录信息",
-    "Collapsed login information": "折叠的登录信息"
+    "Collapsed login information": "折叠的登录信息",
+    "ValidateInteger": "校验整数",
+    "ValidateIntegerCollection": "校验整数集合"
 }

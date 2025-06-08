@@ -253,6 +253,15 @@ namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Models
         [Description("Select platforms with validation")]
         [ValidatePlatform]
         public CheckedList<PlatformID> Platforms { get; set; } = new(Enum.GetValues<PlatformID>());
+        
+        [Category("DataValidation")]
+        [Range(0, 100)]
+        [Trackable(0, 200)]
+        public int ValidateInteger { get; set; } = 100;
+
+        [Category("DataValidation")]
+        [MinLength(3), MaxLength(6)]
+        public ObservableCollection<int> ValidateIntegerCollection { get; set; } = [1, 2, 3];
 
         [Category("Numeric")]
         [Range(10, 200)]
