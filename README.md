@@ -274,7 +274,8 @@ There are two ways to provide data validation capabilities:
     [Category("DataValidation")]
     [MinLength(3), MaxLength(6)]
     public ObservableCollection<int> ValidateIntegerCollection { get; set; } = [1, 2, 3];
-```
+```  
+![data-validation](./Docs/Images/data-validation.png)  
 
 ### Dynamic Visibilty
 By setting Attribute, you can make certain Properties only displayed when conditions are met. for example: 
