@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Avalonia.PropertyGrid.Samples.FeatureDemos.Models;
-using Avalonia.PropertyGrid.ViewModels;
 using PropertyModels.ComponentModel;
 
 namespace Avalonia.PropertyGrid.Samples.FeatureDemos.ViewModels
@@ -11,6 +10,8 @@ namespace Avalonia.PropertyGrid.Samples.FeatureDemos.ViewModels
     public class FeatureDemoViewModel : MiniReactiveObject
     {
         public SimpleObject SimpleObject { get; } = new("SimpleTests");
+        
+        public CommandHistoryViewModel CommandHistory { get; } = new();
 
         public SimpleObject SyncObject { get; } = new("SyncTests");
 
@@ -27,8 +28,6 @@ namespace Avalonia.PropertyGrid.Samples.FeatureDemos.ViewModels
         public DynamicVisibilityObject DynamicVisibility { get; } = new();
 
         public TestExtendsObject ExtendsObject { get; } = new();
-
-        public CancelableObject CancelableObject { get; } = new("Cancelable");
 
         private TestCustomObject _customObject2 = new();
         public TestCustomObject CustomObject

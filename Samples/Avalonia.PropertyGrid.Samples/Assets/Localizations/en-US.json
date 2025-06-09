@@ -1,4 +1,9 @@
 ﻿{
+    "Basic-Features": "Basic Features",    
+    "Multiple-Objects": "Multiple Objects",
+    "Custom-Objects": "Custom Objects",
+    "Custom-CellEdit": "Custom CellEdit",    
+    "Custom-Appearance": "Custom Appearance",
     "Dynamic_Visibility": "Dynamic Visibility",
     "Self_s_Properties": "Self's Properties",
     "Show_Category": "Show Category",

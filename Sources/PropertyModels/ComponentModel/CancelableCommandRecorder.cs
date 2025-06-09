@@ -284,6 +284,13 @@ public class CommandHistoryViewModel : MiniReactiveObject
     /// </summary>
     [Browsable(false)]
     public ReadOnlyCollection<ICancelableCommand> RedoQueue => _recorder.GetRedoQueue();
+    
+    /// <summary>
+    /// get internal recorder
+    /// </summary>
+    [Browsable(false)]
+    // ReSharper disable once ConvertToAutoPropertyWhenPossible
+    public CancelableCommandRecorder Recorder => _recorder;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="CommandHistoryViewModel"/> class.
@@ -312,4 +319,31 @@ public class CommandHistoryViewModel : MiniReactiveObject
         RaisePropertyChanged(nameof(UndoQueue));
         RaisePropertyChanged(nameof(RedoQueue));
     }
+
+    /// <summary>
+    /// Executes the specified command and adds it to the command history.
+    /// </summary>
+    /// <param name="command">The command to execute.</param>
+    public void ExecuteCommand(ICancelableCommand command) => _recorder.ExecuteCommand(command);
+
+    /// <summary>
+    /// Pushes the specified command to the command history without executing it.
+    /// </summary>
+    /// <param name="command">The command to push.</param>
+    public void PushCommand(ICancelableCommand command) => _recorder.PushCommand(command);
+
+    /// <summary>
+    /// Undoes the last executed command.
+    /// </summary>
+    public void Undo() => _recorder.Undo();
+
+    /// <summary>
+    /// Redoes the last undone command.
+    /// </summary>
+    public void Redo() => _recorder.Redo();
+
+    /// <summary>
+    /// Clears all commands from the command history.
+    /// </summary>
+    public void Clear() => _recorder.Clear();
 }

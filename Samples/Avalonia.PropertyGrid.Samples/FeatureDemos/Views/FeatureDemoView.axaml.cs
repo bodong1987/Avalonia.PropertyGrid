@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using System.Windows.Input;
 using Avalonia.Controls;
 using Avalonia.Controls.Notifications;
@@ -7,7 +6,6 @@ using Avalonia.PropertyGrid.Controls;
 using Avalonia.PropertyGrid.Samples.FeatureDemos.Models;
 using Avalonia.PropertyGrid.Samples.FeatureDemos.ViewModels;
 using Avalonia.PropertyGrid.Services;
-using Avalonia.PropertyGrid.ViewModels;
 using PropertyModels.ComponentModel;
 using PropertyModels.Extensions;
 
@@ -53,7 +51,7 @@ public partial class FeatureDemoView : UserControl
         }
     }
 
-    private void OnCommandExecuted(object? sender, RoutedEventArgs e) => (DataContext as FeatureDemoViewModel)!.CancelableObject.OnCommandExecuted(sender, (e as RoutedCommandExecutedEventArgs)!);
+    private void OnCommandExecuted(object? sender, RoutedEventArgs e) => (DataContext as FeatureDemoViewModel)!.CommandHistory.PushCommand((e as RoutedCommandExecutedEventArgs)!.Command);
     
     public static readonly StyledProperty<string> CurrentPropertyNameProperty =
         AvaloniaProperty.Register<FeatureDemoView, string>(nameof(CurrentPropertyName));
@@ -71,7 +69,7 @@ public partial class FeatureDemoView : UserControl
         CurrentPropertyName =
             string.Format(LocalizationService.Default["CurrentPropertyDescription"], 
                 LocalizationService.Default[e!.Context.DisplayName],
-                e!.Context.Property.Description.IsNotNullOrEmpty() ? (": " + LocalizationService.Default[e!.Context.Property.Description]) : "" 
+                e.Context.Property.Description.IsNotNullOrEmpty() ? (": " + LocalizationService.Default[e.Context.Property.Description]) : "" 
                 );
     }
 
