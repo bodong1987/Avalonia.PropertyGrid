@@ -529,7 +529,7 @@ private void OnCustomPropertyOperationControl(object? sender, CustomPropertyOper
 ## 示例描述
 ### 特性示例
 一组案例用于集中展示`Avalonia.PropertyGrid`的基础特性，包括但不限于：属性分析、动态调整配置、数据同步、多对象同时编辑、自定义对象、自定义栅格编辑器、动态可见性、撤销重做框架、自定义外观等等。  
-![basic-features-demo](./docs/Images/basic-features-demo.png)  
+![basic-features-demo](./Docs/Images/basic-features-demo.png)  
 
 ### 设置示例
 一个简单的示例用于展示如何基于PropertyGrid非常简单方便的实现一个系统设置界面。  
