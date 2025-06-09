@@ -533,7 +533,7 @@ private void OnCustomPropertyOperationControl(object? sender, CustomPropertyOper
 ## Description of Samples
 ### Feature Demos
 A set of cases is used to showcase the basic features of `Avalonia.PropertyGrid`, including but not limited to: property analysis, dynamic configuration adjustment, data synchronization, simultaneous editing of multiple objects, custom objects, custom grid editors, dynamic visibility, undo-redo framework, custom appearance, etc.  
-![basic-features](./docs/Images/basic-features.png)
+![basic-features-demo](./docs/Images/basic-features-demo.png)  
 
 ### Settings Demo
 A simple example is used to show how to implement a system settings interface based on PropertyGrid very simply and conveniently.  
