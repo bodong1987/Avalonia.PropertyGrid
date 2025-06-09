@@ -4,37 +4,36 @@ using System.Text;
 using Avalonia.Platform;
 using PropertyModels.Localization;
 
-namespace Avalonia.PropertyGrid.Localization
+namespace Avalonia.PropertyGrid.Localization;
+
+internal class AssetCultureData : AbstractCultureData
 {
-    internal class AssetCultureData : AbstractCultureData
+    public AssetCultureData(Uri uri, bool autoLoad = false)
+        : base(uri)
     {
-        public AssetCultureData(Uri uri, bool autoLoad = false)
-            : base(uri)
+        if (autoLoad)
         {
-            if (autoLoad)
-            {
-                _ = Reload();
-            }
+            _ = Reload();
         }
+    }
 
-        public sealed override bool Reload()
+    public sealed override bool Reload()
+    {
+        try
         {
-            try
+            using (var stream = AssetLoader.Open(Path))
             {
-                using (var stream = AssetLoader.Open(Path))
-                {
-                    using var sr = new StreamReader(stream, Encoding.UTF8);
-                    var tempDict = ReadJsonStringDictionary(sr.ReadToEnd());
+                using var sr = new StreamReader(stream, Encoding.UTF8);
+                var tempDict = ReadJsonStringDictionary(sr.ReadToEnd());
 
-                    LocalTexts = tempDict;
-                }
+                LocalTexts = tempDict;
+            }
 
-                return LocalTexts != null;
-            }
-            catch
-            {
-                return false;
-            }
+            return LocalTexts != null;
+        }
+        catch
+        {
+            return false;
         }
     }
 }

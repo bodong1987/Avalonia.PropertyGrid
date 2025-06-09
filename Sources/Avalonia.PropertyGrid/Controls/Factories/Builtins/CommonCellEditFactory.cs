@@ -6,53 +6,71 @@ using Avalonia.Layout;
 using Avalonia.PropertyGrid.Utils;
 using PropertyModels.ComponentModel;
 
-namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
+namespace Avalonia.PropertyGrid.Controls.Factories.Builtins;
+
+/// <summary>
+/// Class CommonCellEditFactory.
+/// Implements the <see cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
+/// </summary>
+/// <seealso cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
+public class CommonCellEditFactory : AbstractCellEditFactory
 {
     /// <summary>
-    /// Class CommonCellEditFactory.
-    /// Implements the <see cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
+    /// Gets the import priority.
+    /// The larger the value, the earlier the object will be processed
     /// </summary>
-    /// <seealso cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
-    public class CommonCellEditFactory : AbstractCellEditFactory
+    /// <value>The import priority.</value>
+    public override int ImportPriority => int.MinValue;
+
+    /// <summary>
+    /// Handles the new property.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    /// <returns>Control.</returns>
+    public override Control? HandleNewProperty(PropertyCellContext context)
     {
-        /// <summary>
-        /// Gets the import priority.
-        /// The larger the value, the earlier the object will be processed
-        /// </summary>
-        /// <value>The import priority.</value>
-        public override int ImportPriority => int.MinValue;
+        var propertyDescriptor = context.Property;
+        // var target = context.Target;
 
-        /// <summary>
-        /// Handles the new property.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns>Control.</returns>
-        public override Control? HandleNewProperty(PropertyCellContext context)
+        if (propertyDescriptor is MultiObjectPropertyDescriptor)
         {
-            var propertyDescriptor = context.Property;
-            // var target = context.Target;
+            return null;
+        }
 
-            if (propertyDescriptor is MultiObjectPropertyDescriptor)
+        var converter = TypeDescriptor.GetConverter(propertyDescriptor.PropertyType);
+
+        var control = new TextBox
+        {
+            VerticalContentAlignment = VerticalAlignment.Center,
+            FontFamily = FontUtils.DefaultFontFamily,
+            IsEnabled = converter.CanConvertFrom(typeof(string)) &&
+                        converter.CanConvertTo(typeof(string))
+        };
+
+        // set first ...
+        // HandlePropertyChanged(target, propertyDescriptor, control);
+
+        if (control.IsEnabled)
+        {
+            control.LostFocus += (s, e) =>
             {
-                return null;
-            }
+                var value = control.Text ?? string.Empty;
 
-            var converter = TypeDescriptor.GetConverter(propertyDescriptor.PropertyType);
-
-            var control = new TextBox
-            {
-                VerticalContentAlignment = VerticalAlignment.Center,
-                FontFamily = FontUtils.DefaultFontFamily,
-                IsEnabled = converter.CanConvertFrom(typeof(string)) &&
-                            converter.CanConvertTo(typeof(string))
+                try
+                {
+                    DataValidationErrors.ClearErrors(control);
+                    var obj = converter.ConvertFrom(value);
+                    SetAndRaise(context, control, obj);
+                }
+                catch (Exception ee)
+                {
+                    DataValidationErrors.SetErrors(control, [ee.Message]);
+                }
             };
 
-            // set first ...
-            // HandlePropertyChanged(target, propertyDescriptor, control);
-
-            if (control.IsEnabled)
+            control.KeyUp += (s, e) =>
             {
-                control.LostFocus += (s, e) =>
+                if (e.Key == Key.Enter)
                 {
                     var value = control.Text ?? string.Empty;
 
@@ -66,77 +84,58 @@ namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
                     {
                         DataValidationErrors.SetErrors(control, [ee.Message]);
                     }
-                };
-
-                control.KeyUp += (s, e) =>
-                {
-                    if (e.Key == Key.Enter)
-                    {
-                        var value = control.Text ?? string.Empty;
-
-                        try
-                        {
-                            DataValidationErrors.ClearErrors(control);
-                            var obj = converter.ConvertFrom(value);
-                            SetAndRaise(context, control, obj);
-                        }
-                        catch (Exception ee)
-                        {
-                            DataValidationErrors.SetErrors(control, [ee.Message]);
-                        }
-                    }
-                };
-            }
-
-            return control;
+                }
+            };
         }
 
-        /// <summary>
-        /// Handles the property changed.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
-        public override bool HandlePropertyChanged(PropertyCellContext context)
+        return control;
+    }
+
+    /// <summary>
+    /// Handles the property changed.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
+    public override bool HandlePropertyChanged(PropertyCellContext context)
+    {
+        var propertyDescriptor = context.Property;
+        var target = context.Target;
+        var control = context.CellEdit;
+
+        if (propertyDescriptor is MultiObjectPropertyDescriptor)
         {
-            var propertyDescriptor = context.Property;
-            var target = context.Target;
-            var control = context.CellEdit;
-
-            if (propertyDescriptor is MultiObjectPropertyDescriptor)
-            {
-                return false;
-            }
-
-            if (control is TextBox textBox)
-            {
-                var value = propertyDescriptor.GetValue(target);
-
-                if (value != null)
-                {
-                    var converter = TypeDescriptor.GetConverter(propertyDescriptor.PropertyType);
-
-                    if (converter.CanConvertFrom(typeof(string)) && converter.CanConvertTo(typeof(string)))
-                    {
-                        try
-                        {
-                            DataValidationErrors.ClearErrors(control);
-                            textBox.Text = converter.ConvertTo(value, typeof(string)) as string;
-                        }
-                        catch (Exception ee)
-                        {
-                            DataValidationErrors.SetErrors(control, [ee.Message]);
-                        }
-                    }
-                    else
-                    {
-                        textBox.Text = value.ToString();
-                    }
-
-                    return true;
-                }
-            }
-
             return false;
         }
+
+        if (control is TextBox textBox)
+        {
+            var value = propertyDescriptor.GetValue(target);
+
+            if (value != null)
+            {
+                var converter = TypeDescriptor.GetConverter(propertyDescriptor.PropertyType);
+
+                if (converter.CanConvertFrom(typeof(string)) && converter.CanConvertTo(typeof(string)))
+                {
+                    try
+                    {
+                        DataValidationErrors.ClearErrors(control);
+                        textBox.Text = converter.ConvertTo(value, typeof(string)) as string;
+                    }
+                    catch (Exception ee)
+                    {
+                        DataValidationErrors.SetErrors(control, [ee.Message]);
+                    }
+                }
+                else
+                {
+                    textBox.Text = value.ToString();
+                }
+
+                return true;
+            }
+        }
+
+        return false;
     }
 }

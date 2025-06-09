@@ -2,93 +2,92 @@
 using Avalonia.Controls;
 using PropertyModels.ComponentModel;
 
-namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
+namespace Avalonia.PropertyGrid.Controls.Factories.Builtins;
+
+/// <summary>
+/// Class BooleanCellEditFactory.
+/// Implements the <see cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
+/// </summary>
+/// <seealso cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
+public class BooleanCellEditFactory : AbstractCellEditFactory
 {
     /// <summary>
-    /// Class BooleanCellEditFactory.
-    /// Implements the <see cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
+    /// Gets the import priority.
+    /// The larger the value, the earlier the object will be processed
     /// </summary>
-    /// <seealso cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
-    public class BooleanCellEditFactory : AbstractCellEditFactory
+    /// <value>The import priority.</value>
+    public override int ImportPriority => base.ImportPriority - 100000;
+
+    /// <summary>
+    /// Handles the new property.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    /// <returns>Control.</returns>
+    public override Control? HandleNewProperty(PropertyCellContext context)
     {
-        /// <summary>
-        /// Gets the import priority.
-        /// The larger the value, the earlier the object will be processed
-        /// </summary>
-        /// <value>The import priority.</value>
-        public override int ImportPriority => base.ImportPriority - 100000;
+        var propertyDescriptor = context.Property;
 
-        /// <summary>
-        /// Handles the new property.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns>Control.</returns>
-        public override Control? HandleNewProperty(PropertyCellContext context)
+        if (propertyDescriptor.PropertyType != typeof(bool) && propertyDescriptor.PropertyType != typeof(bool?))
         {
-            var propertyDescriptor = context.Property;
-
-            if (propertyDescriptor.PropertyType != typeof(bool) && propertyDescriptor.PropertyType != typeof(bool?))
-            {
-                return null;
-            }
-
-            var control = new CheckBox
-            {
-                IsThreeState = propertyDescriptor.PropertyType == typeof(bool?) || propertyDescriptor is MultiObjectPropertyDescriptor
-            };
-
-            control.IsCheckedChanged += (s, e) =>
-            {
-                SetAndRaise(context, control, control.IsChecked);
-            };
-
-            return control;
+            return null;
         }
 
-        /// <summary>
-        /// Handles the property changed.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
-        public override bool HandlePropertyChanged(PropertyCellContext context)
+        var control = new CheckBox
         {
-            var propertyDescriptor = context.Property;
-            var target = context.Target;
-            var control = context.CellEdit;
+            IsThreeState = propertyDescriptor.PropertyType == typeof(bool?) || propertyDescriptor is MultiObjectPropertyDescriptor
+        };
 
-            if (propertyDescriptor.PropertyType != typeof(bool) && propertyDescriptor.PropertyType != typeof(bool?))
+        control.IsCheckedChanged += (s, e) =>
+        {
+            SetAndRaise(context, control, control.IsChecked);
+        };
+
+        return control;
+    }
+
+    /// <summary>
+    /// Handles the property changed.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
+    public override bool HandlePropertyChanged(PropertyCellContext context)
+    {
+        var propertyDescriptor = context.Property;
+        var target = context.Target;
+        var control = context.CellEdit;
+
+        if (propertyDescriptor.PropertyType != typeof(bool) && propertyDescriptor.PropertyType != typeof(bool?))
+        {
+            return false;
+        }
+
+        Debug.Assert(control != null);
+
+        ValidateProperty(control, propertyDescriptor, target);
+
+        if (control is CheckBox ts)
+        {
+            if (ts.IsThreeState)
             {
-                return false;
-            }
+                var obj = propertyDescriptor.GetValue(target);
 
-            Debug.Assert(control != null);
-
-            ValidateProperty(control, propertyDescriptor, target);
-
-            if (control is CheckBox ts)
-            {
-                if (ts.IsThreeState)
+                if (obj != null)
                 {
-                    var obj = propertyDescriptor.GetValue(target);
-
-                    if (obj != null)
-                    {
-                        ts.IsChecked = (bool)obj;
-                    }
-                    else
-                    {
-                        ts.IsChecked = null;
-                    }
+                    ts.IsChecked = (bool)obj;
                 }
                 else
                 {
-                    ts.IsChecked = (bool)propertyDescriptor.GetValue(target)!;
+                    ts.IsChecked = null;
                 }
-
-                return true;
+            }
+            else
+            {
+                ts.IsChecked = (bool)propertyDescriptor.GetValue(target)!;
             }
 
-            return false;
+            return true;
         }
+
+        return false;
     }
 }

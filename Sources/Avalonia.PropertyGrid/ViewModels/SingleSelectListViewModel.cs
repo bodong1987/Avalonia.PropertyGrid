@@ -3,278 +3,277 @@ using System.Collections.Generic;
 using System.Linq;
 using PropertyModels.ComponentModel;
 
-namespace Avalonia.PropertyGrid.ViewModels
+namespace Avalonia.PropertyGrid.ViewModels;
+
+/// <summary>
+/// Class SingleSelectListViewModel.
+/// Implements the <see cref="MiniReactiveObject" />
+/// </summary>
+/// <seealso cref="MiniReactiveObject" />
+internal class SingleSelectListViewModel : MiniReactiveObject
 {
     /// <summary>
-    /// Class SingleSelectListViewModel.
-    /// Implements the <see cref="MiniReactiveObject" />
+    /// The items
     /// </summary>
-    /// <seealso cref="MiniReactiveObject" />
-    internal class SingleSelectListViewModel : MiniReactiveObject
+    private readonly List<SingleSelectListItemViewModel> _items = [];
+
+    /// <summary>
+    /// Gets the items.
+    /// </summary>
+    /// <value>The items.</value>
+    public SingleSelectListItemViewModel[] Items => [.. _items];
+
+    /// <summary>
+    /// Gets the checked item.
+    /// </summary>
+    /// <value>The checked item.</value>
+    public SingleSelectListItemViewModel? CheckedItem { get; private set; }
+
+    /// <summary>
+    /// Occurs when [checked items changed].
+    /// </summary>
+    public event EventHandler? CheckChanged;
+
+    /// <summary>
+    /// Gets or sets a value indicating whether [enable raise checked items changed event].
+    /// </summary>
+    /// <value><c>true</c> if [enable raise checked items changed event]; otherwise, <c>false</c>.</value>
+    internal bool EnableRaiseCheckedItemChangedEvent { get; set; } = true;
+
+    private double _minWidth;
+
+    public double MinWidth
     {
-        /// <summary>
-        /// The items
-        /// </summary>
-        private readonly List<SingleSelectListItemViewModel> _items = [];
-
-        /// <summary>
-        /// Gets the items.
-        /// </summary>
-        /// <value>The items.</value>
-        public SingleSelectListItemViewModel[] Items => [.. _items];
-
-        /// <summary>
-        /// Gets the checked item.
-        /// </summary>
-        /// <value>The checked item.</value>
-        public SingleSelectListItemViewModel? CheckedItem { get; private set; }
-
-        /// <summary>
-        /// Occurs when [checked items changed].
-        /// </summary>
-        public event EventHandler? CheckChanged;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether [enable raise checked items changed event].
-        /// </summary>
-        /// <value><c>true</c> if [enable raise checked items changed event]; otherwise, <c>false</c>.</value>
-        internal bool EnableRaiseCheckedItemChangedEvent { get; set; } = true;
-
-        private double _minWidth;
-
-        public double MinWidth
+        get => _minWidth;
+        set
         {
-            get => _minWidth;
-            set
+            if (SetProperty(ref _minWidth, value))
             {
-                if (SetProperty(ref _minWidth, value))
+                foreach (var item in Items)
                 {
-                    foreach (var item in Items)
-                    {
-                        item.MinWidth = value;
-                    }
+                    item.MinWidth = value;
                 }
-            } 
-        }
+            }
+        } 
+    }
 
-        private double _minHeight;
+    private double _minHeight;
 
-        public double MinHeight
+    public double MinHeight
+    {
+        get => _minHeight;
+        set
         {
-            get => _minHeight;
-            set
+            if (SetProperty(ref _minHeight, value))
             {
-                if (SetProperty(ref _minHeight, value))
+                foreach (var item in Items)
                 {
-                    foreach (var item in Items)
-                    {
-                        item.MinHeight = value;
-                    }
+                    item.MinHeight = value;
                 }
-            } 
-        }
+            }
+        } 
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SingleSelectListViewModel"/> class.
-        /// </summary>
-        public SingleSelectListViewModel()
-        {
-        }
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SingleSelectListViewModel"/> class.
+    /// </summary>
+    public SingleSelectListViewModel()
+    {
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SingleSelectListViewModel"/> class.
-        /// </summary>
-        /// <param name="items">The items.</param>
-        public SingleSelectListViewModel(IEnumerable<object> items) => AddRange(items);
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SingleSelectListViewModel"/> class.
+    /// </summary>
+    /// <param name="items">The items.</param>
+    public SingleSelectListViewModel(IEnumerable<object> items) => AddRange(items);
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SingleSelectListViewModel"/> class.
-        /// </summary>
-        /// <param name="items">The items.</param>
-        /// <param name="checkedItem">The checked items.</param>
-        public SingleSelectListViewModel(IEnumerable<object> items, object checkedItem)
-        {
-            _items.AddRange(items.Select(x => new SingleSelectListItemViewModel(this, x)));
-            CheckedItem = _items.Find(x => x.IsValue(checkedItem));
-        }
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SingleSelectListViewModel"/> class.
+    /// </summary>
+    /// <param name="items">The items.</param>
+    /// <param name="checkedItem">The checked items.</param>
+    public SingleSelectListViewModel(IEnumerable<object> items, object checkedItem)
+    {
+        _items.AddRange(items.Select(x => new SingleSelectListItemViewModel(this, x)));
+        CheckedItem = _items.Find(x => x.IsValue(checkedItem));
+    }
 
-        /// <summary>
-        /// Resets the items.
-        /// </summary>
-        /// <param name="items">The items.</param>
-        public void ResetItems(IEnumerable<object> items)
-        {
-            _items.Clear();
-            CheckedItem = null;
+    /// <summary>
+    /// Resets the items.
+    /// </summary>
+    /// <param name="items">The items.</param>
+    public void ResetItems(IEnumerable<object> items)
+    {
+        _items.Clear();
+        CheckedItem = null;
 
-            RaiseSelectedItemsChangedEvent();
+        RaiseSelectedItemsChangedEvent();
 
-            AddRange(items);
+        AddRange(items);
 
-            RaiseItemsCheckedChangedEvents();
-        }
+        RaiseItemsCheckedChangedEvents();
+    }
 
-        /// <summary>
-        /// Resets the checked items.
-        /// </summary>
-        /// <param name="item">The items.</param>
-        public void ResetSelectedItems(object? item)
-        {
-            CheckedItem = _items.Find(x => x.IsValue(item));
+    /// <summary>
+    /// Resets the checked items.
+    /// </summary>
+    /// <param name="item">The items.</param>
+    public void ResetSelectedItems(object? item)
+    {
+        CheckedItem = _items.Find(x => x.IsValue(item));
 
-            RaiseSelectedItemsChangedEvent();
+        RaiseSelectedItemsChangedEvent();
 
-            RaiseItemsCheckedChangedEvents();
-        }
+        RaiseItemsCheckedChangedEvents();
+    }
 
-        /// <summary>
-        /// Adds the range.
-        /// </summary>
-        /// <param name="items">The items.</param>
-        public void AddRange(IEnumerable<object> items)
-        {
-            _items.AddRange(items.Select(x => new SingleSelectListItemViewModel(this, x)));
+    /// <summary>
+    /// Adds the range.
+    /// </summary>
+    /// <param name="items">The items.</param>
+    public void AddRange(IEnumerable<object> items)
+    {
+        _items.AddRange(items.Select(x => new SingleSelectListItemViewModel(this, x)));
             
-            foreach (var item in _items)
-            {
-                item.MinWidth = _minWidth;
-                item.MinHeight = _minHeight;
-            }
-
-            RaisePropertyChanged(nameof(Items));
-
-            RaiseItemsCheckedChangedEvents();
+        foreach (var item in _items)
+        {
+            item.MinWidth = _minWidth;
+            item.MinHeight = _minHeight;
         }
 
-        /// <summary>
-        /// Determines whether the specified item is checked.
-        /// </summary>
-        /// <param name="item">The item.</param>
-        /// <returns><c>true</c> if the specified item is checked; otherwise, <c>false</c>.</returns>
-        public bool IsChecked(SingleSelectListItemViewModel item) => CheckedItem == item;
+        RaisePropertyChanged(nameof(Items));
 
-        /// <summary>
-        /// Sets the checked.
-        /// </summary>
-        /// <param name="item">The item.</param>
-        /// <param name="value">if set to <c>true</c> [value].</param>
-        public void SetChecked(SingleSelectListItemViewModel item, bool value)
+        RaiseItemsCheckedChangedEvents();
+    }
+
+    /// <summary>
+    /// Determines whether the specified item is checked.
+    /// </summary>
+    /// <param name="item">The item.</param>
+    /// <returns><c>true</c> if the specified item is checked; otherwise, <c>false</c>.</returns>
+    public bool IsChecked(SingleSelectListItemViewModel item) => CheckedItem == item;
+
+    /// <summary>
+    /// Sets the checked.
+    /// </summary>
+    /// <param name="item">The item.</param>
+    /// <param name="value">if set to <c>true</c> [value].</param>
+    public void SetChecked(SingleSelectListItemViewModel item, bool value)
+    {
+        if (CheckedItem == item)
         {
-            if (CheckedItem == item)
+            if (!value)
             {
-                if (!value)
-                {
-                    CheckedItem = null;
-                }
+                CheckedItem = null;
             }
-            else
+        }
+        else
+        {
+            if (CheckedItem != null)
             {
-                if (CheckedItem != null)
-                {
-                    CheckedItem.IsChecked = false;
-                }
+                CheckedItem.IsChecked = false;
+            }
                 
-                CheckedItem = item;
-                CheckedItem.IsChecked = value;    
-            }
-
-            RaiseItemsCheckedChangedEvents();
-            RaiseSelectedItemsChangedEvent();
+            CheckedItem = item;
+            CheckedItem.IsChecked = value;    
         }
 
-        /// <summary>
-        /// Raises the checked items changed event.
-        /// </summary>
-        private void RaiseSelectedItemsChangedEvent()
-        {
-            if (EnableRaiseCheckedItemChangedEvent)
-            {
-                CheckChanged?.Invoke(this, EventArgs.Empty);
-            }
-        }
+        RaiseItemsCheckedChangedEvents();
+        RaiseSelectedItemsChangedEvent();
+    }
 
-        /// <summary>
-        /// Refreshes the items check states.
-        /// </summary>
-        public void RaiseItemsCheckedChangedEvents()
+    /// <summary>
+    /// Raises the checked items changed event.
+    /// </summary>
+    private void RaiseSelectedItemsChangedEvent()
+    {
+        if (EnableRaiseCheckedItemChangedEvent)
         {
-            foreach (var item in _items)
-            {
-                item.RaisePropertyChanged(nameof(item.IsChecked));
-            }
+            CheckChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 
     /// <summary>
-    /// Class SingleSelectListItemViewModel.
-    /// Implements the <see cref="MiniReactiveObject" />
+    /// Refreshes the items check states.
     /// </summary>
-    /// <seealso cref="MiniReactiveObject" />
-    internal class SingleSelectListItemViewModel : MiniReactiveObject
+    public void RaiseItemsCheckedChangedEvents()
     {
-        /// <summary>
-        /// The parent
-        /// </summary>
-        public readonly SingleSelectListViewModel Parent;
-
-        /// <summary>
-        /// The value
-        /// </summary>
-        public readonly object? Value;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SingleSelectListItemViewModel"/> class.
-        /// </summary>
-        /// <param name="model">The model.</param>
-        /// <param name="value">The value.</param>
-        public SingleSelectListItemViewModel(SingleSelectListViewModel model, object? value)
+        foreach (var item in _items)
         {
-            Parent = model;
-            Value = value;
+            item.RaisePropertyChanged(nameof(item.IsChecked));
         }
+    }
+}
 
-        /// <summary>
-        /// Determines whether the specified value is value.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns><c>true</c> if the specified value is value; otherwise, <c>false</c>.</returns>
-        public bool IsValue(object? value) => Value == value || (Value?.Equals(value) == true);
+/// <summary>
+/// Class SingleSelectListItemViewModel.
+/// Implements the <see cref="MiniReactiveObject" />
+/// </summary>
+/// <seealso cref="MiniReactiveObject" />
+internal class SingleSelectListItemViewModel : MiniReactiveObject
+{
+    /// <summary>
+    /// The parent
+    /// </summary>
+    public readonly SingleSelectListViewModel Parent;
 
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance is checked.
-        /// </summary>
-        /// <value><c>true</c> if this instance is checked; otherwise, <c>false</c>.</value>
-        public bool IsChecked
+    /// <summary>
+    /// The value
+    /// </summary>
+    public readonly object? Value;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SingleSelectListItemViewModel"/> class.
+    /// </summary>
+    /// <param name="model">The model.</param>
+    /// <param name="value">The value.</param>
+    public SingleSelectListItemViewModel(SingleSelectListViewModel model, object? value)
+    {
+        Parent = model;
+        Value = value;
+    }
+
+    /// <summary>
+    /// Determines whether the specified value is value.
+    /// </summary>
+    /// <param name="value">The value.</param>
+    /// <returns><c>true</c> if the specified value is value; otherwise, <c>false</c>.</returns>
+    public bool IsValue(object? value) => Value == value || (Value?.Equals(value) == true);
+
+    /// <summary>
+    /// Gets or sets a value indicating whether this instance is checked.
+    /// </summary>
+    /// <value><c>true</c> if this instance is checked; otherwise, <c>false</c>.</value>
+    public bool IsChecked
+    {
+        get => Parent.IsChecked(this);
+        set
         {
-            get => Parent.IsChecked(this);
-            set
+            if (IsChecked != value)
             {
-                if (IsChecked != value)
-                {
-                    Parent.SetChecked(this, value);
-                    RaisePropertyChanged(nameof(IsChecked));
-                }
+                Parent.SetChecked(this, value);
+                RaisePropertyChanged(nameof(IsChecked));
             }
         }
-
-        public double MinWidth
-        {
-            get;
-            set => SetProperty(ref field, value);
-        }
-
-        public double MinHeight
-        {
-            get;
-            set => SetProperty(ref field, value);
-        }
-
-        /// <summary>
-        /// Gets the name.
-        /// </summary>
-        /// <value>The name.</value>
-        public string Name => Value?.ToString() ?? string.Empty;
-
-        public override string ToString() => $"{Name}[{IsChecked}]";
     }
+
+    public double MinWidth
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    public double MinHeight
+    {
+        get;
+        set => SetProperty(ref field, value);
+    }
+
+    /// <summary>
+    /// Gets the name.
+    /// </summary>
+    /// <value>The name.</value>
+    public string Name => Value?.ToString() ?? string.Empty;
+
+    public override string ToString() => $"{Name}[{IsChecked}]";
 }

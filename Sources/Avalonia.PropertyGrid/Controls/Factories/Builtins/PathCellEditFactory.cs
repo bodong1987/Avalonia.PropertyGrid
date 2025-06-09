@@ -7,131 +7,130 @@ using PropertyModels.ComponentModel;
 using PropertyModels.ComponentModel.DataAnnotations;
 using PropertyModels.Extensions;
 
-namespace Avalonia.PropertyGrid.Controls.Factories.Builtins
+namespace Avalonia.PropertyGrid.Controls.Factories.Builtins;
+
+/// <summary>
+/// Class PathCellEditFactory.
+/// Implements the <see cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
+/// </summary>
+/// <seealso cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
+public class PathCellEditFactory : AbstractCellEditFactory
 {
     /// <summary>
-    /// Class PathCellEditFactory.
-    /// Implements the <see cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
+    /// Gets the import priority.
+    /// The larger the value, the earlier the object will be processed
     /// </summary>
-    /// <seealso cref="Avalonia.PropertyGrid.Controls.Factories.AbstractCellEditFactory" />
-    public class PathCellEditFactory : AbstractCellEditFactory
+    /// <value>The import priority.</value>
+    public override int ImportPriority => base.ImportPriority - 100000;
+
+    /// <summary>
+    /// Handles the new property.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    /// <returns>Control.</returns>
+    public override Control? HandleNewProperty(PropertyCellContext context)
     {
-        /// <summary>
-        /// Gets the import priority.
-        /// The larger the value, the earlier the object will be processed
-        /// </summary>
-        /// <value>The import priority.</value>
-        public override int ImportPriority => base.ImportPriority - 100000;
+        var propertyDescriptor = context.Property;
+        var target = context.Target;
 
-        /// <summary>
-        /// Handles the new property.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns>Control.</returns>
-        public override Control? HandleNewProperty(PropertyCellContext context)
+        if (propertyDescriptor.PropertyType != typeof(string) || !propertyDescriptor.IsDefined<PathBrowsableAttribute>())
         {
-            var propertyDescriptor = context.Property;
-            var target = context.Target;
-
-            if (propertyDescriptor.PropertyType != typeof(string) || !propertyDescriptor.IsDefined<PathBrowsableAttribute>())
-            {
-                return null;
-            }
-
-            var attribute = propertyDescriptor.GetCustomAttribute<PathBrowsableAttribute>()!;
-            var watermarkAttr = propertyDescriptor.GetCustomAttribute<WatermarkAttribute>();
-
-            var control = new ButtonEdit
-            {
-                Text = propertyDescriptor.GetValue(target) as string
-            };
-
-            if (watermarkAttr != null)
-            {
-                // control.Watermark = LocalizationService.Default[watermarkAttr.Watermark];
-                control.SetLocalizeBinding(ButtonEdit.WatermarkProperty, watermarkAttr.Watermark);
-            }
-
-            control.ButtonClick += async (s, e) =>
-            {
-                if (attribute.IsDirectorySelection && string.IsNullOrEmpty(attribute.InitialFileName))
-                {
-                    attribute.InitialFileName = control.Text;
-                }
-
-                var files = await PathBrowserUtils.ShowPathBrowserAsync((control.GetVisualRoot() as Window)!, attribute);
-
-                if (files is { Length: > 0 })
-                {
-                    var file = files.FirstOrDefault();
-
-                    if (file != (propertyDescriptor.GetValue(target) as string))
-                    {
-                        SetAndRaise(context, control, file);
-                        control.Text = file;
-                    }
-                }
-            };
-
-            control.TextChanged += (s, e) =>
-            {
-                if (control.Text != (propertyDescriptor.GetValue(target) as string))
-                {
-                    SetAndRaise(context, control, control.Text);
-                }
-            };
-
-            return control;
+            return null;
         }
 
-        /// <summary>
-        /// Handles the property changed.
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
-        public override bool HandlePropertyChanged(PropertyCellContext context)
+        var attribute = propertyDescriptor.GetCustomAttribute<PathBrowsableAttribute>()!;
+        var watermarkAttr = propertyDescriptor.GetCustomAttribute<WatermarkAttribute>();
+
+        var control = new ButtonEdit
         {
-            var propertyDescriptor = context.Property;
-            var target = context.Target;
-            var control = context.CellEdit!;
+            Text = propertyDescriptor.GetValue(target) as string
+        };
 
-            if (propertyDescriptor.PropertyType != typeof(string) || !propertyDescriptor.IsDefined<PathBrowsableAttribute>())
+        if (watermarkAttr != null)
+        {
+            // control.Watermark = LocalizationService.Default[watermarkAttr.Watermark];
+            control.SetLocalizeBinding(ButtonEdit.WatermarkProperty, watermarkAttr.Watermark);
+        }
+
+        control.ButtonClick += async (s, e) =>
+        {
+            if (attribute.IsDirectorySelection && string.IsNullOrEmpty(attribute.InitialFileName))
             {
-                return false;
+                attribute.InitialFileName = control.Text;
             }
 
-            ValidateProperty(control, propertyDescriptor, target);
+            var files = await PathBrowserUtils.ShowPathBrowserAsync((control.GetVisualRoot() as Window)!, attribute);
 
-            if (control is ButtonEdit be)
+            if (files is { Length: > 0 })
             {
-                be.Text = propertyDescriptor.GetValue(target) as string;
+                var file = files.FirstOrDefault();
 
-                return true;
+                if (file != (propertyDescriptor.GetValue(target) as string))
+                {
+                    SetAndRaise(context, control, file);
+                    control.Text = file;
+                }
             }
+        };
 
+        control.TextChanged += (s, e) =>
+        {
+            if (control.Text != (propertyDescriptor.GetValue(target) as string))
+            {
+                SetAndRaise(context, control, control.Text);
+            }
+        };
+
+        return control;
+    }
+
+    /// <summary>
+    /// Handles the property changed.
+    /// </summary>
+    /// <param name="context">The context.</param>
+    /// <returns><c>true</c> if success, <c>false</c> otherwise.</returns>
+    public override bool HandlePropertyChanged(PropertyCellContext context)
+    {
+        var propertyDescriptor = context.Property;
+        var target = context.Target;
+        var control = context.CellEdit!;
+
+        if (propertyDescriptor.PropertyType != typeof(string) || !propertyDescriptor.IsDefined<PathBrowsableAttribute>())
+        {
             return false;
         }
 
-        /// <summary>
-        /// Handles readonly flag changed
-        /// </summary>
-        /// <param name="control">control.</param>
-        /// <param name="readOnly">readonly flag</param>
-        /// <returns>Control.</returns>
-        public override void HandleReadOnlyStateChanged(Control control, bool readOnly)
+        ValidateProperty(control, propertyDescriptor, target);
+
+        if (control is ButtonEdit be)
         {
-            if (control is ButtonEdit be)
-            {
-                be.IsReadOnly = readOnly;
+            be.Text = propertyDescriptor.GetValue(target) as string;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Handles readonly flag changed
+    /// </summary>
+    /// <param name="control">control.</param>
+    /// <param name="readOnly">readonly flag</param>
+    /// <returns>Control.</returns>
+    public override void HandleReadOnlyStateChanged(Control control, bool readOnly)
+    {
+        if (control is ButtonEdit be)
+        {
+            be.IsReadOnly = readOnly;
                 
-                // Change appearance when read-only
-                be.Opacity = readOnly ? 0.8 : // Lower opacity to indicate read-only
-                    1.0; // Reset opacity
-            }
-            else
-            {
-                base.HandleReadOnlyStateChanged(control, readOnly);
-            }
+            // Change appearance when read-only
+            be.Opacity = readOnly ? 0.8 : // Lower opacity to indicate read-only
+                1.0; // Reset opacity
+        }
+        else
+        {
+            base.HandleReadOnlyStateChanged(control, readOnly);
         }
     }
 }
