@@ -5,139 +5,138 @@ using System.ComponentModel;
 using System.Linq;
 using PropertyModels.ComponentModel;
 
-namespace PropertyModels.Utils
+namespace PropertyModels.Utils;
+
+/// <summary>
+/// Class PropertyDescriptorBuilder.
+/// </summary>
+public class PropertyDescriptorBuilder
 {
     /// <summary>
-    /// Class PropertyDescriptorBuilder.
+    /// The is multiple objects
     /// </summary>
-    public class PropertyDescriptorBuilder
+    // ReSharper disable once MemberCanBePrivate.Global
+    public readonly bool IsMultipleObjects;
+
+    /// <summary>
+    /// The target
+    /// </summary>
+    public readonly object Target;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PropertyDescriptorBuilder"/> class.
+    /// </summary>
+    /// <param name="target">The target.</param>
+    /// <exception cref="System.ArgumentNullException">target</exception>
+    public PropertyDescriptorBuilder(object target)
     {
-        /// <summary>
-        /// The is multiple objects
-        /// </summary>
-        // ReSharper disable once MemberCanBePrivate.Global
-        public readonly bool IsMultipleObjects;
-
-        /// <summary>
-        /// The target
-        /// </summary>
-        public readonly object Target;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyDescriptorBuilder"/> class.
-        /// </summary>
-        /// <param name="target">The target.</param>
-        /// <exception cref="System.ArgumentNullException">target</exception>
-        public PropertyDescriptorBuilder(object target)
+        // ReSharper disable once ConvertIfStatementToSwitchStatement
+        if (target == null)
         {
-            // ReSharper disable once ConvertIfStatementToSwitchStatement
-            if (target == null)
-            {
-                throw new ArgumentNullException(nameof(target));
-            }
-
-            if (target is IEnumerable enumerable)
-            {
-                IsMultipleObjects = true;
-                Target = enumerable;
-            }
-            else
-            {
-                IsMultipleObjects = false;
-                Target = target;
-            }
+            throw new ArgumentNullException(nameof(target));
         }
 
-        /// <summary>
-        /// Gets the properties.
-        /// </summary>
-        /// <returns>PropertyDescriptorCollection.</returns>
-        public PropertyDescriptorCollection GetProperties() => IsMultipleObjects ? GetMultipleProperties((Target as IEnumerable)!) : GetProperties(Target);
-
-        /// <summary>
-        /// Gets the properties.
-        /// </summary>
-        /// <param name="target">The target.</param>
-        /// <returns>PropertyDescriptorCollection.</returns>
-        private static PropertyDescriptorCollection GetProperties(object target)
+        if (target is IEnumerable enumerable)
         {
-            if (target is ICustomTypeDescriptor ctd)
-            {
-                return ctd.GetProperties();
-            }
+            IsMultipleObjects = true;
+            Target = enumerable;
+        }
+        else
+        {
+            IsMultipleObjects = false;
+            Target = target;
+        }
+    }
 
-            return TypeDescriptor.GetProperties(target);
+    /// <summary>
+    /// Gets the properties.
+    /// </summary>
+    /// <returns>PropertyDescriptorCollection.</returns>
+    public PropertyDescriptorCollection GetProperties() => IsMultipleObjects ? GetMultipleProperties((Target as IEnumerable)!) : GetProperties(Target);
+
+    /// <summary>
+    /// Gets the properties.
+    /// </summary>
+    /// <param name="target">The target.</param>
+    /// <returns>PropertyDescriptorCollection.</returns>
+    private static PropertyDescriptorCollection GetProperties(object target)
+    {
+        if (target is ICustomTypeDescriptor ctd)
+        {
+            return ctd.GetProperties();
         }
 
-        /// <summary>
-        /// Gets the multiple properties.
-        /// </summary>
-        /// <param name="targets">The targets.</param>
-        /// <returns>PropertyDescriptorCollection.</returns>
-        private static PropertyDescriptorCollection GetMultipleProperties(IEnumerable targets)
+        return TypeDescriptor.GetProperties(target);
+    }
+
+    /// <summary>
+    /// Gets the multiple properties.
+    /// </summary>
+    /// <param name="targets">The targets.</param>
+    /// <returns>PropertyDescriptorCollection.</returns>
+    private static PropertyDescriptorCollection GetMultipleProperties(IEnumerable targets)
+    {
+        var collections = new List<PropertyDescriptorCollection>();
+        foreach (var target in targets)
         {
-            var collections = new List<PropertyDescriptorCollection>();
-            foreach (var target in targets)
+            collections.Add(GetProperties(target));
+        }
+
+        if (collections.Count == 0)
+        {
+            return new PropertyDescriptorCollection(null);
+        }
+
+        //
+        var descriptors = new List<MultiObjectPropertyDescriptor>();
+
+        var multiCollections = collections.Skip(1).ToList();
+
+        foreach (PropertyDescriptor propertyDescriptor in collections[0])
+        {
+            if (!AllowMerge(propertyDescriptor))
             {
-                collections.Add(GetProperties(target));
+                continue;
             }
 
-            if (collections.Count == 0)
+            var isMatched = true;
+            var propertyDescriptors = new List<PropertyDescriptor>(collections.Count) { propertyDescriptor };
+
+            foreach (var collection in multiCollections)
             {
-                return new PropertyDescriptorCollection(null);
-            }
+                var pd = collection.Find(propertyDescriptor.Name, false);
 
-            //
-            var descriptors = new List<MultiObjectPropertyDescriptor>();
-
-            var multiCollections = collections.Skip(1).ToList();
-
-            foreach (PropertyDescriptor propertyDescriptor in collections[0])
-            {
-                if (!AllowMerge(propertyDescriptor))
+                if (pd?.Equals(propertyDescriptor) != true)
                 {
-                    continue;
+                    isMatched = false;
+                    break;
                 }
 
-                var isMatched = true;
-                var propertyDescriptors = new List<PropertyDescriptor>(collections.Count) { propertyDescriptor };
-
-                foreach (var collection in multiCollections)
-                {
-                    var pd = collection.Find(propertyDescriptor.Name, false);
-
-                    if (pd?.Equals(propertyDescriptor) != true)
-                    {
-                        isMatched = false;
-                        break;
-                    }
-
-                    propertyDescriptors.Add(pd);
-                }
-
-                if (!isMatched)
-                {
-                    continue;
-                }
-
-                descriptors.Add(new MultiObjectPropertyDescriptor([.. propertyDescriptors]));
+                propertyDescriptors.Add(pd);
             }
 
-            // ReSharper disable once CoVariantArrayConversion
-            return new PropertyDescriptorCollection([.. descriptors]);
+            if (!isMatched)
+            {
+                continue;
+            }
+
+            descriptors.Add(new MultiObjectPropertyDescriptor([.. propertyDescriptors]));
         }
 
-        /// <summary>
-        /// Allows the merge.
-        /// </summary>
-        /// <param name="descriptor">The descriptor.</param>
-        /// <returns><c>true</c> if allow merge, <c>false</c> otherwise.</returns>
-        // ReSharper disable once MemberCanBePrivate.Global
-        public static bool AllowMerge(PropertyDescriptor descriptor)
-        {
-            var attr = descriptor.Attributes[typeof(MergablePropertyAttribute)] as MergablePropertyAttribute;
+        // ReSharper disable once CoVariantArrayConversion
+        return new PropertyDescriptorCollection([.. descriptors]);
+    }
 
-            return attr?.AllowMerge ?? MergablePropertyAttribute.Default.AllowMerge;
-        }
+    /// <summary>
+    /// Allows the merge.
+    /// </summary>
+    /// <param name="descriptor">The descriptor.</param>
+    /// <returns><c>true</c> if allow merge, <c>false</c> otherwise.</returns>
+    // ReSharper disable once MemberCanBePrivate.Global
+    public static bool AllowMerge(PropertyDescriptor descriptor)
+    {
+        var attr = descriptor.Attributes[typeof(MergablePropertyAttribute)] as MergablePropertyAttribute;
+
+        return attr?.AllowMerge ?? MergablePropertyAttribute.Default.AllowMerge;
     }
 }

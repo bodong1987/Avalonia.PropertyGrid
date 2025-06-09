@@ -5,145 +5,144 @@ using System.Diagnostics;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
-namespace PropertyModels.ComponentModel
+namespace PropertyModels.ComponentModel;
+
+/// <summary>
+/// Class BindListElementPropertyDescriptor.
+/// Implements the <see cref="PropertyDescriptor" />
+/// </summary>
+/// <seealso cref="PropertyDescriptor" />
+public class ListElementPropertyDescriptor : PropertyDescriptor
 {
     /// <summary>
-    /// Class BindListElementPropertyDescriptor.
-    /// Implements the <see cref="PropertyDescriptor" />
+    /// When overridden in a derived class, gets the type of the component this property is bound to.
     /// </summary>
-    /// <seealso cref="PropertyDescriptor" />
-    public class ListElementPropertyDescriptor : PropertyDescriptor
-    {
-        /// <summary>
-        /// When overridden in a derived class, gets the type of the component this property is bound to.
-        /// </summary>
-        /// <value>The type of the component.</value>
-        public override Type ComponentType => typeof(ListElementPropertyDescriptor);
+    /// <value>The type of the component.</value>
+    public override Type ComponentType => typeof(ListElementPropertyDescriptor);
 
-        /// <summary>
-        /// When overridden in a derived class, gets a value indicating whether this property is read-only.
-        /// </summary>
-        /// <value><c>true</c> if this instance is read only; otherwise, <c>false</c>.</value>
-        public override bool IsReadOnly => false;
+    /// <summary>
+    /// When overridden in a derived class, gets a value indicating whether this property is read-only.
+    /// </summary>
+    /// <value><c>true</c> if this instance is read only; otherwise, <c>false</c>.</value>
+    public override bool IsReadOnly => false;
 
-        /// <summary>
-        /// When overridden in a derived class, gets the type of the property.
-        /// </summary>
-        /// <value>The type of the property.</value>
-        public override Type PropertyType { get; }
+    /// <summary>
+    /// When overridden in a derived class, gets the type of the property.
+    /// </summary>
+    /// <value>The type of the property.</value>
+    public override Type PropertyType { get; }
 
-        /// <summary>
-        /// Gets the index.
-        /// </summary>
-        /// <value>The index.</value>
-        public int Index { get; }
+    /// <summary>
+    /// Gets the index.
+    /// </summary>
+    /// <value>The index.</value>
+    public int Index { get; }
         
-        /// <summary>
-        /// Value changed events
-        /// </summary>
-        public event EventHandler<ListElementValueChangedEventArgs>? ValueChanged;
+    /// <summary>
+    /// Value changed events
+    /// </summary>
+    public event EventHandler<ListElementValueChangedEventArgs>? ValueChanged;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ListElementPropertyDescriptor" /> class.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <param name="index">The index.</param>
-        /// <param name="elementType">Type of the element.</param>
-        /// <param name="attributes">The attributes.</param>
-        public ListElementPropertyDescriptor(string name, int index, Type elementType, Attribute[]? attributes = null) :
-            base(name, attributes)
-        {
-            Index = index;
-            PropertyType = elementType;
-        }
-
-        /// <summary>
-        /// When overridden in a derived class, returns whether resetting an object changes its value.
-        /// </summary>
-        /// <param name="component">The component to test for reset capability.</param>
-        /// <returns><see langword="true" /> if resetting the component changes its value; otherwise, <see langword="false" />.</returns>
-        public override bool CanResetValue(object component) => false;
-
-        /// <summary>
-        /// When overridden in a derived class, gets the current value of the property on a component.
-        /// </summary>
-        /// <param name="component">The component with the property for which to retrieve the value.</param>
-        /// <returns>The value of a property for a given component.</returns>
-        public override object? GetValue(object? component)
-        {
-            Debug.Assert(component is IList);
-            
-            return (component as IList)![Index];
-        }
-
-        /// <summary>
-        /// When overridden in a derived class, resets the value for this property of the component to the default value.
-        /// </summary>
-        /// <param name="component">The component with the property value that is to be reset to the default value.</param>
-        /// <exception cref="System.NotImplementedException"></exception>
-        public override void ResetValue(object component) => throw new NotImplementedException();
-
-        /// <summary>
-        /// When overridden in a derived class, sets the value of the component to a different value.
-        /// </summary>
-        /// <param name="component">The component with the property value that is to be set.</param>
-        /// <param name="value">The new value.</param>
-        public override void SetValue(object? component, object? value)
-        {
-            Debug.Assert(component is IList);
-
-            var oldValue = (component as IList)![Index];
-            
-            (component as IList)![Index] = value;
-            
-            ValueChanged?.Invoke(this, new ListElementValueChangedEventArgs(this, oldValue, value));
-        }
-
-        /// <summary>
-        /// When overridden in a derived class, determines a value indicating whether the value of this property needs to be persisted.
-        /// </summary>
-        /// <param name="component">The component with the property to be examined for persistence.</param>
-        /// <returns><see langword="true" /> if the property should be persisted; otherwise, <see langword="false" />.</returns>
-        public override bool ShouldSerializeValue(object component) => false;
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ListElementPropertyDescriptor" /> class.
+    /// </summary>
+    /// <param name="name">The name.</param>
+    /// <param name="index">The index.</param>
+    /// <param name="elementType">Type of the element.</param>
+    /// <param name="attributes">The attributes.</param>
+    public ListElementPropertyDescriptor(string name, int index, Type elementType, Attribute[]? attributes = null) :
+        base(name, attributes)
+    {
+        Index = index;
+        PropertyType = elementType;
     }
 
     /// <summary>
-    /// notify set property by property descriptor
+    /// When overridden in a derived class, returns whether resetting an object changes its value.
     /// </summary>
-    public class ListElementValueChangedEventArgs : EventArgs
+    /// <param name="component">The component to test for reset capability.</param>
+    /// <returns><see langword="true" /> if resetting the component changes its value; otherwise, <see langword="false" />.</returns>
+    public override bool CanResetValue(object component) => false;
+
+    /// <summary>
+    /// When overridden in a derived class, gets the current value of the property on a component.
+    /// </summary>
+    /// <param name="component">The component with the property for which to retrieve the value.</param>
+    /// <returns>The value of a property for a given component.</returns>
+    public override object? GetValue(object? component)
     {
-        /// <summary>
-        /// property descriptor
-        /// </summary>
-        public readonly ListElementPropertyDescriptor PropertyDescriptor;
-        
-        /// <summary>
-        /// old value
-        /// </summary>
-        public readonly object? OldValue;
-        
-        /// <summary>
-        /// new value
-        /// </summary>
-        public readonly object? NewValue;
+        Debug.Assert(component is IList);
+            
+        return (component as IList)![Index];
+    }
 
-        /// <summary>
-        /// get element index
-        /// </summary>
-        public int Index => PropertyDescriptor.Index;
+    /// <summary>
+    /// When overridden in a derived class, resets the value for this property of the component to the default value.
+    /// </summary>
+    /// <param name="component">The component with the property value that is to be reset to the default value.</param>
+    /// <exception cref="System.NotImplementedException"></exception>
+    public override void ResetValue(object component) => throw new NotImplementedException();
 
-        /// <summary>
-        /// constructor
-        /// </summary>
-        /// <param name="propertyDescriptor"></param>
-        /// <param name="oldValue"></param>
-        /// <param name="newValue"></param>
-        public ListElementValueChangedEventArgs(ListElementPropertyDescriptor propertyDescriptor, object? oldValue,
-            object? newValue)
-        {
-            PropertyDescriptor = propertyDescriptor;
-            OldValue = oldValue;
-            NewValue = newValue;
-        }
+    /// <summary>
+    /// When overridden in a derived class, sets the value of the component to a different value.
+    /// </summary>
+    /// <param name="component">The component with the property value that is to be set.</param>
+    /// <param name="value">The new value.</param>
+    public override void SetValue(object? component, object? value)
+    {
+        Debug.Assert(component is IList);
+
+        var oldValue = (component as IList)![Index];
+            
+        (component as IList)![Index] = value;
+            
+        ValueChanged?.Invoke(this, new ListElementValueChangedEventArgs(this, oldValue, value));
+    }
+
+    /// <summary>
+    /// When overridden in a derived class, determines a value indicating whether the value of this property needs to be persisted.
+    /// </summary>
+    /// <param name="component">The component with the property to be examined for persistence.</param>
+    /// <returns><see langword="true" /> if the property should be persisted; otherwise, <see langword="false" />.</returns>
+    public override bool ShouldSerializeValue(object component) => false;
+}
+
+/// <summary>
+/// notify set property by property descriptor
+/// </summary>
+public class ListElementValueChangedEventArgs : EventArgs
+{
+    /// <summary>
+    /// property descriptor
+    /// </summary>
+    public readonly ListElementPropertyDescriptor PropertyDescriptor;
+        
+    /// <summary>
+    /// old value
+    /// </summary>
+    public readonly object? OldValue;
+        
+    /// <summary>
+    /// new value
+    /// </summary>
+    public readonly object? NewValue;
+
+    /// <summary>
+    /// get element index
+    /// </summary>
+    public int Index => PropertyDescriptor.Index;
+
+    /// <summary>
+    /// constructor
+    /// </summary>
+    /// <param name="propertyDescriptor"></param>
+    /// <param name="oldValue"></param>
+    /// <param name="newValue"></param>
+    public ListElementValueChangedEventArgs(ListElementPropertyDescriptor propertyDescriptor, object? oldValue,
+        object? newValue)
+    {
+        PropertyDescriptor = propertyDescriptor;
+        OldValue = oldValue;
+        NewValue = newValue;
     }
 }
