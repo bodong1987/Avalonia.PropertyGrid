@@ -24,22 +24,6 @@ public enum ToolMode
     CreateArrow
 }
 
-public class EnumToBooleanConverter : IValueConverter
-{
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        if (value == null || parameter == null)
-            return false;
-
-        return value.Equals(parameter);
-    }
-
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return value is true ? parameter : AvaloniaProperty.UnsetValue;
-    }
-}
-
 public class PainterViewModel : ReactiveObject
 {
     #region Shape Properties

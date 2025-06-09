@@ -5,14 +5,15 @@
              xmlns:pg="clr-namespace:Avalonia.PropertyGrid.Controls;assembly=Avalonia.PropertyGrid"
              xmlns:lvm="clr-namespace:Avalonia.PropertyGrid.Samples.PainterDemo.ViewModel"
              xmlns:ll="clr-namespace:Avalonia.PropertyGrid.Localization;assembly=Avalonia.PropertyGrid"
+             xmlns:apvm="clr-namespace:Avalonia.PropertyGrid.ViewModels;assembly=Avalonia.PropertyGrid"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Avalonia.PropertyGrid.Samples.PainterDemo.Views.PainterView">
     <UserControl.Resources>
-        <lvm:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
+        <apvm:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
     </UserControl.Resources>
     
     <UserControl.Styles>
-        <StyleInclude Source="GradientStopView.axaml"></StyleInclude>
+        <StyleInclude Source="/PainterDemo/Views/GradientStopView.axaml"></StyleInclude>
     </UserControl.Styles>
     
     <Grid ColumnDefinitions="Auto,Auto,6*,Auto,4*">
