@@ -13,7 +13,7 @@
 * 支持自定义属性标签的控件
 * 支持自定义任意属性的栅格编辑器(CellEdit)
 * 支持额外的属性操作区及其自定义操作
-* 支持数组编辑，支持数组在控件中创建、插入、删除和清除
+* 支持集合编辑，支持在控件中添加、插入、删除和清除集合元素
 * 支持数据验证
 * 支持内置的撤销和重做框架
 * 支持全局`只读`设置
@@ -127,8 +127,7 @@ object which support TypeConverter.CanConvertFrom(typeof(string))
 * `PropertyModels.Collections.SelectableList<T>`  
 您可以使用一些对象初始化此列表，并且只能在此列表中选择一个对象。PropertyGrid默认使用ComboBox编辑此数据结构的属性
 * `PropertyModels.Collections.CheckedList<T>`    
-类似于`SelectableList<T>`，您可以使用一些对象初始化它，但可以在其中选择多个对象。PropertyGrid默认使用一组CheckBoxes编辑此数据结构的属性，例如：
-![CheckList](./Docs/Images/CheckList.png)
+类似于`SelectableList<T>`，您可以使用一些对象初始化它，但可以在其中选择多个对象。PropertyGrid默认使用一组CheckBoxes编辑此数据结构的属性。
 
 ### 数据重新加载
 实现`System.ComponentModel.INotifyPropertyChanged`接口，并在属性更改时触发`PropertyChanged`事件。`PropertyGrid`将监听这些事件并自动刷新视图数据。  
@@ -160,7 +159,7 @@ private void OnCustomPropertyDescriptorFilter(object? sender, CustomPropertyDesc
 
 ### 更改大小
 您可以通过拖动来更改名称标签和单元格编辑的宽度：
-![Dragging](./Docs/Images/ChangeSize.png)
+![Dragging](./Docs/Images/name-width.png)
 或者直接设置PropertyGrid的NameWidth属性。
 
 ### 多对象编辑
@@ -173,17 +172,22 @@ public IEnumerable<SimpleObject> multiObjects => new SimpleObject[] { multiObjec
 ```xml
 <pgc:PropertyGrid x:Name="propertyGrid_MultipleObjects" Margin="2" DataContext="{Binding multiObjects}"></pgc:PropertyGrid>
 ```
+![multi-objects](./Docs/Images/multi-objects-edit.png)  
 **由于复杂性考虑，许多复杂类型的多对象编辑不被支持！！！**
 
-### ICustomTypeDescriptor
-您可以在Samples中直接找到使用示例。  
+### Custom Object & Virtual Object
+你可以基于TypeDescriptionProvider和ICustomTypeDescriptor实现自己的自定义对象或者说虚拟对象，PropertyGrid会自动识别并使用它们。  
+![custom-objects](./Docs/Images/custom-objects.png)
 
-### 数组支持
-`PropertyGrid`支持数组编辑。这里的数组属性只能使用`BindingList`声明。设置**[Editable(false)]**可以禁用创建和删除功能，这与Array的行为一致。  
-**此外，为了支持创建功能，`BindingList`的模板参数只能是非纯虚类。**  
-**不支持结构属性。**  
+### 集合支持
+`PropertyGrid`支持集合编辑。凡是从IList实现的容器都会被自动识别并展示，但是只有实现了IBindingList或者INotifyCollectionChanged接口的容器或类型才会支持数据同步，因为数据同步需要属性类型自身抛出消息，而外部并没有任何办法可以帮到它。  
+设置**[Editable(false)]**可以禁用创建和删除功能，使得原本可增删的容器也变成和普通数组一样，只允许展示和修改，不允许增加、删除子元素。  
+![collection-support](./Docs/Images/collection-support.png)  
 
-### 展开类属性
+**此外，为了支持创建功能，容器的模板参数只能是非纯虚类。**  
+**不支持结构属性，需要自定义。**  
+
+### 可展开类属性
 当`PropertyGrid`未提供内置的CellEdit来编辑目标属性时，有几种可能性：
 
 1. 如果属性或属性的PropertyType标记了TypeConverter，则PropertyGrid将尝试使用TextBox来编辑对象。当文本更改时，它将主动尝试使用TypeConverter将字符串转换为目标对象。  
@@ -206,6 +210,7 @@ public IEnumerable<SimpleObject> multiObjects => new SimpleObject[] { multiObjec
     public LoginInfo loginInfo { get; set; } = new LoginInfo();
     #endregion
 ```  
+![expandable-objects](./Docs/Images/expandable-objects.png)  
 
 ### 数据验证
 提供数据验证功能有两种方法：
@@ -253,23 +258,25 @@ public IEnumerable<SimpleObject> multiObjects => new SimpleObject[] { multiObjec
     }
 
     [Category("DataValidation")]
-    [Description("Select platforms")]
+    [Required(ErrorMessage = "Can not be null")]
+    [Description("String that must not be null")]
+    public string ValidateString { get; set; } = "";
+
+    [Category("DataValidation")]
+    [Description("Select platforms with validation")]
     [ValidatePlatform]
-    public CheckedList<PlatformID> Platforms { get; set; } = new CheckedList<PlatformID>(Enum.GetValues(typeof(PlatformID)).Cast<PlatformID>());
-
-    [Category("Numeric")]
-    [Range(10, 200)]
-    public int iValue { get; set; } = 100;
-
-    [Category("Numeric")]
-    [Range(0.1f, 10.0f)]
-    public float fValue { get; set; } = 0.5f;
+    public CheckedList<PlatformID> Platforms { get; set; } = new(Enum.GetValues<PlatformID>());
     
-    [Category("Numeric")]
-    [Range(0.1f, 10.0f)]
-    [FloatPrecision(3)]
-    public float fValuePrecision { get; set; } = 0.5f;
-```
+    [Category("DataValidation")]
+    [Range(0, 100)]
+    [Trackable(0, 200)]
+    public int ValidateInteger { get; set; } = 100;
+
+    [Category("DataValidation")]
+    [MinLength(3), MaxLength(6)]
+    public ObservableCollection<int> ValidateIntegerCollection { get; set; } = [1, 2, 3];
+```  
+![data-validation](./Docs/Images/data-validation.png)  
 
 ### 动态可见性
 通过设置属性，您可以使某些属性仅在满足条件时显示。例如：
@@ -302,7 +309,8 @@ public IEnumerable<SimpleObject> multiObjects => new SimpleObject[] { multiObjec
     }
 ```  
 在此示例中，您可以先勾选IsShowPath，然后将Platform设置为Unix，再在UnixVersion中输入内容，您将看到unixLoginInfo字段。
-要实现这一点，您只需用自定义Attribute标记属性即可。如果您需要实现自己的规则，只需从中实现自己的规则。
+要实现这一点，您只需用自定义Attribute标记属性即可。如果您需要实现自己的规则，只需从中实现自己的规则。  
+![dynamic-visibility](./Docs/Images/dynamic-visibility.png)
 
 **其背后的实现依赖于`PropertyModels`中的`IReactiveObject`，您可以自行实现，或直接从`ReactiveObject`派生您的模型。**  
 **AbstractVisiblityConditionAttribute**  
@@ -321,6 +329,7 @@ public IEnumerable<SimpleObject> multiObjects => new SimpleObject[] { multiObjec
     ru-RU.json
     zh-CN.json
 ```  
+![localization](./Docs/Images/localization-demo.png)  
 
 ### 自定义属性标题控件
 你只需要注册事件`CustomNameBlock`，然后将你的自定义标题控件分配给`e.CustomNameBlock`即可:
@@ -348,10 +357,10 @@ public class TestExtendPropertyGrid : Controls.PropertyGrid
     }
 }
 ```
-![Custom-Label](./Docs/Images/custom-label.png)
+![Custom-Label](./Docs/Images/custom-name-control.png) 
 
 ### 自定义栅格编辑(CellEdit)
-要自定义CellEdit，您需要从AbstractCellEditFactory实现一个工厂类，然后将此类实例附加到CellEditFactoryService.Default，例如：
+要自定义CellEdit，您需要从`AbstractCellEditFactory`或其它现有工厂类实现一个新的工厂类，然后将此工厂类的实例注册给`PropertyGrid`即可，例如：
 ```C#
 public class TestExtendPropertyGrid : Controls.PropertyGrid
 {
@@ -365,7 +374,65 @@ public class TestExtendPropertyGrid : Controls.PropertyGrid
     }
 }
 ```  
-有关更多信息，请参考Samples中的Extends。  
+![Custom-CellEdit](./Docs/Images/custom-celledit.png)  
+要实现自定义的工厂类，你可能需要关注下面一些可以被重写的方法，其中前两者是必须重写的，后面的为可选：  
+1. `HandleNewProperty` 用于创建您想要编辑属性的控件，
+您需要在UI编辑数据后通过框架的接口传递值，以确保其他相关对象接收到消息通知并保存撤销重做命令。
+```C#
+    public override Control? HandleNewProperty(PropertyCellContext context)
+    {
+        var propertyDescriptor = context.Property;
+        var target = context.Target;
+
+        if (propertyDescriptor.PropertyType != typeof(bool))
+        {
+            return null;
+        }
+
+        ToggleSwitch control = new ToggleSwitch();
+        control.SetLocalizeBinding(ToggleSwitch.OnContentProperty, "On");
+        control.SetLocalizeBinding(ToggleSwitch.OffContentProperty, "Off");
+
+        control.IsCheckedChanged += (s, e) =>
+        {
+            // use this, don't change value directly
+            SetAndRaise(context, control, control.IsChecked); 
+        };
+
+        return control;
+    }
+```  
+2. `HandlePropertyChanged` 方法用于同步外部数据。当外部数据发生变化时，重新获取数据并同步到控件。  
+```C#
+    public override bool HandlePropertyChanged(PropertyCellContext context)
+    {
+        var propertyDescriptor = context.Property;
+        var target = context.Target;
+        var control = context.CellEdit!;
+
+        if (propertyDescriptor.PropertyType != typeof(bool))
+        {
+            return false;
+        }
+
+        ValidateProperty(control, propertyDescriptor, target);
+
+        if (control is ToggleSwitch ts)
+        {
+            ts.IsChecked = (bool)propertyDescriptor.GetValue(target)!;
+
+            return true;
+        }
+
+        return false;
+    }
+```  
+
+3. 重写 `ImportPriority` 可以决定你的工厂类的优先级。**值越大，优先级越高，触发越早**。
+4. 重写 `Accept` 方法可以让您的工厂仅在适当的时候生效。
+5. 重写 `HandlePropagateVisibility` 方法以自定义过滤方案。  
+6. 重写 `HandleReadOnlyStateChanged` 方法以定制你的控件的`只读`效果，默认使用`IsEnabled=value`来实现只读效果，你可以通过重写这个方法提供你的实现，比如你的控件本身就是只读模式，那么你可以通过`IsReadOnly=value`来代替默认行为。
+7. 重写 `CheckIsPropertyChanged` 方法可以定制属性大小比较的方法，比如在比较浮点数时，当差异小于某个值时，可以认为并未发生改变。
 
 ### 自定义属性操作
 要自定义属性操作，你需要先配置`PropertyGrid`的`PropertyOperationVisibility`属性为Default或者Visible，前者由属性自行决定是否显示，后者全部显示；Hidden表示禁止所有操作区显示。  
@@ -457,104 +524,12 @@ private void OnCustomPropertyOperationControl(object? sender, CustomPropertyOper
     }
 }
 ```
-![Proeprty Operation Example](./Docs/Images/operation-example.png)
+![Proeprty Operation Example](./Docs/Images/custom-property-operations.png)  
 
 ## 示例描述
 ### 特性示例
-* 基本功能  
-此页面展示了PropertyGrid的基本功能，包括各种属性的显示和默认编辑器等,另外还测试所有可调外观属性。
-![Styles](./Docs/Images/Styles.png)
-
-* 数据同步  
-![DataSync](./Docs/Images/data-sync.png)
-在这里您可以验证数据更改和自动重新加载功能。
-
-* 多对象编辑  
-![Multi-Views](./Docs/Images/Multi-Objects.png)
-您可以在这里验证多对象编辑的功能。注意：  
-  
-**某些属性不支持同时编辑多个对象。**
-
-* 自定义对象  
-![CustomObject](./Docs/Images/CustomObject.png)
-这里展示了如何基于ICustomTypeDescriptor创建自定义对象。  
-
-* 扩展
-![Extends](./Docs/Images/extends.png)
-在自定义AbstractCellEditFactory中，只有两个方法必须被重写：
-1. HandleNewProperty 用于创建您想要编辑属性的控件，
-您需要在UI编辑数据后通过框架的接口传递值，以确保其他相关对象接收到消息通知并保存撤销重做命令。
-```C#
-    public override Control? HandleNewProperty(PropertyCellContext context)
-    {
-        var propertyDescriptor = context.Property;
-        var target = context.Target;
-
-        if (propertyDescriptor.PropertyType != typeof(bool))
-        {
-            return null;
-        }
-
-        ToggleSwitch control = new ToggleSwitch();
-        control.SetLocalizeBinding(ToggleSwitch.OnContentProperty, "On");
-        control.SetLocalizeBinding(ToggleSwitch.OffContentProperty, "Off");
-
-        control.IsCheckedChanged += (s, e) =>
-        {
-            SetAndRaise(context, control, control.IsChecked);
-        };
-
-        return control;
-    }
-```  
-2. HandlePropertyChanged 方法用于同步外部数据。当外部数据发生变化时，重新获取数据并同步到控件。  
-```C#
-    public override bool HandlePropertyChanged(PropertyCellContext context)
-    {
-        var propertyDescriptor = context.Property;
-        var target = context.Target;
-        var control = context.CellEdit!;
-
-        if (propertyDescriptor.PropertyType != typeof(bool))
-        {
-            return false;
-        }
-
-        ValidateProperty(control, propertyDescriptor, target);
-
-        if (control is ToggleSwitch ts)
-        {
-            ts.IsChecked = (bool)propertyDescriptor.GetValue(target)!;
-
-            return true;
-        }
-
-        return false;
-    }
-```  
-
-3. AbstractCellEditFactory 还有一个可重写的属性 ImportPriority。该值决定了 PropertyGrid 触发这些工厂的顺序。值越大，触发越早。
-4. 重写 Accept 方法可以让您的工厂仅在适当的时候生效。
-5. 重写 HandlePropagateVisibility 方法以自定义过滤方案。
-
-例如：  
-在正常情况下，PropertyGrid 不会自动处理结构属性，因为结构具有某些特殊性。要支持此类内部不支持的类型，您需要自行扩展 PropertyGrid。此示例展示了如何支持和编辑结构 SVector3。  
-还有一个关于 SelectableList 自定义的示例供参考。  
-更多细节可以在文件 TestExtendPropertyGrid.cs 中看到。
-
-* 动态可见性
-![DynamicVisibility](./Docs/Images/DynamicVisibility.png)
-展示动态可见性  
-如果您勾选 'IsShowPath'，则可以编辑路径。  
-如果您在 Platform 中选择 Unix 并在 UnixVersion 中输入任何内容，则可以编辑额外的属性。
-
-* 撤销重做
-![RedoUndo](./Docs/Images/undoredo.png)
-此示例展示了如何基于内置的撤销重做框架实现撤销和重做功能。  
-
-* 自定义
-![custom-propertygrid](./Docs/Images/custom-propertygrid.png)
-这个示例展示了如何在PropertyGrid预留的区域中添加自定义控件。
+一组案例用于集中展示`Avalonia.PropertyGrid`的基础特性，包括但不限于：属性分析、动态调整配置、数据同步、多对象同时编辑、自定义对象、自定义栅格编辑器、动态可见性、撤销重做框架、自定义外观等等。  
+![basic-features](./docs/Images/basic-features.png)  
 
 ### 设置示例
 一个简单的示例用于展示如何基于PropertyGrid非常简单方便的实现一个系统设置界面。  

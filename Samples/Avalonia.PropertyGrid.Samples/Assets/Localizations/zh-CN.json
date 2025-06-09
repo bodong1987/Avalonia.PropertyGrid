@@ -520,5 +520,12 @@
     "Readonly login information": "只读登录信息",
     "Collapsed login information": "折叠的登录信息",
     "ValidateInteger": "校验整数",
-    "ValidateIntegerCollection": "校验整数集合"
+    "ValidateIntegerCollection": "校验整数集合",
+    "Dynamic_Visibility_Helper": "选择`是否显示路径`开关`路径`的显示，平台选择`Unix`，`Unix版本`中输入任何字符串可以显示`登录配置`",
+    "unixLogInInfo": "登录配置",
+    "DataSync_Helper": "这里演示的是PropertyGrid会触发外部的INotifyPropertyChanged事件，也会监听这个事件在必要时会重新载入相关属性。注意：没有实现IBindingList、INotifyCollectionChanged接口的容器不支持自动数据同步。",
+    "Multiple_Objects_Helper": "这里演示的是同时编辑多个对象，当你在最左侧修改对象集合时，右侧的单个对象的对应属性会随之一起变化。",
+    "Custom_Objects_Helper": "这里演示的是如何基于ICustomTypeDescriptor、TypeDescriptionProvider创建虚拟对象或者动态自定义对象。",
+    "Custom_CellEdit_Helper": "这里演示的是如何自定义某个类型属性的栅格编辑器以及如何使用[属性操作]来快速扩展针对单个属性的编辑能力。",
+    "Custom_Appearance_Helper": "这里演示的是如何基于PropertyGrid内置的HeaderContent、MiddleContent、BottomContent来为PropertyGrid预留的区域添加用户自定义界面和操作。"
 }

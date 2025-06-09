@@ -97,85 +97,111 @@
             </TabItem>
 
             <TabItem Header="{ll:Localize DataSync}">
-                <ScrollViewer>
-                    <Grid ColumnDefinitions="1*,2,1*">
-                        <GridSplitter Grid.Column="1"></GridSplitter>
-                        <pgc:PropertyGrid Grid.Column="0" Margin="2" DataContext="{Binding SyncObject}"></pgc:PropertyGrid>
-                        <pgc:PropertyGrid Margin="2" Grid.Column="2" DataContext="{Binding SyncObject}"></pgc:PropertyGrid>
-                    </Grid>
-                </ScrollViewer>
+                <Grid RowDefinitions="*, Auto">
+                    <ScrollViewer>
+                        <Grid ColumnDefinitions="1*,2,1*">
+                            <GridSplitter Grid.Row="0" Grid.Column="1"></GridSplitter>
+                            <pgc:PropertyGrid Grid.Row="0" Grid.Column="0" Margin="2" DataContext="{Binding SyncObject}"></pgc:PropertyGrid>
+                            <pgc:PropertyGrid Grid.Row="0" Margin="2" Grid.Column="2" DataContext="{Binding SyncObject}"></pgc:PropertyGrid>
+                        </Grid>
+                    </ScrollViewer>    
+                    <Border Grid.Row="1" Classes="thin" Margin="16" Padding="16">
+                        <TextBlock FontSize="16" HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{ll:Localize DataSync_Helper}"></TextBlock>    
+                    </Border>
+                </Grid>
             </TabItem>
             <TabItem Header="{ll:Localize Multiple-Objects}">
-                <ScrollViewer>
-                    <Grid ColumnDefinitions="1*,2,1*,2,1*">
-                        <Border Grid.Column="0" Classes="header-border">
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock Classes="header" Text="{ll:Localize MultiObjects}"></TextBlock>
-                                <pgc:PropertyGrid Margin="2" DataContext="{Binding MultiObjects}"></pgc:PropertyGrid>
-                            </StackPanel>   
-                        </Border>
+                <Grid RowDefinitions="*, Auto">
+                    <ScrollViewer>
+                        <Grid ColumnDefinitions="1*,2,1*,2,1*">
+                            <Border Grid.Column="0" Classes="header-border">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Classes="header" Text="{ll:Localize MultiObjects}"></TextBlock>
+                                    <pgc:PropertyGrid Margin="2" DataContext="{Binding MultiObjects}"></pgc:PropertyGrid>
+                                </StackPanel>   
+                            </Border>
                         
-                        <GridSplitter Grid.Column="1"></GridSplitter>
-                        <Border Grid.Column="2" Classes="header-border">
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock Classes="header" Text="{ll:Localize FirstObject}"></TextBlock>
-                                <pgc:PropertyGrid IsReadOnly="True" Margin="2" DataContext="{Binding MultiObject0}"></pgc:PropertyGrid>
-                            </StackPanel>   
-                        </Border>
+                            <GridSplitter Grid.Column="1"></GridSplitter>
+                            <Border Grid.Column="2" Classes="header-border">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Classes="header" Text="{ll:Localize FirstObject}"></TextBlock>
+                                    <pgc:PropertyGrid IsReadOnly="True" Margin="2" DataContext="{Binding MultiObject0}"></pgc:PropertyGrid>
+                                </StackPanel>   
+                            </Border>
                         
-                        <GridSplitter Grid.Column="3"></GridSplitter>
-                        <Border Grid.Column="4" Classes="header-border">
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock Classes="header" Text="{ll:Localize SecondObject}"></TextBlock>
-                                <pgc:PropertyGrid IsReadOnly="True" Margin="2" DataContext="{Binding MultiObject1}"></pgc:PropertyGrid>
-                            </StackPanel>   
-                        </Border>
-                    </Grid>
-                </ScrollViewer>
+                            <GridSplitter Grid.Column="3"></GridSplitter>
+                            <Border Grid.Column="4" Classes="header-border">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Classes="header" Text="{ll:Localize SecondObject}"></TextBlock>
+                                    <pgc:PropertyGrid IsReadOnly="True" Margin="2" DataContext="{Binding MultiObject1}"></pgc:PropertyGrid>
+                                </StackPanel>   
+                            </Border>
+                        </Grid>
+                    </ScrollViewer>
+                    <Border Grid.Row="1" Classes="thin" Margin="16" Padding="16">
+                        <TextBlock FontSize="16" HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{ll:Localize Multiple_Objects_Helper}"></TextBlock>    
+                    </Border>
+                </Grid>
             </TabItem>
             <TabItem Header="{ll:Localize Dynamic_Visibility}">
                 <ScrollViewer>
-                    <pgc:PropertyGrid Margin="4" DataContext="{Binding DynamicVisibility}" NameWidth="450"></pgc:PropertyGrid>
+                    <pgc:PropertyGrid Margin="4" DataContext="{Binding DynamicVisibility}" NameWidth="450">
+                        <pgc:PropertyGrid.MiddleContent>
+                            <Border Classes="thin" Margin="16" Padding="16">
+                                <TextBlock Text="{ll:Localize Dynamic_Visibility_Helper}" TextWrapping="Wrap" HorizontalAlignment="Stretch"></TextBlock>    
+                            </Border>
+                        </pgc:PropertyGrid.MiddleContent>
+                    </pgc:PropertyGrid>
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="{ll:Localize Custom-Objects}">
-                <ScrollViewer>
-                    <Grid ColumnDefinitions="1*, 2, 1*">
-                        <Border Grid.Column="0" Classes="header-border">
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock Classes="header" Text="ICustomTypeDescriptor"></TextBlock>
-                                <pgc:PropertyGrid Margin="4" DataContext="{Binding CustomOptions}"></pgc:PropertyGrid>
-                            </StackPanel>   
-                        </Border>
-                        <GridSplitter Grid.Column="1"></GridSplitter>
-                        <Border Grid.Column="2" Classes="header-border">
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock Classes="header" Text="TypeDescriptionProvider"></TextBlock>
-                                <pgc:PropertyGrid Margin="4" DataContext="{Binding CustomObject}"></pgc:PropertyGrid>
-                            </StackPanel>
-                        </Border>
-                    </Grid>    
-                </ScrollViewer>
+                <Grid RowDefinitions="*, Auto">
+                    <ScrollViewer>
+                        <Grid ColumnDefinitions="1*, 2, 1*">
+                            <Border Grid.Column="0" Classes="header-border">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Classes="header" Text="ICustomTypeDescriptor"></TextBlock>
+                                    <pgc:PropertyGrid Margin="4" DataContext="{Binding CustomOptions}"></pgc:PropertyGrid>
+                                </StackPanel>   
+                            </Border>
+                            <GridSplitter Grid.Column="1"></GridSplitter>
+                            <Border Grid.Column="2" Classes="header-border">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Classes="header" Text="TypeDescriptionProvider"></TextBlock>
+                                    <pgc:PropertyGrid Margin="4" DataContext="{Binding CustomObject}"></pgc:PropertyGrid>
+                                </StackPanel>
+                            </Border>
+                        </Grid>   
+                    </ScrollViewer>
+                    <Border Grid.Row="1" Classes="thin" Margin="16" Padding="16">
+                        <TextBlock FontSize="16" HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{ll:Localize Custom_Objects_Helper}"></TextBlock>    
+                    </Border>
+                </Grid>
             </TabItem>
 
             <TabItem Header="{ll:Localize Custom-CellEdit}">
-                <ScrollViewer>
-                    <Grid ColumnDefinitions="1*,2,1*">
-                        <Border Grid.Column="0" Classes="header-border">
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock Classes="header" Text="{ll:Localize Default-BuiltIn}"></TextBlock>
-                                <pgc:PropertyGrid DataContext="{Binding ExtendsObject}"></pgc:PropertyGrid>
-                            </StackPanel>   
-                        </Border>
-                        <GridSplitter Grid.Column="1"></GridSplitter>
-                        <Border Grid.Column="2" Classes="header-border">
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock Classes="header" Text="{ll:Localize User-Extends}"></TextBlock>
-                                <lv:TestExtendPropertyGrid Margin="2" DataContext="{Binding ExtendsObject}"></lv:TestExtendPropertyGrid>
-                            </StackPanel>   
-                        </Border>
-                    </Grid>
-                </ScrollViewer>
+                <Grid RowDefinitions="*, Auto">
+                    <ScrollViewer>
+                        <Grid ColumnDefinitions="1*,2,1*">
+                            <Border Grid.Column="0" Classes="header-border">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Classes="header" Text="{ll:Localize Default-BuiltIn}"></TextBlock>
+                                    <pgc:PropertyGrid DataContext="{Binding ExtendsObject}"></pgc:PropertyGrid>
+                                </StackPanel>   
+                            </Border>
+                            <GridSplitter Grid.Column="1"></GridSplitter>
+                            <Border Grid.Column="2" Classes="header-border">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Classes="header" Text="{ll:Localize User-Extends}"></TextBlock>
+                                    <lv:TestExtendPropertyGrid Margin="2" DataContext="{Binding ExtendsObject}"></lv:TestExtendPropertyGrid>
+                                </StackPanel>   
+                            </Border>
+                        </Grid>
+                    </ScrollViewer>
+                    <Border Grid.Row="1" Classes="thin" Margin="16" Padding="16">
+                        <TextBlock FontSize="16" HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{ll:Localize Custom_CellEdit_Helper}"></TextBlock>    
+                    </Border>
+                </Grid>
             </TabItem>
 
             <TabItem Header="{ll:Localize Custom-Appearance}">
@@ -212,12 +238,17 @@
                     </pgc:PropertyGrid.MiddleContent>
                     
                     <pgc:PropertyGrid.BottomContent>
-                        <Border Classes="thin"
-                                Padding="15"
-                                Margin="4"
-                                >
-                            <TextBlock Margin="10" Text="{Binding CurrentPropertyName, RelativeSource={RelativeSource AncestorType=lv:FeatureDemoView}}"></TextBlock>
-                        </Border>
+                        <StackPanel Orientation="Vertical">
+                            <Border Classes="thin"
+                                    Padding="15"
+                                    Margin="4"
+                            >   
+                                <TextBlock Margin="10" Text="{Binding CurrentPropertyName, RelativeSource={RelativeSource AncestorType=lv:FeatureDemoView}}"></TextBlock>
+                            </Border>
+                            <Border Classes="thin" Margin="16" Padding="16">
+                                <TextBlock FontSize="16" HorizontalAlignment="Stretch" TextWrapping="Wrap" Text="{ll:Localize Custom_Appearance_Helper}"></TextBlock>    
+                            </Border>        
+                        </StackPanel>
                     </pgc:PropertyGrid.BottomContent>
                 </pgc:PropertyGrid>
             </TabItem>

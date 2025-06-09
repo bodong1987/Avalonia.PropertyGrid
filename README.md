@@ -12,7 +12,7 @@ Its main features are:
 * Support custom property label controls
 * Support custom property cell edit  
 * Support for additional property operation areas and their custom operations
-* Support array editing, support for creating, inserting, deleting and clearing in the control
+* Support collections editing, support for adding, inserting, deleting and clearing in the control
 * Support data verification
 * Support Built-in undo and redo framework
 * Support global `ReadOnly` setting
@@ -125,8 +125,7 @@ PropertyModels.ComponentModel.ExpandableObjectDisplayModeAttribute              
 * PropertyModels.Collections.SelectableList<T>  
     You can initialize this list with some objects, and you can only select one object in this list. ProeprtyGrid uses ComboBox by default to edit the properties of this data structure
 * PropertyModels.Collections.CheckedList<T>
-    like SelectableList<T>, you can initialize it with some objects, but you can select multiple objects in it. ProeprtyGrid uses a set of CheckBoxes by default to edit the properties of this data structure, for example:
-    ![CheckList](./Docs/Images/CheckList.png)
+    like SelectableList<T>, you can initialize it with some objects, but you can select multiple objects in it. ProeprtyGrid uses a set of CheckBoxes by default to edit the properties of this data structure.
 
 ### Data Reloading
 Implement from `System.ComponentModel.INotifyPropertyChanged` and trigger the `PropertyChanged` event when the property changes. `PropertyGrid` will listen to these events and automatically refresh the view data.  
@@ -159,7 +158,7 @@ check [MainView.axaml.cs](./Samples/Avalonia.PropertyGrid.Samples/Views/MainView
 
 ### Change Size
 You can change the width of namelabel and cell edit by drag here:
-![Dragging](./Docs/Images/ChangeSize.png)
+![Dragging](./Docs/Images/name-width.png)
 Or set the NameWidth property of PropertyGrid directly.  
 
 ### Multiple Objects Edit
@@ -171,17 +170,23 @@ public IEnumerable<SimpleObject> multiObjects => new SimpleObject[] { multiObjec
 ```
 ```xml
 <pgc:PropertyGrid x:Name="propertyGrid_MultipleObjects" Margin="2" DataContext="{Binding multiObjects}"></pgc:PropertyGrid>
-```
+```  
+![multi-objects](./Docs/Images/multi-objects-edit.png)
 **Due to complexity considerations, there are many complex types of multi-object editing that are not supported!!!**
 
-### ICustomTypeDescriptor
-You can find usage examples directly in Samples
+### Custom Object & Virtual Object
+You can implement your own custom objects or virtual objects based on TypeDescriptionProvider and ICustomTypeDescriptor, and PropertyGrid will automatically recognize and use them.  
+![custom-objects](./Docs/Images/custom-objects.png)
 
-### Array Support
-PropertyGrid supports array editing. The array properties here can only be declared using BindingList. Setting **[Editable(false)]** can disable the creation and deletion functions, which is consistent with the behavior of Array. In addition, in order to support creation functions, **the template parameters of BindingList can only be non-pure virtual classes.**   
-**Struct properties are not supported.**
+### Collection Support
+`PropertyGrid` supports collection editing.  
+All containers implemented from IList will be automatically recognized and displayed, but only containers or types that implement IBindingList or INotifyCollectionChanged interface will support data synchronization, because data synchronization requires the property type to throw messages itself, and there is no way to help it from the outside.   
+Setting **[Editable(false)]** can disable the creation and deletion functions, making the original addable and deleteable container become the same as a normal array, only allowing display and modification, not allowing the addition and deletion of child elements.   
+![collection-support](./Docs/Images/collection-support.png)  
+**In addition, in order to support the creation function, the template parameter of the container can only be a non-pure virtual class. ** 
+**Structural properties are not supported and need to be customized. **
 
-### Expand Class Properties
+### Expandable Class Properties
 When PropertyGrid does not provide a built-in CellEdit to edit the target property, there are several possibilities:
 1. If the property or the PropertyType of property is marked with TypeConverter, then the PropertyGrid will try to use the TextBox to edit the object. When the text is changed, it will actively try to use TypeConverter to convert the string into the target object.
 2. If the property uses ExpandableObjectConverter, then PropertyGrid will try to expand the object in place.
@@ -202,7 +207,8 @@ When PropertyGrid does not provide a built-in CellEdit to edit the target proper
     [TypeConverter(typeof(ExpandableObjectConverter))]
     public LoginInfo loginInfo { get; set; } = new LoginInfo();
     #endregion
-```
+```  
+![expandable-objects](./Docs/Images/expandable-objects.png)   
 
 ### Data Validation
 There are two ways to provide data validation capabilities:
@@ -251,22 +257,23 @@ There are two ways to provide data validation capabilities:
     }
 
     [Category("DataValidation")]
-    [Description("Select platforms")]
+    [Required(ErrorMessage = "Can not be null")]
+    [Description("String that must not be null")]
+    public string ValidateString { get; set; } = "";
+
+    [Category("DataValidation")]
+    [Description("Select platforms with validation")]
     [ValidatePlatform]
-    public CheckedList<PlatformID> Platforms { get; set; } = new CheckedList<PlatformID>(Enum.GetValues(typeof(PlatformID)).Cast<PlatformID>());
-
-    [Category("Numeric")]
-    [Range(10, 200)]
-    public int iValue { get; set; } = 100;
-
-    [Category("Numeric")]
-    [Range(0.1f, 10.0f)]
-    public float fValue { get; set; } = 0.5f;
+    public CheckedList<PlatformID> Platforms { get; set; } = new(Enum.GetValues<PlatformID>());
     
-    [Category("Numeric")]
-    [Range(0.1f, 10.0f)]
-    [FloatPrecision(3)]
-    public float fValuePrecision { get; set; } = 0.5f;
+    [Category("DataValidation")]
+    [Range(0, 100)]
+    [Trackable(0, 200)]
+    public int ValidateInteger { get; set; } = 100;
+
+    [Category("DataValidation")]
+    [MinLength(3), MaxLength(6)]
+    public ObservableCollection<int> ValidateIntegerCollection { get; set; } = [1, 2, 3];
 ```
 
 ### Dynamic Visibilty
@@ -298,10 +305,10 @@ By setting Attribute, you can make certain Properties only displayed when condit
         [TypeConverter(typeof(ExpandableObjectConverter))]
         public LoginInfo unixLogInInfo { get; set; } = new LoginInfo();
     }
-```
-In this example, you can check IsShowPath first, then set the Platform to Unix, and then enter something in UnixVersion, and you will see the unixLoginInfo field.
+```  
+![dynamic-visibility](./Docs/Images/dynamic-visibility.png)  
+In this example, you can check `IsShowPath` first, then set the `Platform` to Unix, and then enter anything in `UnixVersion`, and you will see the `unixLoginInfo` field.
 To do this, you only need to mark the property with a custom Attribute. If you need to implement your own rules, just implement your own rules from.  
-
 
 **The implementation behind this depends on `IReactiveObject` in `PropertyModels`, you can implement it yourself, or directly derive your Model from `ReactiveObject`.**
 
@@ -320,6 +327,7 @@ If you want to provide the corresponding language pack for the built-in text, pl
     ru-RU.json
     zh-CN.json
 ```
+![localization](./Docs/Images/localization-demo.png)  
 
 ### Custom Property Label Controls
 To custom label control, use `CustomNameBlock` event on PropertyGrid, and assign your custom control to `e.CustomNameBlock`, for example:
@@ -347,10 +355,11 @@ public class TestExtendPropertyGrid : Controls.PropertyGrid
     }
 }
 ```
-![Custom-Label](./Docs/Images/custom-label.png) 
+![Custom-Label](./Docs/Images/custom-name-control.png) 
 
 ### Custom Cell Edit
-To customize CellEdit, you need to implement a Factory class from AbstractCellEditFactory, and then append this class instance to CellEditFactoryService.Default, such as:
+To customize a CellEdit, you need to implement a new factory class from `AbstractCellEditFactory` or other existing factory classes, and then register an instance of this factory class with the `PropertyGrid`, for example:
+
 ```C#
 public class TestExtendPropertyGrid : Controls.PropertyGrid
 {
@@ -364,7 +373,66 @@ public class TestExtendPropertyGrid : Controls.PropertyGrid
     }
 }
 ```
-Refer to Extends in Samples for more information.  
+
+![Custom-CellEdit](./Docs/Images/custom-celledit.png)  
+
+To implement a custom factory class, you may need to focus on the following methods that can be overridden. The first two are mandatory to override, while the others are optional:  
+
+1. `HandleNewProperty` is used to create the control you want to use to edit the property. You need to pass the value through the framework's interface after editing the data in the UI to ensure that other related objects receive the notification and save the undo/redo command.  
+```C#
+public override Control? HandleNewProperty(PropertyCellContext context)
+{
+    var propertyDescriptor = context.Property;
+    var target = context.Target;
+
+    if (propertyDescriptor.PropertyType != typeof(bool))
+    {
+        return null;
+    }
+
+    ToggleSwitch control = new ToggleSwitch();
+    control.SetLocalizeBinding(ToggleSwitch.OnContentProperty, "On");
+    control.SetLocalizeBinding(ToggleSwitch.OffContentProperty, "Off");
+
+    control.IsCheckedChanged += (s, e) =>
+    {
+        // use this, don't change value directly
+        SetAndRaise(context, control, control.IsChecked); 
+    };
+
+    return control;
+}
+```
+2. `HandlePropertyChanged` method is used to synchronize external data. When external data changes, retrieve the data again and synchronize it to the control.  
+```C#
+public override bool HandlePropertyChanged(PropertyCellContext context)
+{
+    var propertyDescriptor = context.Property;
+    var target = context.Target;
+    var control = context.CellEdit!;
+
+    if (propertyDescriptor.PropertyType != typeof(bool))
+    {
+        return false;
+    }
+
+    ValidateProperty(control, propertyDescriptor, target);
+
+    if (control is ToggleSwitch ts)
+    {
+        ts.IsChecked = (bool)propertyDescriptor.GetValue(target)!;
+
+        return true;
+    }
+
+    return false;
+}
+```
+3. Override `ImportPriority` to determine the priority of your factory class. The larger the value, the higher the priority, and the earlier it is triggered.  
+4. Override the `Accept` method to make your factory effective only when appropriate.
+5. Override `HandlePropagateVisibility` method to customize the filtering scheme.
+6. Override `HandleReadOnlyStateChanged` method to customize the read-only effect of your control. By default, `IsEnabled=value` is used to achieve the read-only effect. You can provide your implementation by overriding this method. For example, if your control is inherently in read-only mode, you can use `IsReadOnly=value` to replace the default behavior.
+7. Override `CheckIsPropertyChanged` method to customize the method of comparing property sizes. For example, when comparing floating-point numbers, if the difference is less than a certain value, it can be considered unchanged.
 
 ### Custom Property Operations
 
@@ -459,104 +527,12 @@ private void OnCustomPropertyOperationControl(object? sender, CustomPropertyOper
     }
 }
 ```
-![Proeprty Operation Example](./Docs/Images/operation-example.png)
+![Proeprty Operation Example](./Docs/Images/custom-property-operations.png)  
 
 ## Description of Samples
 ### Feature Demos
-* Basic  
-This page shows the basic functions of PropertyGrid, including the display of various properties and the default editor, etc.  
-Test all adjustable appearance properties.  
-![Styles](./Docs/Images/Styles.png)
-
-* DataSync  
-![DataSync](./Docs/Images/data-sync.png)
-Here you can verify data changes and auto-reload functionality.
-
-* MultiObjects  
-![Multi-Views](./Docs/Images/Multi-Objects.png)
-You can verify the function of multi-object editing here. Note:   
-  
-**some properties do not support editing multiple objects at the same time.**
-
-* CustomObject  
-![CustomObject](./Docs/Images/CustomObject.png)
-Here shows how to create a custom object based on ICustomTypeDescriptor.
-
-* Extends  
-![Extends](./Docs/Images/extends.png)
-In custom AbstractCellEditFactory, there are only two methods that must be overridden:  
-1. HandleNewProperty is used to create the control you want to edit the property, 
-You need to pass the value out through the interface of the framework after the UI edits the data, so as to ensure that other related objects receive the message notification and save the undo redo command.  
-```C#
-    public override Control? HandleNewProperty(PropertyCellContext context)
-    {
-        var propertyDescriptor = context.Property;
-        var target = context.Target;
-
-        if (propertyDescriptor.PropertyType != typeof(bool))
-        {
-            return null;
-        }
-
-        ToggleSwitch control = new ToggleSwitch();
-        control.SetLocalizeBinding(ToggleSwitch.OnContentProperty, "On");
-        control.SetLocalizeBinding(ToggleSwitch.OffContentProperty, "Off");
-
-        control.IsCheckedChanged += (s, e) =>
-        {
-            SetAndRaise(context, control, control.IsChecked);
-        };
-
-        return control;
-    }
-```
-2. HandleProeprtyChanged method is used to synchronize external data. When the external data changes, the data is reacquired and synchronized to the control.
-```C#
-    public override bool HandlePropertyChanged(PropertyCellContext context)
-    {
-        var propertyDescriptor = context.Property;
-        var target = context.Target;
-        var control = context.CellEdit!;
-
-        if (propertyDescriptor.PropertyType != typeof(bool))
-        {
-            return false;
-        }
-
-        ValidateProperty(control, propertyDescriptor, target);
-
-        if (control is ToggleSwitch ts)
-        {
-            ts.IsChecked = (bool)propertyDescriptor.GetValue(target)!;
-
-            return true;
-        }
-
-        return false;
-    }
-```
-3. AbstractCellEditFactory also has a overrideable property ImportPriority. This value determines the order in which the PropertyGrid triggers these Factories. The larger the value, the earlier the trigger.   
-4. Overriding the Accept method allows your Factory to only take effect when appropriate.  
-5. Override the HandlePropagateVisibility method to customize the filtering scheme
-
-For example:  
-Under normal circumstances, PropertyGrid does not automatically handle structure properties, because structures have certain particularities. To support such internally unsupported types, you need to extend PropertyGrid yourself. This example shows how to support and edit the structure SVector3.  
-There is also an example of SelectableList customization for reference.  
-More details can be seen in the file TestExtendPropertyGrid.cs.  
-
-* Dynamic Visibility  
-![DynamicVisibility](./Docs/Images/DynamicVisibility.png)
-Show Dynamic Visibility  
-If you check 'IsShowPath', the Path can be edited.  
-If you select Unix in Platform and input anything in UnixVersion, you can edit the extra properties.
-
-* UndoRedo  
-![RedoUndo](./Docs/Images/undoredo.png)
-This example shows how to implement undo and redo functions based on the built-in undo-redo framework.  
-
-* Custom
-![custom-propertygrid](./Docs/Images/custom-propertygrid.png)
-This sample shows how to add custom controls in the reserved area of ​​PropertyGrid.  
+A set of cases is used to showcase the basic features of `Avalonia.PropertyGrid`, including but not limited to: property analysis, dynamic configuration adjustment, data synchronization, simultaneous editing of multiple objects, custom objects, custom grid editors, dynamic visibility, undo-redo framework, custom appearance, etc.  
+![basic-features](./docs/Images/basic-features.png)
 
 ### Settings Demo
 A simple example is used to show how to implement a system settings interface based on PropertyGrid very simply and conveniently.  

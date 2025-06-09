@@ -50,5 +50,14 @@
     "FreehandShape": "Freehand",
     "Add_Shapes": "Add Shapes",
     "Delete_Shape": "Delete Shape",
-    "PainterDemo_HelpText": "Select the working mode in the toolbar on the left, right-click to delete the element, click the element in the selection mode to view and edit the element properties, and you can also drag the element."
+    "PainterDemo_HelpText": "Select the working mode in the toolbar on the left, right-click to delete the element, click the element in the selection mode to view and edit the element properties, and you can also drag the element.",
+    "Dynamic_Visibility_Helper": "Select [Need Show Path?] to turn on and off the display of [Path]. Select [Unix] for the platform. Enter any string in [Unix Version] to display [Login Configuration].",
+    "unixLogInInfo": "Login Configuration",
+    "IsShowPath": "Need Show Path?",
+    "UnixVersion": "Unix Version",
+    "DataSync_Helper": "Here we demonstrate that PropertyGrid will trigger an external INotifyPropertyChanged event, and will also listen to this event and reload related properties when necessary. Note: Containers that do not implement the IBindingList and INotifyCollectionChanged interfaces do not support automatic data synchronization.",
+    "Multiple_Objects_Helper": "What is demonstrated here is editing multiple objects at the same time. When you modify the object collection on the far left, the corresponding properties of the single object on the right will change accordingly.",
+    "Custom_Objects_Helper": "This demonstrates how to create virtual objects or dynamic custom objects based on ICustomTypeDescriptor and TypeDescriptionProvider.",
+    "Custom_CellEdit_Helper": "Here we demonstrate how to customize the grid editor for a certain type of property and how to use [Property Operations] to quickly expand the editing capabilities for a single property.",
+    "Custom_Appearance_Helper": "What is demonstrated here is how to add user-defined interfaces and operations to the area reserved for PropertyGrid based on the built-in HeaderContent, MiddleContent, and BottomContent of PropertyGrid."
 }
