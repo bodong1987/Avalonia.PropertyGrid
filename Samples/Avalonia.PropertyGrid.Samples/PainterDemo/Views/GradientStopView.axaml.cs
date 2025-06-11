@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Media;
@@ -9,24 +10,35 @@ namespace Avalonia.PropertyGrid.Samples.PainterDemo.Views;
 
 public class GradientStopView : TemplatedControl
 {
-    public EventHandler<AvaloniaPropertyChangedEventArgs>? GradientStopChanged;
+    public EventHandler? PreviewColorChanged;
+    public EventHandler? ColorChanged;
+    public EventHandler? PreviewOffsetChanged;
+    public EventHandler? OffsetChanged;
 
-    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    public Color Color => _previewableColorPicker!.Color;
+    public Color StartPreviewColor => _previewableColorPicker!.StartPreviewColor;
+
+    public double Offset => _previewableSlider!.Value;
+    public double StartPreviewOffset => _previewableSlider!.StartPreviewValue;
+    
+    private PreviewableColorPicker? _previewableColorPicker;
+    private PreviewableSlider? _previewableSlider;
+    
+    protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
-        if (change.Property == DataContextProperty)
-        {
-            if (change.OldValue is GradientStop oldValue)
-                oldValue.PropertyChanged -= OnGradientStopValuePropertyChanged;
+        base.OnApplyTemplate(e);
 
-            if (change.NewValue is GradientStop newValue)
-                newValue.PropertyChanged += OnGradientStopValuePropertyChanged;
-        }
-
-        base.OnPropertyChanged(change);
+        _previewableColorPicker = e.NameScope.Find<PreviewableColorPicker>("Part_ColorPicker");
+        _previewableSlider = e.NameScope.Find<PreviewableSlider>("Part_Slider");
+        
+        Debug.Assert(_previewableColorPicker != null);
+        Debug.Assert(_previewableSlider != null);
+        
+        _previewableColorPicker.PreviewColorChanged += (s,ee)=> PreviewColorChanged?.Invoke(this, ee);
+        _previewableColorPicker.ColorChanged += (s,ee)=> ColorChanged?.Invoke(this, ee);
+        _previewableSlider.PreviewValueChanged += (s, ee)=> PreviewOffsetChanged?.Invoke(this, ee);
+        _previewableSlider.RealValueChanged += (s, ee)=> OffsetChanged?.Invoke(this, ee);
     }
-
-    private void OnGradientStopValuePropertyChanged(object? sender, AvaloniaPropertyChangedEventArgs e) =>
-        GradientStopChanged?.Invoke(sender, e);
 }
 
 internal class GradientStopCellEditFactory : AbstractCellEditFactory
@@ -42,12 +54,37 @@ internal class GradientStopCellEditFactory : AbstractCellEditFactory
             DataContext = new GradientStop(value.Color, value.Offset)  // make a copy
         };
 
-        control.GradientStopChanged += (s, e) =>
+        control.PreviewColorChanged += (s, e) =>
         {
-            var currentValue = (control.DataContext as GradientStop)!;
+            var currentValue = control.Color;
             
-            // make a copy, so it will save the changed command in command queue...
-            SetAndRaise(context, control, new GradientStop(currentValue.Color, currentValue.Offset));
+            // only set value, don't generate command...
+            HandleSetValue(context, control, new GradientStop(currentValue, control.Offset) );
+        };
+
+        control.ColorChanged += (s, e) =>
+        {
+            var currentValue = control.Color;
+            var oldValue = control.StartPreviewColor;
+
+            // set and generate command
+            SetAndRaise(context, control, new GradientStop(currentValue, control.Offset), new GradientStop(oldValue, control.Offset));
+        };
+
+        control.PreviewOffsetChanged += (s, e) =>
+        {
+            var currentValue = control.Color;
+            
+            // only set value, don't generate command...
+            HandleSetValue(context, control, new GradientStop(currentValue, control.StartPreviewOffset));
+        };
+
+        control.OffsetChanged += (s, e) =>
+        {
+            var currentValue = control.Color;
+            
+            // set and generate command
+            SetAndRaise(context, control, new GradientStop(currentValue, control.Offset), new GradientStop(currentValue, control.StartPreviewOffset));
         };
 
         return control;

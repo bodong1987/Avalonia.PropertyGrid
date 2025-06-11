@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -136,8 +137,13 @@ public class PreviewableSlider : TemplatedControl
     }
 
     private bool _isDragging;
-    private double _preDragValue;
     private Slider? _slider;
+    
+    /// <summary>
+    /// start preview value.
+    /// </summary>
+    [Browsable(false)]
+    public double StartPreviewValue { get; private set; }
 
     /// <inheritdoc />
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -165,7 +171,7 @@ public class PreviewableSlider : TemplatedControl
     private void OnDragStarted(object? sender, VectorEventArgs e)
     {
         _isDragging = true;
-        _preDragValue = Value;
+        StartPreviewValue = Value;
         e.Handled = true;
     }
 
@@ -175,9 +181,9 @@ public class PreviewableSlider : TemplatedControl
 
         _isDragging = false;
 
-        if (Math.Abs(_preDragValue - Value) > double.Epsilon)
+        if (Math.Abs(StartPreviewValue - Value) > double.Epsilon)
         {
-            RaiseEvent(new RealValueChangedEventArgs(RealValueChangedReason.DragEnd, _preDragValue, RealValueChangedEvent, this));
+            RaiseEvent(new RealValueChangedEventArgs(RealValueChangedReason.DragEnd, StartPreviewValue, RealValueChangedEvent, this));
         }
 
         e.Handled = true;

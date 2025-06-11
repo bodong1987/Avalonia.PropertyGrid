@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -64,8 +65,13 @@ namespace Avalonia.PropertyGrid.Controls
         private TextBlock? _colorText;
         private Flyout? _flyout;
         private ColorView? _colorView;
-        private Color _startPreviewColor;
-        
+
+        /// <summary>
+        /// old preview color
+        /// </summary>
+        [Browsable(false)]
+        public Color StartPreviewColor { get; private set; }
+
         static PreviewableColorPicker()
         {
             ColorProperty.Changed.AddClassHandler<PreviewableColorPicker>((x, e) => x.UpdateColorDisplay());
@@ -162,7 +168,7 @@ namespace Avalonia.PropertyGrid.Controls
                     _colorView.Color = Color;
                 }
 
-                _startPreviewColor = Color;
+                StartPreviewColor = Color;
                     
                 _flyout.ShowAt(_colorPreviewer!);
                 e.Handled = true;
@@ -180,7 +186,7 @@ namespace Avalonia.PropertyGrid.Controls
             var previewArgs = new ColorChangedEventArgs
             {
                 RoutedEvent = PreviewColorChangedEvent,
-                OldColor = _startPreviewColor,
+                OldColor = StartPreviewColor,
                 NewColor = e.NewColor
             };
             RaiseEvent(previewArgs);
@@ -194,7 +200,7 @@ namespace Avalonia.PropertyGrid.Controls
             var colorArgs = new ColorChangedEventArgs
             {
                 RoutedEvent = ColorChangedEvent,
-                OldColor = _startPreviewColor,
+                OldColor = StartPreviewColor,
                 NewColor = Color
             };
             RaiseEvent(colorArgs);
