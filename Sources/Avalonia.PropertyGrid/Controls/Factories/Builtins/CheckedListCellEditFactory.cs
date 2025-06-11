@@ -62,14 +62,14 @@ public class CheckedListCellEditFactory : AbstractCellEditFactory
                     () =>
                     {
                         list.SelectRange(items);
-                        HandleRaiseEvent(control, context);
+                        HandleRaiseEvent(context, control);
 
                         return true;
                     },
                     () =>
                     {
                         list.SelectRange(oldItems);
-                        HandleRaiseEvent(control, context);
+                        HandleRaiseEvent(context, control);
 
                         return true;
                     }

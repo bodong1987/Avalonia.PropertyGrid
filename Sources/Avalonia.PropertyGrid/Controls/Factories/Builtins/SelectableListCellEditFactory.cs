@@ -74,7 +74,7 @@ public class SelectableListCellEditFactory : AbstractCellEditFactory
 
                     _ = ExecuteCommand(command, context, list, list, oldValue);
 
-                    HandleRaiseEvent(control, context);
+                    HandleRaiseEvent(context, control);
                 }
             };
 
@@ -134,7 +134,7 @@ public class SelectableListCellEditFactory : AbstractCellEditFactory
 
                     _ = ExecuteCommand(command, context, list, list, oldValue);
 
-                    HandleRaiseEvent((control as Control)!, context);
+                    HandleRaiseEvent(context, (control as Control)!);
                 }
             };
 

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Diagnostics;
 using Avalonia.Controls;
 using Avalonia.Layout;
 using Avalonia.Media;
@@ -72,30 +73,54 @@ public class ColorCellEditFactory : AbstractCellEditFactory
 
         var type = propertyDescriptor.PropertyType;
 
-        var colorPicker = new ColorPicker
-        {
-            Palette = new MaterialHalfColorPalette(),
-            HorizontalAlignment = HorizontalAlignment.Left
-        };
+        var colorPicker = new PreviewableColorPicker();
 
-        colorPicker.ColorChanged += (s, e) =>
+        colorPicker.ColorChanged += (s, args) =>
         {
+            var e = args as ColorChangedEventArgs;
+            Debug.Assert(e != null);
+            
             if (type == typeof(Color))
             {
                 var c = Color.FromArgb(e.NewColor.A, e.NewColor.R, e.NewColor.G, e.NewColor.B);
-                SetAndRaise(context, colorPicker, c);
+                var oldColor = Color.FromArgb(e.OldColor.A, e.OldColor.R, e.OldColor.G, e.OldColor.B);
+                SetAndRaise(context, colorPicker, c,  oldColor);
             }
             else if (type == typeof(Media.Color))
             {
-                SetAndRaise(context, colorPicker, e.NewColor);
+                SetAndRaise(context, colorPicker, e.NewColor, e.OldColor);
             }
             else if (type == typeof(HslColor))
             {
-                SetAndRaise(context, colorPicker, e.NewColor.ToHsl());
+                SetAndRaise(context, colorPicker, e.NewColor.ToHsl(), e.OldColor.ToHsl());
             }
             else if (type == typeof(HsvColor))
             {
-                SetAndRaise(context, colorPicker, e.NewColor.ToHsv());
+                SetAndRaise(context, colorPicker, e.NewColor.ToHsv(), e.OldColor.ToHsv());
+            }
+        };
+
+        colorPicker.PreviewColorChanged += (s, args) =>
+        {
+            var e = args as ColorChangedEventArgs;
+            Debug.Assert(e != null);
+            
+            if (type == typeof(Color))
+            {
+                var c = Color.FromArgb(e.NewColor.A, e.NewColor.R, e.NewColor.G, e.NewColor.B);
+                HandleSetValue(context, colorPicker, c);
+            }
+            else if (type == typeof(Media.Color))
+            {
+                HandleSetValue(context, colorPicker, e.NewColor);
+            }
+            else if (type == typeof(HslColor))
+            {
+                HandleSetValue(context, colorPicker, e.NewColor.ToHsl());
+            }
+            else if (type == typeof(HsvColor))
+            {
+                HandleSetValue(context, colorPicker, e.NewColor.ToHsv());
             }
         };
 
@@ -120,7 +145,7 @@ public class ColorCellEditFactory : AbstractCellEditFactory
 
         ValidateProperty(control, propertyDescriptor, target);
 
-        if (control is ColorPicker colorPicker)
+        if (control is PreviewableColorPicker colorPicker)
         {
             colorPicker.Color = propertyDescriptor.GetValue(target) switch
             {

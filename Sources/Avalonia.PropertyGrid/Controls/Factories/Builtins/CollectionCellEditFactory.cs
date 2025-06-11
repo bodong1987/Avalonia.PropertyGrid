@@ -201,7 +201,7 @@ public class CollectionCellEditFactory : AbstractCellEditFactory
                     {
                         value.RemoveAt(index);
 
-                        HandleRaiseEvent(context.CellEdit!, context);
+                        HandleRaiseEvent(context, context.CellEdit!);
                             
                         control.RaiseUnObservableListChangedEvent();
 
@@ -216,7 +216,7 @@ public class CollectionCellEditFactory : AbstractCellEditFactory
                     {
                         value.Insert(index, oldElement);
 
-                        HandleRaiseEvent(context.CellEdit!, context);
+                        HandleRaiseEvent(context, context.CellEdit!);
                             
                         control.RaiseUnObservableListChangedEvent();
 
@@ -254,7 +254,7 @@ public class CollectionCellEditFactory : AbstractCellEditFactory
             {
                 value.Clear();
 
-                HandleRaiseEvent(context.CellEdit!, context);
+                HandleRaiseEvent(context, context.CellEdit!);
                     
                 control.RaiseUnObservableListChangedEvent();
 
@@ -267,7 +267,7 @@ public class CollectionCellEditFactory : AbstractCellEditFactory
                     _ = value.Add(l);
                 }
 
-                HandleRaiseEvent(context.CellEdit!, context);
+                HandleRaiseEvent(context, context.CellEdit!);
                     
                 control.RaiseUnObservableListChangedEvent();
 
@@ -306,7 +306,7 @@ public class CollectionCellEditFactory : AbstractCellEditFactory
             {
                 value.Insert(index, newElement);
 
-                HandleRaiseEvent(context.CellEdit!, context);
+                HandleRaiseEvent(context, context.CellEdit!);
                     
                 control.RaiseUnObservableListChangedEvent();
 
@@ -316,7 +316,7 @@ public class CollectionCellEditFactory : AbstractCellEditFactory
             {
                 value.RemoveAt(index);
 
-                HandleRaiseEvent(context.CellEdit!, context);
+                HandleRaiseEvent(context, context.CellEdit!);
                     
                 control.RaiseUnObservableListChangedEvent();
 
@@ -350,7 +350,7 @@ public class CollectionCellEditFactory : AbstractCellEditFactory
             {
                 _ = value.Add(newElement);
 
-                HandleRaiseEvent(context.CellEdit!, context);
+                HandleRaiseEvent(context, context.CellEdit!);
                     
                 control.RaiseUnObservableListChangedEvent();
 
@@ -360,7 +360,7 @@ public class CollectionCellEditFactory : AbstractCellEditFactory
             {
                 value.RemoveAt(value.Count - 1);
 
-                HandleRaiseEvent(context.CellEdit!, context);
+                HandleRaiseEvent(context, context.CellEdit!);
                     
                 control.RaiseUnObservableListChangedEvent();
 

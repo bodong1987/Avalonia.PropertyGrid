@@ -110,7 +110,7 @@ public class TrackableCellEditFactory : NumericCellEditFactory
             {
                 // just set value, don't generate a command
                 var value = Convert.ChangeType(control.Value, context.Property.PropertyType);
-                HandleSetValue(control, context, value);
+                HandleSetValue(context, control, value);
             }
             catch (Exception ex)
             {

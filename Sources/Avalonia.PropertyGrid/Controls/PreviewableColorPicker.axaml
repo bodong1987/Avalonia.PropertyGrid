@@ -1,0 +1,41 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ll="using:Avalonia.PropertyGrid.Localization"
+        xmlns:controls="using:Avalonia.PropertyGrid.Controls">
+    <Design.PreviewWith>
+        <controls:PreviewableColorPicker />
+    </Design.PreviewWith>
+    
+    <Style Selector="controls|PreviewableColorPicker">
+        <!-- Set Defaults -->
+        <Setter Property="Template">
+            <ControlTemplate>
+                <DataValidationErrors>
+                    <Grid ColumnDefinitions="*, Auto">
+                        <ColorPreviewer Name="PART_ColorPreviewer"
+                                        Grid.Column="0"
+                                        IsAccentColorsVisible="False"
+                                        Padding="10"
+                                        Height="24">
+                        </ColorPreviewer>
+                        
+                        <TextBlock Name="PART_ColorText"
+                                   Grid.Column="1"
+                                   Text="#FFFFFFFF"
+                                   Margin="16,0,16,0"
+                                   Width="100"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   >
+                            <TextBlock.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Name="PART_CopyToClipboard" Header="{ll:Localize Copy}"/>
+                                </ContextMenu>
+                            </TextBlock.ContextMenu>
+                        </TextBlock>
+                    </Grid>
+                </DataValidationErrors>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>

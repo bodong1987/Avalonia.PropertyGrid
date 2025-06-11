@@ -38,5 +38,6 @@
     "Change {0} selection from {1} to {2}": "属性[{0}]选择项从<{1}>变更为<{2}>",
     "ReadOnly": "只读",
     "Readonly": "只读",
-    "MainOptionSettingsTooltip": "选择你的显示模式和使用一些快捷功能"
+    "MainOptionSettingsTooltip": "选择你的显示模式和使用一些快捷功能",
+    "Copy": "复制"
 }

@@ -128,12 +128,12 @@ public abstract class AbstractCellEditFactory : ICellEditFactory
                 string.Format(LocalizationService.Default["Change {0} form {1} to {2}"], context.Property.DisplayName, oldValue != null ? oldValue.ToString() : "null", value != null ? value.ToString() : "null"),
                 () =>
                 {
-                    HandleSetValue(sourceControl, context, value);
+                    HandleSetValue(context, sourceControl, value);
                     return true;
                 },
                 () =>
                 {
-                    HandleSetValue(sourceControl, context, oldValue);
+                    HandleSetValue(context, sourceControl, oldValue);
                     return true;
                 }
             )
@@ -213,10 +213,10 @@ public abstract class AbstractCellEditFactory : ICellEditFactory
     /// <summary>
     /// Handles the set value.
     /// </summary>
-    /// <param name="sourceControl">The source control.</param>
     /// <param name="context">The context.</param>
+    /// <param name="sourceControl">The source control.</param>
     /// <param name="value">The value.</param>
-    protected virtual void HandleSetValue(Control sourceControl, PropertyCellContext context, object? value)
+    protected virtual void HandleSetValue(PropertyCellContext context, Control sourceControl, object? value)
     {
         DataValidationErrors.ClearErrors(sourceControl);
 
@@ -235,9 +235,18 @@ public abstract class AbstractCellEditFactory : ICellEditFactory
     /// <summary>
     /// Handles the raise event.
     /// </summary>
-    /// <param name="sourceControl">The source control.</param>
+    /// <param name="context"></param>
+    protected void HandleRaiseEvent(PropertyCellContext context)
+    {
+        HandleRaiseEvent(context, context.CellEdit!);
+    }
+
+    /// <summary>
+    /// Handles the raise event.
+    /// </summary>
     /// <param name="context">The context.</param>
-    protected virtual void HandleRaiseEvent(Control sourceControl, PropertyCellContext context)
+    /// <param name="sourceControl">The source control.</param>
+    protected virtual void HandleRaiseEvent(PropertyCellContext context, Control sourceControl)
     {
         DataValidationErrors.ClearErrors(sourceControl);
 
