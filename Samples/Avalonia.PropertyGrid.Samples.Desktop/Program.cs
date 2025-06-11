@@ -18,11 +18,15 @@ internal sealed class Program
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()
             .WithInterFont()
-            .LogToTrace().AfterSetup(builder=>
+            .LogToTrace()
+            #if !DEBUG
+            .AfterSetup(builder=>
             {
                 builder.Instance!.AttachDevTools(new Avalonia.Diagnostics.DevToolsOptions()
                 {
                     StartupScreenIndex = 1,
                 });
-            });
+            })
+            #endif
+            ;
 }
