@@ -150,6 +150,11 @@ namespace Avalonia.PropertyGrid.Controls
         /// </summary>
         private void OnColorPreviewPressed(object? sender, PointerPressedEventArgs e)
         {
+            if (!e.GetCurrentPoint((sender as Control)!).Properties.IsLeftButtonPressed)
+            {
+                return;
+            }
+            
             if (_flyout is { IsOpen: false })
             {
                 if (_colorView != null)

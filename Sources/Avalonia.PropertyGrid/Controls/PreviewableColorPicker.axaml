@@ -14,7 +14,7 @@
                     <Grid ColumnDefinitions="*, Auto">
                         <ColorPreviewer Name="PART_ColorPreviewer"
                                         Grid.Column="0"
-                                        IsAccentColorsVisible="False"
+                                        IsAccentColorsVisible="True"
                                         Padding="10"
                                         Height="24">
                         </ColorPreviewer>

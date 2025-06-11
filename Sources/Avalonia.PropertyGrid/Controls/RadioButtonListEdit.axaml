@@ -22,6 +22,7 @@
 							  <RadioButton IsChecked="{Binding IsChecked, Mode=TwoWay}"
 							               MinWidth="{Binding MinWidth}"
 							               MinHeight="{Binding MinHeight}"
+							               Margin="4"
 							               >
 								  <TextBlock Text="{Binding Name}"></TextBlock>
 							  </RadioButton>
