@@ -36,12 +36,12 @@ public partial class MainView : UserControl
         this.GetObservable(CurrentCultureProperty).Subscribe(new AnonymousObserver<ICultureData>(OnCurrentCultureChanged));
 
         
-        ThemeBox.SelectedItem = App.CurrentTheme;
+        ThemeBox.SelectedItem = ThemeUtils.CurrentTheme;
         ThemeBox.SelectionChanged += (sender, e) =>
         {
             if (ThemeBox.SelectedItem is ThemeType theme)
             {
-                App.SetThemes(theme);
+                ThemeUtils.SetTheme(theme);
             }
         };
 

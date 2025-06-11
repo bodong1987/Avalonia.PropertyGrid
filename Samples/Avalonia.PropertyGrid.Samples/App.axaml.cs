@@ -14,26 +14,13 @@ namespace Avalonia.PropertyGrid.Samples;
 
 public class App : Application
 {
-    private readonly Styles _themeStylesContainer = [];
-    private FluentTheme? _fluentTheme;
-    private SimpleTheme? _simpleTheme;
-    private IStyle? _colorPickerFluent, _colorPickerSimple;
-    private IStyle? _dataGridFluent, _dataGridSimple;
-
     public override void Initialize()
     {
-        Styles.Add(_themeStylesContainer);
+        ThemeUtils.BeforeInitialize();
 
         AvaloniaXamlLoader.Load(this);
 
-        _fluentTheme = (FluentTheme)Resources["FluentTheme"]!;
-        _simpleTheme = (SimpleTheme)Resources["SimpleTheme"]!;
-        _colorPickerFluent = (IStyle)Resources["ColorPickerFluent"]!;
-        _colorPickerSimple = (IStyle)Resources["ColorPickerSimple"]!;
-        _dataGridFluent = (IStyle)Resources["DataGridFluent"]!;
-        _dataGridSimple = (IStyle)Resources["DataGridSimple"]!;
-
-        SetThemes(ThemeType.Fluent);
+        ThemeUtils.AfterInitialize();
     }
 
     public override void OnFrameworkInitializationCompleted()
@@ -73,34 +60,62 @@ public class App : Application
             BindingPlugins.DataValidators.Remove(plugin);
         }
     }
+}
 
-    private ThemeType _prevTheme;
-    public static ThemeType CurrentTheme => ((App)Current!)._prevTheme;
-    public static void SetThemes(ThemeType theme)
+internal static class ThemeUtils
+{
+    private static readonly Styles _themeStylesContainer = new();
+    private static FluentTheme? _fluentTheme;
+    private static SimpleTheme? _simpleTheme;
+    private static IStyle? _colorPickerFluent, _colorPickerSimple;
+    private static IStyle? _dataGridFluent, _dataGridSimple;
+
+    public static void BeforeInitialize()
     {
-        var app = (App)Current!;
-        var prevTheme = app._prevTheme;
-        app._prevTheme = theme;
+        App.Current!.Styles.Add(_themeStylesContainer);
+    }
+
+    public static void AfterInitialize()
+    {
+        _fluentTheme = (FluentTheme)App.Current!.Resources["FluentTheme"]!;
+        _simpleTheme = (SimpleTheme)App.Current.Resources["SimpleTheme"]!;
+        _colorPickerFluent = (IStyle)App.Current.Resources["ColorPickerFluent"]!;
+        _colorPickerSimple = (IStyle)App.Current.Resources["ColorPickerSimple"]!;
+        _dataGridFluent = (IStyle)App.Current.Resources["DataGridFluent"]!;
+        _dataGridSimple = (IStyle)App.Current.Resources["DataGridSimple"]!;
+
+        SetTheme(ThemeType.Simple);
+    }
+
+    private static ThemeType _prevTheme = ThemeType.Simple;
+    public static ThemeType CurrentTheme => _prevTheme;
+
+    public static void SetTheme(ThemeType theme)
+    {
+        var app = (App)App.Current!;
+
+        var prevTheme = _prevTheme;
+        _prevTheme = theme;
         var shouldReopenWindow = prevTheme != theme;
 
-        if (app._themeStylesContainer.Count == 0)
+        if (_themeStylesContainer.Count == 0)
         {
-            app._themeStylesContainer.Add(new Style());
-            app._themeStylesContainer.Add(new Style());
-            app._themeStylesContainer.Add(new Style());
+            _themeStylesContainer.Add(new Style());
+            _themeStylesContainer.Add(new Style());
+            _themeStylesContainer.Add(new Style());
         }
 
         if (theme == ThemeType.Fluent)
         {
-            app._themeStylesContainer[0] = app._fluentTheme!;
-            app._themeStylesContainer[1] = app._colorPickerFluent!;
-            app._themeStylesContainer[2] = app._dataGridFluent!;
+            _themeStylesContainer[0] = _fluentTheme!;
+            _themeStylesContainer[1] = _colorPickerFluent!;
+            _themeStylesContainer[2] = _dataGridFluent!;
         }
         else if (theme == ThemeType.Simple)
         {
-            app._themeStylesContainer[0] = app._simpleTheme!;
-            app._themeStylesContainer[1] = app._colorPickerSimple!;
-            app._themeStylesContainer[2] = app._dataGridSimple!;
+            _themeStylesContainer[0] = _simpleTheme!;
+            _themeStylesContainer[1] = _colorPickerSimple!;
+            _themeStylesContainer[2] = _dataGridSimple!;
         }
 
         if (shouldReopenWindow)

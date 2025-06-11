@@ -23,8 +23,6 @@
 		<StyleInclude Source="/Controls/RadioButtonListEdit.axaml"></StyleInclude>
 		<StyleInclude Source="/Controls/PreviewableSlider.axaml"></StyleInclude>
 		<StyleInclude Source="/Controls/PreviewableColorPicker.axaml"></StyleInclude>
-        <StyleInclude Source="avares://Avalonia.Controls.ColorPicker/Themes/Fluent/Fluent.xaml"/>
-		<StyleInclude Source="avares://Avalonia.Controls.ColorPicker/Themes/Simple/Simple.xaml"/>
 	</UserControl.Styles>
 	
 	<Grid RowDefinitions="Auto,Auto,Auto,Auto,*,Auto">

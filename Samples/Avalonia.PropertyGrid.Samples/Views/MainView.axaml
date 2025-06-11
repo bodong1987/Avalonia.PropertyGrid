@@ -10,37 +10,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Avalonia.PropertyGrid.Samples.Views.MainView">
     <Grid RowDefinitions="*,Auto">
-        <TabControl Grid.Row="0" TabStripPlacement="Top" Padding="4">
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <Image Source="avares://Avalonia.PropertyGrid.Samples/Assets/images/home.png" Width="24" Height="24" Margin="0,0,4,0"/>
-                        <TextBlock Text="{ll:Localize FeatureDemos}"/>
-                    </StackPanel>
-                </TabItem.Header>
-                <fdv:FeatureDemoView></fdv:FeatureDemoView>
-            </TabItem>
         
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <Image Source="avares://Avalonia.PropertyGrid.Samples/Assets/images/technology.png" Width="24" Height="24" Margin="0,0,4,0"/>
-                        <TextBlock Text="{ll:Localize SettingsDemo}"/>
-                    </StackPanel>
-                </TabItem.Header>
-                <sd:SettingsView></sd:SettingsView>
-            </TabItem>
-            
-            <TabItem>
-                <TabItem.Header>
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <Image Source="avares://Avalonia.PropertyGrid.Samples/Assets/images/colormixer.png" Width="24" Height="24" Margin="0,0,4,0"/>
-                        <TextBlock Text="{ll:Localize PainterDemo}"/>
-                    </StackPanel>
-                </TabItem.Header>
-                <pdv:PainterView></pdv:PainterView>
-            </TabItem>
-        </TabControl>    
         
         <Grid Margin="4" Grid.Row="1" ColumnDefinitions="*,Auto">
             <HyperlinkButton IsEnabled="True"
@@ -50,7 +20,8 @@
             
             <StackPanel Margin="4" Orientation="Horizontal" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right">
                 <TextBlock Text="{ll:Localize Theme}" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="2" ></TextBlock>
-                <ComboBox x:Name="ThemeBox" Width="125" Padding="4" SelectedIndex="0">
+                <Slider Width="150" Value="50" VerticalAlignment="Center" Margin="10"></Slider>
+                <ComboBox x:Name="ThemeBox" Width="125" Padding="4" SelectedIndex="1">
                     <ComboBox.Items>
                         <views:ThemeType>Fluent</views:ThemeType>
                         <views:ThemeType>Simple</views:ThemeType>
