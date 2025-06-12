@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
 using Avalonia.Controls;
-using Avalonia.Layout;
 using Avalonia.Media;
 using Color = System.Drawing.Color;
 

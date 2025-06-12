@@ -9,7 +9,7 @@
   </Design.PreviewWith>
 	
 	<Styles.Resources>
-		<utils:BooleanNegationConverter x:Key="BooleanNegationConverter"/>
+		<utils:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
 	</Styles.Resources>
 
   <Style Selector="controls|ListEdit">
@@ -36,7 +36,7 @@
 							  IsVisible="{Binding Model.IsEditable, RelativeSource={RelativeSource TemplatedParent}}"
 							  ToolTip.Tip="{ll:Localize AppendNewElement}"
 							  FontSize="18"
-							  IsEnabled="{Binding Model.IsReadOnly, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanNegationConverter}}"
+							  IsEnabled="{Binding Model.IsReadOnly, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource InverseBooleanConverter}}"
 							  >
 						  <Button.Styles>
 							  <Style Selector="Button:disabled Image">
@@ -59,7 +59,7 @@
 					          IsVisible="{Binding Model.IsEditable, RelativeSource={RelativeSource TemplatedParent}}"
 					          ToolTip.Tip="{ll:Localize ClearAllElements}"
 					          FontSize="18"
-					          IsEnabled="{Binding Model.IsReadOnly, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource BooleanNegationConverter}}"
+					          IsEnabled="{Binding Model.IsReadOnly, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource InverseBooleanConverter}}"
 					  >
 						  <Button.Styles>
 							  <Style Selector="Button:disabled Image">
