@@ -32,7 +32,66 @@ Its main features are:
 ## How To Use
 Use the source code of this project directly or use NUGET Packages:  
     https://www.nuget.org/packages/bodong.Avalonia.PropertyGrid   
-Then add PropertyGrid to your project, and bind the object to be displayed and edited to the `DataContext` property. If you want to bind multiple objects, just bind `IEnumerable<T>` directly
+Then add PropertyGrid to your project, and bind the object to be displayed and edited to the `DataContext` property. If you want to bind multiple objects, just bind `IEnumerable<T>` directly.  
+An example of a minimal template project based on Avalonia:  
+```C#
+// MainViewModel.cs
+using Avalonia.Media;
+using CommunityToolkit.Mvvm.ComponentModel;
+using PropertyModels.ComponentModel;
+using PropertyModels.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
+
+namespace AvaloniaApplication19.ViewModels;
+
+public partial class MainViewModel : ViewModelBase
+{
+    [ObservableProperty]
+    private string _greeting = "Welcome to Avalonia!";
+
+    public SimpleObject Target { get; set; } = new SimpleObject();
+}
+
+public class SimpleObject : ReactiveObject
+{
+    public string Name { get; set; }
+    public string Description { get; set; }
+
+    [Trackable(0, 200)]
+    [Range(100,150)]
+    public int value { get; set; } = 100;
+
+    [ConditionTarget]
+    public bool isColorVisible { get; set; } = true;
+
+    [PropertyVisibilityCondition(nameof(isColorVisible), true)]
+    public Color color { get; set; } = Colors.AliceBlue;
+}
+```
+
+```xml
+<!-- MainView.axaml -->
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:AvaloniaApplication19.ViewModels"
+             xmlns:apc="clr-namespace:Avalonia.PropertyGrid.Controls;assembly=Avalonia.PropertyGrid"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AvaloniaApplication19.Views.MainView"
+             x:DataType="vm:MainViewModel">
+  <Design.DataContext>
+    <!-- This only sets the DataContext for the previewer in an IDE,
+         to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+    <vm:MainViewModel />
+  </Design.DataContext>
+
+    <!-- bind your target object to DataContext -->
+    <apc:PropertyGrid DataContext="{Binding Target}"></apc:PropertyGrid>
+</UserControl>
+
+```
+
 
 ## How to Debug
 Open `Avalonia.PropertyGrid.sln`, change config to `Development`, set `Avalonia.PropertyGrid.Samples.Desktop` as startup project, build and run it.  
