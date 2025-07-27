@@ -308,6 +308,7 @@ namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Models
         [FloatPrecision(3)]
         [Unit("mp/h")]
         [Description("Decimal value with range and precision representing speed in miles per hour")]
+        [InnerRightContentString("mp/h")]
         public decimal decValueWithRange { get; set; } = 100.00M;
 
         [Category("Numeric")]

@@ -53,6 +53,19 @@ public class StringCellEditFactory : AbstractCellEditFactory
             control.SetLocalizeBinding(TextBox.WatermarkProperty, watermarkAttr.Watermark);
         }
 
+        var innerRightContentAttribute = propertyDescriptor.GetCustomAttribute<InnerRightContentStringAttribute>();
+        if (innerRightContentAttribute != null)
+        {
+            var rightcontent = new TextBlock
+            {
+                Padding = new Thickness(0, 0, 5, 0),
+                Foreground = Brushes.Gray,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            rightcontent.SetLocalizeBinding(TextBlock.TextProperty, innerRightContentAttribute.Content);
+            control.SetValue(TextBox.InnerRightContentProperty, rightcontent);
+        }
+
         if (propertyDescriptor.GetCustomAttribute<PasswordPropertyTextAttribute>() is { Password: true })
         {
             control.PasswordChar = '*';

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Avalonia.Controls;
+using Avalonia.Layout;
+using Avalonia.Media;
+using Avalonia.PropertyGrid.Localization;
 using PropertyModels.ComponentModel;
 using PropertyModels.ComponentModel.DataAnnotations;
 using PropertyModels.Extensions;
@@ -74,6 +77,19 @@ public class NumericCellEditFactory : AbstractCellEditFactory
             var values = DecimalConvertUtils.GetDecimalRange(attr);
             control.Minimum = values.Min;
             control.Maximum = values.Max;
+        }
+
+        var innerRightContentAttribute = propertyDescriptor.GetCustomAttribute<InnerRightContentStringAttribute>();
+        if (innerRightContentAttribute != null)
+        {
+            var rightcontent = new TextBlock
+            {
+                Padding = new Thickness(0, 0, 5, 0),
+                Foreground = Brushes.Gray,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            rightcontent.SetLocalizeBinding(TextBlock.TextProperty, innerRightContentAttribute.Content);
+            control.SetValue(TextBox.InnerRightContentProperty, rightcontent);
         }
 
         var formatAttr = propertyDescriptor.GetCustomAttribute<FormatStringAttribute>();
