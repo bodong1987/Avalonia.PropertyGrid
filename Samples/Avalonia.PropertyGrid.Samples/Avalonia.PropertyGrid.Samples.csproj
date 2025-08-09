@@ -1,51 +1,51 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
-    <Nullable>enable</Nullable>
-    <LangVersion>latest</LangVersion>
-    <Configurations>Debug;Release;Development</Configurations>
-      <PublishTrimmed>false</PublishTrimmed>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+        <Nullable>enable</Nullable>
+        <LangVersion>latest</LangVersion>
+        <Configurations>Debug;Release;Development</Configurations>
+        <PublishTrimmed>false</PublishTrimmed>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Development|AnyCPU'">
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-  </PropertyGroup>
-  
-  <ItemGroup>
-    <AvaloniaResource Include="Assets\**" />
-  </ItemGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Development|AnyCPU'">
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Avalonia" />
-    <PackageReference Include="Avalonia.Controls.ColorPicker" />
-    <PackageReference Include="Avalonia.Controls.DataGrid" />
-    <PackageReference Include="Avalonia.Diagnostics" />
-    <PackageReference Include="Avalonia.Themes.Fluent" />
-    <PackageReference Include="Avalonia.Fonts.Inter" />
-    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Include="Avalonia.Themes.Simple" />
-  </ItemGroup>
+    <ItemGroup>
+        <AvaloniaResource Include="Assets\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Avalonia" />
+        <PackageReference Include="Avalonia.Controls.ColorPicker" />
+        <PackageReference Include="Avalonia.Controls.DataGrid" />
+        <PackageReference Include="Avalonia.Diagnostics" />
+        <PackageReference Include="Avalonia.Themes.Fluent" />
+        <PackageReference Include="Avalonia.Fonts.Inter" />
+        <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+        <PackageReference Include="Avalonia.Themes.Simple" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(Configuration)' != 'Development'">
+        <PackageReference Include="bodong.Avalonia.PropertyGrid" />
+    </ItemGroup>
 
     <ItemGroup Condition="'$(Configuration)' == 'Development'">
-      <ProjectReference Include="..\..\Sources\Avalonia.PropertyGrid\Avalonia.PropertyGrid.csproj" />
+        <ProjectReference Include="..\..\Sources\Avalonia.PropertyGrid\Avalonia.PropertyGrid.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\Sources\Avalonia.PropertyGrid\Avalonia.PropertyGrid.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Update="FeatureDemos\Views\CountryView.axaml.cs">
-        <DependentUpon>CountryView.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="FeatureDemos\Views\Vector3View.axaml.cs">
-        <DependentUpon>Vector3View.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
-      <Compile Update="FeatureDemos\Views\FeatureDemoView.axaml.cs">
-        <DependentUpon>FeatureDemoView.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
+        <Compile Update="FeatureDemos\Views\CountryView.axaml.cs">
+            <DependentUpon>CountryView.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="FeatureDemos\Views\Vector3View.axaml.cs">
+            <DependentUpon>Vector3View.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
+        <Compile Update="FeatureDemos\Views\FeatureDemoView.axaml.cs">
+            <DependentUpon>FeatureDemoView.axaml</DependentUpon>
+            <SubType>Code</SubType>
+        </Compile>
     </ItemGroup>
 </Project>
