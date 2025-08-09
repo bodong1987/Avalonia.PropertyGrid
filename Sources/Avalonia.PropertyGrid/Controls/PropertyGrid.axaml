@@ -44,6 +44,7 @@
 				</Button.Content>
 				<Button.ContextMenu>
 					<ContextMenu x:Name="OptionsContextMenu">
+						<MenuItem Header="{ll:Localize IsAutoNameWidth}" IsChecked="{Binding $parent[lc:PropertyGrid].IsAutoNameWidth, Mode=TwoWay}" ToggleType="CheckBox" ToolTip.Tip="{ll:Localize ShowStyle}"/>
 						<MenuItem Header="{ll:Localize IsCategoryVisible}" IsChecked="{Binding $parent[lc:PropertyGrid].IsCategoryVisible, Mode=TwoWay}" ToggleType="CheckBox" ToolTip.Tip="{ll:Localize ShowStyle}"/>
 						<MenuItem Header="{ll:Localize UseRegex}" IsChecked="{Binding $parent[lc:PropertyGrid].ViewModel.FilterPattern.UseRegex, Mode=TwoWay}" ToggleType="CheckBox" ToolTip.Tip="{ll:Localize UseRegex}"/>
 						<MenuItem Header="{ll:Localize IgnoreCase}" IsChecked="{Binding $parent[lc:PropertyGrid].ViewModel.FilterPattern.IgnoreCase, Mode=TwoWay}" ToggleType="CheckBox" ToolTip.Tip="{ll:Localize IgnoreCase}"/>

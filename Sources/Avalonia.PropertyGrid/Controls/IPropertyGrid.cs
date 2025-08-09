@@ -63,7 +63,12 @@ public interface IPropertyGrid: INotifyPropertyChanged, IDisposable
     /// </summary>
     /// <value>The display mode.</value>
     PropertyGridLayoutStyle LayoutStyle { get; set; }
-        
+
+    /// <summary>
+    /// is Auto Name Width, auto width of name column
+    /// </summary>
+    bool IsAutoNameWidth { get; set; }
+
     /// <summary>
     /// is header visible, include search box, options, quick filter panel
     /// </summary>

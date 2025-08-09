@@ -34,6 +34,25 @@ public partial class PropertyGrid : UserControl, IPropertyGrid
     #region Properties
     #region Visible Properties
     /// <summary>
+    /// Gets or sets is auto name width.
+    /// </summary>
+    /// <value><c>true</c> if [header visible]; otherwise, <c>false</c>.</value>
+    public static readonly StyledProperty<bool> IsAutoNameWidthProperty =
+        AvaloniaProperty.Register<PropertyGrid, bool>(nameof(IsAutoNameWidth), false);
+
+    /// <summary>
+    /// Gets or sets is header visible.
+    /// </summary>
+    /// <value><c>true</c> if [header visible]; otherwise, <c>false</c>.</value>
+    [Category("Views")]
+    public bool IsAutoNameWidth
+    {
+        get => GetValue(IsAutoNameWidthProperty);
+        set => SetValue(IsAutoNameWidthProperty, value);
+    }
+
+
+    /// <summary>
     /// The is header visible property
     /// </summary>
     public static readonly StyledProperty<bool> IsHeaderVisibleProperty =
@@ -509,6 +528,7 @@ public partial class PropertyGrid : UserControl, IPropertyGrid
     /// </summary>
     static PropertyGrid()
     {
+        _ = IsAutoNameWidthProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(IsAutoNameWidthChanged));
         _ = IsHeaderVisibleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(IsHeaderVisibleChanged));
         _ = IsQuickFilterVisibleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<bool>>(IsQuickFilterVisibleChanged));
         _ = LayoutStyleProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<PropertyGridLayoutStyle>>(OnDisplayModeChanged));
@@ -633,6 +653,13 @@ public partial class PropertyGrid : UserControl, IPropertyGrid
     #endregion
 
     #region Styled Properties Handler
+    private static void IsAutoNameWidthChanged(AvaloniaPropertyChangedEventArgs e)
+    {
+        if (e.Sender is PropertyGrid sender)
+        {
+            sender.IsAutoNameWidthChanged(e.OldValue, e.NewValue);
+        }
+    }
     private static void IsHeaderVisibleChanged(AvaloniaPropertyChangedEventArgs e)
     {
         if (e.Sender is PropertyGrid sender)
@@ -640,6 +667,13 @@ public partial class PropertyGrid : UserControl, IPropertyGrid
             sender.IsHeaderVisibleChanged(e.OldValue, e.NewValue);
         }
     }
+
+    /// <summary>
+    /// Called when [IsAutoNameWidth changed].
+    /// </summary>
+    /// <param name="oldValue">The old value.</param>
+    /// <param name="newValue">The new value.</param>
+    private void IsAutoNameWidthChanged(object? oldValue, object? newValue) => BuildPropertiesView();
 
     /// <summary>
     /// Called when [allow filter changed].
@@ -882,9 +916,12 @@ public partial class PropertyGrid : UserControl, IPropertyGrid
         AddPropertyChangedObservers(_cellInfoCache.Children);
 
         RefreshVisibilities(ViewModel.FilterPattern.FilterText);
-            
+
         // force refresh
-        NameWidthChanged.Invoke(this, EventArgs.Empty);
+        if (!IsAutoNameWidth)
+        {
+            NameWidthChanged.Invoke(this, EventArgs.Empty);
+        }
     }
     #endregion
 

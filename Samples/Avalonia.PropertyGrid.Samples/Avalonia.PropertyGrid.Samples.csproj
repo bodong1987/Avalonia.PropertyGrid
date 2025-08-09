@@ -26,11 +26,11 @@
     <PackageReference Include="Avalonia.Themes.Simple" />
   </ItemGroup>
 
-    <ItemGroup Condition="'$(Configuration)' != 'Development'">
-        <PackageReference Include="bodong.Avalonia.PropertyGrid" />
+    <ItemGroup Condition="'$(Configuration)' == 'Development'">
+      <ProjectReference Include="..\..\Sources\Avalonia.PropertyGrid\Avalonia.PropertyGrid.csproj" />
     </ItemGroup>
 
-    <ItemGroup Condition="'$(Configuration)' == 'Development'">
+    <ItemGroup>
       <ProjectReference Include="..\..\Sources\Avalonia.PropertyGrid\Avalonia.PropertyGrid.csproj" />
     </ItemGroup>
 
