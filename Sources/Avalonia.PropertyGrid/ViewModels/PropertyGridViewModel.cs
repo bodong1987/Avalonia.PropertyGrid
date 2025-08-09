@@ -155,6 +155,12 @@ internal class PropertyGridViewModel : MiniReactiveObject, IPropertyGridFilterCo
     /// </summary>
     /// <value>The categories.</value>
     public List<KeyValuePair<string, List<PropertyDescriptor>>> Categories { get; } = [];
+    
+    /// <summary>
+    /// Gets or sets the custom property order handler.
+    /// </summary>
+    /// <value>The custom property order handler.</value>
+    public ICustomPropertyOrderHandler? CustomPropertyOrderHandler { get; set; }
 
     /// <summary>
     /// Occurs when [filter changed].
@@ -403,6 +409,7 @@ internal class PropertyGridViewModel : MiniReactiveObject, IPropertyGridFilterCo
         if (Context == null)
         {
             CategoryFilter = null;
+            CustomPropertyOrderHandler = null;
             PropertyDescriptorChanged?.Invoke(this, EventArgs.Empty);
             return;
         }
@@ -438,6 +445,8 @@ internal class PropertyGridViewModel : MiniReactiveObject, IPropertyGridFilterCo
 
         CategoryFilter = new CheckedMaskModel(categories.OrderBy(x => x), "All");
         CategoryFilter.CheckChanged += OnCategoryFilterChanged;
+
+        CustomPropertyOrderHandler = Context.GetType().GetAnyCustomAttribute<CustomPropertyOrderAttribute>();
 
         FilterProperties();
 

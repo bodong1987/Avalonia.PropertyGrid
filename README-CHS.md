@@ -147,6 +147,7 @@ PropertyModels.ComponentModel.UnitAttribute                                     
 PropertyModels.ComponentModel.PropertyOperationVisibilityAttribute                  /* 用于指定额外操作区域是否可见，默认值是由属性自行决定。*/  
 PropertyModels.ComponentModel.SelectableListDisplayModeAttribute                    /* 用于指定可选列表类型的显示视图类别，默认是水平排列+自动换行，也可配置成其它的。 */  
 PropertyModels.ComponentModel.ExpandableObjectDisplayModeAttribute                  /* 可以控制要展开的子对象的显示模式，通过这些配置你可以控制子对象是否显示类别、排序等等 */  
+PropertyModels.ComponentModel.CustomPropertyOrderAttribute                          /* 你可以基于这个属性来定制你的对象的Category和Property在PropertyGrid中出现的顺序。 */  
 ```
 
 ### 支持的内置类型

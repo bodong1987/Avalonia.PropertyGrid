@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Runtime.Serialization;
 using Avalonia.Media;
 using Avalonia.Platform;
@@ -193,11 +194,11 @@ namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Models
         public PlatformType EnumWithDisplayName { get; set; } = PlatformType.Windows;
 
         [Category("Selectable List")]
-        [Description("Select login name from list")]
+        [Description("Please Select login name from list")]
         public SelectableList<string> LoginName { get; set; } = new(["John", "David", "bodong"], "bodong");
         
         [Category("Selectable List")]
-        [Description("Select login name from list without default")]
+        [Description("Please Select login name from list without default")]
         public SelectableList<string> LoginNameNoDefault { get; set; } = new(["John", "David", "bodong"]);
 
         [Category("Selectable List")]
@@ -217,7 +218,7 @@ namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Models
         public SelectableList<string> LoginNameToggleGroupModeVerticalView { get; set; } = new(["John", "David", "bodong"], "David");
 
         [Category("Selectable List")]
-        [Description("Select ID from list")]
+        [Description("Please Select ID from list")]
         public SelectableList<int> IdList { get; set; } = new([100, 1000, 1024], 1000);
 
         private string _SourceImagePath = "";
@@ -582,6 +583,12 @@ namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Models
         [TypeConverter(typeof(ExpandableObjectConverter))]
         [Description("Collapsed login information")]
         public LoginInfo CollapsedLoginInfo { get; set; } = new();
+
+        [Category("CustomOrder")] 
+        public CategoryOrderExampleObject DefaultOrder { get; set; } = new();
+        
+        [Category("CustomOrder")] 
+        public CategoryOrderExampleObject2 CustomOrder { get; set; } = new();
     }
 
     [Flags]
@@ -635,6 +642,38 @@ namespace Avalonia.PropertyGrid.Samples.FeatureDemos.Models
             }
 
             return ValidationResult.Success;
+        }
+    }
+
+    [TypeConverter(typeof(ExpandableObjectConverter))]
+    public class CategoryOrderExampleObject
+    {
+        [Category("Name")] public string? Property0 { get; set; } = "First";
+
+        [Category("Name")] public string? Property1 { get; set; } = "Second";
+
+        [Category("Name2")] public string? Property2 { get; set; } = "Third";
+
+        [Category("Name2")] public string? Property3 { get; set; } = "Fourth";
+    }
+
+    [TypeConverter(typeof(ExpandableObjectConverter))]
+    [CustomCategoryAndPropertyOrder]
+    public class CategoryOrderExampleObject2 : CategoryOrderExampleObject
+    {
+        
+    }
+
+    public class CustomCategoryAndPropertyOrderAttribute : CustomPropertyOrderAttribute
+    {
+        public override List<KeyValuePair<string, List<PropertyDescriptor>>> HandleCategories(object context, List<KeyValuePair<string, List<PropertyDescriptor>>> categories)
+        {
+            return categories.OrderByDescending(x => x.Key).ToList();
+        }
+
+        public override IEnumerable<PropertyDescriptor> HandleProperties(object context,IEnumerable<PropertyDescriptor> properties, string? category = null)
+        {
+            return properties.OrderByDescending(x => x.DisplayName);
         }
     }
 }

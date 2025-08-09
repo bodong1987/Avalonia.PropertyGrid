@@ -38,7 +38,7 @@ public partial class PropertyGrid : UserControl, IPropertyGrid
     /// </summary>
     /// <value><c>true</c> if [header visible]; otherwise, <c>false</c>.</value>
     public static readonly StyledProperty<bool> IsAutoNameWidthProperty =
-        AvaloniaProperty.Register<PropertyGrid, bool>(nameof(IsAutoNameWidth), false);
+        AvaloniaProperty.Register<PropertyGrid, bool>(nameof(IsAutoNameWidth));
 
     /// <summary>
     /// Gets or sets is header visible.
@@ -943,7 +943,11 @@ public partial class PropertyGrid : UserControl, IPropertyGrid
 
         var categories = ViewModel.Categories;
 
-        if (categoryStyle == PropertyGridOrderStyle.Alphabetic)
+        if (ViewModel.CustomPropertyOrderHandler != null)
+        {
+            categories = ViewModel.CustomPropertyOrderHandler.HandleCategories(target, categories);
+        }
+        else if (categoryStyle == PropertyGridOrderStyle.Alphabetic)
         {
             categories = [.. categories.OrderBy(x => x.Key)];
         }
@@ -1011,8 +1015,20 @@ public partial class PropertyGrid : UserControl, IPropertyGrid
 
             _cellInfoCache.Add(cellInfo);
 
-            var properties = propertyOrderStyle == PropertyGridOrderStyle.Builtin ? categoryInfo.Value : [.. categoryInfo.Value.OrderBy(x => x.DisplayName)];
+            List<PropertyDescriptor>? properties;
 
+            if (ViewModel.CustomPropertyOrderHandler != null)
+            {
+                properties = ViewModel.CustomPropertyOrderHandler.HandleProperties(target, categoryInfo.Value, categoryInfo.Key)
+                    .ToList();
+            }
+            else
+            {
+                properties = propertyOrderStyle == PropertyGridOrderStyle.Builtin
+                    ? categoryInfo.Value
+                    : [.. categoryInfo.Value.OrderBy(x => x.DisplayName)];    
+            }
+            
             BuildPropertiesCellEdit(target, referencePath, properties, grid, cellInfo);
 
             expander.Content = grid;
@@ -1295,7 +1311,11 @@ public partial class PropertyGrid : UserControl, IPropertyGrid
         PropertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
         PropertiesGrid.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Auto));
 
-        BuildPropertiesCellEdit(target, referencePath, ViewModel.AllProperties.OrderBy(x => x.DisplayName),  PropertiesGrid, _cellInfoCache);
+        BuildPropertiesCellEdit(target, referencePath,
+            ViewModel.CustomPropertyOrderHandler != null
+                ? ViewModel.CustomPropertyOrderHandler.HandleProperties(target, ViewModel.AllProperties)
+                : ViewModel.AllProperties.OrderBy(x => x.DisplayName),
+            PropertiesGrid, _cellInfoCache);
     }
 
     /// <summary>

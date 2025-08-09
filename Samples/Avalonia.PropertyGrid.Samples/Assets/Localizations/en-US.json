@@ -36,6 +36,7 @@
     "PlatformToggleButtonVerticalView": "Platform[Button+Vertical View]",
     "PlatformToggleButtonHorizontalView": "Platform[Button+Horizontal View]",
     "LoginNameToggleGroupModeVerticalView": "Login Name[Button+Vertical View]",
+    "CustomOrder": "Custom Order",
     "ArrowShape": "Arrow",
     "EllipseShape": "Ellipse",
     "LineShape": "Segment",
