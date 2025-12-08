@@ -1,6 +1,7 @@
 ﻿{
   "IsAutoNameWidth": "Автоматическая ширина названия",
   "ShowGroup": "Показывать категорию",
+  "IsCategoryVisible": "Отображать категории",
   "ShowStyle": "Стиль отображения",
   "IgnoreCase": "Игнорировать регистр",
   "UseRegex": "Использовать Regex",
@@ -25,5 +26,17 @@
   "Change {0} form {1} to {2}": "Изменить {0} с {1} на {2}",
   "Change {0} selection from {1} to {2}": "Изменить выбор {0} с {1} на {2}",
   "ReadOnly": "Только чтение",
-  "Readonly": "Только чтение"
+  "Readonly": "Только чтение",
+  "MainOptionSettingsTooltip": "Выбрать режим просмотра",
+  "IsQuickFilterVisible": "Разрешить быструю фильтрацию",
+  "IsTitleVisible": "Отображать заголовок",
+  "CategoryOrder": "Порядок Категорий",
+  "PropertyOrder": "Порядок Свойств",
+  "LayoutStyle": "Стиль раскладки",
+  "ExpandAll": "Развернуть все",
+  "CollapseAll": "Свернуть все",
+  "Tree" : "Дерево",
+  "Inline": "Список",
+  "Builtin" : "По-умолчанию",
+  "Alphabetic": "По алфавиту"
 }

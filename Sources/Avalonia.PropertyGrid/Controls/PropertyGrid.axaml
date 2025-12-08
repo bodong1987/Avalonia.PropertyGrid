@@ -25,25 +25,33 @@
 		<StyleInclude Source="/Controls/PreviewableColorPicker.axaml"></StyleInclude>
         <StyleInclude Source="avares://Avalonia.Controls.ColorPicker/Themes/Fluent/Fluent.xaml"/>
 		<StyleInclude Source="avares://Avalonia.Controls.ColorPicker/Themes/Simple/Simple.xaml"/>
-	</UserControl.Styles>
-	
-	<Grid RowDefinitions="Auto,Auto,Auto,Auto,*,Auto">
-		<ContentControl x:Name="TopHeaderArea" Grid.Row="0"
-		                Content="{Binding $parent[lc:PropertyGrid].TopHeaderContent}"/>
-		
-		<Grid Grid.Row="1" x:Name="InternalHeaderGrid"
-		      ColumnDefinitions="*,Auto"
-		      RowDefinitions="*, Auto"
-		      Margin="2"
-		>
-			<!-- ReSharper disable once Xaml.StyleClassNotFound -->
-			<TextBox Grid.Row="0" Grid.Column="0" Classes="clearButton" x:Name="SearchTextBox" VerticalAlignment="Center" VerticalContentAlignment="Center" Watermark="{ll:Localize Search}" Text="{Binding $parent[lc:PropertyGrid].ViewModel.FilterPattern.FilterText}" ></TextBox>
-			<Button Grid.Row="0" Grid.Column="1" x:Name="OptionsButton" Margin="2" Click="OnOptionsButtonClicked" VerticalContentAlignment="Center" VerticalAlignment="Center" Padding="2" ToolTip.Tip="{ll:Localize MainOptionSettingsTooltip}">
-				<Button.Content>
-					<Image Source="/Assets/Images/options.png" Width="24" Height="24"></Image>
-				</Button.Content>
-				<Button.ContextMenu>
-					<ContextMenu x:Name="OptionsContextMenu">
+        
+        <Style Selector="lc|PropertyGrid >>> TextBlock.Header">
+	        <Setter Property="Padding" Value="4"/>
+	        <Setter Property="FontSize" Value="18"/>
+	        <Setter Property="Margin" Value="8,0,2,2"/>
+        </Style>
+        
+        <Style Selector="lc|PropertyGrid TextBox#SearchTextBox">
+	        <Setter Property="VerticalAlignment" Value="Center"/>
+	        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        
+        <Style Selector="lc|PropertyGrid Button#OptionsButton">
+	        <Setter Property="Margin" Value="2"/>
+	        <Setter Property="Padding" Value="2"/>
+	        <Setter Property="VerticalAlignment" Value="Center"/>
+	        <Setter Property="VerticalContentAlignment" Value="Center"/>
+	        <Setter Property="ContentTemplate">
+		        <!-- ReSharper disable once Xaml.RedundantResource -->
+		        <DataTemplate>
+			        <Image Source="/Assets/Images/options.png"
+			               Width="24"
+			               Height="24"/>
+		        </DataTemplate>
+	        </Setter>
+	        <Setter Property="ContextMenu">
+		        <ContextMenu x:Name="OptionsContextMenu">
 						<MenuItem Header="{ll:Localize IsAutoNameWidth}" IsChecked="{Binding $parent[lc:PropertyGrid].IsAutoNameWidth, Mode=TwoWay}" ToggleType="CheckBox" ToolTip.Tip="{ll:Localize ShowStyle}"/>
 						<MenuItem Header="{ll:Localize IsCategoryVisible}" IsChecked="{Binding $parent[lc:PropertyGrid].IsCategoryVisible, Mode=TwoWay}" ToggleType="CheckBox" ToolTip.Tip="{ll:Localize ShowStyle}"/>
 						<MenuItem Header="{ll:Localize UseRegex}" IsChecked="{Binding $parent[lc:PropertyGrid].ViewModel.FilterPattern.UseRegex, Mode=TwoWay}" ToggleType="CheckBox" ToolTip.Tip="{ll:Localize UseRegex}"/>
@@ -68,23 +76,55 @@
 						<MenuItem Header="{ll:Localize ExpandAll}" Click="OnExpandAllClicked"></MenuItem>
 						<MenuItem Header="{ll:Localize CollapseAll}" Click="OnCollapseAllClicked"></MenuItem>
 					</ContextMenu>
-				</Button.ContextMenu>
+	        </Setter>
+        </Style>
+        
+        <Style Selector="lc|PropertyGrid Grid#InternalHeaderGrid">
+	        <Setter Property="Margin" Value="2"/>
+        </Style>
+        
+        <Style Selector="lc|PropertyGrid Grid#SplitterGrid">
+	        <Setter Property="Margin" Value="0"/>
+        </Style>
+        
+	</UserControl.Styles>
+	
+	<Grid RowDefinitions="Auto,Auto,Auto,Auto,*,Auto">
+		<ContentControl x:Name="TopHeaderArea" Grid.Row="0"
+		                Content="{Binding $parent[lc:PropertyGrid].TopHeaderContent}"/>
+		
+		<Grid Grid.Row="1" x:Name="InternalHeaderGrid"
+		      ColumnDefinitions="*,Auto"
+		      RowDefinitions="*, Auto">
+			<!-- ReSharper disable once Xaml.StyleClassNotFound -->
+			<TextBox Grid.Row="0" Grid.Column="0" Classes="clearButton" x:Name="SearchTextBox"
+			         Watermark="{ll:Localize Search}" 
+			         Text="{Binding $parent[lc:PropertyGrid].ViewModel.FilterPattern.FilterText}" ></TextBox>
+			<Button Grid.Row="0" Grid.Column="1" x:Name="OptionsButton"
+			        Click="OnOptionsButtonClicked"
+			        ToolTip.Tip="{ll:Localize MainOptionSettingsTooltip}">
 			</Button>
-			<lc:CheckedMask Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="FastFilterBox" Model="{Binding $parent[lc:PropertyGrid].ViewModel.CategoryFilter}"></lc:CheckedMask>
+			<lc:CheckedMask Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+			                x:Name="FastFilterBox"
+			                Model="{Binding $parent[lc:PropertyGrid].ViewModel.CategoryFilter}"></lc:CheckedMask>
 		</Grid>
 		
 		<ContentControl x:Name="MiddleArea" Grid.Row="2"
 		                Content="{Binding $parent[lc:PropertyGrid].MiddleContent}"/>
 		
-		<Grid x:Name="SplitterGrid" Grid.Row="3" Margin="8,0,0,0">
+		<Grid x:Name="SplitterGrid" Grid.Row="3">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="200" MinWidth="60"></ColumnDefinition>
 				<ColumnDefinition Width="2"></ColumnDefinition>
 				<ColumnDefinition Width="*"></ColumnDefinition>				
 			</Grid.ColumnDefinitions>
-			<TextBlock x:Name="ColumnName" Padding="4" FontSize="18" Margin="8,0,2,2" Text="{ll:Localize Name}" Grid.Column="0" FontWeight="Bold"></TextBlock>
+			<TextBlock x:Name="ColumnName" 
+			           Classes="Header"
+			           Text="{ll:Localize Name}" Grid.Column="0" FontWeight="Bold"></TextBlock>
 			<GridSplitter Grid.Column="1"></GridSplitter>
-			<TextBlock x:Name="ColumnProperties" Padding="4" FontSize="18" Margin="6, 0, 2, 2" Text="{ll:Localize Properties}" Grid.Column="2" FontWeight="Bold"></TextBlock>
+			<TextBlock x:Name="ColumnProperties" 
+			           Classes="Header"
+			           Text="{ll:Localize Properties}" Grid.Column="2" FontWeight="Bold"></TextBlock>
 		</Grid>
 		<ScrollViewer Grid.Row="4">
 			<Grid x:Name="PropertiesGrid">

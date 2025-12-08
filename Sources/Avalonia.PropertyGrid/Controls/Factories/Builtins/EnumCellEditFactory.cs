@@ -1,7 +1,11 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using Avalonia.Controls;
+using Avalonia.Controls.Templates;
+using Avalonia.Data;
+using Avalonia.Data.Converters;
 using Avalonia.Layout;
 using Avalonia.PropertyGrid.Utils;
 using PropertyModels.ComponentModel;
@@ -74,6 +78,27 @@ public class EnumCellEditFactory : AbstractCellEditFactory
                 ItemsSource = EnumUtils.GetEnumValues(propertyDescriptor.PropertyType, propertyDescriptor.Attributes.OfType<Attribute>()),
                 HorizontalAlignment = HorizontalAlignment.Stretch
             };
+            
+            if (context.Property.GetCustomAttribute<TypeConverterAttribute>() is { } convAttribute)
+            {
+                var converterType = convAttribute.GetConverterType()!;
+                if (typeof(IValueConverter).IsAssignableFrom(converterType))
+                {
+                    var converter =
+                        (IValueConverter)Activator.CreateInstance(convAttribute.GetConverterType()!)!;
+
+                    control.ItemTemplate = new FuncDataTemplate((obj) => true,
+                        (value, nameScope) => new TextBlock
+                        {
+                            [!TextBlock.TextProperty] = new Binding
+                            {
+                                Path = nameof(EnumValueWrapper.Value),
+                                Converter =
+                                    converter
+                            },
+                        });
+                }
+            }
 
             control.SelectionChanged += (s, e) =>
             {

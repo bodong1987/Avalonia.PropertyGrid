@@ -1,4 +1,9 @@
-﻿using Avalonia.Controls;
+﻿using System;
+using System.ComponentModel;
+using Avalonia.Controls;
+using Avalonia.Controls.Templates;
+using Avalonia.Data;
+using Avalonia.Data.Converters;
 using Avalonia.Layout;
 using Avalonia.PropertyGrid.Services;
 using PropertyModels.Collections;
