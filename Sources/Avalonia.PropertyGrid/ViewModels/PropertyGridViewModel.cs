@@ -198,7 +198,7 @@ internal class PropertyGridViewModel : MiniReactiveObject, IPropertyGridFilterCo
     }
 
     /// <summary>
-    /// Handles the <see cref="E:PropertyChanged" /> event.
+    /// Handles the PropertyChanged event.
     /// </summary>
     /// <param name="sender">The sender.</param>
     /// <param name="e">The <see cref="PropertyChangedEventArgs" /> instance containing the event data.</param>
@@ -454,7 +454,7 @@ internal class PropertyGridViewModel : MiniReactiveObject, IPropertyGridFilterCo
     }
 
     /// <summary>
-    /// Handles the <see cref="E:CategoryFilterChanged" /> event.
+    /// Handles CategoryFilterChanged event.
     /// </summary>
     /// <param name="sender">The sender.</param>
     /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>

@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-      <TargetFrameworks>netstandard2.1;net6.0;net8.0;net9.0</TargetFrameworks>
+      <TargetFrameworks>netstandard2.1;net6.0;net8.0;net9.0;net10.0</TargetFrameworks>
 	  <LangVersion>preview</LangVersion>
 	  <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">True</GeneratePackageOnBuild>
 	  <Title>bodong.Avalonia.PropertyGrid</Title>
-	  <Version>11.3.3.2</Version>
+	  <Version>11.3.11.1</Version>
 	  <Authors>bodong</Authors>
       <Nullable>enable</Nullable>
 	  <Description>A PropertyGrid control implementation for Avalonia</Description>
@@ -46,12 +46,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="11.3.3" />
-    <PackageReference Include="Avalonia.Controls.ColorPicker" Version="11.3.3" />
+    <PackageReference Include="Avalonia" Version="11.3.11" />
+    <PackageReference Include="Avalonia.Controls.ColorPicker" Version="11.3.11" />
   </ItemGroup>
 
     <ItemGroup Condition="'$(Configuration)' != 'Development'">
-        <PackageReference Include="bodong.PropertyModels" Version="11.3.3.2" />
+        <PackageReference Include="bodong.PropertyModels" Version="11.3.11.1" />
     </ItemGroup>
   <ItemGroup Condition="'$(Configuration)' == 'Development'">
     <ProjectReference Include="..\PropertyModels\PropertyModels.csproj" />

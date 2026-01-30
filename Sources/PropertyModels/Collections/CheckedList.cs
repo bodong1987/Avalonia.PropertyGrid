@@ -137,8 +137,10 @@ public class CheckedList<T> : ICollection<T>, ICheckedList
     {
         get
         {
-#pragma warning disable CS8601 
+#pragma warning disable CS8601
+#pragma warning disable CS8604
             List<object> list = [.. _itemsCore];
+#pragma warning disable CS8604
 #pragma warning restore CS8601 
 
             return [.. list];
