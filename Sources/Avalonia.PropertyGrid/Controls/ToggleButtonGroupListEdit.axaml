@@ -1,6 +1,7 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:controls="using:Avalonia.PropertyGrid.Controls">
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:controls="using:Avalonia.PropertyGrid.Controls"
+		xmlns:vm="using:Avalonia.PropertyGrid.ViewModels">
   <Design.PreviewWith>
     <controls:ToggleButtonGroupListEdit />
   </Design.PreviewWith>
@@ -18,8 +19,8 @@
 						  </ItemsPanelTemplate>
 					  </ItemsControl.ItemsPanel>
 					  <ItemsControl.ItemTemplate>
-						  <DataTemplate>
-							  <ToggleButton IsChecked="{Binding IsChecked, Mode=TwoWay}" Margin="4" 
+						  <DataTemplate x:DataType="vm:SingleSelectListItemViewModel">
+							  <ToggleButton IsChecked="{Binding IsChecked, Mode=TwoWay}"
 							                MinWidth="{Binding MinWidth}"
 							                MinHeight="{Binding MinHeight}"
 							                VerticalContentAlignment="Center"

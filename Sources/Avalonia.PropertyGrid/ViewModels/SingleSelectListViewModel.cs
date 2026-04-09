@@ -10,7 +10,7 @@ namespace Avalonia.PropertyGrid.ViewModels;
 /// Implements the <see cref="MiniReactiveObject" />
 /// </summary>
 /// <seealso cref="MiniReactiveObject" />
-internal class SingleSelectListViewModel : MiniReactiveObject
+public class SingleSelectListViewModel : MiniReactiveObject
 {
     /// <summary>
     /// The items
@@ -210,7 +210,7 @@ internal class SingleSelectListViewModel : MiniReactiveObject
 /// Implements the <see cref="MiniReactiveObject" />
 /// </summary>
 /// <seealso cref="MiniReactiveObject" />
-internal class SingleSelectListItemViewModel : MiniReactiveObject
+public class SingleSelectListItemViewModel : MiniReactiveObject
 {
     /// <summary>
     /// The parent

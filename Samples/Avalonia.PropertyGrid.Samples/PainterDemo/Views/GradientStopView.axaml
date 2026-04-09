@@ -11,7 +11,7 @@
         <!-- Set Defaults -->
         <Setter Property="Template">
             <ControlTemplate>
-                <Grid ColumnDefinitions="Auto,Auto,*">
+                <Grid x:DataType="GradientStop" ColumnDefinitions="Auto,Auto,*">
                     <!-- ReSharper disable once Xaml.BindingWithoutContextNotResolved -->
                     <apc:PreviewableColorPicker Grid.Column="0" Name="Part_ColorPicker" Color="{Binding Color}"></apc:PreviewableColorPicker>
                     <!-- ReSharper disable once Xaml.BindingWithoutContextNotResolved -->

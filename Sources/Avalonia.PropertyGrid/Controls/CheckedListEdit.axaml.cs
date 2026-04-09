@@ -141,7 +141,7 @@ public class CheckedListEdit : TemplatedControl
 /// Implements the <see cref="MiniReactiveObject" />
 /// </summary>
 /// <seealso cref="MiniReactiveObject" />
-internal class CheckedListViewModel : MiniReactiveObject
+public class CheckedListViewModel : MiniReactiveObject
 {
     /// <summary>
     /// The items
@@ -322,7 +322,7 @@ internal class CheckedListViewModel : MiniReactiveObject
 /// Implements the <see cref="MiniReactiveObject" />
 /// </summary>
 /// <seealso cref="MiniReactiveObject" />
-internal class CheckedListItemViewModel : MiniReactiveObject
+public class CheckedListItemViewModel : MiniReactiveObject
 {
     /// <summary>
     /// The parent

@@ -366,7 +366,7 @@ public class ListRoutedEventArgs : RoutedEventArgs
 /// Implements the <see cref="ReactiveObject" />
 /// </summary>
 /// <seealso cref="ReactiveObject" />
-internal class ListViewModel : ReactiveObject
+public class ListViewModel : ReactiveObject
 {
     /// <summary>
     /// Gets or sets the collection.
@@ -515,7 +515,7 @@ internal class ListViewModel : ReactiveObject
 /// Implements the <see cref="MiniReactiveObject" />
 /// </summary>
 /// <seealso cref="MiniReactiveObject" />
-internal class ListElementDataDesc : MiniReactiveObject
+public class ListElementDataDesc : MiniReactiveObject
 {
     /// <summary>
     /// The list

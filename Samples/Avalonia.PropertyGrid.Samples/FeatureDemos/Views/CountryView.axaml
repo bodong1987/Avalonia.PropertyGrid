@@ -1,6 +1,7 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:controls="using:Avalonia.PropertyGrid.Samples.FeatureDemos.Views">
+        xmlns:controls="using:Avalonia.PropertyGrid.Samples.FeatureDemos.Views"
+        xmlns:models="using:Avalonia.PropertyGrid.Samples.FeatureDemos.Models">
   <Design.PreviewWith>
     <controls:CountryView />
   </Design.PreviewWith>
@@ -9,7 +10,7 @@
     <!-- Set Defaults -->
     <Setter Property="Template">
       <ControlTemplate>
-          <Grid RowDefinitions="Auto, Auto" ColumnDefinitions="Auto,Auto">
+          <Grid x:DataType="models:CountryInfo" RowDefinitions="Auto, Auto" ColumnDefinitions="Auto,Auto">
             <!-- ReSharper disable once Xaml.BindingWithoutContextNotResolved -->
             <Image Grid.RowSpan="2" Source="{Binding Flag}" Width="100" Height="60" Margin="2"></Image>
             <!-- ReSharper disable once Xaml.BindingWithoutContextNotResolved -->

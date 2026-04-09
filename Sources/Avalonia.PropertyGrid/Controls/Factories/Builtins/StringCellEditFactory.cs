@@ -49,8 +49,8 @@ public class StringCellEditFactory : AbstractCellEditFactory
 
         if (watermarkAttr != null)
         {
-            // control.Watermark = LocalizationService.Default[watermarkAttr.Watermark];
-            control.SetLocalizeBinding(TextBox.WatermarkProperty, watermarkAttr.Watermark);
+            // control.PlaceholderText = LocalizationService.Default[watermarkAttr.Watermark];
+            control.SetLocalizeBinding(TextBox.PlaceholderTextProperty, watermarkAttr.Watermark);
         }
 
         var innerRightContentAttribute = propertyDescriptor.GetCustomAttribute<InnerRightContentStringAttribute>();
