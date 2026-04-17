@@ -1,6 +1,7 @@
 ﻿<Styles xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:controls="using:Avalonia.PropertyGrid.Controls">
+		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:controls="using:Avalonia.PropertyGrid.Controls"
+		xmlns:vm="using:Avalonia.PropertyGrid.ViewModels">
   <Design.PreviewWith>
     <controls:RadioButtonListEdit />
   </Design.PreviewWith>
@@ -18,7 +19,7 @@
 						  </ItemsPanelTemplate>
 					  </ItemsControl.ItemsPanel>
 					  <ItemsControl.ItemTemplate>
-						  <DataTemplate>
+						  <DataTemplate x:DataType="vm:SingleSelectListItemViewModel">
 							  <RadioButton IsChecked="{Binding IsChecked, Mode=TwoWay}"
 							               MinWidth="{Binding MinWidth}"
 							               MinHeight="{Binding MinHeight}"

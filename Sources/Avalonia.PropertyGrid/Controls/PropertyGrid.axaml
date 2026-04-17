@@ -98,7 +98,7 @@
 		      RowDefinitions="*, Auto">
 			<!-- ReSharper disable once Xaml.StyleClassNotFound -->
 			<TextBox Grid.Row="0" Grid.Column="0" Classes="clearButton" x:Name="SearchTextBox"
-			         Watermark="{ll:Localize Search}" 
+					 PlaceholderText="{ll:Localize Search}"
 			         Text="{Binding $parent[lc:PropertyGrid].ViewModel.FilterPattern.FilterText}" ></TextBox>
 			<Button Grid.Row="0" Grid.Column="1" x:Name="OptionsButton"
 			        Click="OnOptionsButtonClicked"

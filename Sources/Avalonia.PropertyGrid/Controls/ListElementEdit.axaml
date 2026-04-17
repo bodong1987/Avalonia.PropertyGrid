@@ -16,9 +16,9 @@
 	</Styles.Resources>
 
   <Style Selector="controls|ListElementEdit">
-    <!-- Set Defaults -->
-    <Setter Property="Template">
-      <ControlTemplate>
+	<!-- Set Defaults -->
+	<Setter Property="Template">
+	  <ControlTemplate x:DataType="controls:ListElementDataDesc">
 		  <DataValidationErrors>
 			  <Grid ColumnDefinitions="36, *,Auto,Auto">
 				  <TextBlock Grid.Column="0" Text="{Binding DisplayName}" 

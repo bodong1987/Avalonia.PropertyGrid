@@ -22,7 +22,7 @@ if %errorlevel% neq 0 (
 )
 
 REM Navigate to the publish directory
-cd /d "%current_dir%\Samples\Avalonia.PropertyGrid.Samples.Browser\bin\Release\net9.0-browser\publish\wwwroot"
+cd /d "%current_dir%\Samples\Avalonia.PropertyGrid.Samples.Browser\bin\Release\net10.0-browser\publish\wwwroot"
 
 REM Recursively delete all .br and .gz files
 for /r %%i in (*.br *.gz) do del "%%i"

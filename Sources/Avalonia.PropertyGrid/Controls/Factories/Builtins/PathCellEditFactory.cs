@@ -2,7 +2,6 @@
 using Avalonia.Controls;
 using Avalonia.PropertyGrid.Localization;
 using Avalonia.PropertyGrid.Utils;
-using Avalonia.VisualTree;
 using PropertyModels.ComponentModel;
 using PropertyModels.ComponentModel.DataAnnotations;
 using PropertyModels.Extensions;
@@ -59,7 +58,7 @@ public class PathCellEditFactory : AbstractCellEditFactory
                 attribute.InitialFileName = control.Text;
             }
 
-            var files = await PathBrowserUtils.ShowPathBrowserAsync((control.GetVisualRoot() as Window)!, attribute);
+            var files = await PathBrowserUtils.ShowPathBrowserAsync((TopLevel.GetTopLevel(control) as Window)!, attribute);
 
             if (files is { Length: > 0 })
             {

@@ -7,7 +7,8 @@
              xmlns:ll="clr-namespace:Avalonia.PropertyGrid.Localization;assembly=Avalonia.PropertyGrid"
              xmlns:apvm="clr-namespace:Avalonia.PropertyGrid.ViewModels;assembly=Avalonia.PropertyGrid"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Avalonia.PropertyGrid.Samples.PainterDemo.Views.PainterView">
+             x:Class="Avalonia.PropertyGrid.Samples.PainterDemo.Views.PainterView"
+             x:DataType="lvm:PainterViewModel">
     <UserControl.Resources>
         <apvm:EnumToBooleanConverter x:Key="EnumToBooleanConverter"/>
     </UserControl.Resources>

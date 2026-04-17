@@ -9,7 +9,7 @@
     <!-- Set Defaults -->
     <Setter Property="Template">
       <ControlTemplate>
-          <StackPanel Orientation="Horizontal">
+          <StackPanel x:DataType="controls:SVector3ViewModel" Orientation="Horizontal">
               <TextBlock Text="X" VerticalAlignment="Center" Padding="4"></TextBlock>
               <!-- ReSharper disable once Xaml.BindingWithoutContextNotResolved -->
               <NumericUpDown Value="{Binding X}"  ShowButtonSpinner="False">

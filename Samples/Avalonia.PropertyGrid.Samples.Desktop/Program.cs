@@ -1,6 +1,5 @@
 ﻿using System;
 using Avalonia;
-using Avalonia.Platform;
 
 namespace Avalonia.PropertyGrid.Samples.Desktop;
 
@@ -19,13 +18,10 @@ internal sealed class Program
             .UsePlatformDetect()
             .WithInterFont()
             .LogToTrace()
-            #if !DEBUG
-            .AfterSetup(builder=>
+            #if DEBUG
+            .AfterSetup(builder =>
             {
-                builder.Instance!.AttachDevTools(new Avalonia.Diagnostics.DevToolsOptions()
-                {
-                    StartupScreenIndex = 1,
-                });
+                builder.Instance!.AttachDeveloperTools();
             })
             #endif
             ;
