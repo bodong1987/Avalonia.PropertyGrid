@@ -18,7 +18,7 @@ public interface IReactiveObject : INotifyPropertyChanged;
 /// Implements the <see cref="PropertyModels.ComponentModel.IReactiveObject" />
 /// </summary>
 /// <seealso cref="PropertyModels.ComponentModel.IReactiveObject" />
-public class MiniReactiveObject : IReactiveObject
+public class MiniReactiveObject : IReactiveObject, IDisposable
 {
     #region Interfaces
     /// <summary>
@@ -80,6 +80,34 @@ public class MiniReactiveObject : IReactiveObject
         return false;
     }
     #endregion
+
+    private bool _disposed = false;
+    // ============================
+    // 标准 IDisposable（基类实现）
+    // ============================
+    public void Dispose( )
+    {
+        Dispose ( true );
+        GC.SuppressFinalize ( this );
+    }
+
+    protected virtual void Dispose( bool disposing )
+    {
+        if ( _disposed )
+            return;
+        _disposed = true;
+
+        if ( disposing )
+        {
+            // 清空事件，防止泄漏
+            PropertyChanged = null;
+        }
+    }
+
+    ~MiniReactiveObject( )
+    {
+        Dispose ( false );
+    }
 }
 
 
@@ -193,6 +221,19 @@ public class ReactiveObject : MiniReactiveObject
     }
 
     #endregion
+
+    // ============================
+    // 子类释放：取消自己的事件
+    // ============================
+    protected override void Dispose( bool disposing )
+    {
+        if ( disposing )
+        {
+            PropertyChanged -= ProcessPropertyChanged;
+        }
+
+        base.Dispose ( disposing );
+    }
 }
 
 /// <summary>

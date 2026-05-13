@@ -50,10 +50,7 @@
     <PackageReference Include="Avalonia.Controls.ColorPicker" Version="12.0.0" />
   </ItemGroup>
 
-    <ItemGroup Condition="'$(Configuration)' != 'Development'">
-        <PackageReference Include="bodong.PropertyModels" Version="12.0.0" />
-    </ItemGroup>
-  <ItemGroup Condition="'$(Configuration)' == 'Development'">
+  <ItemGroup>
     <ProjectReference Include="..\PropertyModels\PropertyModels.csproj" />
   </ItemGroup>
 

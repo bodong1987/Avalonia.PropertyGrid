@@ -200,4 +200,18 @@ public class AssemblyJsonAssetLocalizationService : MiniReactiveObject, ILocaliz
     /// <returns>ILocalizationService[].</returns>
     public ILocalizationService[] GetExtraServices() => [.. _extraServices];
     #endregion
+
+    // 只需要重写 Dispose 即可，不用再实现 IDisposable
+    protected override void Dispose( bool disposing )
+    {
+        if ( disposing )
+        {
+            _assetCultureData.SelectionChanged -= OnSelectionChanged;
+            OnCultureChanged = null;
+            CultureData?.Unload ( );
+            _extraServices.Clear ( );
+        }
+
+        base.Dispose ( disposing );
+    }
 }
