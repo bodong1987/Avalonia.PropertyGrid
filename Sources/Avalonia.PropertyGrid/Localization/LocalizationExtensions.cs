@@ -30,6 +30,13 @@ public static class LocalizationExtensions
 
         _ = control.Bind(property, binding);
         control.DataContext = source;
+
+        // 🔥 自动释放：控件销毁时自动 Dispose
+        control.Unloaded += ( s, e ) =>
+        {
+            ( source as IDisposable )?.Dispose ( );
+            control.DataContext = null;
+        };
     }
 }
 
@@ -59,4 +66,18 @@ internal class LocalizedDataModel : ReactiveObject
     }
 
     private void OnCultureChanged(object? sender, EventArgs e) => RaisePropertyChanged(nameof(Value));
+
+    protected override void Dispose( bool disposing )
+    {
+        if ( disposing )
+        {
+            try
+            {
+                LocalizationService.Default.OnCultureChanged -= OnCultureChanged;
+            }
+            catch { }
+        }
+
+        base.Dispose ( disposing );
+    }
 }
