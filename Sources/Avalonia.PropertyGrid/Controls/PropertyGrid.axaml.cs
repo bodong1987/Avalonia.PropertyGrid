@@ -687,8 +687,16 @@ public partial class PropertyGrid : UserControl, IPropertyGrid
         // change column width first
         var newWidth = NameWidth;
         SplitterGrid.ColumnDefinitions[0].Width = new GridLength(newWidth);
-            
-        // let's sync this width to all name text 
+
+        // in auto mode the name cells size themselves to their content, so no fixed width may be
+        // forced on them - not the one from the splitter, nor the one a nested grid picks up from
+        // its root grid
+        if (IsAutoNameWidth)
+        {
+            return;
+        }
+
+        // let's sync this width to all name text
         SyncNameWidth(newWidth, false);
     }
 
