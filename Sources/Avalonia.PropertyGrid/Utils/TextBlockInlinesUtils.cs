@@ -4,8 +4,10 @@ using Avalonia.Controls.Documents;
 using Avalonia.Data;
 using Avalonia.Media;
 using Avalonia.PropertyGrid.Services;
+using Avalonia.Utilities;
 using PropertyModels.ComponentModel;
 using PropertyModels.Extensions;
+using PropertyModels.Localization;
 
 namespace Avalonia.PropertyGrid.Utils;
 
@@ -76,16 +78,54 @@ public static class TextBlockInlinesUtils
     public static void SetInlinesBinding(this TextBlock textBlock, string text, string? highLightedText = null,
         UnitAttribute? attribute = null)
     {
-        var source = new TextBlockInlinesBindingDataModel(text, highLightedText, attribute);
-        var binding = new Binding
-        {
-            Source = source,
-            Path = nameof(source.Inlines),
-            Mode = BindingMode.Default
-        };
+        if ( textBlock.Inlines == null )
+            return;
+        textBlock.Inlines.Clear ( );
+        string displayText = LocalizationService.Default[text];
+        string keyword = highLightedText?.Trim() ?? string.Empty;
 
-        textBlock.Bind(TextBlock.InlinesProperty, binding);
-        textBlock.DataContext = source;
+        if ( !string.IsNullOrEmpty ( displayText ) && !string.IsNullOrEmpty ( keyword ) )
+        {
+            int start = 0;
+            while ( start < displayText.Length )
+            {
+                int idx = displayText.IndexOf(keyword, start, StringComparison.OrdinalIgnoreCase);
+                if ( idx == -1 )
+                {
+                    textBlock.Inlines.Add ( new Run ( displayText [ start.. ] ) );
+                    break;
+                }
+                if ( idx > start )
+                    textBlock.Inlines.Add ( new Run ( displayText [ start..idx ] ) );
+
+                // 画笔与原生逻辑保持一致
+                if ( Application.Current!.TryGetResource ( "SystemAccentColor", out var cObj ) && cObj is Color c )
+                {
+                    textBlock.Inlines.Add ( new Run ( displayText.Substring ( idx, keyword.Length ) )
+                    {
+                        Background = new SolidColorBrush ( c, 0.7 ),
+                        Foreground = Brushes.White
+                    } );
+                }
+                start = idx + keyword.Length;
+            }
+        }
+        else
+        {
+            textBlock.Inlines.Add ( new Run ( displayText ) );
+        }
+
+        // 单位后缀
+        if ( attribute != null && !string.IsNullOrWhiteSpace ( attribute.Unit ) )
+        {
+            textBlock.Inlines.Add ( new Run ( $" ({attribute.Unit})" )
+            {
+                Foreground = new SolidColorBrush ( Colors.Gray, 0.7 )
+            } );
+        }
+
+        // 核心：不再赋值泄漏Model到DataContext
+        textBlock.DataContext = null;
     }
 
     /// <summary>
@@ -109,8 +149,11 @@ public class TextBlockInlinesBindingDataModel : ReactiveObject
 {
     private readonly string? _text;
     private string? _highLightedText;
-    private readonly UnitAttribute? _unit; 
-        
+    private readonly UnitAttribute? _unit;
+
+    // 保存事件句柄用于注销
+    private readonly EventHandler<EventArgs> _cultureChangedHandler;
+
     /// <summary>
     /// construct this data model
     /// </summary>
@@ -122,11 +165,42 @@ public class TextBlockInlinesBindingDataModel : ReactiveObject
         _text = text;
         _unit = attribute;
         _highLightedText = highLightedText;
-        
-        RebuildInlines();
-        
-        LocalizationService.Default.OnCultureChanged += OnCultureChanged;
+
+        // 绑定当前实例的方法到委托，满足 TSubscriber = this 约束
+        _cultureChangedHandler = OnCultureChanged;
+
+        // 弱订阅静态 LocalizationService，TTarget=LocalizationService, TEventArgs=EventArgs, TSubscriber=当前类
+        WeakEventHandlerManager.Subscribe<ILocalizationService, EventArgs, TextBlockInlinesBindingDataModel> (
+            target: LocalizationService.Default,
+            eventName: nameof ( LocalizationService.Default.OnCultureChanged ),
+            subscriber: _cultureChangedHandler
+        );
+
+        RebuildInlines ();
     }
+
+    #region IDisposable 释放弱订阅
+    protected override void Dispose( bool disposing )
+    {
+        if ( _disposed )
+            return;
+
+        if ( disposing )
+        {
+            // Unsubscribe 严格匹配你提供的2泛型签名：<TEventArgs, TSubscriber>
+            WeakEventHandlerManager.Unsubscribe<EventArgs, TextBlockInlinesBindingDataModel> (
+                target: LocalizationService.Default, // 传object，不用ILocalizationService泛型
+                eventName: nameof ( LocalizationService.Default.OnCultureChanged ),
+                subscriber: _cultureChangedHandler
+            );
+
+            Inlines?.Clear ( );
+            Inlines = null;
+        }
+
+        base.Dispose ( disposing );
+    }
+    #endregion
 
     /// <summary>
     /// update highlighted text
@@ -134,13 +208,17 @@ public class TextBlockInlinesBindingDataModel : ReactiveObject
     /// <param name="highLightedText"></param>
     public void UpdateHighlightedText(string? highLightedText)
     {
+        if ( _disposed )
+            return;
         _highLightedText = highLightedText;
         RebuildInlines();
     }
 
     private void OnCultureChanged(object? sender, EventArgs e)
     {
-        RebuildInlines();
+        if ( _disposed )
+            return;
+        RebuildInlines ();
     }
 
     private static readonly SolidColorBrush ForegroundBrush = Application.Current?
@@ -152,6 +230,8 @@ public class TextBlockInlinesBindingDataModel : ReactiveObject
     
     private void RebuildInlines()
     {
+        if ( _disposed )
+            return;
         var collections = TextBlockInlinesUtils.Build(LocalizationService.Default[_text??""], _highLightedText);
 
         if (_unit != null && _unit.Unit.IsNotNullOrEmpty())

@@ -81,7 +81,7 @@ public class MiniReactiveObject : IReactiveObject, IDisposable
     }
     #endregion
 
-    private bool _disposed = false;
+    protected bool _disposed = false;
     // ============================
     // 标准 IDisposable（基类实现）
     // ============================

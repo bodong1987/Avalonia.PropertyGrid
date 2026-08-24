@@ -1,5 +1,6 @@
 ﻿namespace PropertyModels.Extensions;
 
+using System;
 using System.ComponentModel;
 using System.Reflection;
 
@@ -21,8 +22,9 @@ public static class PropertyDescriptorExtensions
         }
 
         var attr = property.GetCustomAttribute<TypeConverterAttribute>();
+        var type = attr!=null? Type.GetType(attr.ConverterTypeName) : attr?.GetConverterType();
 
-        if (attr?.GetConverterType()!.IsChildOf<ExpandableObjectConverter>() == true)
+        if (type!.IsChildOf<ExpandableObjectConverter>() == true)
         {
             return true;
         }
