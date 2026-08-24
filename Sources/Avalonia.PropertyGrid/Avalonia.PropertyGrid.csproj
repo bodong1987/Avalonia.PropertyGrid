@@ -10,7 +10,7 @@
   <!-- package related -->
   <PropertyGroup>
       <PackageId>$(Authors).Avalonia.PropertyGrid</PackageId>
-      <Version>12.0.4.1</Version>
+      <Version>12.1.1.1</Version>
       <Description>A PropertyGrid control implementation for Avalonia</Description>
       <PackageTags>Avalonia;PropertyGrid;AvaloniaControls;AvaloniaSamples</PackageTags>
       <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">True</GeneratePackageOnBuild>
@@ -41,8 +41,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="12.0.4" />
-    <PackageReference Include="Avalonia.Controls.ColorPicker" Version="12.0.4" />
+    <PackageReference Include="Avalonia" Version="12.1.1" />
+    <PackageReference Include="Avalonia.Controls.ColorPicker" Version="12.1.1" />
   </ItemGroup>
 
   <ItemGroup>
