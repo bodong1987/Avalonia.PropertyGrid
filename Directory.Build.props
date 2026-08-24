@@ -3,4 +3,23 @@
     <Nullable>enable</Nullable>
     <AvaloniaVersion>12.0.0</AvaloniaVersion>
   </PropertyGroup>
+
+  <!-- package related -->
+  <PropertyGroup>
+     <Authors>bodong</Authors>
+     <PackageProjectUrl>https://github.com/bodong1987/Avalonia.PropertyGrid</PackageProjectUrl>
+     <RepositoryUrl>https://github.com/bodong1987/Avalonia.PropertyGrid.git</RepositoryUrl>
+     <PackageLicenseExpression>MIT</PackageLicenseExpression>
+     <IncludeSymbols>False</IncludeSymbols>
+     <Title>$(Authors).$(AssemblyName)</Title>
+  </PropertyGroup>
+
+  <PropertyGroup>		
+        <Title>$(Authors).Avalonia.PropertyGrid</Title>
+	<Product>$(Authors).Avalonia.PropertyGrid</Product>
+	<PackageReadmeFile>README_NUGET.md</PackageReadmeFile>
+	<GenerateDocumentationFile>True</GenerateDocumentationFile>
+        <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
 </Project>

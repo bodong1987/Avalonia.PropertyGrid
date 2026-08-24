@@ -1,25 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
-	  <LangVersion>preview</LangVersion>
-	  <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">True</GeneratePackageOnBuild>
-	  <Title>bodong.Avalonia.PropertyGrid</Title>
-		<Version>12.0.4.1</Version>
-	  <Authors>bodong</Authors>
-    <Nullable>enable</Nullable>
-	  <Description>A PropertyGrid control implementation for Avalonia</Description>
-	  <PackageProjectUrl>https://github.com/bodong1987/Avalonia.PropertyGrid</PackageProjectUrl>
-	  <RepositoryUrl>https://github.com/bodong1987/Avalonia.PropertyGrid.git</RepositoryUrl>
-	  <RepositoryType>git</RepositoryType>
-	  <PackageTags>Avalonia;PropertyGrid;AvaloniaControls;AvaloniaSamples</PackageTags>
+      <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+      <LangVersion>preview</LangVersion>
 	  <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
 	  <Configurations>Debug;Release;Development</Configurations>
   </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Development|AnyCPU'">
-        <DefineConstants>DEBUG;TRACE</DefineConstants>
-    </PropertyGroup>
+  <!-- package related -->
+  <PropertyGroup>
+      <PackageId>$(Authors).Avalonia.PropertyGrid</PackageId>
+      <Version>12.0.4.1</Version>
+      <Description>A PropertyGrid control implementation for Avalonia</Description>
+      <PackageTags>Avalonia;PropertyGrid;AvaloniaControls;AvaloniaSamples</PackageTags>
+      <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">True</GeneratePackageOnBuild>
+  </PropertyGroup>
+    
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Development|AnyCPU'">
+      <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
 
   <ItemGroup>
     <None Remove="Assets\Localizations\en-US.json" />
@@ -31,11 +30,7 @@
     <AvaloniaResource Include="Assets\Localizations\en-US.json" />
     <AvaloniaResource Include="Assets\Localizations\ru-RU.json" />
     <AvaloniaResource Include="Assets\Localizations\zh-CN.json" />    
-    <AvaloniaResource Include="Assets\Images\options.png" />    
-    <AvaloniaResource Include="Assets\Images\add.png" />    
-    <AvaloniaResource Include="Assets\Images\delete.png" />
-      <AvaloniaResource Include="Assets\Images\new.png" />
-      <AvaloniaResource Include="Assets\Images\clear.png" />
+    <AvaloniaResource Include="Assets\Images\*.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -63,17 +58,5 @@
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
-	
-	<PropertyGroup>		
-		<PackageId>bodong.Avalonia.PropertyGrid</PackageId>
-		<Product>bodong.Avalonia.PropertyGrid</Product>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<IncludeSymbols>False</IncludeSymbols>
-		<PackageReadmeFile>README_NUGET.md</PackageReadmeFile>
-		<GenerateDocumentationFile>True</GenerateDocumentationFile>
-		<Nullable>enable</Nullable>
-	</PropertyGroup>
-
-	
 
 </Project>

@@ -1,28 +1,24 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-			<TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
-	  <LangVersion>preview</LangVersion>
-	  <Authors>bodong</Authors>
-		<Version>12.0.0</Version>
-	  <PackageLicenseExpression>MIT</PackageLicenseExpression>
-	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
-	  <Nullable>enable</Nullable>
-      <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">True</GeneratePackageOnBuild>
-	  <PackageId>bodong.$(AssemblyName)</PackageId>
-	  <Title>bodong.$(AssemblyName)</Title>
-	  <Description>Some simple object model class libraries, originally used in the Avalonia.PropertyGrid project, were later split into an independent package in order to achieve the separation of data and presentation.</Description>
-	  <PackageProjectUrl>https://github.com/bodong1987/Avalonia.PropertyGrid</PackageProjectUrl>
-	  <RepositoryUrl>https://github.com/bodong1987/Avalonia.PropertyGrid.git</RepositoryUrl>
-	  <RepositoryType>git</RepositoryType>
-	  <PackageTags>Avalonia;PropertyGrid;AvaloniaControls;ObjectModel;ComponentModel</PackageTags>
-	  <PackageReadmeFile>README_PropertyModels.md</PackageReadmeFile>
-	  <Configurations>Debug;Release;Development</Configurations>
+      <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+      <LangVersion>preview</LangVersion>
+      <PackageReadmeFile>README_PropertyModels.md</PackageReadmeFile>
+      <Configurations>Debug;Release;Development</Configurations>
   </PropertyGroup>
 
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Development|AnyCPU'">
-		<DefineConstants>DEBUG;TRACE</DefineConstants>
-	</PropertyGroup>
+  <!-- package related -->
+  <PropertyGroup>
+      <PackageId>$(Authors).$(AssemblyName)</PackageId>
+      <Version>12.0.0</Version>
+      <Description>Some simple object model class libraries, originally used in the Avalonia.PropertyGrid project, were later split into an independent package in order to achieve the separation of data and presentation.</Description>
+      <PackageTags>Avalonia;PropertyGrid;AvaloniaControls;ObjectModel;ComponentModel</PackageTags>
+      <GeneratePackageOnBuild Condition="'$(Configuration)' == 'Release'">True</GeneratePackageOnBuild>
+  </PropertyGroup>
+    
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Development|AnyCPU'">
+      <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
 	
   <ItemGroup>
     <None Include="..\README_PropertyModels.md">
