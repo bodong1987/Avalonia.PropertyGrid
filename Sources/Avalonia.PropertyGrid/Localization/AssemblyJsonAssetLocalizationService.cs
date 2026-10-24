@@ -164,9 +164,9 @@ public class AssemblyJsonAssetLocalizationService : MiniReactiveObject, ILocaliz
             // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
             if (CultureData != null && CultureData != cultureData)
             {
-                CultureData.Unload();   
+                CultureData.Unload();
             }
-                
+
             CultureData = cultureData;
         }
     }
@@ -186,13 +186,30 @@ public class AssemblyJsonAssetLocalizationService : MiniReactiveObject, ILocaliz
     /// Adds the extra service.
     /// </summary>
     /// <param name="service">The service.</param>
-    public void AddExtraService(ILocalizationService service) => _extraServices.Add(service);
+    public void AddExtraService(ILocalizationService service)
+    {
+        ArgumentNullException.ThrowIfNull(service);
+
+        if (_extraServices.Contains(service))
+            return;
+
+        _extraServices.Add(service);
+        service.OnCultureChanged += OnExtraServiceCultureChanged;
+    }
 
     /// <summary>
     /// Removes the extra service.
     /// </summary>
     /// <param name="service">The service.</param>
-    public void RemoveExtraService(ILocalizationService service) => _ = _extraServices.Remove(service);
+    public void RemoveExtraService(ILocalizationService service)
+    {
+        if (!_extraServices.Remove(service))
+            return;
+
+        service.OnCultureChanged -= OnExtraServiceCultureChanged;
+    }
+
+    private void OnExtraServiceCultureChanged(object? sender, EventArgs e) => OnSelectionChanged(sender, e);
 
     /// <summary>
     /// Gets the extra services.
@@ -202,16 +219,22 @@ public class AssemblyJsonAssetLocalizationService : MiniReactiveObject, ILocaliz
     #endregion
 
     // 只需要重写 Dispose 即可，不用再实现 IDisposable
-    protected override void Dispose( bool disposing )
+    /// <inheritdoc/>
+    protected override void Dispose(bool disposing)
     {
-        if ( disposing )
+        if (disposing)
         {
             _assetCultureData.SelectionChanged -= OnSelectionChanged;
+            foreach (var service in _extraServices)
+            {
+                service.OnCultureChanged -= OnExtraServiceCultureChanged;
+            }
+
             OnCultureChanged = null;
-            CultureData?.Unload ( );
-            _extraServices.Clear ( );
+            CultureData?.Unload();
+            _extraServices.Clear();
         }
 
-        base.Dispose ( disposing );
+        base.Dispose(disposing);
     }
 }
