@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Text.Json;
 using Avalonia.Platform;
 using PropertyModels.Localization;
 
@@ -24,7 +26,7 @@ internal class AssetCultureData : AbstractCultureData
             using (var stream = AssetLoader.Open(Path))
             {
                 using var sr = new StreamReader(stream, Encoding.UTF8);
-                var tempDict = ReadJsonStringDictionary(sr.ReadToEnd());
+                var tempDict = JsonSerializer.Deserialize<Dictionary<string, string>>(sr.ReadToEnd());
 
                 LocalTexts = tempDict;
             }
